@@ -12,6 +12,7 @@
   let catalog = null;
   let midiPatterns = null;
   let currentSeed = makeSeed();
+  let currentRenderBuffers = null;
 
   function setStatus(message) {
     console.log(message);
@@ -609,7 +610,60 @@
 
     return section.type === "normal" ? 0.38 : 0.45;
   }
+  function getLyrixGroupKeys(entry) {
+    if (!isLyrix(entry)) return [entry.key];
 
+    const groupProps = catalog.groups.numberedGroups.PSObject
+      ? []
+      : null;
+
+    // Browser JSON object path:
+    const numberedGroups = catalog.groups.numberedGroups || {};
+    const entryKey = entry.key;
+
+    for (const groupName of Object.keys(numberedGroups)) {
+      const group = numberedGroups[groupName];
+
+      if (!Array.isArray(group)) continue;
+
+      const keys = group.map(item => item.key || item);
+
+      if (keys.includes(entryKey)) {
+        return keys;
+      }
+    }
+
+    return [entry.key];
+  }
+
+  function scheduleLyrixGroupInSection({ offlineContext, destination, key, random, section, buffers }) {
+    const entry = getCatalogEntry(key);
+    if (!entry || !isLyrix(entry)) return false;
+
+    const groupKeys = getLyrixGroupKeys(entry)
+      .filter(groupKey => buffers.has(groupKey))
+      .sort((a, b) => {
+        const aEntry = getCatalogEntry(a);
+        const bEntry = getCatalogEntry(b);
+        const aPart = aEntry?.partNumber || 1;
+        const bPart = bEntry?.partNumber || 1;
+        return aPart - bPart;
+      });
+
+    if (!groupKeys.length) return false;
+
+    let start = section.startSeconds;
+
+    for (const groupKey of groupKeys) {
+      const buffer = buffers.get(groupKey);
+      if (!buffer) continue;
+
+      scheduleBuffer(offlineContext, destination, buffer, start, 0.72);
+      start += buffer.duration;
+    }
+
+    return true;
+  }
   function scheduleAudioStemInSection({ offlineContext, destination, key, buffer, random, section }) {
     const entry = getCatalogEntry(key);
     if (!entry || !buffer) return;
@@ -647,8 +701,15 @@
       return;
     }
 
-    if (isLyrix(entry)) {
-      scheduleBuffer(offlineContext, destination, buffer, section.startSeconds, gain);
+        if (isLyrix(entry)) {
+      scheduleLyrixGroupInSection({
+        offlineContext,
+        destination,
+        key,
+        random,
+        section,
+        buffers: currentRenderBuffers
+      });
       return;
     }
 
@@ -761,6 +822,8 @@
     for (const path of paths) {
       buffers.set(path, await fetchAndDecode(offlineContext, path));
     }
+
+currentRenderBuffers = buffers;
 
     setStatus(`RENDERING ${format.toUpperCase()} / AUDIO ${plan.selectedAudio.length} / MIDI ${plan.selectedMidi.length}`);
 
