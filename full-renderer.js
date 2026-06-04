@@ -180,6 +180,27 @@
     return 0.12;
   }
 
+  function expandSelectedWetDryPairs(selectedAudio) {
+    const wetDryPairs = catalog?.groups?.wetDryPairs || {};
+
+    for (const pairName of Object.keys(wetDryPairs)) {
+      const pair = wetDryPairs[pairName];
+      const dryKeys = Array.isArray(pair.dry) ? pair.dry : [];
+      const wetKeys = Array.isArray(pair.wet) ? pair.wet : [];
+      const allPairKeys = [...dryKeys, ...wetKeys];
+
+      const anySelected = allPairKeys.some(key => selectedAudio.has(key));
+
+      if (anySelected) {
+        for (const key of allPairKeys) {
+          if (getCatalogEntry(key)) {
+            selectedAudio.add(key);
+          }
+        }
+      }
+    }
+  }
+
     function buildFullPlan(random) {
     const duration = Math.max(180, rules.songLengthSeconds || 180);
 
@@ -449,6 +470,8 @@
       const fallback = midiPatterns.patterns.find(pattern => pattern.file === "midi files/main_hats_ch_metal_ch.mid");
       if (fallback) selectedMidi.add(fallback.file);
     }
+
+    expandSelectedWetDryPairs(selectedAudio);
 
     return {
       selectedAudio: [...selectedAudio],
