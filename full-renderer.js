@@ -534,6 +534,8 @@
       );
     }
 
+        if (isLyrix(entry)) return false;
+
     return (
       key.includes("synth") ||
       key.includes("bass") ||
@@ -543,7 +545,10 @@
       key.includes("bagoo") ||
       key.includes("floot") ||
       key.includes("vlins") ||
-      key.includes("vox") ||
+      key.includes("breathe_vox") ||
+      key.includes("random_vox") ||
+      key.includes("other_vox") ||
+      key.includes("wierd_vox") ||
       key.includes("cello") ||
       key.includes("accordian") ||
       key.includes("clarinet") ||
