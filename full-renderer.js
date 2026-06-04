@@ -496,109 +496,226 @@
     }
   }
 
-  function scheduleAudioStem({ offlineContext, destination, key, buffer, random, duration, mainBarSeconds, grimeyBarSeconds }) {
+   function audioMatchesSection(entry, section) {
+    const key = entry.key.toLowerCase();
+    const type = section.type;
+
+    if (entry.folder === "alternate downloads") return type === "normal";
+
+    if (key.includes("everything_intro")) return type === "everything_intro";
+
+    if (type.includes("hook")) {
+      return key.includes("hook") || key.includes("window_wipe");
+    }
+
+    if (type.includes("lyrix")) {
+      return isLyrix(entry) || key.includes("breathe_vox") || key.includes("vox");
+    }
+
+    if (type.includes("drop")) {
+      return key.includes("drop_") || key.includes("dropped_");
+    }
+
+    if (type.includes("outburst")) {
+      return key.includes("outburst");
+    }
+
+    if (type.includes("grimey")) {
+      return key.includes("grm_") || key.includes("rewind_sfx");
+    }
+
+    if (type === "ending") {
+      return (
+        key.includes("outro") ||
+        key.includes("crash") ||
+        key.includes("pad") ||
+        key.includes("chimes") ||
+        key.includes("glock")
+      );
+    }
+
+    return (
+      key.includes("synth") ||
+      key.includes("bass") ||
+      key.includes("pad") ||
+      key.includes("chimes") ||
+      key.includes("glock") ||
+      key.includes("bagoo") ||
+      key.includes("floot") ||
+      key.includes("vlins") ||
+      key.includes("vox") ||
+      key.includes("cello") ||
+      key.includes("accordian") ||
+      key.includes("clarinet") ||
+      key.includes("tbone") ||
+      key.includes("trumpet")
+    );
+  }
+
+  function midiMatchesSection(pattern, section) {
+    const key = pattern.file.toLowerCase();
+    const type = section.type;
+
+    if (type.includes("hook")) {
+      return key.includes("hook") || key.includes("hats");
+    }
+
+    if (type.includes("grimey")) {
+      return key.includes("hats") || key.includes("snare") || key.includes("rims");
+    }
+
+    if (type.includes("drop")) {
+      return key.includes("crash") || key.includes("snare") || key.includes("rims");
+    }
+
+    if (type.includes("outburst")) {
+      return key.includes("crash") || key.includes("hats") || key.includes("snare");
+    }
+
+    if (type.includes("lyrix")) {
+      return key.includes("holdit_hats") || key.includes("main_hats") || key.includes("snare");
+    }
+
+    if (type === "ending") {
+      return key.includes("crash") || key.includes("jazz") || key.includes("hats");
+    }
+
+    return (
+      key.includes("main_hats") ||
+      key.includes("snare") ||
+      key.includes("rims") ||
+      key.includes("hats") ||
+      key.includes("ride")
+    );
+  }
+
+  function sectionGainForAudio(entry, section) {
+    const key = entry.key.toLowerCase();
+
+    if (isTrueBass(entry)) return 0.55;
+    if (isLyrix(entry)) return 0.72;
+    if (key.includes("drop_")) return 0.65;
+    if (key.includes("outburst")) return 0.7;
+    if (key.includes("grm_")) return 0.68;
+    if (key.includes("crash")) return 0.45;
+    if (key.includes("pad")) return 0.38;
+    if (key.includes("chimes") || key.includes("glock")) return 0.35;
+    if (key.includes("vox")) return 0.5;
+
+    return section.type === "normal" ? 0.38 : 0.45;
+  }
+
+  function scheduleAudioStemInSection({ offlineContext, destination, key, buffer, random, section }) {
     const entry = getCatalogEntry(key);
     if (!entry || !buffer) return;
+    if (!audioMatchesSection(entry, section)) return;
 
-    const lower = key.toLowerCase();
+    const keyLower = key.toLowerCase();
+    const gain = sectionGainForAudio(entry, section);
 
     if (entry.folder === "alternate downloads") {
-      scheduleBuffer(offlineContext, destination, buffer, 0, 0.8);
+      if (chance(random, 0.005)) {
+        scheduleBuffer(offlineContext, destination, buffer, section.startSeconds, 0.8);
+      }
       return;
     }
 
-    if (lower.includes("everything_intro")) {
-      scheduleBuffer(offlineContext, destination, buffer, 0, 0.75);
+    if (keyLower.includes("everything_intro")) {
+      scheduleBuffer(offlineContext, destination, buffer, section.startSeconds, gain);
       return;
     }
 
-    if (lower.includes("drop_") || lower.includes("dropped_")) {
-      const start = mainBarSeconds * (16 + Math.floor(random() * 24));
-      scheduleBuffer(offlineContext, destination, buffer, start, 0.65);
+    if (keyLower.includes("drop_") || keyLower.includes("dropped_")) {
+      const localBar = Math.floor(random() * Math.max(1, section.bars));
+      scheduleBuffer(offlineContext, destination, buffer, section.startSeconds + localBar * section.barSeconds, gain);
       return;
     }
 
-    if (lower.includes("outburst")) {
-      const start = mainBarSeconds * (24 + Math.floor(random() * 24));
-      scheduleBuffer(offlineContext, destination, buffer, start, 0.7);
+    if (keyLower.includes("outburst")) {
+      scheduleBuffer(offlineContext, destination, buffer, section.startSeconds, gain);
       return;
     }
 
-    if (lower.includes("grm_") || lower.includes("rewind_sfx")) {
-      const grimeyStart = mainBarSeconds * (32 + Math.floor(random() * 16));
-      const localOffsetBars70 = Math.floor(random() * 8);
-      scheduleBuffer(offlineContext, destination, buffer, grimeyStart + localOffsetBars70 * grimeyBarSeconds, 0.7);
+    if (keyLower.includes("grm_") || keyLower.includes("rewind_sfx")) {
+      const localBar = Math.floor(random() * Math.max(1, section.bars));
+      scheduleBuffer(offlineContext, destination, buffer, section.startSeconds + localBar * section.barSeconds, gain);
       return;
     }
 
     if (isLyrix(entry)) {
-      const sectionStart = mainBarSeconds * (8 + Math.floor(random() * 48));
-      scheduleBuffer(offlineContext, destination, buffer, sectionStart, 0.72);
+      scheduleBuffer(offlineContext, destination, buffer, section.startSeconds, gain);
       return;
     }
 
     if (isLikelyOneShot(entry)) {
-      for (let t = 0; t < duration; t += mainBarSeconds * 4) {
+      for (let bar = 0; bar < section.bars; bar++) {
         if (chance(random, 0.12)) {
-          scheduleBuffer(offlineContext, destination, buffer, t + Math.floor(random() * 4) * mainBarSeconds, 0.45);
+          scheduleBuffer(
+            offlineContext,
+            destination,
+            buffer,
+            section.startSeconds + bar * section.barSeconds,
+            gain
+          );
         }
       }
       return;
     }
 
-    // Phrases / continuous-ish stems.
-    for (let t = 0; t < duration; t += mainBarSeconds * 4) {
-      if (chance(random, 0.28)) {
-        const offsetBars = Math.floor(random() * 4);
-        scheduleBuffer(offlineContext, destination, buffer, t + offsetBars * mainBarSeconds, 0.42);
+    const phraseRepeats = section.type === "normal" ? 1 : 2;
+
+    for (let i = 0; i < phraseRepeats; i++) {
+      if (chance(random, 0.45)) {
+        const localBar = Math.floor(random() * Math.max(1, section.bars));
+        scheduleBuffer(
+          offlineContext,
+          destination,
+          buffer,
+          section.startSeconds + localBar * section.barSeconds,
+          gain
+        );
       }
     }
   }
 
   function schedulePlan({ offlineContext, destination, buffers, plan, random, duration }) {
-    const mainBpm = catalog.rulePools.timing.mainBpm;
-    const grimeyBpm = catalog.rulePools.timing.grimeyBpm;
+    const sections = plan.sectionTimeline || [];
 
-    const mainBeatSeconds = 60 / mainBpm;
-    const mainBarSeconds = mainBeatSeconds * 4;
+    for (const section of sections) {
+      const sectionMidi = plan.selectedMidi
+        .map(file => midiPatterns.patterns.find(item => item.file === file))
+        .filter(Boolean)
+        .filter(pattern => midiMatchesSection(pattern, section));
 
-    const grimeyBeatSeconds = 60 / grimeyBpm;
-    const grimeyBarSeconds = grimeyBeatSeconds * 4;
+      for (const pattern of sectionMidi) {
+        const repeatEveryBars = pattern.lengthBeats > 8 ? 4 : 2;
+        const repeatEverySeconds = section.barSeconds * repeatEveryBars;
 
-    // MIDI patterns repeat on the main grid for this first full build.
-    for (const midiFile of plan.selectedMidi) {
-      const pattern = midiPatterns.patterns.find(item => item.file === midiFile);
-      if (!pattern) continue;
-
-      const repeatEveryBars = pattern.lengthBeats > 8 ? 4 : 2;
-      const repeatEverySeconds = mainBarSeconds * repeatEveryBars;
-
-      for (let t = 0; t < duration; t += repeatEverySeconds) {
-        if (chance(random, 0.78)) {
-          scheduleMidiPattern({
-            offlineContext,
-            destination,
-            pattern,
-            buffers,
-            barStart: t,
-            beatSeconds: mainBeatSeconds,
-            gainValue: 0.65
-          });
+        for (let t = section.startSeconds; t < section.endSeconds; t += repeatEverySeconds) {
+          if (chance(random, 0.7)) {
+            scheduleMidiPattern({
+              offlineContext,
+              destination,
+              pattern,
+              buffers,
+              barStart: t,
+              beatSeconds: section.barSeconds / 4,
+              gainValue: 0.62
+            });
+          }
         }
       }
-    }
 
-    for (const key of plan.selectedAudio) {
-      scheduleAudioStem({
-        offlineContext,
-        destination,
-        key,
-        buffer: buffers.get(key),
-        random,
-        duration,
-        mainBarSeconds,
-        grimeyBarSeconds
-      });
+      for (const key of plan.selectedAudio) {
+        scheduleAudioStemInSection({
+          offlineContext,
+          destination,
+          key,
+          buffer: buffers.get(key),
+          random,
+          section
+        });
+      }
     }
   }
 
