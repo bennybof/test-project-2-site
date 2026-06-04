@@ -1,0 +1,2816 @@
+{
+  "generatedAt": "2026-06-04T19:12:20.370Z",
+  "sourceFolder": "r2-upload/midi files",
+  "patternCount": 52,
+  "warnings": [],
+  "patterns": [
+    {
+      "id": "arcade_sfx_xtra_arp",
+      "file": "midi files/arcade_sfx_xtra_arp.mid",
+      "sample": "arp.wav",
+      "samplePath": "midi files/samples/arp.wav",
+      "sampleExists": true,
+      "ticksPerBeat": 384,
+      "noteCount": 2,
+      "lengthBeats": 3.333333,
+      "notes": [
+        {
+          "trackIndex": 1,
+          "tick": 144,
+          "beats": 0.375,
+          "noteNumber": 60,
+          "velocity": 112,
+          "velocity01": 0.88189
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1280,
+          "beats": 3.333333,
+          "noteNumber": 60,
+          "velocity": 115,
+          "velocity01": 0.905512
+        }
+      ]
+    },
+    {
+      "id": "arcade_sfx_xtra_coin",
+      "file": "midi files/arcade_sfx_xtra_coin.mid",
+      "sample": "coin.wav",
+      "samplePath": "midi files/samples/coin.wav",
+      "sampleExists": true,
+      "ticksPerBeat": 384,
+      "noteCount": 3,
+      "lengthBeats": 6.585938,
+      "notes": [
+        {
+          "trackIndex": 1,
+          "tick": 30,
+          "beats": 0.078125,
+          "noteNumber": 59,
+          "velocity": 103,
+          "velocity01": 0.811024
+        },
+        {
+          "trackIndex": 1,
+          "tick": 2193,
+          "beats": 5.710938,
+          "noteNumber": 60,
+          "velocity": 102,
+          "velocity01": 0.80315
+        },
+        {
+          "trackIndex": 1,
+          "tick": 2529,
+          "beats": 6.585938,
+          "noteNumber": 72,
+          "velocity": 93,
+          "velocity01": 0.732283
+        }
+      ]
+    },
+    {
+      "id": "arcade_sfx_xtra_done",
+      "file": "midi files/arcade_sfx_xtra_done.mid",
+      "sample": "done.wav",
+      "samplePath": "midi files/samples/done.wav",
+      "sampleExists": true,
+      "ticksPerBeat": 384,
+      "noteCount": 2,
+      "lengthBeats": 4.294271,
+      "notes": [
+        {
+          "trackIndex": 1,
+          "tick": 1551,
+          "beats": 4.039063,
+          "noteNumber": 60,
+          "velocity": 85,
+          "velocity01": 0.669291
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1649,
+          "beats": 4.294271,
+          "noteNumber": 60,
+          "velocity": 89,
+          "velocity01": 0.700787
+        }
+      ]
+    },
+    {
+      "id": "arcade_sfx_xtra_jump",
+      "file": "midi files/arcade_sfx_xtra_jump.mid",
+      "sample": "jump.wav",
+      "samplePath": "midi files/samples/jump.wav",
+      "sampleExists": true,
+      "ticksPerBeat": 384,
+      "noteCount": 2,
+      "lengthBeats": 5.166667,
+      "notes": [
+        {
+          "trackIndex": 1,
+          "tick": 994,
+          "beats": 2.588542,
+          "noteNumber": 60,
+          "velocity": 105,
+          "velocity01": 0.826772
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1984,
+          "beats": 5.166667,
+          "noteNumber": 60,
+          "velocity": 110,
+          "velocity01": 0.866142
+        }
+      ]
+    },
+    {
+      "id": "beepipes_1_drums_hook_~",
+      "file": "midi files/beepipes_1_drums_hook_~.mid",
+      "sample": "beepipe.wav",
+      "samplePath": "midi files/samples/beepipe.wav",
+      "sampleExists": true,
+      "ticksPerBeat": 384,
+      "noteCount": 4,
+      "lengthBeats": 6.875,
+      "notes": [
+        {
+          "trackIndex": 1,
+          "tick": 1521,
+          "beats": 3.960938,
+          "noteNumber": 60,
+          "velocity": 92,
+          "velocity01": 0.724409
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1889,
+          "beats": 4.919271,
+          "noteNumber": 60,
+          "velocity": 84,
+          "velocity01": 0.661417
+        },
+        {
+          "trackIndex": 1,
+          "tick": 2275,
+          "beats": 5.924479,
+          "noteNumber": 60,
+          "velocity": 93,
+          "velocity01": 0.732283
+        },
+        {
+          "trackIndex": 1,
+          "tick": 2640,
+          "beats": 6.875,
+          "noteNumber": 60,
+          "velocity": 79,
+          "velocity01": 0.622047
+        }
+      ]
+    },
+    {
+      "id": "beepipes_1_drums",
+      "file": "midi files/beepipes_1_drums.mid",
+      "sample": "beepipe.wav",
+      "samplePath": "midi files/samples/beepipe.wav",
+      "sampleExists": true,
+      "ticksPerBeat": 384,
+      "noteCount": 4,
+      "lengthBeats": 3.375,
+      "notes": [
+        {
+          "trackIndex": 1,
+          "tick": 177,
+          "beats": 0.460938,
+          "noteNumber": 60,
+          "velocity": 92,
+          "velocity01": 0.724409
+        },
+        {
+          "trackIndex": 1,
+          "tick": 545,
+          "beats": 1.419271,
+          "noteNumber": 60,
+          "velocity": 84,
+          "velocity01": 0.661417
+        },
+        {
+          "trackIndex": 1,
+          "tick": 931,
+          "beats": 2.424479,
+          "noteNumber": 60,
+          "velocity": 93,
+          "velocity01": 0.732283
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1296,
+          "beats": 3.375,
+          "noteNumber": 60,
+          "velocity": 79,
+          "velocity01": 0.622047
+        }
+      ]
+    },
+    {
+      "id": "beepipes_2_drums_odd_beepipe",
+      "file": "midi files/beepipes_2_drums_odd_beepipe.mid",
+      "sample": "beepipe.wav",
+      "samplePath": "midi files/samples/beepipe.wav",
+      "sampleExists": true,
+      "ticksPerBeat": 384,
+      "noteCount": 6,
+      "lengthBeats": 3.492188,
+      "notes": [
+        {
+          "trackIndex": 1,
+          "tick": 177,
+          "beats": 0.460938,
+          "noteNumber": 60,
+          "velocity": 92,
+          "velocity01": 0.724409
+        },
+        {
+          "trackIndex": 1,
+          "tick": 545,
+          "beats": 1.419271,
+          "noteNumber": 60,
+          "velocity": 80,
+          "velocity01": 0.629921
+        },
+        {
+          "trackIndex": 1,
+          "tick": 927,
+          "beats": 2.414063,
+          "noteNumber": 60,
+          "velocity": 90,
+          "velocity01": 0.708661
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1061,
+          "beats": 2.763021,
+          "noteNumber": 60,
+          "velocity": 95,
+          "velocity01": 0.748031
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1198,
+          "beats": 3.119792,
+          "noteNumber": 60,
+          "velocity": 97,
+          "velocity01": 0.76378
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1341,
+          "beats": 3.492188,
+          "noteNumber": 60,
+          "velocity": 94,
+          "velocity01": 0.740157
+        }
+      ]
+    },
+    {
+      "id": "beepipes_dying_drums_beepipe",
+      "file": "midi files/beepipes_dying_drums_beepipe.mid",
+      "sample": "beepipe.wav",
+      "samplePath": "midi files/samples/beepipe.wav",
+      "sampleExists": true,
+      "ticksPerBeat": 384,
+      "noteCount": 7,
+      "lengthBeats": 11.872396,
+      "notes": [
+        {
+          "trackIndex": 1,
+          "tick": 258,
+          "beats": 0.671875,
+          "noteNumber": 60,
+          "velocity": 56,
+          "velocity01": 0.440945
+        },
+        {
+          "trackIndex": 1,
+          "tick": 717,
+          "beats": 1.867188,
+          "noteNumber": 60,
+          "velocity": 46,
+          "velocity01": 0.362205
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1300,
+          "beats": 3.385417,
+          "noteNumber": 60,
+          "velocity": 49,
+          "velocity01": 0.385827
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1873,
+          "beats": 4.877604,
+          "noteNumber": 60,
+          "velocity": 38,
+          "velocity01": 0.299213
+        },
+        {
+          "trackIndex": 1,
+          "tick": 2785,
+          "beats": 7.252604,
+          "noteNumber": 60,
+          "velocity": 43,
+          "velocity01": 0.338583
+        },
+        {
+          "trackIndex": 1,
+          "tick": 3682,
+          "beats": 9.588542,
+          "noteNumber": 60,
+          "velocity": 37,
+          "velocity01": 0.291339
+        },
+        {
+          "trackIndex": 1,
+          "tick": 4559,
+          "beats": 11.872396,
+          "noteNumber": 60,
+          "velocity": 25,
+          "velocity01": 0.19685
+        }
+      ]
+    },
+    {
+      "id": "beepipes_ghosts_drums_beepipe",
+      "file": "midi files/beepipes_ghosts_drums_beepipe.mid",
+      "sample": "beepipe.wav",
+      "samplePath": "midi files/samples/beepipe.wav",
+      "sampleExists": true,
+      "ticksPerBeat": 384,
+      "noteCount": 4,
+      "lengthBeats": 3.875,
+      "notes": [
+        {
+          "trackIndex": 1,
+          "tick": 369,
+          "beats": 0.960938,
+          "noteNumber": 60,
+          "velocity": 56,
+          "velocity01": 0.440945
+        },
+        {
+          "trackIndex": 1,
+          "tick": 737,
+          "beats": 1.919271,
+          "noteNumber": 60,
+          "velocity": 52,
+          "velocity01": 0.409449
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1123,
+          "beats": 2.924479,
+          "noteNumber": 60,
+          "velocity": 57,
+          "velocity01": 0.448819
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1488,
+          "beats": 3.875,
+          "noteNumber": 60,
+          "velocity": 55,
+          "velocity01": 0.433071
+        }
+      ]
+    },
+    {
+      "id": "beepipes_xtra_drums_beepipe",
+      "file": "midi files/beepipes_xtra_drums_beepipe.mid",
+      "sample": "beepipe.wav",
+      "samplePath": "midi files/samples/beepipe.wav",
+      "sampleExists": true,
+      "ticksPerBeat": 384,
+      "noteCount": 2,
+      "lengthBeats": 2.424479,
+      "notes": [
+        {
+          "trackIndex": 1,
+          "tick": 177,
+          "beats": 0.460938,
+          "noteNumber": 60,
+          "velocity": 92,
+          "velocity01": 0.724409
+        },
+        {
+          "trackIndex": 1,
+          "tick": 931,
+          "beats": 2.424479,
+          "noteNumber": 60,
+          "velocity": 93,
+          "velocity01": 0.732283
+        }
+      ]
+    },
+    {
+      "id": "crash_hook_metal_odd_crash",
+      "file": "midi files/crash_hook_metal_odd_crash.mid",
+      "sample": "crash.wav",
+      "samplePath": "midi files/samples/crash.wav",
+      "sampleExists": true,
+      "ticksPerBeat": 384,
+      "noteCount": 1,
+      "lengthBeats": 0.705729,
+      "notes": [
+        {
+          "trackIndex": 1,
+          "tick": 271,
+          "beats": 0.705729,
+          "noteNumber": 60,
+          "velocity": 66,
+          "velocity01": 0.519685
+        }
+      ]
+    },
+    {
+      "id": "crash_small_hook_intro_metal_odd_crash",
+      "file": "midi files/crash_small_hook_intro_metal_odd_crash.mid",
+      "sample": "crash.wav",
+      "samplePath": "midi files/samples/crash.wav",
+      "sampleExists": true,
+      "ticksPerBeat": 384,
+      "noteCount": 1,
+      "lengthBeats": 0.0625,
+      "notes": [
+        {
+          "trackIndex": 1,
+          "tick": 24,
+          "beats": 0.0625,
+          "noteNumber": 60,
+          "velocity": 61,
+          "velocity01": 0.480315
+        }
+      ]
+    },
+    {
+      "id": "hats_hook_metal_#2_ch",
+      "file": "midi files/hats_hook_metal_#2_ch.mid",
+      "sample": "ch.wav",
+      "samplePath": "midi files/samples/ch.wav",
+      "sampleExists": true,
+      "ticksPerBeat": 384,
+      "noteCount": 7,
+      "lengthBeats": 3.296875,
+      "notes": [
+        {
+          "trackIndex": 1,
+          "tick": 128,
+          "beats": 0.333333,
+          "noteNumber": 61,
+          "velocity": 47,
+          "velocity01": 0.370079
+        },
+        {
+          "trackIndex": 1,
+          "tick": 370,
+          "beats": 0.963542,
+          "noteNumber": 60,
+          "velocity": 60,
+          "velocity01": 0.472441
+        },
+        {
+          "trackIndex": 1,
+          "tick": 450,
+          "beats": 1.171875,
+          "noteNumber": 60,
+          "velocity": 53,
+          "velocity01": 0.417323
+        },
+        {
+          "trackIndex": 1,
+          "tick": 530,
+          "beats": 1.380208,
+          "noteNumber": 60,
+          "velocity": 54,
+          "velocity01": 0.425197
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1088,
+          "beats": 2.833333,
+          "noteNumber": 60,
+          "velocity": 51,
+          "velocity01": 0.401575
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1184,
+          "beats": 3.083333,
+          "noteNumber": 60,
+          "velocity": 37,
+          "velocity01": 0.291339
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1266,
+          "beats": 3.296875,
+          "noteNumber": 60,
+          "velocity": 34,
+          "velocity01": 0.267717
+        }
+      ]
+    },
+    {
+      "id": "hats_hook_metal_#2_oh",
+      "file": "midi files/hats_hook_metal_#2_oh.mid",
+      "sample": "oh.wav",
+      "samplePath": "midi files/samples/oh.wav",
+      "sampleExists": true,
+      "ticksPerBeat": 384,
+      "noteCount": 3,
+      "lengthBeats": 3.541667,
+      "notes": [
+        {
+          "trackIndex": 1,
+          "tick": 625,
+          "beats": 1.627604,
+          "noteNumber": 60,
+          "velocity": 57,
+          "velocity01": 0.448819
+        },
+        {
+          "trackIndex": 1,
+          "tick": 928,
+          "beats": 2.416667,
+          "noteNumber": 60,
+          "velocity": 30,
+          "velocity01": 0.23622
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1360,
+          "beats": 3.541667,
+          "noteNumber": 60,
+          "velocity": 59,
+          "velocity01": 0.464567
+        }
+      ]
+    },
+    {
+      "id": "hats_hook_metal_odd_ch",
+      "file": "midi files/hats_hook_metal_odd_ch.mid",
+      "sample": "ch.wav",
+      "samplePath": "midi files/samples/ch.wav",
+      "sampleExists": true,
+      "ticksPerBeat": 384,
+      "noteCount": 8,
+      "lengthBeats": 3.835938,
+      "notes": [
+        {
+          "trackIndex": 1,
+          "tick": 16,
+          "beats": 0.041667,
+          "noteNumber": 60,
+          "velocity": 43,
+          "velocity01": 0.338583
+        },
+        {
+          "trackIndex": 1,
+          "tick": 417,
+          "beats": 1.085938,
+          "noteNumber": 60,
+          "velocity": 31,
+          "velocity01": 0.244094
+        },
+        {
+          "trackIndex": 1,
+          "tick": 496,
+          "beats": 1.291667,
+          "noteNumber": 60,
+          "velocity": 42,
+          "velocity01": 0.330709
+        },
+        {
+          "trackIndex": 1,
+          "tick": 577,
+          "beats": 1.502604,
+          "noteNumber": 60,
+          "velocity": 42,
+          "velocity01": 0.330709
+        },
+        {
+          "trackIndex": 1,
+          "tick": 960,
+          "beats": 2.5,
+          "noteNumber": 60,
+          "velocity": 50,
+          "velocity01": 0.393701
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1040,
+          "beats": 2.708333,
+          "noteNumber": 60,
+          "velocity": 34,
+          "velocity01": 0.267717
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1135,
+          "beats": 2.955729,
+          "noteNumber": 60,
+          "velocity": 46,
+          "velocity01": 0.362205
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1473,
+          "beats": 3.835938,
+          "noteNumber": 61,
+          "velocity": 38,
+          "velocity01": 0.299213
+        }
+      ]
+    },
+    {
+      "id": "hats_hook_metal_odd_oh",
+      "file": "midi files/hats_hook_metal_odd_oh.mid",
+      "sample": "oh.wav",
+      "samplePath": "midi files/samples/oh.wav",
+      "sampleExists": true,
+      "ticksPerBeat": 384,
+      "noteCount": 3,
+      "lengthBeats": 3.255208,
+      "notes": [
+        {
+          "trackIndex": 1,
+          "tick": 111,
+          "beats": 0.289063,
+          "noteNumber": 59,
+          "velocity": 54,
+          "velocity01": 0.425197
+        },
+        {
+          "trackIndex": 1,
+          "tick": 688,
+          "beats": 1.791667,
+          "noteNumber": 60,
+          "velocity": 58,
+          "velocity01": 0.456693
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1250,
+          "beats": 3.255208,
+          "noteNumber": 60,
+          "velocity": 64,
+          "velocity01": 0.503937
+        }
+      ]
+    },
+    {
+      "id": "hats_wiv-beepipes_2_metal_odd_ch",
+      "file": "midi files/hats_wiv-beepipes_2_metal_odd_ch.mid",
+      "sample": "ch.wav",
+      "samplePath": "midi files/samples/ch.wav",
+      "sampleExists": true,
+      "ticksPerBeat": 384,
+      "noteCount": 4,
+      "lengthBeats": 3.513021,
+      "notes": [
+        {
+          "trackIndex": 1,
+          "tick": 935,
+          "beats": 2.434896,
+          "noteNumber": 60,
+          "velocity": 40,
+          "velocity01": 0.314961
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1061,
+          "beats": 2.763021,
+          "noteNumber": 60,
+          "velocity": 49,
+          "velocity01": 0.385827
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1206,
+          "beats": 3.140625,
+          "noteNumber": 60,
+          "velocity": 41,
+          "velocity01": 0.322835
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1349,
+          "beats": 3.513021,
+          "noteNumber": 60,
+          "velocity": 50,
+          "velocity01": 0.393701
+        }
+      ]
+    },
+    {
+      "id": "hats_wiv-beepipes_2_metal_odd_oh",
+      "file": "midi files/hats_wiv-beepipes_2_metal_odd_oh.mid",
+      "sample": "oh.wav",
+      "samplePath": "midi files/samples/oh.wav",
+      "sampleExists": true,
+      "ticksPerBeat": 384,
+      "noteCount": 1,
+      "lengthBeats": 3.109375,
+      "notes": [
+        {
+          "trackIndex": 1,
+          "tick": 1194,
+          "beats": 3.109375,
+          "noteNumber": 60,
+          "velocity": 58,
+          "velocity01": 0.456693
+        }
+      ]
+    },
+    {
+      "id": "holdit_hats_forlyrix_metal_ch",
+      "file": "midi files/holdit_hats_forlyrix_metal_ch.mid",
+      "sample": "ch.wav",
+      "samplePath": "midi files/samples/ch.wav",
+      "sampleExists": true,
+      "ticksPerBeat": 384,
+      "noteCount": 7,
+      "lengthBeats": 4.046875,
+      "notes": [
+        {
+          "trackIndex": 1,
+          "tick": 528,
+          "beats": 1.375,
+          "noteNumber": 60,
+          "velocity": 59,
+          "velocity01": 0.464567
+        },
+        {
+          "trackIndex": 1,
+          "tick": 641,
+          "beats": 1.669271,
+          "noteNumber": 60,
+          "velocity": 60,
+          "velocity01": 0.472441
+        },
+        {
+          "trackIndex": 1,
+          "tick": 866,
+          "beats": 2.255208,
+          "noteNumber": 60,
+          "velocity": 67,
+          "velocity01": 0.527559
+        },
+        {
+          "trackIndex": 1,
+          "tick": 975,
+          "beats": 2.539063,
+          "noteNumber": 60,
+          "velocity": 66,
+          "velocity01": 0.519685
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1250,
+          "beats": 3.255208,
+          "noteNumber": 60,
+          "velocity": 71,
+          "velocity01": 0.559055
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1344,
+          "beats": 3.5,
+          "noteNumber": 60,
+          "velocity": 68,
+          "velocity01": 0.535433
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1554,
+          "beats": 4.046875,
+          "noteNumber": 60,
+          "velocity": 61,
+          "velocity01": 0.480315
+        }
+      ]
+    },
+    {
+      "id": "holdit_hats_forlyrix_metal_crash",
+      "file": "midi files/holdit_hats_forlyrix_metal_crash.mid",
+      "sample": "crash.wav",
+      "samplePath": "midi files/samples/crash.wav",
+      "sampleExists": true,
+      "ticksPerBeat": 384,
+      "noteCount": 1,
+      "lengthBeats": 4.335938,
+      "notes": [
+        {
+          "trackIndex": 1,
+          "tick": 1665,
+          "beats": 4.335938,
+          "noteNumber": 60,
+          "velocity": 48,
+          "velocity01": 0.377953
+        }
+      ]
+    },
+    {
+      "id": "holdit_hats_metal_ch",
+      "file": "midi files/holdit_hats_metal_ch.mid",
+      "sample": "ch.wav",
+      "samplePath": "midi files/samples/ch.wav",
+      "sampleExists": true,
+      "ticksPerBeat": 384,
+      "noteCount": 7,
+      "lengthBeats": 3.046875,
+      "notes": [
+        {
+          "trackIndex": 1,
+          "tick": 144,
+          "beats": 0.375,
+          "noteNumber": 60,
+          "velocity": 59,
+          "velocity01": 0.464567
+        },
+        {
+          "trackIndex": 1,
+          "tick": 257,
+          "beats": 0.669271,
+          "noteNumber": 60,
+          "velocity": 60,
+          "velocity01": 0.472441
+        },
+        {
+          "trackIndex": 1,
+          "tick": 482,
+          "beats": 1.255208,
+          "noteNumber": 60,
+          "velocity": 67,
+          "velocity01": 0.527559
+        },
+        {
+          "trackIndex": 1,
+          "tick": 591,
+          "beats": 1.539063,
+          "noteNumber": 60,
+          "velocity": 66,
+          "velocity01": 0.519685
+        },
+        {
+          "trackIndex": 1,
+          "tick": 866,
+          "beats": 2.255208,
+          "noteNumber": 60,
+          "velocity": 71,
+          "velocity01": 0.559055
+        },
+        {
+          "trackIndex": 1,
+          "tick": 960,
+          "beats": 2.5,
+          "noteNumber": 60,
+          "velocity": 68,
+          "velocity01": 0.535433
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1170,
+          "beats": 3.046875,
+          "noteNumber": 60,
+          "velocity": 61,
+          "velocity01": 0.480315
+        }
+      ]
+    },
+    {
+      "id": "holdit_hats_metal_crash",
+      "file": "midi files/holdit_hats_metal_crash.mid",
+      "sample": "crash.wav",
+      "samplePath": "midi files/samples/crash.wav",
+      "sampleExists": true,
+      "ticksPerBeat": 384,
+      "noteCount": 1,
+      "lengthBeats": 3.335938,
+      "notes": [
+        {
+          "trackIndex": 1,
+          "tick": 1281,
+          "beats": 3.335938,
+          "noteNumber": 60,
+          "velocity": 48,
+          "velocity01": 0.377953
+        }
+      ]
+    },
+    {
+      "id": "holdit_hats_metal_oh",
+      "file": "midi files/holdit_hats_metal_oh.mid",
+      "sample": "oh.wav",
+      "samplePath": "midi files/samples/oh.wav",
+      "sampleExists": true,
+      "ticksPerBeat": 384,
+      "noteCount": 1,
+      "lengthBeats": 3.335938,
+      "notes": [
+        {
+          "trackIndex": 1,
+          "tick": 1281,
+          "beats": 3.335938,
+          "noteNumber": 60,
+          "velocity": 75,
+          "velocity01": 0.590551
+        }
+      ]
+    },
+    {
+      "id": "jazz_ghost_rides_metal_ride04",
+      "file": "midi files/jazz_ghost_rides_metal_ride04.mid",
+      "sample": "ride04.wav",
+      "samplePath": "midi files/samples/ride04.wav",
+      "sampleExists": true,
+      "ticksPerBeat": 384,
+      "noteCount": 4,
+      "lengthBeats": 4.005208,
+      "notes": [
+        {
+          "trackIndex": 1,
+          "tick": 377,
+          "beats": 0.981771,
+          "noteNumber": 60,
+          "velocity": 78,
+          "velocity01": 0.614173
+        },
+        {
+          "trackIndex": 1,
+          "tick": 755,
+          "beats": 1.966146,
+          "noteNumber": 60,
+          "velocity": 68,
+          "velocity01": 0.535433
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1153,
+          "beats": 3.002604,
+          "noteNumber": 60,
+          "velocity": 73,
+          "velocity01": 0.574803
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1538,
+          "beats": 4.005208,
+          "noteNumber": 60,
+          "velocity": 46,
+          "velocity01": 0.362205
+        }
+      ]
+    },
+    {
+      "id": "jazz_hats_metal_hook_even_~_ride04",
+      "file": "midi files/jazz_hats_metal_hook_even_~_ride04.mid",
+      "sample": "ride04.wav",
+      "samplePath": "midi files/samples/ride04.wav",
+      "sampleExists": true,
+      "ticksPerBeat": 384,
+      "noteCount": 3,
+      "lengthBeats": 3.875,
+      "notes": [
+        {
+          "trackIndex": 1,
+          "tick": 1328,
+          "beats": 3.458333,
+          "noteNumber": 60,
+          "velocity": 84,
+          "velocity01": 0.661417
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1408,
+          "beats": 3.666667,
+          "noteNumber": 60,
+          "velocity": 75,
+          "velocity01": 0.590551
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1488,
+          "beats": 3.875,
+          "noteNumber": 60,
+          "velocity": 69,
+          "velocity01": 0.543307
+        }
+      ]
+    },
+    {
+      "id": "jazz_hats_metal_hook_even_~_ridehard",
+      "file": "midi files/jazz_hats_metal_hook_even_~_ridehard.mid",
+      "sample": "ridehard.wav",
+      "samplePath": "midi files/samples/ridehard.wav",
+      "sampleExists": true,
+      "ticksPerBeat": 384,
+      "noteCount": 1,
+      "lengthBeats": 4.085938,
+      "notes": [
+        {
+          "trackIndex": 1,
+          "tick": 1569,
+          "beats": 4.085938,
+          "noteNumber": 60,
+          "velocity": 106,
+          "velocity01": 0.834646
+        }
+      ]
+    },
+    {
+      "id": "jazz_hats_metal_ride03",
+      "file": "midi files/jazz_hats_metal_ride03.mid",
+      "sample": "ride03.wav",
+      "samplePath": "midi files/samples/ride03.wav",
+      "sampleExists": true,
+      "ticksPerBeat": 384,
+      "noteCount": 4,
+      "lengthBeats": 3.507813,
+      "notes": [
+        {
+          "trackIndex": 1,
+          "tick": 518,
+          "beats": 1.348958,
+          "noteNumber": 60,
+          "velocity": 93,
+          "velocity01": 0.732283
+        },
+        {
+          "trackIndex": 1,
+          "tick": 614,
+          "beats": 1.598958,
+          "noteNumber": 60,
+          "velocity": 94,
+          "velocity01": 0.740157
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1247,
+          "beats": 3.247396,
+          "noteNumber": 60,
+          "velocity": 99,
+          "velocity01": 0.779528
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1347,
+          "beats": 3.507813,
+          "noteNumber": 60,
+          "velocity": 103,
+          "velocity01": 0.811024
+        }
+      ]
+    },
+    {
+      "id": "jazz_ride_wiv-jazz_hats_wiv-jazz_crash_metal_odd_ridehard",
+      "file": "midi files/jazz_ride_wiv-jazz_hats_wiv-jazz_crash_metal_odd_ridehard.mid",
+      "sample": "ridehard.wav",
+      "samplePath": "midi files/samples/ridehard.wav",
+      "sampleExists": true,
+      "ticksPerBeat": 384,
+      "noteCount": 1,
+      "lengthBeats": 2.377604,
+      "notes": [
+        {
+          "trackIndex": 1,
+          "tick": 913,
+          "beats": 2.377604,
+          "noteNumber": 60,
+          "velocity": 117,
+          "velocity01": 0.92126
+        }
+      ]
+    },
+    {
+      "id": "jazz_rides_metal_ridehard",
+      "file": "midi files/jazz_rides_metal_ridehard.mid",
+      "sample": "ridehard.wav",
+      "samplePath": "midi files/samples/ridehard.wav",
+      "sampleExists": true,
+      "ticksPerBeat": 384,
+      "noteCount": 4,
+      "lengthBeats": 3.361979,
+      "notes": [
+        {
+          "trackIndex": 1,
+          "tick": 131,
+          "beats": 0.341146,
+          "noteNumber": 60,
+          "velocity": 104,
+          "velocity01": 0.818898
+        },
+        {
+          "trackIndex": 1,
+          "tick": 515,
+          "beats": 1.341146,
+          "noteNumber": 60,
+          "velocity": 107,
+          "velocity01": 0.84252
+        },
+        {
+          "trackIndex": 1,
+          "tick": 913,
+          "beats": 2.377604,
+          "noteNumber": 60,
+          "velocity": 109,
+          "velocity01": 0.858268
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1291,
+          "beats": 3.361979,
+          "noteNumber": 60,
+          "velocity": 110,
+          "velocity01": 0.866142
+        }
+      ]
+    },
+    {
+      "id": "jazz_rides_wiv-jazz-hats_metal_ridehard",
+      "file": "midi files/jazz_rides_wiv-jazz-hats_metal_ridehard.mid",
+      "sample": "ridehard.wav",
+      "samplePath": "midi files/samples/ridehard.wav",
+      "sampleExists": true,
+      "ticksPerBeat": 384,
+      "noteCount": 2,
+      "lengthBeats": 2.377604,
+      "notes": [
+        {
+          "trackIndex": 1,
+          "tick": 131,
+          "beats": 0.341146,
+          "noteNumber": 60,
+          "velocity": 116,
+          "velocity01": 0.913386
+        },
+        {
+          "trackIndex": 1,
+          "tick": 913,
+          "beats": 2.377604,
+          "noteNumber": 60,
+          "velocity": 117,
+          "velocity01": 0.92126
+        }
+      ]
+    },
+    {
+      "id": "lego_hats_metal_x0.5_ch",
+      "file": "midi files/lego_hats_metal_x0.5_ch.mid",
+      "sample": "ch.wav",
+      "samplePath": "midi files/samples/ch.wav",
+      "sampleExists": true,
+      "ticksPerBeat": 384,
+      "noteCount": 7,
+      "lengthBeats": 1.294271,
+      "notes": [
+        {
+          "trackIndex": 1,
+          "tick": 17,
+          "beats": 0.044271,
+          "noteNumber": 60,
+          "velocity": 51,
+          "velocity01": 0.401575
+        },
+        {
+          "trackIndex": 1,
+          "tick": 210,
+          "beats": 0.546875,
+          "noteNumber": 60,
+          "velocity": 60,
+          "velocity01": 0.472441
+        },
+        {
+          "trackIndex": 1,
+          "tick": 273,
+          "beats": 0.710938,
+          "noteNumber": 60,
+          "velocity": 48,
+          "velocity01": 0.377953
+        },
+        {
+          "trackIndex": 1,
+          "tick": 321,
+          "beats": 0.835938,
+          "noteNumber": 60,
+          "velocity": 40,
+          "velocity01": 0.314961
+        },
+        {
+          "trackIndex": 1,
+          "tick": 386,
+          "beats": 1.005208,
+          "noteNumber": 60,
+          "velocity": 28,
+          "velocity01": 0.220472
+        },
+        {
+          "trackIndex": 1,
+          "tick": 434,
+          "beats": 1.130208,
+          "noteNumber": 60,
+          "velocity": 25,
+          "velocity01": 0.19685
+        },
+        {
+          "trackIndex": 1,
+          "tick": 497,
+          "beats": 1.294271,
+          "noteNumber": 60,
+          "velocity": 51,
+          "velocity01": 0.401575
+        }
+      ]
+    },
+    {
+      "id": "lego_hats_metal_x0.5_oh",
+      "file": "midi files/lego_hats_metal_x0.5_oh.mid",
+      "sample": "oh.wav",
+      "samplePath": "midi files/samples/oh.wav",
+      "sampleExists": true,
+      "ticksPerBeat": 384,
+      "noteCount": 1,
+      "lengthBeats": 1.502604,
+      "notes": [
+        {
+          "trackIndex": 1,
+          "tick": 577,
+          "beats": 1.502604,
+          "noteNumber": 60,
+          "velocity": 66,
+          "velocity01": 0.519685
+        }
+      ]
+    },
+    {
+      "id": "main_hats_ch_metal_ch",
+      "file": "midi files/main_hats_ch_metal_ch.mid",
+      "sample": "ch.wav",
+      "samplePath": "midi files/samples/ch.wav",
+      "sampleExists": true,
+      "ticksPerBeat": 384,
+      "noteCount": 8,
+      "lengthBeats": 3.752604,
+      "notes": [
+        {
+          "trackIndex": 1,
+          "tick": 177,
+          "beats": 0.460938,
+          "noteNumber": 60,
+          "velocity": 37,
+          "velocity01": 0.291339
+        },
+        {
+          "trackIndex": 1,
+          "tick": 305,
+          "beats": 0.794271,
+          "noteNumber": 60,
+          "velocity": 48,
+          "velocity01": 0.377953
+        },
+        {
+          "trackIndex": 1,
+          "tick": 560,
+          "beats": 1.458333,
+          "noteNumber": 60,
+          "velocity": 43,
+          "velocity01": 0.338583
+        },
+        {
+          "trackIndex": 1,
+          "tick": 688,
+          "beats": 1.791667,
+          "noteNumber": 60,
+          "velocity": 48,
+          "velocity01": 0.377953
+        },
+        {
+          "trackIndex": 1,
+          "tick": 912,
+          "beats": 2.375,
+          "noteNumber": 60,
+          "velocity": 40,
+          "velocity01": 0.314961
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1051,
+          "beats": 2.736979,
+          "noteNumber": 60,
+          "velocity": 42,
+          "velocity01": 0.330709
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1311,
+          "beats": 3.414063,
+          "noteNumber": 60,
+          "velocity": 43,
+          "velocity01": 0.338583
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1441,
+          "beats": 3.752604,
+          "noteNumber": 60,
+          "velocity": 47,
+          "velocity01": 0.370079
+        }
+      ]
+    },
+    {
+      "id": "main_hats_oh_cont_metal_ch",
+      "file": "midi files/main_hats_oh_cont_metal_ch.mid",
+      "sample": "ch.wav",
+      "samplePath": "midi files/samples/ch.wav",
+      "sampleExists": true,
+      "ticksPerBeat": 384,
+      "noteCount": 8,
+      "lengthBeats": 2.291667,
+      "notes": [
+        {
+          "trackIndex": 1,
+          "tick": 177,
+          "beats": 0.460938,
+          "noteNumber": 60,
+          "velocity": 37,
+          "velocity01": 0.291339
+        },
+        {
+          "trackIndex": 1,
+          "tick": 305,
+          "beats": 0.794271,
+          "noteNumber": 60,
+          "velocity": 36,
+          "velocity01": 0.283465
+        },
+        {
+          "trackIndex": 1,
+          "tick": 369,
+          "beats": 0.960938,
+          "noteNumber": 60,
+          "velocity": 67,
+          "velocity01": 0.527559
+        },
+        {
+          "trackIndex": 1,
+          "tick": 497,
+          "beats": 1.294271,
+          "noteNumber": 60,
+          "velocity": 67,
+          "velocity01": 0.527559
+        },
+        {
+          "trackIndex": 1,
+          "tick": 560,
+          "beats": 1.458333,
+          "noteNumber": 60,
+          "velocity": 36,
+          "velocity01": 0.283465
+        },
+        {
+          "trackIndex": 1,
+          "tick": 688,
+          "beats": 1.791667,
+          "noteNumber": 60,
+          "velocity": 35,
+          "velocity01": 0.275591
+        },
+        {
+          "trackIndex": 1,
+          "tick": 752,
+          "beats": 1.958333,
+          "noteNumber": 60,
+          "velocity": 69,
+          "velocity01": 0.543307
+        },
+        {
+          "trackIndex": 1,
+          "tick": 880,
+          "beats": 2.291667,
+          "noteNumber": 60,
+          "velocity": 67,
+          "velocity01": 0.527559
+        }
+      ]
+    },
+    {
+      "id": "main_hats_oh_cont_metal_oh",
+      "file": "midi files/main_hats_oh_cont_metal_oh.mid",
+      "sample": "oh.wav",
+      "samplePath": "midi files/samples/oh.wav",
+      "sampleExists": true,
+      "ticksPerBeat": 384,
+      "noteCount": 4,
+      "lengthBeats": 4.070313,
+      "notes": [
+        {
+          "trackIndex": 1,
+          "tick": 415,
+          "beats": 1.080729,
+          "noteNumber": 60,
+          "velocity": 53,
+          "velocity01": 0.417323
+        },
+        {
+          "trackIndex": 1,
+          "tick": 792,
+          "beats": 2.0625,
+          "noteNumber": 60,
+          "velocity": 46,
+          "velocity01": 0.362205
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1169,
+          "beats": 3.044271,
+          "noteNumber": 60,
+          "velocity": 53,
+          "velocity01": 0.417323
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1563,
+          "beats": 4.070313,
+          "noteNumber": 60,
+          "velocity": 59,
+          "velocity01": 0.464567
+        }
+      ]
+    },
+    {
+      "id": "main_hats_oh_metal_ch",
+      "file": "midi files/main_hats_oh_metal_ch.mid",
+      "sample": "ch.wav",
+      "samplePath": "midi files/samples/ch.wav",
+      "sampleExists": true,
+      "ticksPerBeat": 384,
+      "noteCount": 3,
+      "lengthBeats": 2.916667,
+      "notes": [
+        {
+          "trackIndex": 1,
+          "tick": 385,
+          "beats": 1.002604,
+          "noteNumber": 60,
+          "velocity": 80,
+          "velocity01": 0.629921
+        },
+        {
+          "trackIndex": 1,
+          "tick": 768,
+          "beats": 2,
+          "noteNumber": 60,
+          "velocity": 68,
+          "velocity01": 0.535433
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1120,
+          "beats": 2.916667,
+          "noteNumber": 60,
+          "velocity": 70,
+          "velocity01": 0.551181
+        }
+      ]
+    },
+    {
+      "id": "main_hats_oh_metal_oh",
+      "file": "midi files/main_hats_oh_metal_oh.mid",
+      "sample": "oh.wav",
+      "samplePath": "midi files/samples/oh.wav",
+      "sampleExists": true,
+      "ticksPerBeat": 384,
+      "noteCount": 3,
+      "lengthBeats": 3.044271,
+      "notes": [
+        {
+          "trackIndex": 1,
+          "tick": 415,
+          "beats": 1.080729,
+          "noteNumber": 60,
+          "velocity": 53,
+          "velocity01": 0.417323
+        },
+        {
+          "trackIndex": 1,
+          "tick": 792,
+          "beats": 2.0625,
+          "noteNumber": 60,
+          "velocity": 46,
+          "velocity01": 0.362205
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1169,
+          "beats": 3.044271,
+          "noteNumber": 60,
+          "velocity": 53,
+          "velocity01": 0.417323
+        }
+      ]
+    },
+    {
+      "id": "messy_hats_addin_metal_odd_ch",
+      "file": "midi files/messy_hats_addin_metal_odd_ch.mid",
+      "sample": "ch.wav",
+      "samplePath": "midi files/samples/ch.wav",
+      "sampleExists": true,
+      "ticksPerBeat": 384,
+      "noteCount": 10,
+      "lengthBeats": 6.981771,
+      "notes": [
+        {
+          "trackIndex": 1,
+          "tick": 177,
+          "beats": 0.460938,
+          "noteNumber": 60,
+          "velocity": 45,
+          "velocity01": 0.354331
+        },
+        {
+          "trackIndex": 1,
+          "tick": 352,
+          "beats": 0.916667,
+          "noteNumber": 60,
+          "velocity": 45,
+          "velocity01": 0.354331
+        },
+        {
+          "trackIndex": 1,
+          "tick": 621,
+          "beats": 1.617188,
+          "noteNumber": 60,
+          "velocity": 65,
+          "velocity01": 0.511811
+        },
+        {
+          "trackIndex": 1,
+          "tick": 991,
+          "beats": 2.580729,
+          "noteNumber": 60,
+          "velocity": 45,
+          "velocity01": 0.354331
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1435,
+          "beats": 3.736979,
+          "noteNumber": 60,
+          "velocity": 65,
+          "velocity01": 0.511811
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1944,
+          "beats": 5.0625,
+          "noteNumber": 60,
+          "velocity": 45,
+          "velocity01": 0.354331
+        },
+        {
+          "trackIndex": 1,
+          "tick": 2044,
+          "beats": 5.322917,
+          "noteNumber": 60,
+          "velocity": 50,
+          "velocity01": 0.393701
+        },
+        {
+          "trackIndex": 1,
+          "tick": 2300,
+          "beats": 5.989583,
+          "noteNumber": 60,
+          "velocity": 67,
+          "velocity01": 0.527559
+        },
+        {
+          "trackIndex": 1,
+          "tick": 2600,
+          "beats": 6.770833,
+          "noteNumber": 60,
+          "velocity": 51,
+          "velocity01": 0.401575
+        },
+        {
+          "trackIndex": 1,
+          "tick": 2681,
+          "beats": 6.981771,
+          "noteNumber": 60,
+          "velocity": 45,
+          "velocity01": 0.354331
+        }
+      ]
+    },
+    {
+      "id": "messy_hats_fast_ends_in_main_hats_metal_ch",
+      "file": "midi files/messy_hats_fast_ends_in_main_hats_metal_ch.mid",
+      "sample": "ch.wav",
+      "samplePath": "midi files/samples/ch.wav",
+      "sampleExists": true,
+      "ticksPerBeat": 384,
+      "noteCount": 19,
+      "lengthBeats": 3.752604,
+      "notes": [
+        {
+          "trackIndex": 1,
+          "tick": 177,
+          "beats": 0.460938,
+          "noteNumber": 60,
+          "velocity": 33,
+          "velocity01": 0.259843
+        },
+        {
+          "trackIndex": 1,
+          "tick": 212,
+          "beats": 0.552083,
+          "noteNumber": 60,
+          "velocity": 40,
+          "velocity01": 0.314961
+        },
+        {
+          "trackIndex": 1,
+          "tick": 259,
+          "beats": 0.674479,
+          "noteNumber": 60,
+          "velocity": 33,
+          "velocity01": 0.259843
+        },
+        {
+          "trackIndex": 1,
+          "tick": 305,
+          "beats": 0.794271,
+          "noteNumber": 60,
+          "velocity": 44,
+          "velocity01": 0.346457
+        },
+        {
+          "trackIndex": 1,
+          "tick": 385,
+          "beats": 1.002604,
+          "noteNumber": 60,
+          "velocity": 49,
+          "velocity01": 0.385827
+        },
+        {
+          "trackIndex": 1,
+          "tick": 415,
+          "beats": 1.080729,
+          "noteNumber": 60,
+          "velocity": 56,
+          "velocity01": 0.440945
+        },
+        {
+          "trackIndex": 1,
+          "tick": 530,
+          "beats": 1.380208,
+          "noteNumber": 60,
+          "velocity": 38,
+          "velocity01": 0.299213
+        },
+        {
+          "trackIndex": 1,
+          "tick": 558,
+          "beats": 1.453125,
+          "noteNumber": 60,
+          "velocity": 33,
+          "velocity01": 0.259843
+        },
+        {
+          "trackIndex": 1,
+          "tick": 593,
+          "beats": 1.544271,
+          "noteNumber": 60,
+          "velocity": 40,
+          "velocity01": 0.314961
+        },
+        {
+          "trackIndex": 1,
+          "tick": 640,
+          "beats": 1.666667,
+          "noteNumber": 60,
+          "velocity": 33,
+          "velocity01": 0.259843
+        },
+        {
+          "trackIndex": 1,
+          "tick": 686,
+          "beats": 1.786458,
+          "noteNumber": 60,
+          "velocity": 44,
+          "velocity01": 0.346457
+        },
+        {
+          "trackIndex": 1,
+          "tick": 766,
+          "beats": 1.994792,
+          "noteNumber": 60,
+          "velocity": 49,
+          "velocity01": 0.385827
+        },
+        {
+          "trackIndex": 1,
+          "tick": 768,
+          "beats": 2,
+          "noteNumber": 60,
+          "velocity": 60,
+          "velocity01": 0.472441
+        },
+        {
+          "trackIndex": 1,
+          "tick": 796,
+          "beats": 2.072917,
+          "noteNumber": 60,
+          "velocity": 56,
+          "velocity01": 0.440945
+        },
+        {
+          "trackIndex": 1,
+          "tick": 912,
+          "beats": 2.375,
+          "noteNumber": 60,
+          "velocity": 40,
+          "velocity01": 0.314961
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1051,
+          "beats": 2.736979,
+          "noteNumber": 60,
+          "velocity": 42,
+          "velocity01": 0.330709
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1120,
+          "beats": 2.916667,
+          "noteNumber": 60,
+          "velocity": 70,
+          "velocity01": 0.551181
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1311,
+          "beats": 3.414063,
+          "noteNumber": 60,
+          "velocity": 43,
+          "velocity01": 0.338583
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1441,
+          "beats": 3.752604,
+          "noteNumber": 60,
+          "velocity": 47,
+          "velocity01": 0.370079
+        }
+      ]
+    },
+    {
+      "id": "messy_hats_fast_ends_in_main_hats_metal_oh",
+      "file": "midi files/messy_hats_fast_ends_in_main_hats_metal_oh.mid",
+      "sample": "oh.wav",
+      "samplePath": "midi files/samples/oh.wav",
+      "sampleExists": true,
+      "ticksPerBeat": 384,
+      "noteCount": 2,
+      "lengthBeats": 3.044271,
+      "notes": [
+        {
+          "trackIndex": 1,
+          "tick": 792,
+          "beats": 2.0625,
+          "noteNumber": 60,
+          "velocity": 46,
+          "velocity01": 0.362205
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1169,
+          "beats": 3.044271,
+          "noteNumber": 60,
+          "velocity": 53,
+          "velocity01": 0.417323
+        }
+      ]
+    },
+    {
+      "id": "messy_hats_fast_metal_ch",
+      "file": "midi files/messy_hats_fast_metal_ch.mid",
+      "sample": "ch.wav",
+      "samplePath": "midi files/samples/ch.wav",
+      "sampleExists": true,
+      "ticksPerBeat": 384,
+      "noteCount": 27,
+      "lengthBeats": 3.752604,
+      "notes": [
+        {
+          "trackIndex": 1,
+          "tick": 177,
+          "beats": 0.460938,
+          "noteNumber": 60,
+          "velocity": 33,
+          "velocity01": 0.259843
+        },
+        {
+          "trackIndex": 1,
+          "tick": 212,
+          "beats": 0.552083,
+          "noteNumber": 60,
+          "velocity": 40,
+          "velocity01": 0.314961
+        },
+        {
+          "trackIndex": 1,
+          "tick": 259,
+          "beats": 0.674479,
+          "noteNumber": 60,
+          "velocity": 33,
+          "velocity01": 0.259843
+        },
+        {
+          "trackIndex": 1,
+          "tick": 305,
+          "beats": 0.794271,
+          "noteNumber": 60,
+          "velocity": 44,
+          "velocity01": 0.346457
+        },
+        {
+          "trackIndex": 1,
+          "tick": 385,
+          "beats": 1.002604,
+          "noteNumber": 60,
+          "velocity": 53,
+          "velocity01": 0.417323
+        },
+        {
+          "trackIndex": 1,
+          "tick": 415,
+          "beats": 1.080729,
+          "noteNumber": 60,
+          "velocity": 60,
+          "velocity01": 0.472441
+        },
+        {
+          "trackIndex": 1,
+          "tick": 530,
+          "beats": 1.380208,
+          "noteNumber": 60,
+          "velocity": 38,
+          "velocity01": 0.299213
+        },
+        {
+          "trackIndex": 1,
+          "tick": 558,
+          "beats": 1.453125,
+          "noteNumber": 60,
+          "velocity": 33,
+          "velocity01": 0.259843
+        },
+        {
+          "trackIndex": 1,
+          "tick": 593,
+          "beats": 1.544271,
+          "noteNumber": 60,
+          "velocity": 40,
+          "velocity01": 0.314961
+        },
+        {
+          "trackIndex": 1,
+          "tick": 640,
+          "beats": 1.666667,
+          "noteNumber": 60,
+          "velocity": 33,
+          "velocity01": 0.259843
+        },
+        {
+          "trackIndex": 1,
+          "tick": 686,
+          "beats": 1.786458,
+          "noteNumber": 60,
+          "velocity": 44,
+          "velocity01": 0.346457
+        },
+        {
+          "trackIndex": 1,
+          "tick": 766,
+          "beats": 1.994792,
+          "noteNumber": 60,
+          "velocity": 53,
+          "velocity01": 0.417323
+        },
+        {
+          "trackIndex": 1,
+          "tick": 796,
+          "beats": 2.072917,
+          "noteNumber": 60,
+          "velocity": 60,
+          "velocity01": 0.472441
+        },
+        {
+          "trackIndex": 1,
+          "tick": 856,
+          "beats": 2.229167,
+          "noteNumber": 60,
+          "velocity": 27,
+          "velocity01": 0.212598
+        },
+        {
+          "trackIndex": 1,
+          "tick": 912,
+          "beats": 2.375,
+          "noteNumber": 60,
+          "velocity": 36,
+          "velocity01": 0.283465
+        },
+        {
+          "trackIndex": 1,
+          "tick": 957,
+          "beats": 2.492188,
+          "noteNumber": 60,
+          "velocity": 33,
+          "velocity01": 0.259843
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1004,
+          "beats": 2.614583,
+          "noteNumber": 60,
+          "velocity": 33,
+          "velocity01": 0.259843
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1051,
+          "beats": 2.736979,
+          "noteNumber": 60,
+          "velocity": 38,
+          "velocity01": 0.299213
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1078,
+          "beats": 2.807292,
+          "noteNumber": 60,
+          "velocity": 38,
+          "velocity01": 0.299213
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1124,
+          "beats": 2.927083,
+          "noteNumber": 60,
+          "velocity": 37,
+          "velocity01": 0.291339
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1171,
+          "beats": 3.049479,
+          "noteNumber": 60,
+          "velocity": 55,
+          "velocity01": 0.433071
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1241,
+          "beats": 3.231771,
+          "noteNumber": 60,
+          "velocity": 37,
+          "velocity01": 0.291339
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1290,
+          "beats": 3.359375,
+          "noteNumber": 60,
+          "velocity": 33,
+          "velocity01": 0.259843
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1311,
+          "beats": 3.414063,
+          "noteNumber": 60,
+          "velocity": 39,
+          "velocity01": 0.307087
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1349,
+          "beats": 3.513021,
+          "noteNumber": 60,
+          "velocity": 33,
+          "velocity01": 0.259843
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1403,
+          "beats": 3.653646,
+          "noteNumber": 60,
+          "velocity": 33,
+          "velocity01": 0.259843
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1441,
+          "beats": 3.752604,
+          "noteNumber": 60,
+          "velocity": 48,
+          "velocity01": 0.377953
+        }
+      ]
+    },
+    {
+      "id": "messy_hats_metal_odd_ch",
+      "file": "midi files/messy_hats_metal_odd_ch.mid",
+      "sample": "ch.wav",
+      "samplePath": "midi files/samples/ch.wav",
+      "sampleExists": true,
+      "ticksPerBeat": 384,
+      "noteCount": 17,
+      "lengthBeats": 7.492188,
+      "notes": [
+        {
+          "trackIndex": 1,
+          "tick": 252,
+          "beats": 0.65625,
+          "noteNumber": 60,
+          "velocity": 52,
+          "velocity01": 0.409449
+        },
+        {
+          "trackIndex": 1,
+          "tick": 450,
+          "beats": 1.171875,
+          "noteNumber": 60,
+          "velocity": 56,
+          "velocity01": 0.440945
+        },
+        {
+          "trackIndex": 1,
+          "tick": 685,
+          "beats": 1.783854,
+          "noteNumber": 60,
+          "velocity": 72,
+          "velocity01": 0.566929
+        },
+        {
+          "trackIndex": 1,
+          "tick": 931,
+          "beats": 2.424479,
+          "noteNumber": 60,
+          "velocity": 50,
+          "velocity01": 0.393701
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1066,
+          "beats": 2.776042,
+          "noteNumber": 60,
+          "velocity": 52,
+          "velocity01": 0.409449
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1166,
+          "beats": 3.036458,
+          "noteNumber": 60,
+          "velocity": 45,
+          "velocity01": 0.354331
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1264,
+          "beats": 3.291667,
+          "noteNumber": 60,
+          "velocity": 56,
+          "velocity01": 0.440945
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1499,
+          "beats": 3.903646,
+          "noteNumber": 60,
+          "velocity": 72,
+          "velocity01": 0.566929
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1628,
+          "beats": 4.239583,
+          "noteNumber": 60,
+          "velocity": 39,
+          "velocity01": 0.307087
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1747,
+          "beats": 4.549479,
+          "noteNumber": 60,
+          "velocity": 48,
+          "velocity01": 0.377953
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1843,
+          "beats": 4.799479,
+          "noteNumber": 60,
+          "velocity": 45,
+          "velocity01": 0.354331
+        },
+        {
+          "trackIndex": 1,
+          "tick": 2102,
+          "beats": 5.473958,
+          "noteNumber": 60,
+          "velocity": 50,
+          "velocity01": 0.393701
+        },
+        {
+          "trackIndex": 1,
+          "tick": 2200,
+          "beats": 5.729167,
+          "noteNumber": 60,
+          "velocity": 49,
+          "velocity01": 0.385827
+        },
+        {
+          "trackIndex": 1,
+          "tick": 2450,
+          "beats": 6.380208,
+          "noteNumber": 60,
+          "velocity": 49,
+          "velocity01": 0.385827
+        },
+        {
+          "trackIndex": 1,
+          "tick": 2555,
+          "beats": 6.653646,
+          "noteNumber": 60,
+          "velocity": 45,
+          "velocity01": 0.354331
+        },
+        {
+          "trackIndex": 1,
+          "tick": 2796,
+          "beats": 7.28125,
+          "noteNumber": 60,
+          "velocity": 45,
+          "velocity01": 0.354331
+        },
+        {
+          "trackIndex": 1,
+          "tick": 2877,
+          "beats": 7.492188,
+          "noteNumber": 60,
+          "velocity": 60,
+          "velocity01": 0.472441
+        }
+      ]
+    },
+    {
+      "id": "rims_drums_rim",
+      "file": "midi files/rims_drums_rim.mid",
+      "sample": "rim.wav",
+      "samplePath": "midi files/samples/rim.wav",
+      "sampleExists": true,
+      "ticksPerBeat": 384,
+      "noteCount": 4,
+      "lengthBeats": 2.976563,
+      "notes": [
+        {
+          "trackIndex": 1,
+          "tick": 21,
+          "beats": 0.054688,
+          "noteNumber": 60,
+          "velocity": 99,
+          "velocity01": 0.779528
+        },
+        {
+          "trackIndex": 1,
+          "tick": 409,
+          "beats": 1.065104,
+          "noteNumber": 60,
+          "velocity": 89,
+          "velocity01": 0.700787
+        },
+        {
+          "trackIndex": 1,
+          "tick": 771,
+          "beats": 2.007813,
+          "noteNumber": 60,
+          "velocity": 97,
+          "velocity01": 0.76378
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1143,
+          "beats": 2.976563,
+          "noteNumber": 60,
+          "velocity": 107,
+          "velocity01": 0.84252
+        }
+      ]
+    },
+    {
+      "id": "rims_xtra_1_drums_rim",
+      "file": "midi files/rims_xtra_1_drums_rim.mid",
+      "sample": "rim.wav",
+      "samplePath": "midi files/samples/rim.wav",
+      "sampleExists": true,
+      "ticksPerBeat": 384,
+      "noteCount": 2,
+      "lengthBeats": 0.5625,
+      "notes": [
+        {
+          "trackIndex": 1,
+          "tick": 165,
+          "beats": 0.429688,
+          "noteNumber": 60,
+          "velocity": 66,
+          "velocity01": 0.519685
+        },
+        {
+          "trackIndex": 1,
+          "tick": 216,
+          "beats": 0.5625,
+          "noteNumber": 60,
+          "velocity": 76,
+          "velocity01": 0.598425
+        }
+      ]
+    },
+    {
+      "id": "rims_xtra_2_drums_rim",
+      "file": "midi files/rims_xtra_2_drums_rim.mid",
+      "sample": "rim.wav",
+      "samplePath": "midi files/samples/rim.wav",
+      "sampleExists": true,
+      "ticksPerBeat": 384,
+      "noteCount": 2,
+      "lengthBeats": 1.536458,
+      "notes": [
+        {
+          "trackIndex": 1,
+          "tick": 525,
+          "beats": 1.367188,
+          "noteNumber": 60,
+          "velocity": 74,
+          "velocity01": 0.582677
+        },
+        {
+          "trackIndex": 1,
+          "tick": 590,
+          "beats": 1.536458,
+          "noteNumber": 60,
+          "velocity": 74,
+          "velocity01": 0.582677
+        }
+      ]
+    },
+    {
+      "id": "rims_xtra_3_drums_rim",
+      "file": "midi files/rims_xtra_3_drums_rim.mid",
+      "sample": "rim.wav",
+      "samplePath": "midi files/samples/rim.wav",
+      "sampleExists": true,
+      "ticksPerBeat": 384,
+      "noteCount": 2,
+      "lengthBeats": 2.507813,
+      "notes": [
+        {
+          "trackIndex": 1,
+          "tick": 888,
+          "beats": 2.3125,
+          "noteNumber": 60,
+          "velocity": 78,
+          "velocity01": 0.614173
+        },
+        {
+          "trackIndex": 1,
+          "tick": 963,
+          "beats": 2.507813,
+          "noteNumber": 60,
+          "velocity": 81,
+          "velocity01": 0.637795
+        }
+      ]
+    },
+    {
+      "id": "snare_pattern_drums_snare",
+      "file": "midi files/snare_pattern_drums_snare.mid",
+      "sample": "snare.wav",
+      "samplePath": "midi files/samples/snare.wav",
+      "sampleExists": true,
+      "ticksPerBeat": 384,
+      "noteCount": 2,
+      "lengthBeats": 2.841146,
+      "notes": [
+        {
+          "trackIndex": 1,
+          "tick": 707,
+          "beats": 1.841146,
+          "noteNumber": 60,
+          "velocity": 98,
+          "velocity01": 0.771654
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1091,
+          "beats": 2.841146,
+          "noteNumber": 60,
+          "velocity": 99,
+          "velocity01": 0.779528
+        }
+      ]
+    },
+    {
+      "id": "snare_xtra_drums_even_snare",
+      "file": "midi files/snare_xtra_drums_even_snare.mid",
+      "sample": "snare.wav",
+      "samplePath": "midi files/samples/snare.wav",
+      "sampleExists": true,
+      "ticksPerBeat": 384,
+      "noteCount": 1,
+      "lengthBeats": 0.125,
+      "notes": [
+        {
+          "trackIndex": 1,
+          "tick": 48,
+          "beats": 0.125,
+          "noteNumber": 60,
+          "velocity": 101,
+          "velocity01": 0.795276
+        }
+      ]
+    },
+    {
+      "id": "speedy_hats_cont_metal_ch",
+      "file": "midi files/speedy_hats_cont_metal_ch.mid",
+      "sample": "ch.wav",
+      "samplePath": "midi files/samples/ch.wav",
+      "sampleExists": true,
+      "ticksPerBeat": 384,
+      "noteCount": 8,
+      "lengthBeats": 2.041667,
+      "notes": [
+        {
+          "trackIndex": 1,
+          "tick": 81,
+          "beats": 0.210938,
+          "noteNumber": 60,
+          "velocity": 37,
+          "velocity01": 0.291339
+        },
+        {
+          "trackIndex": 1,
+          "tick": 209,
+          "beats": 0.544271,
+          "noteNumber": 60,
+          "velocity": 36,
+          "velocity01": 0.283465
+        },
+        {
+          "trackIndex": 1,
+          "tick": 273,
+          "beats": 0.710938,
+          "noteNumber": 60,
+          "velocity": 67,
+          "velocity01": 0.527559
+        },
+        {
+          "trackIndex": 1,
+          "tick": 401,
+          "beats": 1.044271,
+          "noteNumber": 60,
+          "velocity": 67,
+          "velocity01": 0.527559
+        },
+        {
+          "trackIndex": 1,
+          "tick": 464,
+          "beats": 1.208333,
+          "noteNumber": 60,
+          "velocity": 36,
+          "velocity01": 0.283465
+        },
+        {
+          "trackIndex": 1,
+          "tick": 592,
+          "beats": 1.541667,
+          "noteNumber": 60,
+          "velocity": 35,
+          "velocity01": 0.275591
+        },
+        {
+          "trackIndex": 1,
+          "tick": 656,
+          "beats": 1.708333,
+          "noteNumber": 60,
+          "velocity": 69,
+          "velocity01": 0.543307
+        },
+        {
+          "trackIndex": 1,
+          "tick": 784,
+          "beats": 2.041667,
+          "noteNumber": 60,
+          "velocity": 67,
+          "velocity01": 0.527559
+        }
+      ]
+    },
+    {
+      "id": "speedy_hats_metal_ch",
+      "file": "midi files/speedy_hats_metal_ch.mid",
+      "sample": "ch.wav",
+      "samplePath": "midi files/samples/ch.wav",
+      "sampleExists": true,
+      "ticksPerBeat": 384,
+      "noteCount": 7,
+      "lengthBeats": 2.291667,
+      "notes": [
+        {
+          "trackIndex": 1,
+          "tick": 305,
+          "beats": 0.794271,
+          "noteNumber": 60,
+          "velocity": 36,
+          "velocity01": 0.283465
+        },
+        {
+          "trackIndex": 1,
+          "tick": 369,
+          "beats": 0.960938,
+          "noteNumber": 60,
+          "velocity": 67,
+          "velocity01": 0.527559
+        },
+        {
+          "trackIndex": 1,
+          "tick": 497,
+          "beats": 1.294271,
+          "noteNumber": 60,
+          "velocity": 67,
+          "velocity01": 0.527559
+        },
+        {
+          "trackIndex": 1,
+          "tick": 560,
+          "beats": 1.458333,
+          "noteNumber": 60,
+          "velocity": 36,
+          "velocity01": 0.283465
+        },
+        {
+          "trackIndex": 1,
+          "tick": 688,
+          "beats": 1.791667,
+          "noteNumber": 60,
+          "velocity": 35,
+          "velocity01": 0.275591
+        },
+        {
+          "trackIndex": 1,
+          "tick": 752,
+          "beats": 1.958333,
+          "noteNumber": 60,
+          "velocity": 69,
+          "velocity01": 0.543307
+        },
+        {
+          "trackIndex": 1,
+          "tick": 880,
+          "beats": 2.291667,
+          "noteNumber": 60,
+          "velocity": 67,
+          "velocity01": 0.527559
+        }
+      ]
+    },
+    {
+      "id": "trap_hats_metal_ch",
+      "file": "midi files/trap_hats_metal_ch.mid",
+      "sample": "ch.wav",
+      "samplePath": "midi files/samples/ch.wav",
+      "sampleExists": true,
+      "ticksPerBeat": 384,
+      "noteCount": 18,
+      "lengthBeats": 3.880208,
+      "notes": [
+        {
+          "trackIndex": 1,
+          "tick": 177,
+          "beats": 0.460938,
+          "noteNumber": 60,
+          "velocity": 49,
+          "velocity01": 0.385827
+        },
+        {
+          "trackIndex": 1,
+          "tick": 212,
+          "beats": 0.552083,
+          "noteNumber": 60,
+          "velocity": 44,
+          "velocity01": 0.346457
+        },
+        {
+          "trackIndex": 1,
+          "tick": 259,
+          "beats": 0.674479,
+          "noteNumber": 60,
+          "velocity": 42,
+          "velocity01": 0.330709
+        },
+        {
+          "trackIndex": 1,
+          "tick": 305,
+          "beats": 0.794271,
+          "noteNumber": 60,
+          "velocity": 48,
+          "velocity01": 0.377953
+        },
+        {
+          "trackIndex": 1,
+          "tick": 552,
+          "beats": 1.4375,
+          "noteNumber": 60,
+          "velocity": 50,
+          "velocity01": 0.393701
+        },
+        {
+          "trackIndex": 1,
+          "tick": 587,
+          "beats": 1.528646,
+          "noteNumber": 57,
+          "velocity": 46,
+          "velocity01": 0.362205
+        },
+        {
+          "trackIndex": 1,
+          "tick": 634,
+          "beats": 1.651042,
+          "noteNumber": 60,
+          "velocity": 38,
+          "velocity01": 0.299213
+        },
+        {
+          "trackIndex": 1,
+          "tick": 680,
+          "beats": 1.770833,
+          "noteNumber": 60,
+          "velocity": 48,
+          "velocity01": 0.377953
+        },
+        {
+          "trackIndex": 1,
+          "tick": 945,
+          "beats": 2.460938,
+          "noteNumber": 57,
+          "velocity": 49,
+          "velocity01": 0.385827
+        },
+        {
+          "trackIndex": 1,
+          "tick": 980,
+          "beats": 2.552083,
+          "noteNumber": 57,
+          "velocity": 44,
+          "velocity01": 0.346457
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1027,
+          "beats": 2.674479,
+          "noteNumber": 60,
+          "velocity": 42,
+          "velocity01": 0.330709
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1061,
+          "beats": 2.763021,
+          "noteNumber": 60,
+          "velocity": 48,
+          "velocity01": 0.377953
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1248,
+          "beats": 3.25,
+          "noteNumber": 57,
+          "velocity": 54,
+          "velocity01": 0.425197
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1295,
+          "beats": 3.372396,
+          "noteNumber": 60,
+          "velocity": 44,
+          "velocity01": 0.346457
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1341,
+          "beats": 3.492188,
+          "noteNumber": 57,
+          "velocity": 46,
+          "velocity01": 0.362205
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1389,
+          "beats": 3.617188,
+          "noteNumber": 60,
+          "velocity": 50,
+          "velocity01": 0.393701
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1444,
+          "beats": 3.760417,
+          "noteNumber": 57,
+          "velocity": 54,
+          "velocity01": 0.425197
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1490,
+          "beats": 3.880208,
+          "noteNumber": 60,
+          "velocity": 48,
+          "velocity01": 0.377953
+        }
+      ]
+    },
+    {
+      "id": "trap_hats_metal_wiv_crash_ch",
+      "file": "midi files/trap_hats_metal_wiv_crash_ch.mid",
+      "sample": "ch.wav",
+      "samplePath": "midi files/samples/ch.wav",
+      "sampleExists": true,
+      "ticksPerBeat": 384,
+      "noteCount": 18,
+      "lengthBeats": 3.880208,
+      "notes": [
+        {
+          "trackIndex": 1,
+          "tick": 177,
+          "beats": 0.460938,
+          "noteNumber": 60,
+          "velocity": 49,
+          "velocity01": 0.385827
+        },
+        {
+          "trackIndex": 1,
+          "tick": 212,
+          "beats": 0.552083,
+          "noteNumber": 60,
+          "velocity": 44,
+          "velocity01": 0.346457
+        },
+        {
+          "trackIndex": 1,
+          "tick": 259,
+          "beats": 0.674479,
+          "noteNumber": 60,
+          "velocity": 42,
+          "velocity01": 0.330709
+        },
+        {
+          "trackIndex": 1,
+          "tick": 305,
+          "beats": 0.794271,
+          "noteNumber": 60,
+          "velocity": 48,
+          "velocity01": 0.377953
+        },
+        {
+          "trackIndex": 1,
+          "tick": 552,
+          "beats": 1.4375,
+          "noteNumber": 60,
+          "velocity": 50,
+          "velocity01": 0.393701
+        },
+        {
+          "trackIndex": 1,
+          "tick": 587,
+          "beats": 1.528646,
+          "noteNumber": 57,
+          "velocity": 46,
+          "velocity01": 0.362205
+        },
+        {
+          "trackIndex": 1,
+          "tick": 634,
+          "beats": 1.651042,
+          "noteNumber": 60,
+          "velocity": 38,
+          "velocity01": 0.299213
+        },
+        {
+          "trackIndex": 1,
+          "tick": 680,
+          "beats": 1.770833,
+          "noteNumber": 60,
+          "velocity": 48,
+          "velocity01": 0.377953
+        },
+        {
+          "trackIndex": 1,
+          "tick": 945,
+          "beats": 2.460938,
+          "noteNumber": 57,
+          "velocity": 49,
+          "velocity01": 0.385827
+        },
+        {
+          "trackIndex": 1,
+          "tick": 980,
+          "beats": 2.552083,
+          "noteNumber": 57,
+          "velocity": 44,
+          "velocity01": 0.346457
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1027,
+          "beats": 2.674479,
+          "noteNumber": 60,
+          "velocity": 42,
+          "velocity01": 0.330709
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1061,
+          "beats": 2.763021,
+          "noteNumber": 60,
+          "velocity": 48,
+          "velocity01": 0.377953
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1248,
+          "beats": 3.25,
+          "noteNumber": 57,
+          "velocity": 54,
+          "velocity01": 0.425197
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1295,
+          "beats": 3.372396,
+          "noteNumber": 60,
+          "velocity": 44,
+          "velocity01": 0.346457
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1341,
+          "beats": 3.492188,
+          "noteNumber": 57,
+          "velocity": 46,
+          "velocity01": 0.362205
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1389,
+          "beats": 3.617188,
+          "noteNumber": 60,
+          "velocity": 50,
+          "velocity01": 0.393701
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1444,
+          "beats": 3.760417,
+          "noteNumber": 57,
+          "velocity": 54,
+          "velocity01": 0.425197
+        },
+        {
+          "trackIndex": 1,
+          "tick": 1490,
+          "beats": 3.880208,
+          "noteNumber": 60,
+          "velocity": 48,
+          "velocity01": 0.377953
+        }
+      ]
+    }
+  ]
+}
