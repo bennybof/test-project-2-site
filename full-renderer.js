@@ -795,7 +795,29 @@
         }
       }
 
+            const lyrixKeysForThisSection = plan.selectedAudio.filter(key => {
+        const entry = getCatalogEntry(key);
+        return entry && isLyrix(entry) && audioMatchesSection(entry, section);
+      });
+
+      const chosenLyrixKeyForSection =
+        section.type.includes("lyrix") && lyrixKeysForThisSection.length
+          ? chooseOne(random, lyrixKeysForThisSection)
+          : null;
+
+      const scheduledLyrixGroupIds = new Set();
+
       for (const key of plan.selectedAudio) {
+        const entry = getCatalogEntry(key);
+
+        if (entry && isLyrix(entry)) {
+          if (key !== chosenLyrixKeyForSection) continue;
+
+          const groupId = getLyrixGroupKeys(entry).slice().sort().join("|");
+          if (scheduledLyrixGroupIds.has(groupId)) continue;
+          scheduledLyrixGroupIds.add(groupId);
+        }
+
         scheduleAudioStemInSection({
           offlineContext,
           destination,
