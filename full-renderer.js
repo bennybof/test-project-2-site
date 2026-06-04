@@ -179,31 +179,100 @@
     return 0.12;
   }
 
-  function buildFullPlan(random) {
-    const audioEntries = catalog.entries.filter(entry => isAudio(entry) && !isMidiSample(entry));
-    const midiPatternPool = midiPatterns.patterns.filter(isDrumMidiPattern);
+    function buildFullPlan(random) {
+    const duration = Math.max(180, rules.songLengthSeconds || 180);
+
+    const mainBpm = catalog.rulePools.timing.mainBpm;
+    const grimeyBpm = catalog.rulePools.timing.grimeyBpm;
+
+    const mainBeatSeconds = 60 / mainBpm;
+    const mainBarSeconds = mainBeatSeconds * 4;
+
+    const grimeyBeatSeconds = 60 / grimeyBpm;
+    const grimeyBarSeconds = grimeyBeatSeconds * 4;
 
     const selectedAudio = new Set();
     const selectedMidi = new Set();
 
-    const maxAudioFiles = 90;
-    const maxMidiPatterns = 18;
+    const sectionTimeline = [];
+    const resetPoints = [];
 
-    // Always include a few foundations if selected by exact pool/catalog.
-    const forceCandidates = [
-      "samples/synth_main_odd (consolidated).wav",
-      "samples/synth_bass_odd_x2 (consolidated).wav",
-      "samples/crash_metal_odd_metal (consolidated).wav"
-    ];
+    let cursorSeconds = 0;
+    let currentGrid = {
+      bpm: mainBpm,
+      beatSeconds: mainBeatSeconds,
+      barSeconds: mainBarSeconds,
+      gridAnchorSeconds: 0,
+      name: "main_56"
+    };
 
-    for (const key of forceCandidates) {
-      if (getCatalogEntry(key) && chance(random, 0.5)) selectedAudio.add(key);
+    function addSection(type, bars, options = {}) {
+      const startSeconds = cursorSeconds;
+      const barSeconds = currentGrid.barSeconds;
+      const durationSeconds = bars * barSeconds;
+      const endSeconds = startSeconds + durationSeconds;
+
+      const section = {
+        id: `${sectionTimeline.length + 1}_${type}`,
+        type,
+        startSeconds,
+        endSeconds,
+        durationSeconds,
+        bars,
+        bpm: currentGrid.bpm,
+        barSeconds,
+        gridAnchorSeconds: currentGrid.gridAnchorSeconds,
+        reset: Boolean(options.reset),
+        tags: options.tags || []
+      };
+
+      sectionTimeline.push(section);
+
+      if (section.reset) {
+        resetPoints.push({
+          timeSeconds: startSeconds,
+          reason: `${type}_section_start`
+        });
+      }
+
+      cursorSeconds = endSeconds;
+      return section;
     }
 
-    // everything_intro rule.
+    function enterGrimey() {
+      currentGrid = {
+        bpm: grimeyBpm,
+        beatSeconds: grimeyBeatSeconds,
+        barSeconds: grimeyBarSeconds,
+        gridAnchorSeconds: cursorSeconds,
+        name: "grimey_70"
+      };
+    }
+
+    function exitGrimeyToNewMainGrid() {
+      currentGrid = {
+        bpm: mainBpm,
+        beatSeconds: mainBeatSeconds,
+        barSeconds: mainBarSeconds,
+        gridAnchorSeconds: cursorSeconds,
+        name: "main_56_after_grimey"
+      };
+
+      resetPoints.push({
+        timeSeconds: cursorSeconds,
+        reason: "grimey_exit_new_56_grid"
+      });
+    }
+
+    // Intro / opening normal section.
+    addSection("normal", 8, { reset: true, tags: ["opening"] });
+
+    // everything_intro is rare but explicit.
     if (chance(random, catalog.rulePools.everythingIntro.globalInclusionChance ?? 0.01)) {
-      const intro = chooseOne(random, catalog.rulePools.everythingIntro.candidates);
-      if (intro) selectedAudio.add(intro);
+      const everythingIntroCandidates = catalog.rulePools.everythingIntro.candidates || [];
+      const everythingIntro = chooseOne(random, everythingIntroCandidates);
+
+      if (everythingIntro) selectedAudio.add(everythingIntro);
 
       for (const ah of catalog.rulePools.everythingIntro.ahMains) {
         selectedAudio.add(ah);
@@ -212,49 +281,169 @@
       if (catalog.rulePools.everythingIntro.crash) {
         selectedAudio.add(catalog.rulePools.everythingIntro.crash);
       }
+
+      addSection("everything_intro", 8, {
+        reset: true,
+        tags: ["intro", "rare"]
+      });
     }
 
-    // Drop/outburst/grimey are included as section candidates.
-    if (chance(random, catalog.rulePools.drop.globalInclusionChance ?? 0.1)) {
-      for (const key of catalog.rulePools.drop.files) selectedAudio.add(key);
+    // Main body: build a section timeline instead of dumping everything randomly.
+    while (cursorSeconds < duration - mainBarSeconds * 8) {
+      const roll = random();
+
+      if (roll < 0.08) {
+        addSection("hook", 8, {
+          reset: true,
+          tags: ["hook"]
+        });
+        continue;
+      }
+
+      if (roll < 0.18) {
+        addSection("lyrix", 8, {
+          reset: true,
+          tags: ["lyrix"]
+        });
+        continue;
+      }
+
+      if (roll < 0.23 && chance(random, catalog.rulePools.drop.globalInclusionChance ?? 0.1)) {
+        addSection("drop", 4, {
+          reset: true,
+          tags: ["drop", "major_reset"]
+        });
+
+        for (const key of catalog.rulePools.drop.files) selectedAudio.add(key);
+        continue;
+      }
+
+      if (roll < 0.28) {
+        addSection("outburst_intro", 4, {
+          reset: true,
+          tags: ["outburst", "major_reset"]
+        });
+
+        addSection("outburst_main", 8, {
+          reset: false,
+          tags: ["outburst"]
+        });
+
+        for (const key of catalog.rulePools.outburst.files) selectedAudio.add(key);
+        continue;
+      }
+
+      if (roll < 0.34) {
+        addSection("grimey_entry", 2, {
+          reset: true,
+          tags: ["grimey", "major_reset"]
+        });
+
+        enterGrimey();
+
+        addSection("grimey", 8, {
+          reset: false,
+          tags: ["grimey", "tempo_70"]
+        });
+
+        exitGrimeyToNewMainGrid();
+
+        for (const key of catalog.rulePools.grimey.files) selectedAudio.add(key);
+        continue;
+      }
+
+      addSection("normal", 8, {
+        reset: false,
+        tags: ["normal"]
+      });
     }
 
-    if (chance(random, 0.08)) {
-      for (const key of catalog.rulePools.outburst.files) selectedAudio.add(key);
-    }
+    addSection("ending", 8, {
+      reset: true,
+      tags: ["ending"]
+    });
 
-    if (chance(random, 0.08)) {
-      for (const key of catalog.rulePools.grimey.files) selectedAudio.add(key);
-    }
+    const audioEntries = catalog.entries.filter(entry => isAudio(entry) && !isMidiSample(entry));
+    const midiPatternPool = midiPatterns.patterns.filter(isDrumMidiPattern);
 
-    // General audio selection from all uploaded audio.
-    for (const entry of shuffle(random, audioEntries)) {
-      if (selectedAudio.size >= maxAudioFiles) break;
+    // Keep important foundations available.
+    const foundationCandidates = [
+      "samples/synth_main_odd (consolidated).wav",
+      "samples/synth_bass_odd_x2 (consolidated).wav",
+      "samples/crash_metal_odd_metal (consolidated).wav"
+    ];
 
-      if (chance(random, getBaseActivationChance(entry))) {
-        selectedAudio.add(entry.key);
+    for (const key of foundationCandidates) {
+      if (getCatalogEntry(key) && chance(random, 0.65)) {
+        selectedAudio.add(key);
       }
     }
 
-    // MIDI pattern selection.
-    for (const pattern of shuffle(random, midiPatternPool)) {
-      if (selectedMidi.size >= maxMidiPatterns) break;
+    // Select section-relevant audio instead of selecting everything equally.
+    for (const section of sectionTimeline) {
+      const matchingEntries = audioEntries.filter(entry => {
+        const key = entry.key.toLowerCase();
 
-      let p = 0.25;
-      const key = pattern.file.toLowerCase();
+        if (section.type.includes("hook")) return key.includes("hook");
+        if (section.type.includes("lyrix")) return isLyrix(entry);
+        if (section.type.includes("drop")) return key.includes("drop_") || key.includes("dropped_");
+        if (section.type.includes("outburst")) return key.includes("outburst");
+        if (section.type.includes("grimey")) return key.includes("grm_") || key.includes("rewind_sfx");
 
-      if (key.includes("main_hats")) p = 0.55;
-      if (key.includes("snare")) p = 0.4;
-      if (key.includes("rims")) p = 0.35;
-      if (key.includes("jazz")) p = 0.18;
-      if (key.includes("messy")) p = 0.18;
-      if (key.includes("trap")) p = 0.12;
-      if (key.includes("beepipes")) p = 0.25;
+        return (
+          key.includes("synth") ||
+          key.includes("bass") ||
+          key.includes("pad") ||
+          key.includes("chimes") ||
+          key.includes("glock") ||
+          key.includes("bagoo") ||
+          key.includes("floot") ||
+          key.includes("vlins") ||
+          key.includes("vox")
+        );
+      });
 
-      if (chance(random, p)) selectedMidi.add(pattern.file);
+      const shuffled = shuffle(random, matchingEntries);
+
+      for (const entry of shuffled.slice(0, 12)) {
+        const chanceMultiplier = section.type === "normal" ? 0.65 : 1.0;
+        const p = Math.min(0.9, getBaseActivationChance(entry) * chanceMultiplier);
+
+        if (chance(random, p)) {
+          selectedAudio.add(entry.key);
+        }
+      }
     }
 
-    // Ensure at least one basic hat pattern if no MIDI was selected.
+    // MIDI pattern selection by section.
+    for (const section of sectionTimeline) {
+      const sectionMidi = midiPatternPool.filter(pattern => {
+        const key = pattern.file.toLowerCase();
+
+        if (section.type.includes("hook")) return key.includes("hook") || key.includes("hats");
+        if (section.type.includes("grimey")) return key.includes("hats") || key.includes("snare") || key.includes("rims");
+        if (section.type.includes("drop")) return key.includes("crash") || key.includes("snare");
+        if (section.type.includes("outburst")) return key.includes("crash") || key.includes("hats");
+        return key.includes("main_hats") || key.includes("snare") || key.includes("rims") || key.includes("hats");
+      });
+
+      for (const pattern of shuffle(random, sectionMidi).slice(0, 3)) {
+        let p = 0.35;
+        const key = pattern.file.toLowerCase();
+
+        if (key.includes("main_hats")) p = 0.7;
+        if (key.includes("snare")) p = 0.45;
+        if (key.includes("rims")) p = 0.35;
+        if (key.includes("hook")) p = 0.45;
+        if (key.includes("jazz")) p = 0.18;
+        if (key.includes("messy")) p = 0.18;
+
+        if (chance(random, p)) {
+          selectedMidi.add(pattern.file);
+        }
+      }
+    }
+
     if (selectedMidi.size === 0) {
       const fallback = midiPatterns.patterns.find(pattern => pattern.file === "midi files/main_hats_ch_metal_ch.mid");
       if (fallback) selectedMidi.add(fallback.file);
@@ -262,7 +451,9 @@
 
     return {
       selectedAudio: [...selectedAudio],
-      selectedMidi: [...selectedMidi]
+      selectedMidi: [...selectedMidi],
+      sectionTimeline,
+      resetPoints
     };
   }
 
