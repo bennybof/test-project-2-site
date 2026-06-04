@@ -1,0 +1,57 @@
+{
+  "version": "0.1.0-mvp",
+  "r2BaseUrl": "https://pub-8db1ae2b05b04625868ff88f182ce4b6.r2.dev",
+  "sampleRate": 44100,
+  "songLengthSeconds": 120,
+  "masterGain": 0.75,
+  "colourSchemes": [
+    {
+      "name": "black_white",
+      "background": "#050505",
+      "text": "#f5f5f5",
+      "buttonBackground": "transparent",
+      "buttonText": "#f5f5f5",
+      "buttonBorder": "#f5f5f5",
+      "buttonBorderWidth": "6px"
+    },
+    {
+      "name": "cream_red",
+      "background": "#f6ead2",
+      "text": "#9b111e",
+      "buttonBackground": "transparent",
+      "buttonText": "#9b111e",
+      "buttonBorder": "#9b111e",
+      "buttonBorderWidth": "6px"
+    },
+    {
+      "name": "blue_yellow",
+      "background": "#071a66",
+      "text": "#ffe45c",
+      "buttonBackground": "transparent",
+      "buttonText": "#ffe45c",
+      "buttonBorder": "#ffe45c",
+      "buttonBorderWidth": "6px"
+    }
+  ],
+  "mvpStemPool": [
+    "samples/synth_main_odd (consolidated).wav",
+    "samples/synth_bass_odd_x2 (consolidated).wav",
+    "midi files/samples/kick.wav",
+"midi files/samples/snare.wav",
+"midi files/samples/ch.wav",
+"midi files/samples/oh.wav",
+    "samples/crash_dlay_odd (consolidated).wav",
+    "samples/beeps_odd_x2_xtra (consolidated).wav",
+    "samples/chimes_odd (consolidated).wav",
+    "samples/bagoo_odd (consolidated).wav",
+    "samples/glock_odd (consolidated).wav",
+    "samples/random_vox_dry_x4_even_~.wav",
+    "samples/random_vox_wet_x4_even_~.wav"
+  ],
+  "secretVersions": [
+    "alternate downloads/harmonia.wav",
+    "alternate downloads/pimp_triplets.wav",
+    "alternate downloads/secret_message_1.wav",
+    "alternate downloads/secret_message_2.wav"
+  ]
+}
