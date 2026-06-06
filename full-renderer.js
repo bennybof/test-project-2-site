@@ -35,6 +35,10 @@
   }
 
   function chooseFirstPassLyrixSection(random) {
+    // TEMP DEBUG: force one simple lyrix section so the scheduler can be tested.
+    const forcedFirstPassLyrixSection = getFirstPassLyrixSections().find(section => section.id === "jigsaw");
+    if (forcedFirstPassLyrixSection) return forcedFirstPassLyrixSection;
+
     const candidates = getFirstPassLyrixSections().filter(section =>
       Number(section.globalInclusionChance) > 0 &&
       Number(section.lengthBars) > 0 &&
