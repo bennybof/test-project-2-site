@@ -2,6 +2,7 @@
   const rulesPath = "data/rules.json";
   const catalogPath = "data/full-rules-catalog.json";
   const midiPatternsPath = "data/midi-patterns.json";
+  const lyrixRulesPath = "data/lyrix-rules.json";
 
   const wavButton = document.getElementById("downloadWavButton");
   const mp3Button = document.getElementById("downloadMp3Button");
@@ -11,6 +12,7 @@
   let rules = null;
   let catalog = null;
   let midiPatterns = null;
+  let lyrixRules = null;
   let currentSeed = makeSeed();
   let currentRenderBuffers = null;
 
@@ -1065,6 +1067,8 @@ currentRenderBuffers = buffers;
       rules = await loadJson(rulesPath);
       catalog = await loadJson(catalogPath);
       midiPatterns = await loadJson(midiPatternsPath);
+      lyrixRules = await loadJson(lyrixRulesPath);
+      console.log("[lyrix-rules loaded]", { version: lyrixRules?.version, sections: lyrixRules?.sections?.length, specialSystems: lyrixRules?.specialSystems?.length });
 
       catalog.entriesByKey = new Map(catalog.allKeys.map(key => {
         const entry = catalog.entries?.find(item => item.key === key);
