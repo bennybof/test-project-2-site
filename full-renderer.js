@@ -26,7 +26,8 @@
     "beatles",
     "glissando",
     "greentea",
-    "usually"
+    "usually",
+    "brainears"
   ]);
 
   function getFirstPassLyrixSections() {
