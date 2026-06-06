@@ -294,7 +294,9 @@
         barSeconds,
         gridAnchorSeconds: currentGrid.gridAnchorSeconds,
         reset: Boolean(options.reset),
-        tags: options.tags || []
+        tags: options.tags || [],
+        lyrixSectionId: options.lyrixSectionId || null,
+        lyrixSection: options.lyrixSection || null
       };
 
       sectionTimeline.push(section);
