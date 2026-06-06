@@ -50,6 +50,19 @@
     return chooseOne(random, included);
   }
 
+  function getLyrixSectionAudioFiles(section) {
+    const files = [];
+    if (!section?.parts) return files;
+
+    for (const part of section.parts) {
+      if (part.dry) files.push(part.dry);
+      if (part.wet && !part.dryOnly) files.push(part.wet);
+      if (part.file) files.push(part.file);
+    }
+
+    return [...new Set(files)];
+  }
+
   function setStatus(message) {
     console.log(message);
     if (statusText) statusText.textContent = message;
