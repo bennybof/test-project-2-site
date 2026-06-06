@@ -34,6 +34,22 @@
     return lyrixRules.sections.filter(section => firstPassLyrixSectionIds.has(section.id));
   }
 
+  function chooseFirstPassLyrixSection(random) {
+    const candidates = getFirstPassLyrixSections().filter(section =>
+      Number(section.globalInclusionChance) > 0 &&
+      Number(section.lengthBars) > 0 &&
+      Array.isArray(section.parts) &&
+      section.parts.length > 0
+    );
+
+    const included = candidates.filter(section =>
+      chance(random, Number(section.globalInclusionChance) || 0)
+    );
+
+    if (!included.length) return null;
+    return chooseOne(random, included);
+  }
+
   function setStatus(message) {
     console.log(message);
     if (statusText) statusText.textContent = message;
