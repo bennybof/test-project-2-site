@@ -377,6 +377,7 @@
         const lyrixSection = chooseFirstPassLyrixSection(random);
 
         if (lyrixSection) {
+          console.log("[first-pass lyrix selected]", lyrixSection.id);
           addSection("lyrix", Number(lyrixSection.lengthBars), {
             reset: true,
             tags: ["lyrix", "lyrix_rules_first_pass"],
