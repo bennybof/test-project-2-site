@@ -374,9 +374,26 @@
       }
 
       if (roll < 0.18) {
-        addSection("lyrix", 8, {
-          reset: true,
-          tags: ["lyrix"]
+        const lyrixSection = chooseFirstPassLyrixSection(random);
+
+        if (lyrixSection) {
+          addSection("lyrix", Number(lyrixSection.lengthBars), {
+            reset: true,
+            tags: ["lyrix", "lyrix_rules_first_pass"],
+            lyrixSectionId: lyrixSection.id,
+            lyrixSection
+          });
+
+          for (const key of getLyrixSectionAudioFiles(lyrixSection)) {
+            selectedAudio.add(key);
+          }
+
+          continue;
+        }
+
+        addSection("normal", 8, {
+          reset: false,
+          tags: ["normal", "lyrix_roll_no_first_pass_choice"]
         });
         continue;
       }
@@ -458,7 +475,10 @@
         const key = entry.key.toLowerCase();
 
         if (section.type.includes("hook")) return key.includes("hook");
-        if (section.type.includes("lyrix")) return isLyrix(entry);
+        if (section.type.includes("lyrix")) {
+          if (section.lyrixSectionId) return false;
+          return isLyrix(entry);
+        }
         if (section.type.includes("drop")) return key.includes("drop_") || key.includes("dropped_");
         if (section.type.includes("outburst")) return key.includes("outburst");
         if (section.type.includes("grimey")) return key.includes("grm_") || key.includes("rewind_sfx");
@@ -710,6 +730,34 @@
     return [entry.key];
   }
 
+  function scheduleExplicitLyrixSection({ offlineContext, destination, section, buffers }) {
+    const lyrixSection = section.lyrixSection;
+    if (!lyrixSection?.parts?.length) return false;
+
+    let start = section.startSeconds;
+
+    for (const part of lyrixSection.parts) {
+      const dryBuffer = part.dry ? buffers.get(part.dry) : null;
+      const wetBuffer = part.wet && !part.dryOnly ? buffers.get(part.wet) : null;
+      const singleBuffer = part.file ? buffers.get(part.file) : null;
+      const gain = Number(part.gain) || 0.72;
+
+      if (dryBuffer) scheduleBuffer(offlineContext, destination, dryBuffer, start, gain);
+      if (wetBuffer) scheduleBuffer(offlineContext, destination, wetBuffer, start, gain);
+      if (singleBuffer) scheduleBuffer(offlineContext, destination, singleBuffer, start, gain);
+
+      if (dryBuffer) {
+        start += dryBuffer.duration;
+      } else if (singleBuffer) {
+        start += singleBuffer.duration;
+      } else if (wetBuffer) {
+        start += wetBuffer.duration;
+      }
+    }
+
+    return true;
+  }
+
   function scheduleLyrixGroupInSection({ offlineContext, destination, key, random, section, buffers }) {
     const entry = getCatalogEntry(key);
     if (!entry || !isLyrix(entry)) return false;
@@ -846,7 +894,17 @@
         }
       }
 
-      if (section.type.includes("lyrix")) {
+      if (section.lyrixSectionId) {
+        scheduleExplicitLyrixSection({
+          offlineContext,
+          destination,
+          section,
+          buffers
+        });
+        continue;
+      }
+
+      if (section.type.includes("lyrix") && !section.lyrixSectionId) {
         const hasAnySelectedLyrix = plan.selectedAudio.some(key => {
           const entry = getCatalogEntry(key);
           return entry && isLyrix(entry);
