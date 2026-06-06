@@ -35,10 +35,6 @@
   }
 
   function chooseFirstPassLyrixSection(random) {
-    // TEMP DEBUG: force one simple lyrix section so the scheduler can be tested.
-    const forcedFirstPassLyrixSection = getFirstPassLyrixSections().find(section => section.id === "jigsaw");
-    if (forcedFirstPassLyrixSection) return forcedFirstPassLyrixSection;
-
     const candidates = getFirstPassLyrixSections().filter(section =>
       Number(section.globalInclusionChance) > 0 &&
       Number(section.lengthBars) > 0 &&
@@ -343,24 +339,6 @@
 
     // Intro / opening normal section.
     addSection("normal", 8, { reset: true, tags: ["opening"] });
-
-    // TEMP DEBUG: guarantee one jigsaw lyrix section after opening so scheduling can be tested.
-    const forcedJigsawSection = getFirstPassLyrixSections().find(section => section.id === "jigsaw");
-
-    if (forcedJigsawSection) {
-      console.log("[forced test lyrix section inserted]", forcedJigsawSection.id);
-      addSection("lyrix", Number(forcedJigsawSection.lengthBars), {
-        reset: true,
-        tags: ["lyrix", "lyrix_rules_first_pass", "forced_test"],
-        lyrixSectionId: forcedJigsawSection.id,
-        lyrixSection: forcedJigsawSection
-      });
-
-      for (const key of getLyrixSectionAudioFiles(forcedJigsawSection)) {
-        selectedAudio.add(key);
-      }
-    }
-
     // everything_intro is rare but explicit.
     if (chance(random, catalog.rulePools.everythingIntro.globalInclusionChance ?? 0.01)) {
       const everythingIntroCandidates = catalog.rulePools.everythingIntro.candidates || [];
