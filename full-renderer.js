@@ -16,6 +16,24 @@
   let currentSeed = makeSeed();
   let currentRenderBuffers = null;
 
+  const firstPassLyrixSectionIds = new Set([
+    "nochoice",
+    "jigsaw",
+    "anxiety",
+    "bethere",
+    "settledown",
+    "hunch",
+    "beatles",
+    "glissando",
+    "greentea",
+    "usually"
+  ]);
+
+  function getFirstPassLyrixSections() {
+    if (!lyrixRules?.sections) return [];
+    return lyrixRules.sections.filter(section => firstPassLyrixSectionIds.has(section.id));
+  }
+
   function setStatus(message) {
     console.log(message);
     if (statusText) statusText.textContent = message;
