@@ -61,6 +61,14 @@
       if (part.file) files.push(part.file);
     }
 
+
+    const adlibs = section.adlibs ? [].concat(section.adlibs) : [];
+
+    for (const adlib of adlibs) {
+      if (adlib.file) files.push(adlib.file);
+      if (adlib.files?.dry) files.push(adlib.files.dry);
+      if (adlib.files?.wet) files.push(adlib.files.wet);
+    }
     return [...new Set(files)];
   }
 
@@ -731,13 +739,15 @@
     return [entry.key];
   }
 
-  function scheduleExplicitLyrixSection({ offlineContext, destination, section, buffers }) {
+  function scheduleExplicitLyrixSection({ offlineContext, destination, section, random, buffers }) {
     const lyrixSection = section.lyrixSection;
     if (!lyrixSection?.parts?.length) return false;
 
     let start = section.startSeconds;
+    const partStartTimes = new Map();
 
     for (const part of lyrixSection.parts) {
+      partStartTimes.set(Number(part.part) || 1, start);
       const dryBuffer = part.dry ? buffers.get(part.dry) : null;
       const wetBuffer = part.wet && !part.dryOnly ? buffers.get(part.wet) : null;
       const singleBuffer = part.file ? buffers.get(part.file) : null;
@@ -756,6 +766,33 @@
       }
     }
 
+
+    const adlibs = lyrixSection.adlibs ? [].concat(lyrixSection.adlibs) : [];
+
+    for (const adlib of adlibs) {
+      if (!adlib.part) continue;
+
+      const adlibStart = partStartTimes.get(Number(adlib.part));
+      if (typeof adlibStart !== "number") continue;
+
+      const activationChance = adlib.activationChance === undefined ? 1 : Number(adlib.activationChance);
+      if (!chance(random, activationChance)) continue;
+
+      if (adlib.file) {
+        const adlibBuffer = buffers.get(adlib.file);
+        if (adlibBuffer) scheduleBuffer(offlineContext, destination, adlibBuffer, adlibStart, 0.72);
+      }
+
+      if (adlib.files?.dry) {
+        const dryAdlibBuffer = buffers.get(adlib.files.dry);
+        if (dryAdlibBuffer) scheduleBuffer(offlineContext, destination, dryAdlibBuffer, adlibStart, 0.72);
+      }
+
+      if (adlib.files?.wet) {
+        const wetAdlibBuffer = buffers.get(adlib.files.wet);
+        if (wetAdlibBuffer) scheduleBuffer(offlineContext, destination, wetAdlibBuffer, adlibStart, 0.72);
+      }
+    }
     return true;
   }
 
@@ -900,6 +937,7 @@
           offlineContext,
           destination,
           section,
+          random,
           buffers
         });
         continue;
