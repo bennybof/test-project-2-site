@@ -156,6 +156,24 @@
     const interval = getOpportunityIntervalFromKey(key);
     return interval <= 1 || opportunityIndex % interval === 0;
   }
+  function getAllowedLocalBarIndexesForKey(key, section) {
+    const bars = Math.max(0, Number(section?.bars || 0));
+    const indexes = [];
+
+    for (let localBarIndex = 0; localBarIndex < bars; localBarIndex++) {
+      if (isBarOpportunityAllowedForKey(key, section, localBarIndex)) {
+        indexes.push(localBarIndex);
+      }
+    }
+
+    return indexes;
+  }
+
+  function chooseAllowedLocalBarIndexForKey(random, key, section) {
+    const allowedIndexes = getAllowedLocalBarIndexesForKey(key, section);
+    if (!allowedIndexes.length) return null;
+    return chooseOne(random, allowedIndexes);
+  }
   function shuffle(random, items) {
     const copy = [...items];
     for (let i = copy.length - 1; i > 0; i--) {
