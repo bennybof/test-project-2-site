@@ -27,7 +27,8 @@
     "glissando",
     "greentea",
     "usually",
-    "brainears"
+    "brainears",
+    "yapa"
   ]);
 
   function getFirstPassLyrixSections() {
