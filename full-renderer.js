@@ -604,7 +604,14 @@
       const matchingEntries = audioEntries.filter(entry => {
         const key = entry.key.toLowerCase();
 
-        if (section.type.includes("hook")) return key.includes("hook");
+        const hookSection = isHookSection(section);
+        const hookKey = isHookKey(entry.key);
+        const allowNonHookInHook = key.includes("window_wipe");
+
+        if (hookKey && !hookSection) return false;
+        if (hookSection && !hookKey && !allowNonHookInHook) return false;
+
+        if (hookSection) return true;
         if (section.type.includes("lyrix")) {
           if (section.lyrixSectionId) return false;
           return isLyrix(entry);
@@ -643,7 +650,13 @@
       const sectionMidi = midiPatternPool.filter(pattern => {
         const key = pattern.file.toLowerCase();
 
-        if (section.type.includes("hook")) return key.includes("hook") || key.includes("hats");
+        const hookSection = isHookSection(section);
+        const hookKey = isHookKey(pattern.file);
+
+        if (hookKey && !hookSection) return false;
+        if (hookSection && !hookKey) return false;
+
+        if (hookSection) return true;
         if (section.type.includes("grimey")) return key.includes("hats") || key.includes("snare") || key.includes("rims");
         if (section.type.includes("drop")) return key.includes("crash") || key.includes("snare");
         if (section.type.includes("outburst")) return key.includes("crash") || key.includes("hats");
