@@ -1043,10 +1043,13 @@
     }
 
     const phraseRepeats = section.type === "normal" ? 1 : 2;
+    const allowedPhraseBars = getAllowedLocalBarIndexesForKey(key, section);
+
+    if (!allowedPhraseBars.length) return;
 
     for (let i = 0; i < phraseRepeats; i++) {
       if (chance(random, 0.45)) {
-        const localBar = Math.floor(random() * Math.max(1, section.bars));
+        const localBar = chooseOne(random, allowedPhraseBars);
         scheduleBuffer(
           offlineContext,
           destination,
