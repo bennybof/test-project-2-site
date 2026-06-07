@@ -771,9 +771,15 @@
     const adlibs = lyrixSection.adlibs ? [].concat(lyrixSection.adlibs) : [];
 
     for (const adlib of adlibs) {
-      if (!adlib.part) continue;
+      let adlibStart = null;
 
-      const adlibStart = partStartTimes.get(Number(adlib.part));
+      if (adlib.part) {
+        adlibStart = partStartTimes.get(Number(adlib.part));
+      } else if (adlib.startsWhen && String(adlib.startsWhen).includes("_lyrix_starts")) {
+        adlibStart = section.startSeconds;
+      }
+
+
       if (typeof adlibStart !== "number") continue;
 
       const activationChance = adlib.activationChance === undefined ? 1 : Number(adlib.activationChance);
