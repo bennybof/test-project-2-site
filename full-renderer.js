@@ -35,6 +35,10 @@
     "greenguy"
   ]);
 
+
+  function getLyrixSectionLengthBars(section) {
+    return Number(section.lengthBars || section.activationPointLengthBars || section.logicalLengthBars || 0);
+  }
   function getFirstPassLyrixSections() {
     if (!lyrixRules?.sections) return [];
     return lyrixRules.sections.filter(section => firstPassLyrixSectionIds.has(section.id));
@@ -43,7 +47,7 @@
   function chooseFirstPassLyrixSection(random) {
     const candidates = getFirstPassLyrixSections().filter(section =>
       Number(section.globalInclusionChance) > 0 &&
-      Number(section.lengthBars) > 0 &&
+      getLyrixSectionLengthBars(section) > 0 &&
       Array.isArray(section.parts) &&
       section.parts.length > 0
     );
@@ -395,7 +399,7 @@
 
         if (lyrixSection) {
           console.log("[first-pass lyrix selected]", lyrixSection.id);
-          addSection("lyrix", Number(lyrixSection.lengthBars), {
+          addSection("lyrix", getLyrixSectionLengthBars(lyrixSection), {
             reset: true,
             tags: ["lyrix", "lyrix_rules_first_pass"],
             lyrixSectionId: lyrixSection.id,
