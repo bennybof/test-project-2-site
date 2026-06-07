@@ -725,12 +725,18 @@
     const key = entry.key.toLowerCase();
     const type = section.type;
 
+    const hookSection = isHookSection(section);
+    const hookKey = isHookKey(entry.key);
+    const allowNonHookInHook = key.includes("window_wipe");
+
+    if (hookKey && !hookSection) return false;
+    if (hookSection && !hookKey && !allowNonHookInHook) return false;
+
     if (entry.folder === "alternate downloads") return type === "normal";
 
     if (key.includes("everything_intro")) return type === "everything_intro";
-
-    if (type.includes("hook")) {
-      return key.includes("hook") || key.includes("window_wipe");
+    if (hookSection) {
+      return true;
     }
 
     if (type.includes("lyrix")) {
@@ -786,8 +792,14 @@
     const key = pattern.file.toLowerCase();
     const type = section.type;
 
-    if (type.includes("hook")) {
-      return key.includes("hook") || key.includes("hats");
+    const hookSection = isHookSection(section);
+    const hookKey = isHookKey(pattern.file);
+
+    if (hookKey && !hookSection) return false;
+    if (hookSection && !hookKey) return false;
+
+    if (hookSection) {
+      return true;
     }
 
     if (type.includes("grimey")) {
