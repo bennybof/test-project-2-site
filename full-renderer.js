@@ -33,7 +33,8 @@
     "sellingshares",
     "grounded",
     "greenguy",
-    "gromit_1"
+    "gromit_1",
+    "gromit_2"
   ]);
 
 
