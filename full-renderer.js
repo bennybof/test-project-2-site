@@ -31,7 +31,8 @@
     "yapa",
     "cuppa",
     "sellingshares",
-    "grounded"
+    "grounded",
+    "greenguy"
   ]);
 
   function getFirstPassLyrixSections() {
