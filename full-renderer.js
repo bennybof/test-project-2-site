@@ -122,6 +122,40 @@
     return items[Math.floor(random() * items.length)];
   }
 
+  function getOpportunityIntervalFromKey(key) {
+    const match = String(key || "").match(/(?:^|[_\-\s])x(2|4|6|8)(?:[_\-\s.]|$)/i);
+    return match ? Number(match[1]) : 1;
+  }
+
+  function getTrackBarNumber(section, localBarIndex = 0) {
+    const startBar = Number(section?.trackStartBar || 1);
+    return startBar + Number(localBarIndex || 0);
+  }
+
+  function getValidOpportunityIndexForKeyAtBar(key, trackBarNumber) {
+    const lower = String(key || "").toLowerCase();
+    const isOddOnly = /(?:^|[_\-\s])odd(?:[_\-\s.]|$)/i.test(lower);
+    const isEvenOnly = /(?:^|[_\-\s])even(?:[_\-\s.]|$)/i.test(lower);
+    const isOddBar = trackBarNumber % 2 === 1;
+
+    if (isOddOnly && !isOddBar) return null;
+    if (isEvenOnly && isOddBar) return null;
+
+    if (isOddOnly) return Math.floor((trackBarNumber + 1) / 2);
+    if (isEvenOnly) return Math.floor(trackBarNumber / 2);
+
+    return trackBarNumber;
+  }
+
+  function isBarOpportunityAllowedForKey(key, section, localBarIndex = 0) {
+    const trackBarNumber = getTrackBarNumber(section, localBarIndex);
+    const opportunityIndex = getValidOpportunityIndexForKeyAtBar(key, trackBarNumber);
+
+    if (opportunityIndex === null) return false;
+
+    const interval = getOpportunityIntervalFromKey(key);
+    return interval <= 1 || opportunityIndex % interval === 0;
+  }
   function shuffle(random, items) {
     const copy = [...items];
     for (let i = copy.length - 1; i > 0; i--) {
@@ -295,6 +329,7 @@
     const lyrixSectionUsage = new Map();
 
     let cursorSeconds = 0;
+    let cursorBars = 0;
     let currentGrid = {
       bpm: mainBpm,
       beatSeconds: mainBeatSeconds,
@@ -316,6 +351,8 @@
         endSeconds,
         durationSeconds,
         bars,
+        trackStartBar: cursorBars + 1,
+        trackEndBar: cursorBars + bars,
         bpm: currentGrid.bpm,
         barSeconds,
         gridAnchorSeconds: currentGrid.gridAnchorSeconds,
@@ -337,6 +374,7 @@
       }
 
       cursorSeconds = endSeconds;
+      cursorBars += bars;
       return section;
     }
 
