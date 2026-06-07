@@ -28,7 +28,8 @@
     "greentea",
     "usually",
     "brainears",
-    "yapa"
+    "yapa",
+    "cuppa"
   ]);
 
   function getFirstPassLyrixSections() {
