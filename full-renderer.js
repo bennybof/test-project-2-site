@@ -74,6 +74,9 @@
       if (adlib.files?.wet) files.push(adlib.files.wet);
     }
     if (section.part3ReplacementRule?.replacementFile) files.push(section.part3ReplacementRule.replacementFile);
+    if (section.leadIn?.file) files.push(section.leadIn.file);
+    if (section.leadIn?.files?.dry) files.push(section.leadIn.files.dry);
+    if (section.leadIn?.files?.wet) files.push(section.leadIn.files.wet);
     return [...new Set(files)];
   }
 
@@ -749,6 +752,32 @@
     if (!lyrixSection?.parts?.length) return false;
 
     let start = section.startSeconds;
+    const leadIn = lyrixSection.leadIn || null;
+
+    if (leadIn) {
+      const leadInChance = leadIn.chance === undefined ? 1 : Number(leadIn.chance);
+
+      if (chance(random, leadInChance)) {
+        const leadInStart = Math.max(0, section.startSeconds - (Number(leadIn.startsBeforeBars) || 0) * section.barSeconds);
+        const leadInGain = Number(leadIn.gain) || 0.72;
+
+        if (leadIn.file) {
+          const leadInBuffer = buffers.get(leadIn.file);
+          if (leadInBuffer) scheduleBuffer(offlineContext, destination, leadInBuffer, leadInStart, leadInGain);
+        }
+
+        if (leadIn.files?.dry) {
+          const leadInDryBuffer = buffers.get(leadIn.files.dry);
+          if (leadInDryBuffer) scheduleBuffer(offlineContext, destination, leadInDryBuffer, leadInStart, leadInGain);
+        }
+
+        if (leadIn.files?.wet) {
+          const leadInWetBuffer = buffers.get(leadIn.files.wet);
+          if (leadInWetBuffer) scheduleBuffer(offlineContext, destination, leadInWetBuffer, leadInStart, leadInGain);
+        }
+      }
+    }
+
     const partStartTimes = new Map();
 
     for (const part of lyrixSection.parts) {
