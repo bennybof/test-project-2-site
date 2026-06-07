@@ -29,7 +29,8 @@
     "usually",
     "brainears",
     "yapa",
-    "cuppa"
+    "cuppa",
+    "sellingshares"
   ]);
 
   function getFirstPassLyrixSections() {
