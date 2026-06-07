@@ -30,7 +30,8 @@
     "brainears",
     "yapa",
     "cuppa",
-    "sellingshares"
+    "sellingshares",
+    "grounded"
   ]);
 
   function getFirstPassLyrixSections() {
@@ -72,6 +73,7 @@
       if (adlib.files?.dry) files.push(adlib.files.dry);
       if (adlib.files?.wet) files.push(adlib.files.wet);
     }
+    if (section.part3ReplacementRule?.replacementFile) files.push(section.part3ReplacementRule.replacementFile);
     return [...new Set(files)];
   }
 
@@ -751,7 +753,18 @@
 
     for (const part of lyrixSection.parts) {
       partStartTimes.set(Number(part.part) || 1, start);
-      const dryBuffer = part.dry ? buffers.get(part.dry) : null;
+      let activeDryPath = part.dry || null;
+      const replacementRule = lyrixSection.part3ReplacementRule;
+
+      if (replacementRule && Number(part.part) === Number(replacementRule.targetPart)) {
+        const replacementChance = Number(replacementRule.chance) || 0;
+
+        if (replacementRule.replaces === "dry" && replacementRule.replacementFile && chance(random, replacementChance)) {
+          activeDryPath = replacementRule.replacementFile;
+        }
+      }
+
+      const dryBuffer = activeDryPath ? buffers.get(activeDryPath) : null;
       const wetBuffer = part.wet && !part.dryOnly ? buffers.get(part.wet) : null;
       const singleBuffer = part.file ? buffers.get(part.file) : null;
       const gain = Number(part.gain) || 0.72;
