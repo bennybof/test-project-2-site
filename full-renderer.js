@@ -174,6 +174,22 @@
     if (!allowedIndexes.length) return null;
     return chooseOne(random, allowedIndexes);
   }
+  function keyHasFilenameToken(key, token) {
+    const escapedToken = String(token || "").replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const pattern = new RegExp(`(?:^|[\\/_.\\-\\s])${escapedToken}(?:[\\/_.\\-\\s]|$)`, "i");
+    return pattern.test(String(key || ""));
+  }
+
+  function isHookSection(section) {
+    return (
+      String(section?.type || "").toLowerCase().includes("hook") ||
+      (Array.isArray(section?.tags) && section.tags.some(tag => String(tag).toLowerCase() === "hook"))
+    );
+  }
+
+  function isHookKey(key) {
+    return keyHasFilenameToken(key, "hook");
+  }
   function shuffle(random, items) {
     const copy = [...items];
     for (let i = copy.length - 1; i > 0; i--) {
