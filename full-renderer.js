@@ -1052,6 +1052,12 @@
         const repeatEverySeconds = section.barSeconds * repeatEveryBars;
 
         for (let t = section.startSeconds; t < section.endSeconds; t += repeatEverySeconds) {
+          const localBarIndex = Math.round((t - section.startSeconds) / section.barSeconds);
+
+          if (!isBarOpportunityAllowedForKey(pattern.file, section, localBarIndex)) {
+            continue;
+          }
+
           if (chance(random, 0.7)) {
             scheduleMidiPattern({
               offlineContext,
