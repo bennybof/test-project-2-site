@@ -32,7 +32,8 @@
     "cuppa",
     "sellingshares",
     "grounded",
-    "greenguy"
+    "greenguy",
+    "gromit_1"
   ]);
 
 
@@ -44,9 +45,10 @@
     return lyrixRules.sections.filter(section => firstPassLyrixSectionIds.has(section.id));
   }
 
-  function chooseFirstPassLyrixSection(random) {
+  function chooseFirstPassLyrixSection(random, lyrixSectionUsage = new Map()) {
     const candidates = getFirstPassLyrixSections().filter(section =>
       Number(section.globalInclusionChance) > 0 &&
+      (!section.maxSeparateOccasions || (lyrixSectionUsage.get(section.id) || 0) < Number(section.maxSeparateOccasions)) &&
       getLyrixSectionLengthBars(section) > 0 &&
       Array.isArray(section.parts) &&
       section.parts.length > 0
@@ -289,6 +291,7 @@
 
     const sectionTimeline = [];
     const resetPoints = [];
+    const lyrixSectionUsage = new Map();
 
     let cursorSeconds = 0;
     let currentGrid = {
@@ -318,7 +321,9 @@
         reset: Boolean(options.reset),
         tags: options.tags || [],
         lyrixSectionId: options.lyrixSectionId || null,
-        lyrixSection: options.lyrixSection || null
+        lyrixSection: options.lyrixSection || null,
+        lyrixActivationNumber: options.lyrixActivationNumber || 0,
+        suppressLyrixLeadIn: Boolean(options.suppressLyrixLeadIn)
       };
 
       sectionTimeline.push(section);
@@ -395,21 +400,51 @@
       }
 
       if (roll < 0.18) {
-        const lyrixSection = chooseFirstPassLyrixSection(random);
+        const lyrixSection = chooseFirstPassLyrixSection(random, lyrixSectionUsage);
 
         if (lyrixSection) {
           console.log("[first-pass lyrix selected]", lyrixSection.id);
+          const lyrixActivationNumber = (lyrixSectionUsage.get(lyrixSection.id) || 0) + 1;
+          lyrixSectionUsage.set(lyrixSection.id, lyrixActivationNumber);
           addSection("lyrix", getLyrixSectionLengthBars(lyrixSection), {
             reset: true,
             tags: ["lyrix", "lyrix_rules_first_pass"],
             lyrixSectionId: lyrixSection.id,
-            lyrixSection
+            lyrixSection,
+            lyrixActivationNumber
           });
 
           for (const key of getLyrixSectionAudioFiles(lyrixSection)) {
             selectedAudio.add(key);
           }
 
+
+          if (lyrixSection.repeatImmediatelyChance && chance(random, Number(lyrixSection.repeatImmediatelyChance) || 0)) {
+            const repeatCountsAsSeparateOccasion = lyrixSection.repeatCountsAsSeparateOccasion !== false;
+            const currentUsage = lyrixSectionUsage.get(lyrixSection.id) || 0;
+            const maxOccasions = Number(lyrixSection.maxSeparateOccasions) || Infinity;
+
+            if (!repeatCountsAsSeparateOccasion || currentUsage < maxOccasions) {
+              const repeatActivationNumber = repeatCountsAsSeparateOccasion ? currentUsage + 1 : currentUsage;
+
+              if (repeatCountsAsSeparateOccasion) {
+                lyrixSectionUsage.set(lyrixSection.id, repeatActivationNumber);
+              }
+
+              addSection("lyrix", getLyrixSectionLengthBars(lyrixSection), {
+                reset: true,
+                tags: ["lyrix", "lyrix_rules_first_pass", "repeat_immediate"],
+                lyrixSectionId: lyrixSection.id,
+                lyrixSection,
+                lyrixActivationNumber: repeatActivationNumber,
+                suppressLyrixLeadIn: true
+              });
+
+              for (const key of getLyrixSectionAudioFiles(lyrixSection)) {
+                selectedAudio.add(key);
+              }
+            }
+          }
           continue;
         }
 
@@ -759,7 +794,11 @@
     let start = section.startSeconds;
     const leadIn = lyrixSection.leadIn || null;
 
-    if (leadIn) {
+    const shouldSkipLeadIn =
+      section.suppressLyrixLeadIn ||
+      (leadIn?.firstActivationOnly && Number(section.lyrixActivationNumber || 1) > 1);
+
+    if (leadIn && !shouldSkipLeadIn) {
       const leadInChance = leadIn.chance === undefined ? 1 : Number(leadIn.chance);
 
       if (chance(random, leadInChance)) {
