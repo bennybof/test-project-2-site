@@ -1026,13 +1026,15 @@
     }
 
     if (isLikelyOneShot(entry)) {
-      for (let bar = 0; bar < section.bars; bar++) {
+      const allowedBars = getAllowedLocalBarIndexesForKey(key, section);
+
+      for (const localBarIndex of allowedBars) {
         if (chance(random, 0.12)) {
           scheduleBuffer(
             offlineContext,
             destination,
             buffer,
-            section.startSeconds + bar * section.barSeconds,
+            section.startSeconds + localBarIndex * section.barSeconds,
             gain
           );
         }
