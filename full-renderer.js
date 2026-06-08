@@ -3084,11 +3084,22 @@
         ["holdit_hats_forlyrix", 2]
       ]);
 
+      const sectionTension = Number.isFinite(section.tension) ? section.tension : 0;
+
       const availableHatChoices = [...normalHatGroupsByChoice.keys()]
-        .map(choiceGroupId => ({
-          choiceGroupId,
-          weight: normalHatChoiceWeights.get(choiceGroupId) || 1
-        }))
+        .map(choiceGroupId => {
+          let weight = normalHatChoiceWeights.get(choiceGroupId) || 1;
+
+          if (sectionTension > 0.2) {
+            if (choiceGroupId === "messy_hats") weight *= 0.9;
+            if (choiceGroupId === "speedy_hats") weight *= 1.1;
+          } else if (sectionTension < 0.2) {
+            if (choiceGroupId === "messy_hats") weight *= 1.1;
+            if (choiceGroupId === "speedy_hats") weight *= 0.9;
+          }
+
+          return { choiceGroupId, weight };
+        })
         .filter(item => item.weight > 0);
 
       if (availableHatChoices.length) {
