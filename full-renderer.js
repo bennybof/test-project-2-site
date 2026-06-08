@@ -2991,6 +2991,7 @@
 
     // MIDI pattern selection by section.
     for (const section of sectionTimeline) {
+      const sectionSelectedMidi = new Set();
       const sectionMidi = midiPatternPool.filter(pattern => {
         const key = pattern.file.toLowerCase();
 
@@ -3018,7 +3019,7 @@
         if (key.includes("jazz")) p = 0.18;
         if (key.includes("messy")) p = 0.18;
 
-        includeMidiByGlobalDecision({
+        const included = includeMidiByGlobalDecision({
           random,
           globalInclusionState,
           requiredActivationState,
@@ -3027,13 +3028,19 @@
           fallbackChance: p,
           reason: `section_selection:${section.type}`
         });
+
+        if (included) {
+          sectionSelectedMidi.add(pattern.file);
+        }
       }
+
+      section.selectedMidi = [...sectionSelectedMidi];
     }
 
     if (selectedMidi.size === 0) {
       const fallback = midiPatterns.patterns.find(pattern => pattern.file === "midi files/main_hats_ch_metal_ch.mid");
       if (fallback) {
-        includeMidiByGlobalDecision({
+        const included = includeMidiByGlobalDecision({
           random,
           globalInclusionState,
           requiredActivationState,
@@ -3043,6 +3050,16 @@
           force: true,
           reason: "forced_midi_fallback"
         });
+
+        if (included) {
+          for (const section of sectionTimeline) {
+            if (!midiMatchesSection(fallback, section)) continue;
+            if (!Array.isArray(section.selectedMidi)) section.selectedMidi = [];
+            if (!section.selectedMidi.includes(fallback.file)) {
+              section.selectedMidi.push(fallback.file);
+            }
+          }
+        }
       }
     }
 
