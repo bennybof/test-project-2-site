@@ -1664,6 +1664,18 @@
       baseChance
     });
 
+    applyLifecycleDropoutToDecision(safeRandom, lifecycleStates, context, decision, activeProfile);
+    if (decision.droppedOut) {
+      recordRuleDecisionDebug(plan, decision);
+
+      return {
+        allowed: false,
+        context,
+        decision,
+        profile: activeProfile
+      };
+    }
+
     applyRuleProfileToDecision(playbackState, context, decision, activeProfile, safeRandom);
 
     const allowed = finalizeRuleDecision(safeRandom, decision);
