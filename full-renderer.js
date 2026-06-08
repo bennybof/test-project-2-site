@@ -2550,6 +2550,32 @@ function normalHatChoiceClashesWithMidiPattern(choiceGroupId, pattern) {
 
   return false;
 }
+function shouldExcludeNormalMidiHatFromGenericPicker(pattern, choiceGroupId = null) {
+  const baseId = normalizeRuleDecisionToken(getMidiPatternBaseId(pattern));
+  const groupId = choiceGroupId || getNormalMidiHatChoiceGroupId(pattern);
+
+  if (baseId.startsWith("messy_hats_addin")) {
+    return true;
+  }
+
+  if (baseId.startsWith("speedy_hats_cont")) {
+    return true;
+  }
+
+  if (groupId === "hats_wiv_beepipes") {
+    return true;
+  }
+
+  if (groupId === "hook_hats") {
+    return true;
+  }
+
+  if (groupId === "holdit_hats_forlyrix") {
+    return true;
+  }
+
+  return false;
+}
 function getNormalMidiHatChoiceGroupId(pattern) {
     if (!isNormalMidiHatPattern(pattern)) return "";
 
@@ -3095,33 +3121,10 @@ function getNormalMidiHatChoiceGroupId(pattern) {
           continue;
         }
 
-        const baseId = normalizeRuleDecisionToken(getMidiPatternBaseId(pattern));
-
-        // messy_hats_addin is a progressive add-in system, not a normal hat choice.
-        if (baseId.startsWith("messy_hats_addin")) {
-          continue;
-        }
-
-        if (baseId.startsWith("speedy_hats_cont")) {
-          // #cont versions are only for continuing an already-active matching pattern.
-          continue;
-        }
-
         const choiceGroupId = getNormalMidiHatChoiceGroupId(pattern);
         const companionGroupId = getNormalMidiHatCompanionGroupId(pattern);
 
-        if (choiceGroupId === "hats_wiv_beepipes") {
-          // These hats can only play with beepipes_2, so keep them out of the generic hat picker.
-          continue;
-        }
-
-        if (choiceGroupId === "hook_hats") {
-          // Hook hats have part 1 / part 2 sequencing, so keep them out of the generic hat picker.
-          continue;
-        }
-
-        if (choiceGroupId === "holdit_hats_forlyrix") {
-          // Holdit lyric hats are triggered by holdit_lyrix, not by the generic hat picker.
+        if (shouldExcludeNormalMidiHatFromGenericPicker(pattern, choiceGroupId)) {
           continue;
         }
 
