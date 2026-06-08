@@ -3236,12 +3236,19 @@ function getNormalMidiHatChoiceGroupId(pattern) {
           const mainCh = (companionGroups.get("main_hats_ch_metal") || [])
             .filter(pattern => pattern.file === "midi files/main_hats_ch_metal_ch.mid");
 
-          const mainOhChoices = [
-            ...(companionGroups.get("main_hats_oh_metal") || [])
-              .filter(pattern => pattern.file === "midi files/main_hats_oh_metal_oh.mid"),
-            ...(companionGroups.get("main_hats_oh_cont_metal") || [])
-              .filter(pattern => pattern.file === "midi files/main_hats_oh_cont_metal_oh.mid")
-          ];
+          const normalMainOhChoices = (companionGroups.get("main_hats_oh_metal") || [])
+            .filter(pattern => pattern.file === "midi files/main_hats_oh_metal_oh.mid");
+
+          const contMainOhChoices = (companionGroups.get("main_hats_oh_cont_metal") || [])
+            .filter(pattern => pattern.file === "midi files/main_hats_oh_cont_metal_oh.mid");
+
+          let mainOhChoices = continuingNormalHatChoice
+            ? contMainOhChoices
+            : normalMainOhChoices;
+
+          if (!mainOhChoices.length) {
+            mainOhChoices = [...normalMainOhChoices, ...contMainOhChoices];
+          }
 
           chosenPatterns = [...mainCh];
 
