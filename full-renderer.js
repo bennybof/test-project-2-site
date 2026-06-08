@@ -647,7 +647,8 @@
       activeItems: new Map(),
       blockedWindows: [],
       cutoffEvents: [],
-      familyLocks: new Map()
+      familyLocks: new Map(),
+      nextItemId: 1
     };
   }
 
@@ -668,7 +669,9 @@
   } = {}) {
     if (!playbackState) return null;
 
-    const id = getPlaybackItemId(kind, key);
+    const baseId = getPlaybackItemId(kind, key);
+    const id = `${baseId}:${playbackState.nextItemId}`;
+    playbackState.nextItemId += 1;
 
     const item = {
       id,
