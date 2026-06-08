@@ -2049,6 +2049,7 @@
     const lifecycleStates = new Map();
 
     const globalInclusionState = createGlobalInclusionState();
+    const requiredActivationState = createRequiredActivationState();
 
     const sectionTimeline = [];
     const resetPoints = [];
@@ -2431,6 +2432,11 @@
       selectedMidi: [...selectedMidi],
       lifecycleStates: [...lifecycleStates.values()],
       globalInclusionDebug: globalInclusionState.debug.map(item => ({ ...item })),
+      requiredActivationDebug: {
+        obligations: [...requiredActivationState.obligations.values()].map(item => ({ ...item })),
+        events: requiredActivationState.debug.map(item => ({ ...item })),
+        unfulfilled: getUnfulfilledRequiredActivations(requiredActivationState).map(item => ({ ...item }))
+      },
       sectionTimeline,
       resetPoints
     };
