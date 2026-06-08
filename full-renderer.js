@@ -1020,6 +1020,179 @@
 
     return decision;
   }
+  function getRuleProfilePool() {
+    const pools = catalog?.rulePools || {};
+
+    return (
+      pools.ruleProfiles ||
+      pools.stemRules ||
+      pools.activationRules ||
+      {}
+    );
+  }
+
+  function getRuleMapByName(pool, names) {
+    if (!pool) return {};
+
+    for (const name of names) {
+      const value = pool[name];
+      if (value && typeof value === "object" && !Array.isArray(value)) {
+        return value;
+      }
+    }
+
+    return {};
+  }
+
+  function getRuleObjectFromMap(map, key) {
+    if (!map || !key) return null;
+
+    const exact = map[key];
+    if (exact && typeof exact === "object" && !Array.isArray(exact)) {
+      return exact;
+    }
+
+    const normalizedKey = normalizeRuleDecisionToken(key);
+
+    for (const [mapKey, value] of Object.entries(map)) {
+      if (
+        normalizeRuleDecisionToken(mapKey) === normalizedKey &&
+        value &&
+        typeof value === "object" &&
+        !Array.isArray(value)
+      ) {
+        return value;
+      }
+    }
+
+    return null;
+  }
+
+  function mergeRuleProfiles(...profiles) {
+    const merged = {};
+
+    for (const profile of profiles) {
+      if (!profile || typeof profile !== "object" || Array.isArray(profile)) continue;
+
+      for (const [key, value] of Object.entries(profile)) {
+        if (
+          value &&
+          typeof value === "object" &&
+          !Array.isArray(value) &&
+          merged[key] &&
+          typeof merged[key] === "object" &&
+          !Array.isArray(merged[key])
+        ) {
+          merged[key] = {
+            ...merged[key],
+            ...value
+          };
+        } else {
+          merged[key] = value;
+        }
+      }
+    }
+
+    return merged;
+  }
+
+  function getRuleProfileForEntry(entry) {
+    if (!entry) return {};
+
+    const pool = getRuleProfilePool();
+
+    const defaultRules = pool.default || pool.defaults || {};
+
+    const byKey = getRuleMapByName(pool, [
+      "byKey",
+      "keys",
+      "stems",
+      "audio",
+      "midi",
+      "files"
+    ]);
+
+    const byFamily = getRuleMapByName(pool, [
+      "byFamily",
+      "families",
+      "familyRules"
+    ]);
+
+    const byTag = getRuleMapByName(pool, [
+      "byTag",
+      "tags",
+      "tagRules"
+    ]);
+
+    const keyRules = getRuleObjectFromMap(byKey, entry.key);
+    const familyRules = getRuleObjectFromMap(byFamily, entry.family);
+
+    const tagRules = [];
+
+    for (const tag of entry.tags || []) {
+      const tagRule = getRuleObjectFromMap(byTag, tag);
+      if (tagRule) tagRules.push(tagRule);
+    }
+
+    return mergeRuleProfiles(
+      defaultRules,
+      ...tagRules,
+      familyRules,
+      keyRules
+    );
+  }
+
+  function getRuleProfileForMidiPattern(pattern) {
+    if (!pattern) return {};
+
+    return getRuleProfileForEntry({
+      key: pattern.file,
+      type: "midi",
+      folder: "midi files",
+      family: pattern.id || pattern.file,
+      tags: ["midi"]
+    });
+  }
+
+  function getRuleChance(profile, names, fallback = 0) {
+    if (!profile) return clampProbability(fallback);
+
+    const list = Array.isArray(names) ? names : [names];
+
+    for (const name of list) {
+      if (profile[name] !== undefined) {
+        return clampProbability(profile[name], fallback);
+      }
+    }
+
+    return clampProbability(fallback);
+  }
+
+  function getGlobalInclusionChance(profile, fallback = 0) {
+    return getRuleChance(profile, [
+      "globalInclusionChance",
+      "globalChance",
+      "inclusionChance",
+      "globalSelectionChance"
+    ], fallback);
+  }
+
+  function getActivationChance(profile, fallback = 0) {
+    return getRuleChance(profile, [
+      "activationChance",
+      "activationChanceEach",
+      "chance",
+      "opportunityChance"
+    ], fallback);
+  }
+
+  function getDropoutChance(profile, fallback = 0) {
+    return getRuleChance(profile, [
+      "dropoutChance",
+      "dropOutChance",
+      "dropoutBaseChance"
+    ], fallback);
+  }
   function shuffle(random, items) {
     const copy = [...items];
     for (let i = copy.length - 1; i > 0; i--) {
