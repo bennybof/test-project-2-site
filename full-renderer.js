@@ -437,6 +437,210 @@
     setLifecycleAvailability(lifecycleStates, id, true);
     return getLifecycleState(lifecycleStates, id);
   }
+
+  function normalizeRuleDecisionToken(value) {
+    return String(value || "")
+      .toLowerCase()
+      .trim()
+      .replace(/^#/, "")
+      .replace(/[\s\-]+/g, "_");
+  }
+
+  function addRuleDecisionTags(targetSet, values, prefix = "") {
+    if (!targetSet || !values) return targetSet;
+
+    const list = Array.isArray(values) ? values : [values];
+
+    for (const value of list) {
+      const token = normalizeRuleDecisionToken(value);
+      if (!token) continue;
+      targetSet.add(prefix + token);
+    }
+
+    return targetSet;
+  }
+
+  function getEntryRuleDecisionTags(entry) {
+    const tags = new Set();
+
+    if (!entry) return tags;
+
+    addRuleDecisionTags(tags, entry.tags);
+    addRuleDecisionTags(tags, entry.ruleTags);
+    addRuleDecisionTags(tags, entry.manualTags);
+    addRuleDecisionTags(tags, entry.family, "family:");
+    addRuleDecisionTags(tags, entry.families, "family:");
+    addRuleDecisionTags(tags, entry.folder, "folder:");
+    addRuleDecisionTags(tags, entry.type, "type:");
+
+    return tags;
+  }
+
+  function getSectionRuleDecisionTags(section) {
+    const tags = new Set();
+
+    if (!section) return tags;
+
+    addRuleDecisionTags(tags, section.tags);
+    addRuleDecisionTags(tags, section.type, "section_type:");
+    addRuleDecisionTags(tags, section.lyrixSectionId, "lyrix_section:");
+
+    return tags;
+  }
+
+  function getRuleDecisionItemKey({ key = "", entry = null, pattern = null } = {}) {
+    return String(key || entry?.key || pattern?.file || "");
+  }
+
+  function createRuleDecisionContext({
+    kind = "audio",
+    key = "",
+    entry = null,
+    pattern = null,
+    section = null,
+    lifecycleStates = null,
+    localBarIndex = null,
+    startSeconds = null,
+    baseChance = 1
+  } = {}) {
+    const itemKey = getRuleDecisionItemKey({ key, entry, pattern });
+    const lifecycleId = itemKey
+      ? (kind === "midi" ? getMidiLifecycleId(itemKey) : getAudioLifecycleId(itemKey))
+      : null;
+
+    const lifecycleState = lifecycleStates && lifecycleId
+      ? getLifecycleState(lifecycleStates, lifecycleId)
+      : null;
+
+    return {
+      kind,
+      itemKey,
+      entry,
+      pattern,
+      section,
+      sectionId: String(section?.id || ""),
+      sectionType: String(section?.type || ""),
+      localBarIndex,
+      trackBarNumber: section && localBarIndex !== null
+        ? getTrackBarNumber(section, localBarIndex)
+        : null,
+      startSeconds,
+      baseChance: clampProbability(baseChance, 1),
+      lifecycleId,
+      lifecycleState,
+      itemTags: getEntryRuleDecisionTags(entry),
+      sectionTags: getSectionRuleDecisionTags(section)
+    };
+  }
+
+  function createRuleDecisionResult(context, options = {}) {
+    const baseChance = clampProbability(options.baseChance ?? context?.baseChance ?? 1, 1);
+
+    return {
+      kind: String(context?.kind || ""),
+      itemKey: String(context?.itemKey || ""),
+      lifecycleId: String(context?.lifecycleId || ""),
+      sectionId: String(context?.sectionId || ""),
+      sectionType: String(context?.sectionType || ""),
+      localBarIndex: context?.localBarIndex ?? null,
+      trackBarNumber: context?.trackBarNumber ?? null,
+      startSeconds: context?.startSeconds ?? null,
+      allowed: true,
+      blocked: false,
+      droppedOut: false,
+      baseChance,
+      chanceMultiplier: 1,
+      finalChance: baseChance,
+      roll: null,
+      reasons: []
+    };
+  }
+
+  function addRuleDecisionReason(decision, code, details = {}) {
+    if (!decision) return decision;
+    if (!Array.isArray(decision.reasons)) decision.reasons = [];
+
+    decision.reasons.push({
+      code,
+      ...details
+    });
+
+    return decision;
+  }
+
+  function blockRuleDecision(decision, code, details = {}) {
+    if (!decision) return decision;
+
+    decision.allowed = false;
+    decision.blocked = true;
+    decision.finalChance = 0;
+
+    return addRuleDecisionReason(decision, code, details);
+  }
+
+  function multiplyRuleDecisionChance(decision, multiplier, code, details = {}) {
+    if (!decision) return decision;
+
+    const safeMultiplier = Number.isFinite(Number(multiplier))
+      ? Math.max(0, Number(multiplier))
+      : 1;
+
+    decision.chanceMultiplier *= safeMultiplier;
+    decision.finalChance = clampProbability(decision.baseChance * decision.chanceMultiplier);
+
+    return addRuleDecisionReason(decision, code, {
+      multiplier: safeMultiplier,
+      ...details
+    });
+  }
+
+  function markRuleDecisionDropout(decision, code, details = {}) {
+    if (!decision) return decision;
+
+    decision.allowed = false;
+    decision.droppedOut = true;
+
+    return addRuleDecisionReason(decision, code, details);
+  }
+
+  function finalizeRuleDecision(random, decision) {
+    if (!decision) return false;
+
+    if (decision.blocked || decision.droppedOut || decision.finalChance <= 0) {
+      decision.allowed = false;
+      return false;
+    }
+
+    const roll = random();
+    decision.roll = roll;
+
+    if (roll <= decision.finalChance) {
+      return true;
+    }
+
+    decision.allowed = false;
+    addRuleDecisionReason(decision, "chance_failed", {
+      roll,
+      finalChance: decision.finalChance
+    });
+
+    return false;
+  }
+
+  function recordRuleDecisionDebug(plan, decision) {
+    if (!plan || !decision) return;
+
+    if (!Array.isArray(plan.ruleDecisionDebug)) {
+      plan.ruleDecisionDebug = [];
+    }
+
+    plan.ruleDecisionDebug.push({
+      ...decision,
+      reasons: Array.isArray(decision.reasons)
+        ? decision.reasons.map(reason => ({ ...reason }))
+        : []
+    });
+  }
   function shuffle(random, items) {
     const copy = [...items];
     for (let i = copy.length - 1; i > 0; i--) {
