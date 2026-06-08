@@ -2008,9 +2008,11 @@
     return decision;
   }
   function getSectionEnergyContext(section = {}) {
+    const densityScore = Number(section.densityScore ?? section.density ?? 0);
+
     return {
-      densityScore: Number(section.densityScore ?? section.density ?? 0),
-      densityBand: String(section.densityBand || section.densityLevel || ""),
+      densityScore,
+      densityBand: String(section.densityBand || section.densityLevel || getDensityBandFromScore(densityScore)),
       tensionValue: Number(section.tensionValue ?? section.tension ?? 0),
       tensionBand: String(section.tensionBand || section.tensionLevel || ""),
       isCrescendo: Boolean(section.isCrescendo || section.crescendo),
