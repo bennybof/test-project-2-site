@@ -791,6 +791,7 @@
       "kind": "main",
       "fileMatchMode": "explicitFiles",
       "globalInclusionChance": 0.03,
+      "tensionLabel": "high",
       "canBeLastLyric": true,
       "mutualGlobalExclusion": [
         "crashout"
