@@ -1542,7 +1542,7 @@
     return decision;
   }
 
-  function applyTimedBlockRulesToDecision(playbackState, context, decision, rules = []) {
+  function applyTimedBlockRulesToDecision(playbackState, context, decision, rules = [], random = null) {
     if (!playbackState || !context || !decision || !Array.isArray(rules)) return decision;
 
     for (const rule of rules) {
@@ -1558,7 +1558,9 @@
       );
 
       const ruleChance = clampProbability(rule.chance ?? 1, 1);
-      const ruleRoll = Number.isFinite(Number(rule.roll)) ? Number(rule.roll) : 0;
+      const ruleRoll = typeof random === "function"
+        ? random()
+        : (Number.isFinite(Number(rule.roll)) ? Number(rule.roll) : 0);
 
       if (activeMatches.length && ruleRoll < ruleChance) {
         const endSeconds = Number(context.startSeconds || 0) + durationSeconds;
@@ -1603,7 +1605,7 @@
     return decision;
   }
 
-  function applyRuleProfileToDecision(playbackState, context, decision, profile = {}) {
+  function applyRuleProfileToDecision(playbackState, context, decision, profile = {}, random = null) {
     applyActivationBlockWindows(playbackState, context, decision);
     if (decision.blocked) return decision;
 
