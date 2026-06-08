@@ -1623,6 +1623,10 @@
 
     applySoftMultiplierRulesToDecision(playbackState, context, decision, getSoftMultiplierRules(profile));
 
+    applyDensityRulesToDecision(context, decision, profile);
+    applyTensionRulesToDecision(context, decision, profile);
+    applyCrescendoRulesToDecision(context, decision, profile);
+
     return decision;
   }
   function resolveRuleProfileDecision({
@@ -2057,6 +2061,51 @@
     const multiplier = Number(rule.multiplier ?? rule.chanceMultiplier ?? rule.activationMultiplier ?? 1);
 
     return Number.isFinite(multiplier) ? Math.max(0, multiplier) : 1;
+  }
+  function applyEnergyRulesToDecision(context, decision, rules = [], reasonCode = "energy_multiplier") {
+    if (!context || !decision || !Array.isArray(rules)) return decision;
+
+    const energyContext = getSectionEnergyContext(context.section);
+
+    for (const rule of rules) {
+      const multiplier = getEnergyRuleMultiplier(rule, energyContext);
+
+      if (multiplier !== 1) {
+        multiplyRuleDecisionChance(decision, multiplier, reasonCode, {
+          ruleId: rule.id || "",
+          energyContext
+        });
+      }
+    }
+
+    return decision;
+  }
+
+  function applyDensityRulesToDecision(context, decision, profile = {}) {
+    return applyEnergyRulesToDecision(
+      context,
+      decision,
+      getDensityRules(profile),
+      "density_multiplier"
+    );
+  }
+
+  function applyTensionRulesToDecision(context, decision, profile = {}) {
+    return applyEnergyRulesToDecision(
+      context,
+      decision,
+      getTensionRules(profile),
+      "tension_multiplier"
+    );
+  }
+
+  function applyCrescendoRulesToDecision(context, decision, profile = {}) {
+    return applyEnergyRulesToDecision(
+      context,
+      decision,
+      getCrescendoRules(profile),
+      "crescendo_multiplier"
+    );
   }
   function shuffle(random, items) {
     const copy = [...items];
