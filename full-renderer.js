@@ -2216,6 +2216,29 @@
 
     return true;
   }
+  function forceIncludeAudioSelection({
+    random,
+    globalInclusionState = null,
+    requiredActivationState = null,
+    selectedAudio = null,
+    key = "",
+    reason = ""
+  } = {}) {
+    const entry = getCatalogEntry(key);
+    if (!entry) return false;
+
+    return includeAudioByGlobalDecision({
+      random,
+      globalInclusionState,
+      requiredActivationState,
+      selectedAudio,
+      key,
+      entry,
+      fallbackChance: 1,
+      force: true,
+      reason
+    });
+  }
   function shuffle(random, items) {
     const copy = [...items];
     for (let i = copy.length - 1; i > 0; i--) {
