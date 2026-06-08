@@ -190,6 +190,69 @@
   function isHookKey(key) {
     return keyHasFilenameToken(key, "hook");
   }
+  function createLifecycleState(id) {
+    return {
+      id,
+      included: false,
+      introduced: false,
+      available: false,
+      activated: false,
+      withdrawn: false,
+      activationCount: 0,
+      dropoutCount: 0,
+      lastActivatedOpportunity: null
+    };
+  }
+
+  function getLifecycleState(lifecycleStates, id) {
+    if (!lifecycleStates.has(id)) {
+      lifecycleStates.set(id, createLifecycleState(id));
+    }
+
+    return lifecycleStates.get(id);
+  }
+
+  function includeLifecycleItem(lifecycleStates, id) {
+    const state = getLifecycleState(lifecycleStates, id);
+    state.included = true;
+    return state;
+  }
+
+  function introduceLifecycleItem(lifecycleStates, id) {
+    const state = getLifecycleState(lifecycleStates, id);
+    state.introduced = true;
+    state.withdrawn = false;
+    return state;
+  }
+
+  function setLifecycleAvailability(lifecycleStates, id, available) {
+    const state = getLifecycleState(lifecycleStates, id);
+    state.available = Boolean(available);
+    return state;
+  }
+
+  function activateLifecycleItem(lifecycleStates, id, opportunityId = null) {
+    const state = getLifecycleState(lifecycleStates, id);
+    state.activated = true;
+    state.activationCount += 1;
+    state.lastActivatedOpportunity = opportunityId;
+    return state;
+  }
+
+  function dropoutLifecycleItem(lifecycleStates, id) {
+    const state = getLifecycleState(lifecycleStates, id);
+    state.activated = false;
+    state.dropoutCount += 1;
+    return state;
+  }
+
+  function withdrawLifecycleItem(lifecycleStates, id) {
+    const state = getLifecycleState(lifecycleStates, id);
+    state.available = false;
+    state.activated = false;
+    state.withdrawn = true;
+    return state;
+  }
   function shuffle(random, items) {
     const copy = [...items];
     for (let i = copy.length - 1; i > 0; i--) {
