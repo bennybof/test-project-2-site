@@ -610,6 +610,7 @@
     const sectionTimeline = [];
     const resetPoints = [];
     const lyrixSectionUsage = new Map();
+    const includedBridgeLyrixSections = selectIncludedBridgeLyrixSections(random);
 
     let cursorSeconds = 0;
     let cursorBars = 0;
@@ -728,6 +729,42 @@
           console.log("[first-pass lyrix selected]", lyrixSection.id);
           const lyrixActivationNumber = (lyrixSectionUsage.get(lyrixSection.id) || 0) + 1;
           lyrixSectionUsage.set(lyrixSection.id, lyrixActivationNumber);
+
+          if (canBridgePlayBeforeLyrixSection(lyrixSection)) {
+            const bridgeLyrixSection = chooseBridgeLyrixSection(random, includedBridgeLyrixSections, lyrixSectionUsage);
+
+            if (bridgeLyrixSection) {
+              const bridgeLeadInBars = chooseSafeBridgeLeadInBars(random, lyrixSection);
+
+              if (bridgeLeadInBars !== null) {
+                console.log("[bridge lyrix selected]", bridgeLyrixSection.id, "before", lyrixSection.id);
+                const bridgeActivationNumber = (lyrixSectionUsage.get(bridgeLyrixSection.id) || 0) + 1;
+                const bridgeLengthBars = getLyrixSectionLengthBars(bridgeLyrixSection);
+                const bridgeGapBars = Math.max(0, bridgeLeadInBars - bridgeLengthBars);
+
+                lyrixSectionUsage.set(bridgeLyrixSection.id, bridgeActivationNumber);
+
+                addSection("lyrix", bridgeLengthBars, {
+                  reset: false,
+                  tags: ["lyrix", "bridge_lyrix"],
+                  lyrixSectionId: bridgeLyrixSection.id,
+                  lyrixSection: bridgeLyrixSection,
+                  lyrixActivationNumber: bridgeActivationNumber
+                });
+
+                for (const key of getLyrixSectionAudioFiles(bridgeLyrixSection)) {
+                  selectedAudio.add(key);
+                }
+
+                if (bridgeGapBars > 0) {
+                  addSection("normal", bridgeGapBars, {
+                    reset: false,
+                    tags: ["normal", "bridge_gap"]
+                  });
+                }
+              }
+            }
+          }
           addSection("lyrix", getLyrixSectionLengthBars(lyrixSection), {
             reset: true,
             tags: ["lyrix", "lyrix_rules_first_pass"],
