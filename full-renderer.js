@@ -89,6 +89,21 @@
     return clampProbability(section?.activationChance ?? bridgeRules?.activationChanceEach ?? 0.02);
   }
 
+  function canBridgePlayBeforeLyrixSection(section) {
+    if (!section) return false;
+
+    const id = String(section.id || "").toLowerCase();
+    const tensionLabel = String(section.tensionLabel || "").toLowerCase();
+
+    if (id === "bollocks" || id.includes("bollocks")) return false;
+
+    return ![
+      "highest",
+      "high",
+      "medium_high"
+    ].includes(tensionLabel);
+  }
+
   function selectIncludedBridgeLyrixSections(random) {
     const bridgeRules = getBridgeLyrixGlobalRules();
 
