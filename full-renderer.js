@@ -707,6 +707,64 @@
     playbackState.activeItems.delete(id);
   }
 
+  function expirePlaybackItemsAtTime(playbackState, timeSeconds) {
+    if (!playbackState) return 0;
+
+    const time = Math.max(0, Number(timeSeconds) || 0);
+    let expiredCount = 0;
+
+    for (const item of [...playbackState.activeItems.values()]) {
+      if (item.endSeconds !== null && item.endSeconds <= time) {
+        unregisterActivePlaybackItem(playbackState, item);
+        expiredCount += 1;
+      }
+    }
+
+    return expiredCount;
+  }
+
+  function getEntryPrimaryFamily(entry) {
+    if (!entry) return "";
+
+    if (entry.family) return normalizeRuleDecisionToken(entry.family);
+
+    if (Array.isArray(entry.families) && entry.families.length) {
+      return normalizeRuleDecisionToken(entry.families[0]);
+    }
+
+    return "";
+  }
+
+  function getEntryPlaybackTags(entry) {
+    const tags = [...getEntryRuleDecisionTags(entry)]
+      .map(tag => normalizeRuleDecisionToken(tag))
+      .filter(Boolean);
+
+    return [...new Set(tags)];
+  }
+
+  function registerScheduledPlaybackHandle(playbackState, {
+    kind = "audio",
+    key = "",
+    entry = null,
+    scheduleHandle = null,
+    section = null,
+    family = ""
+  } = {}) {
+    if (!playbackState || !scheduleHandle?.scheduled) return null;
+
+    return registerActivePlaybackItem(playbackState, {
+      kind,
+      key,
+      family: family || getEntryPrimaryFamily(entry),
+      startSeconds: scheduleHandle.startTime,
+      endSeconds: scheduleHandle.endTime,
+      source: scheduleHandle.source,
+      gainNode: scheduleHandle.gainNode,
+      sectionId: section?.id || "",
+      tags: getEntryPlaybackTags(entry)
+    });
+  }
   function getActivePlaybackItems(playbackState, filter = {}) {
     if (!playbackState) return [];
 
