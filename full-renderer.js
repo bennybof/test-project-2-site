@@ -2477,7 +2477,35 @@
     return normalizeRuleDecisionToken(getMidiPatternBaseId(pattern));
   }
 
-  function getNormalMidiHatChoiceGroupId(pattern) {
+  function getNormalHatChoiceWeight(choiceGroupId, section) {
+  const baseWeights = new Map([
+    ["trap_hats", 2],
+    ["holdit_hats", 2],
+    ["lego_hats", 4],
+    ["main_hats", 40],
+    ["messy_hats_fast", 1],
+    ["messy_hats", 20],
+    ["messy_hats_fast_ends_in_main_hats", 1],
+    ["speedy_hats", 30],
+    ["hook_hats", 40],
+    ["hats_wiv_beepipes", 4],
+    ["holdit_hats_forlyrix", 2]
+  ]);
+
+  let weight = baseWeights.get(choiceGroupId) || 1;
+  const sectionTension = Number.isFinite(section?.tension) ? section.tension : 0;
+
+  if (sectionTension > 0.2) {
+    if (choiceGroupId === "messy_hats") weight *= 0.9;
+    if (choiceGroupId === "speedy_hats") weight *= 1.1;
+  } else if (sectionTension < 0.2) {
+    if (choiceGroupId === "messy_hats") weight *= 1.1;
+    if (choiceGroupId === "speedy_hats") weight *= 0.9;
+  }
+
+  return weight;
+}
+function getNormalMidiHatChoiceGroupId(pattern) {
     if (!isNormalMidiHatPattern(pattern)) return "";
 
     const base = normalizeRuleDecisionToken(getMidiPatternBaseId(pattern));
@@ -3070,36 +3098,11 @@
         companionGroups.get(companionGroupId).push(pattern);
       }
 
-      const normalHatChoiceWeights = new Map([
-        ["trap_hats", 2],
-        ["holdit_hats", 2],
-        ["lego_hats", 4],
-        ["main_hats", 40],
-        ["messy_hats_fast", 1],
-        ["messy_hats", 20],
-        ["messy_hats_fast_ends_in_main_hats", 1],
-        ["speedy_hats", 30],
-        ["hook_hats", 40],
-        ["hats_wiv_beepipes", 4],
-        ["holdit_hats_forlyrix", 2]
-      ]);
-
-      const sectionTension = Number.isFinite(section.tension) ? section.tension : 0;
-
       const availableHatChoices = [...normalHatGroupsByChoice.keys()]
-        .map(choiceGroupId => {
-          let weight = normalHatChoiceWeights.get(choiceGroupId) || 1;
-
-          if (sectionTension > 0.2) {
-            if (choiceGroupId === "messy_hats") weight *= 0.9;
-            if (choiceGroupId === "speedy_hats") weight *= 1.1;
-          } else if (sectionTension < 0.2) {
-            if (choiceGroupId === "messy_hats") weight *= 1.1;
-            if (choiceGroupId === "speedy_hats") weight *= 0.9;
-          }
-
-          return { choiceGroupId, weight };
-        })
+        .map(choiceGroupId => ({
+          choiceGroupId,
+          weight: getNormalHatChoiceWeight(choiceGroupId, section)
+        }))
         .filter(item => item.weight > 0);
 
       if (availableHatChoices.length) {
