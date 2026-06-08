@@ -3008,11 +3008,104 @@
         return key.includes("main_hats") || key.includes("snare") || key.includes("rims") || key.includes("hats");
       });
 
-      for (const pattern of shuffle(random, sectionMidi).slice(0, 3)) {
+      const normalHatGroupsByChoice = new Map();
+      const nonNormalMidi = [];
+
+      for (const pattern of sectionMidi) {
+        if (!isNormalMidiHatPattern(pattern)) {
+          nonNormalMidi.push(pattern);
+          continue;
+        }
+
+        const baseId = normalizeRuleDecisionToken(getMidiPatternBaseId(pattern));
+
+        // messy_hats_addin is a progressive add-in system, not a normal hat choice.
+        if (baseId.startsWith("messy_hats_addin")) {
+          continue;
+        }
+
+        const choiceGroupId = getNormalMidiHatChoiceGroupId(pattern);
+        const companionGroupId = getNormalMidiHatCompanionGroupId(pattern);
+
+        if (!choiceGroupId || !companionGroupId) {
+          nonNormalMidi.push(pattern);
+          continue;
+        }
+
+        if (!normalHatGroupsByChoice.has(choiceGroupId)) {
+          normalHatGroupsByChoice.set(choiceGroupId, new Map());
+        }
+
+        const companionGroups = normalHatGroupsByChoice.get(choiceGroupId);
+
+        if (!companionGroups.has(companionGroupId)) {
+          companionGroups.set(companionGroupId, []);
+        }
+
+        companionGroups.get(companionGroupId).push(pattern);
+      }
+
+      const normalHatChoiceWeights = new Map([
+        ["trap_hats", 2],
+        ["holdit_hats", 2],
+        ["lego_hats", 4],
+        ["main_hats", 40],
+        ["messy_hats_fast", 1],
+        ["messy_hats", 20],
+        ["messy_hats_fast_ends_in_main_hats", 1],
+        ["speedy_hats", 30],
+        ["hook_hats", 40],
+        ["hats_wiv_beepipes", 4],
+        ["holdit_hats_forlyrix", 2]
+      ]);
+
+      const availableHatChoices = [...normalHatGroupsByChoice.keys()]
+        .map(choiceGroupId => ({
+          choiceGroupId,
+          weight: normalHatChoiceWeights.get(choiceGroupId) || 1
+        }))
+        .filter(item => item.weight > 0);
+
+      if (availableHatChoices.length) {
+        const totalWeight = availableHatChoices.reduce((total, item) => total + item.weight, 0);
+        let roll = random() * totalWeight;
+        let chosenChoice = availableHatChoices[availableHatChoices.length - 1].choiceGroupId;
+
+        for (const item of availableHatChoices) {
+          roll -= item.weight;
+          if (roll <= 0) {
+            chosenChoice = item.choiceGroupId;
+            break;
+          }
+        }
+
+        const companionGroups = [...normalHatGroupsByChoice.get(chosenChoice).values()];
+        const chosenCompanionGroup = chooseOne(random, companionGroups) || [];
+
+        for (const pattern of chosenCompanionGroup) {
+          const included = includeMidiByGlobalDecision({
+            random,
+            globalInclusionState,
+            requiredActivationState,
+            selectedMidi,
+            pattern,
+            fallbackChance: 1,
+            force: true,
+            reason: `normal_hat_group:${chosenChoice}`
+          });
+
+          if (included) {
+            sectionSelectedMidi.add(pattern.file);
+          }
+        }
+      }
+
+      const nonNormalLimit = sectionSelectedMidi.size > 0 ? 2 : 3;
+
+      for (const pattern of shuffle(random, nonNormalMidi).slice(0, nonNormalLimit)) {
         let p = 0.35;
         const key = pattern.file.toLowerCase();
 
-        if (key.includes("main_hats")) p = 0.7;
         if (key.includes("snare")) p = 0.45;
         if (key.includes("rims")) p = 0.35;
         if (key.includes("hook")) p = 0.45;
