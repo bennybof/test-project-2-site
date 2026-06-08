@@ -3042,6 +3042,11 @@
           continue;
         }
 
+        if (choiceGroupId === "holdit_hats_forlyrix") {
+          // Holdit lyric hats are triggered by holdit_lyrix, not by the generic hat picker.
+          continue;
+        }
+
         if (!choiceGroupId || !companionGroupId) {
           nonNormalMidi.push(pattern);
           continue;
