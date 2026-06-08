@@ -2922,6 +2922,40 @@
     return [entry.key];
   }
 
+  function scheduleLyrixPathWithPlaybackState({
+    offlineContext,
+    destination,
+    path,
+    buffer,
+    startTime,
+    gainValue = 0.72,
+    playbackState = null,
+    section = null
+  } = {}) {
+    if (!path || !buffer) return null;
+
+    const entry = getCatalogEntry(path) || {
+      key: path,
+      folder: "lyrix",
+      type: "audio",
+      family: "lyrix",
+      tags: ["audio", "lyrix"]
+    };
+
+    return scheduleAudioBufferWithPlaybackState({
+      offlineContext,
+      destination,
+      buffer,
+      startTime,
+      gainValue,
+      playbackState,
+      key: path,
+      entry,
+      section,
+      family: entry.family || "lyrix"
+    });
+  }
+
   function scheduleExplicitLyrixSection({ offlineContext, destination, section, random, playbackState = null, buffers }) {
     const lyrixSection = section.lyrixSection;
     if (!lyrixSection?.parts?.length) return false;
@@ -2942,17 +2976,44 @@
 
         if (leadIn.file) {
           const leadInBuffer = buffers.get(leadIn.file);
-          if (leadInBuffer) scheduleBuffer(offlineContext, destination, leadInBuffer, leadInStart, leadInGain);
+          scheduleLyrixPathWithPlaybackState({
+            offlineContext,
+            destination,
+            path: leadIn.file,
+            buffer: leadInBuffer,
+            startTime: leadInStart,
+            gainValue: leadInGain,
+            playbackState,
+            section
+          });
         }
 
         if (leadIn.files?.dry) {
           const leadInDryBuffer = buffers.get(leadIn.files.dry);
-          if (leadInDryBuffer) scheduleBuffer(offlineContext, destination, leadInDryBuffer, leadInStart, leadInGain);
+          scheduleLyrixPathWithPlaybackState({
+            offlineContext,
+            destination,
+            path: leadIn.files.dry,
+            buffer: leadInDryBuffer,
+            startTime: leadInStart,
+            gainValue: leadInGain,
+            playbackState,
+            section
+          });
         }
 
         if (leadIn.files?.wet) {
           const leadInWetBuffer = buffers.get(leadIn.files.wet);
-          if (leadInWetBuffer) scheduleBuffer(offlineContext, destination, leadInWetBuffer, leadInStart, leadInGain);
+          scheduleLyrixPathWithPlaybackState({
+            offlineContext,
+            destination,
+            path: leadIn.files.wet,
+            buffer: leadInWetBuffer,
+            startTime: leadInStart,
+            gainValue: leadInGain,
+            playbackState,
+            section
+          });
         }
       }
     }
@@ -2977,9 +3038,38 @@
       const singleBuffer = part.file ? buffers.get(part.file) : null;
       const gain = Number(part.gain) || 0.72;
 
-      if (dryBuffer) scheduleBuffer(offlineContext, destination, dryBuffer, start, gain);
-      if (wetBuffer) scheduleBuffer(offlineContext, destination, wetBuffer, start, gain);
-      if (singleBuffer) scheduleBuffer(offlineContext, destination, singleBuffer, start, gain);
+      scheduleLyrixPathWithPlaybackState({
+        offlineContext,
+        destination,
+        path: activeDryPath,
+        buffer: dryBuffer,
+        startTime: start,
+        gainValue: gain,
+        playbackState,
+        section
+      });
+
+      scheduleLyrixPathWithPlaybackState({
+        offlineContext,
+        destination,
+        path: part.wet,
+        buffer: wetBuffer,
+        startTime: start,
+        gainValue: gain,
+        playbackState,
+        section
+      });
+
+      scheduleLyrixPathWithPlaybackState({
+        offlineContext,
+        destination,
+        path: part.file,
+        buffer: singleBuffer,
+        startTime: start,
+        gainValue: gain,
+        playbackState,
+        section
+      });
 
       if (dryBuffer) {
         start += dryBuffer.duration;
@@ -3010,17 +3100,44 @@
 
       if (adlib.file) {
         const adlibBuffer = buffers.get(adlib.file);
-        if (adlibBuffer) scheduleBuffer(offlineContext, destination, adlibBuffer, adlibStart, 0.72);
+        scheduleLyrixPathWithPlaybackState({
+          offlineContext,
+          destination,
+          path: adlib.file,
+          buffer: adlibBuffer,
+          startTime: adlibStart,
+          gainValue: 0.72,
+          playbackState,
+          section
+        });
       }
 
       if (adlib.files?.dry) {
         const dryAdlibBuffer = buffers.get(adlib.files.dry);
-        if (dryAdlibBuffer) scheduleBuffer(offlineContext, destination, dryAdlibBuffer, adlibStart, 0.72);
+        scheduleLyrixPathWithPlaybackState({
+          offlineContext,
+          destination,
+          path: adlib.files.dry,
+          buffer: dryAdlibBuffer,
+          startTime: adlibStart,
+          gainValue: 0.72,
+          playbackState,
+          section
+        });
       }
 
       if (adlib.files?.wet) {
         const wetAdlibBuffer = buffers.get(adlib.files.wet);
-        if (wetAdlibBuffer) scheduleBuffer(offlineContext, destination, wetAdlibBuffer, adlibStart, 0.72);
+        scheduleLyrixPathWithPlaybackState({
+          offlineContext,
+          destination,
+          path: adlib.files.wet,
+          buffer: wetAdlibBuffer,
+          startTime: adlibStart,
+          gainValue: 0.72,
+          playbackState,
+          section
+        });
       }
     }
     return true;
@@ -3048,7 +3165,17 @@
       const buffer = buffers.get(groupKey);
       if (!buffer) continue;
 
-      scheduleBuffer(offlineContext, destination, buffer, start, 0.72);
+      scheduleLyrixPathWithPlaybackState({
+        offlineContext,
+        destination,
+        path: groupKey,
+        buffer,
+        startTime: start,
+        gainValue: 0.72,
+        playbackState,
+        section
+      });
+
       start += buffer.duration;
     }
 
