@@ -1761,6 +1761,123 @@
 
     return plan;
   }
+  function createRequiredActivationState() {
+    return {
+      obligations: new Map(),
+      debug: []
+    };
+  }
+
+  function getRequiredActivationId(kind, key) {
+    return `${normalizeRuleDecisionToken(kind)}:${String(key || "")}`;
+  }
+
+  function addRequiredActivationObligation(requiredActivationState, {
+    kind = "audio",
+    key = "",
+    family = "",
+    tag = "",
+    reason = "",
+    minActivations = 1,
+    maxActivations = null,
+    allowedSectionTypes = [],
+    forbiddenSectionTypes = []
+  } = {}) {
+    if (!requiredActivationState) return null;
+
+    const id = getRequiredActivationId(kind, key || family || tag);
+
+    const obligation = {
+      id,
+      kind: normalizeRuleDecisionToken(kind),
+      key: String(key || ""),
+      family: normalizeRuleDecisionToken(family),
+      tag: normalizeRuleDecisionToken(tag),
+      reason: String(reason || "required_activation"),
+      minActivations: Math.max(0, Number(minActivations) || 0),
+      maxActivations: Number.isFinite(Number(maxActivations)) ? Math.max(0, Number(maxActivations)) : null,
+      activationCount: 0,
+      allowedSectionTypes: Array.isArray(allowedSectionTypes)
+        ? allowedSectionTypes.map(type => normalizeRuleDecisionToken(type)).filter(Boolean)
+        : [],
+      forbiddenSectionTypes: Array.isArray(forbiddenSectionTypes)
+        ? forbiddenSectionTypes.map(type => normalizeRuleDecisionToken(type)).filter(Boolean)
+        : [],
+      fulfilled: false
+    };
+
+    requiredActivationState.obligations.set(id, obligation);
+    requiredActivationState.debug.push({
+      action: "add",
+      ...obligation
+    });
+
+    return obligation;
+  }
+
+  function getMatchingRequiredActivationObligations(requiredActivationState, context) {
+    if (!requiredActivationState || !context) return [];
+
+    const sectionType = normalizeRuleDecisionToken(context.sectionType);
+    const itemTags = context.itemTags || new Set();
+
+    return [...requiredActivationState.obligations.values()].filter(obligation => {
+      if (obligation.fulfilled) return false;
+      if (obligation.kind && obligation.kind !== normalizeRuleDecisionToken(context.kind)) return false;
+      if (obligation.key && obligation.key !== context.itemKey) return false;
+      if (obligation.family) {
+        const familyTag = `family:${obligation.family}`;
+        if (!itemTags.has(familyTag) && !itemTags.has(obligation.family)) return false;
+      }
+      if (obligation.tag && !itemTags.has(obligation.tag)) return false;
+      if (obligation.allowedSectionTypes.length && !obligation.allowedSectionTypes.includes(sectionType)) return false;
+      if (obligation.forbiddenSectionTypes.includes(sectionType)) return false;
+
+      return true;
+    });
+  }
+
+  function markRequiredActivationSatisfied(requiredActivationState, context) {
+    const obligations = getMatchingRequiredActivationObligations(requiredActivationState, context);
+
+    for (const obligation of obligations) {
+      obligation.activationCount += 1;
+
+      if (obligation.activationCount >= obligation.minActivations) {
+        obligation.fulfilled = true;
+      }
+
+      requiredActivationState.debug.push({
+        action: "activate",
+        id: obligation.id,
+        activationCount: obligation.activationCount,
+        fulfilled: obligation.fulfilled,
+        itemKey: context.itemKey,
+        sectionId: context.sectionId
+      });
+    }
+
+    return obligations;
+  }
+
+  function getUnfulfilledRequiredActivations(requiredActivationState) {
+    if (!requiredActivationState) return [];
+
+    return [...requiredActivationState.obligations.values()]
+      .filter(obligation => !obligation.fulfilled);
+  }
+
+  function writeRequiredActivationDebugToPlan(plan, requiredActivationState) {
+    if (!plan || !requiredActivationState) return plan;
+
+    plan.requiredActivationDebug = {
+      obligations: [...requiredActivationState.obligations.values()].map(item => ({ ...item })),
+      events: requiredActivationState.debug.map(item => ({ ...item })),
+      unfulfilled: getUnfulfilledRequiredActivations(requiredActivationState).map(item => ({ ...item }))
+    };
+
+    return plan;
+  }
   function shuffle(random, items) {
     const copy = [...items];
     for (let i = copy.length - 1; i > 0; i--) {
