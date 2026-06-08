@@ -2922,7 +2922,7 @@
     return [entry.key];
   }
 
-  function scheduleExplicitLyrixSection({ offlineContext, destination, section, random, buffers }) {
+  function scheduleExplicitLyrixSection({ offlineContext, destination, section, random, playbackState = null, buffers }) {
     const lyrixSection = section.lyrixSection;
     if (!lyrixSection?.parts?.length) return false;
 
@@ -3026,7 +3026,7 @@
     return true;
   }
 
-  function scheduleLyrixGroupInSection({ offlineContext, destination, key, random, section, buffers }) {
+  function scheduleLyrixGroupInSection({ offlineContext, destination, key, random, playbackState = null, section, buffers }) {
     const entry = getCatalogEntry(key);
     if (!entry || !isLyrix(entry)) return false;
 
@@ -3143,6 +3143,7 @@
         destination,
         key,
         random,
+        playbackState,
         section,
         buffers: currentRenderBuffers
       }) ? 1 : 0;
@@ -3314,6 +3315,7 @@
           destination,
           section,
           random,
+          playbackState,
           buffers
         });
         continue;
