@@ -3037,6 +3037,11 @@
           continue;
         }
 
+        if (choiceGroupId === "hook_hats") {
+          // Hook hats have part 1 / part 2 sequencing, so keep them out of the generic hat picker.
+          continue;
+        }
+
         if (!choiceGroupId || !companionGroupId) {
           nonNormalMidi.push(pattern);
           continue;
