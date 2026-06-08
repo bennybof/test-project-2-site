@@ -1676,6 +1676,91 @@
       profile: activeProfile
     };
   }
+  function createGlobalInclusionState() {
+    return {
+      decisions: new Map(),
+      debug: []
+    };
+  }
+
+  function getGlobalInclusionId(kind, key) {
+    return `${normalizeRuleDecisionToken(kind)}:${String(key || "")}`;
+  }
+
+  function hasGlobalInclusionDecision(globalInclusionState, kind, key) {
+    if (!globalInclusionState) return false;
+    return globalInclusionState.decisions.has(getGlobalInclusionId(kind, key));
+  }
+
+  function getGlobalInclusionDecision(globalInclusionState, kind, key) {
+    if (!globalInclusionState) return null;
+    return globalInclusionState.decisions.get(getGlobalInclusionId(kind, key)) || null;
+  }
+
+  function setGlobalInclusionDecision(globalInclusionState, decision) {
+    if (!globalInclusionState || !decision) return decision;
+
+    const id = decision.id || getGlobalInclusionId(decision.kind, decision.key);
+    const storedDecision = {
+      ...decision,
+      id
+    };
+
+    globalInclusionState.decisions.set(id, storedDecision);
+    globalInclusionState.debug.push({ ...storedDecision });
+
+    return storedDecision;
+  }
+
+  function resolveGlobalInclusionDecision({
+    random,
+    globalInclusionState,
+    kind = "audio",
+    key = "",
+    entry = null,
+    pattern = null,
+    profile = null,
+    fallbackChance = 0
+  } = {}) {
+    const itemKey = getRuleDecisionItemKey({ key, entry, pattern });
+    const id = getGlobalInclusionId(kind, itemKey);
+
+    if (globalInclusionState?.decisions?.has(id)) {
+      return globalInclusionState.decisions.get(id);
+    }
+
+    const safeRandom = typeof random === "function" ? random : (() => 1);
+    const activeProfile = profile || (
+      kind === "midi"
+        ? getRuleProfileForMidiPattern(pattern)
+        : getRuleProfileForEntry(entry)
+    );
+
+    const globalChance = getGlobalInclusionChance(activeProfile, fallbackChance);
+    const roll = safeRandom();
+    const included = roll < globalChance;
+
+    return setGlobalInclusionDecision(globalInclusionState, {
+      id,
+      kind,
+      key: itemKey,
+      included,
+      globalChance,
+      roll,
+      profileSummary: {
+        family: entry?.family || pattern?.id || "",
+        tags: entry?.tags || (kind === "midi" ? ["midi"] : [])
+      }
+    });
+  }
+
+  function writeGlobalInclusionDebugToPlan(plan, globalInclusionState) {
+    if (!plan || !globalInclusionState) return plan;
+
+    plan.globalInclusionDebug = globalInclusionState.debug.map(item => ({ ...item }));
+
+    return plan;
+  }
   function shuffle(random, items) {
     const copy = [...items];
     for (let i = copy.length - 1; i > 0; i--) {
