@@ -1193,6 +1193,140 @@
       "dropoutBaseChance"
     ], fallback);
   }
+  function getRuleValue(profile, names, fallback = null) {
+    if (!profile) return fallback;
+
+    const list = Array.isArray(names) ? names : [names];
+
+    for (const name of list) {
+      if (profile[name] !== undefined) {
+        return profile[name];
+      }
+    }
+
+    return fallback;
+  }
+
+  function getRuleArray(profile, names) {
+    const value = getRuleValue(profile, names, []);
+
+    if (!value) return [];
+    if (Array.isArray(value)) return value;
+    return [value];
+  }
+
+  function getRuleObject(profile, names, fallback = {}) {
+    const value = getRuleValue(profile, names, fallback);
+
+    if (value && typeof value === "object" && !Array.isArray(value)) {
+      return value;
+    }
+
+    return fallback;
+  }
+
+  function getDropoutRuleConfig(profile) {
+    const dropout = getRuleObject(profile, [
+      "dropout",
+      "dropOut",
+      "dropoutRule"
+    ], {});
+
+    return {
+      baseChance: getDropoutChance(profile, dropout.baseChance ?? dropout.chance ?? 0),
+      increasePerActivation: clampProbability(
+        dropout.increasePerActivation ??
+        profile?.dropoutIncreasePerActivation ??
+        profile?.dropoutChanceIncrease ??
+        0
+      ),
+      maxChance: clampProbability(
+        dropout.maxChance ??
+        profile?.dropoutMaxChance ??
+        1,
+        1
+      )
+    };
+  }
+
+  function getCutoffRules(profile) {
+    return getRuleArray(profile, [
+      "cutoffRules",
+      "cutoffs",
+      "cutoff",
+      "cuts"
+    ]);
+  }
+
+  function getHardClashRules(profile) {
+    return getRuleArray(profile, [
+      "hardClashes",
+      "hardClashRules",
+      "clashes",
+      "cannotPlayWith"
+    ]);
+  }
+
+  function getSoftMultiplierRules(profile) {
+    return getRuleArray(profile, [
+      "softMultipliers",
+      "softMultiplierRules",
+      "activationMultipliers",
+      "chanceMultipliers"
+    ]);
+  }
+
+  function getTimedBlockRules(profile) {
+    return getRuleArray(profile, [
+      "timedBlocks",
+      "timedBlockRules",
+      "shutoffWindows",
+      "blockedWindows",
+      "blockActivationWindows"
+    ]);
+  }
+
+  function getFamilyLockRules(profile) {
+    return getRuleArray(profile, [
+      "familyLocks",
+      "oneOfGroups",
+      "mutualExclusionGroups",
+      "exclusiveFamilies"
+    ]);
+  }
+
+  function getDependencyRules(profile) {
+    return getRuleArray(profile, [
+      "dependencies",
+      "requires",
+      "requiresActive",
+      "requiresIncluded"
+    ]);
+  }
+
+  function getDensityRules(profile) {
+    return getRuleArray(profile, [
+      "densityRules",
+      "densityMultipliers",
+      "density"
+    ]);
+  }
+
+  function getTensionRules(profile) {
+    return getRuleArray(profile, [
+      "tensionRules",
+      "tensionMultipliers",
+      "tension"
+    ]);
+  }
+
+  function getCrescendoRules(profile) {
+    return getRuleArray(profile, [
+      "crescendoRules",
+      "crescendoMultipliers",
+      "crescendo"
+    ]);
+  }
   function shuffle(random, items) {
     const copy = [...items];
     for (let i = copy.length - 1; i > 0; i--) {
