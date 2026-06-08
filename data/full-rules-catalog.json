@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-08T20:32:59.003Z",
+  "generatedAt": "2026-06-08T22:18:44.671Z",
   "sourceRegistry": "data/stem-registry.json",
   "sourceMidiPatterns": "data/midi-patterns.json",
   "entryCount": 953,
@@ -146,6 +146,158 @@
       ]
     },
     "ruleProfiles": {
+      "byTag": {
+        "ch": {
+          "cutoffRules": [
+            {
+              "id": "midi_ch_cuts_previous_ch",
+              "targets": [
+                {
+                  "tag": "ch"
+                }
+              ],
+              "fadeSeconds": 0.01,
+              "includeFutureScheduled": false
+            }
+          ]
+        },
+        "oh": {
+          "cutoffRules": [
+            {
+              "id": "midi_oh_cuts_previous_oh",
+              "targets": [
+                {
+                  "tag": "oh"
+                }
+              ],
+              "fadeSeconds": 0.01,
+              "includeFutureScheduled": false
+            },
+            {
+              "id": "midi_oh_cuts_previous_ch",
+              "targets": [
+                {
+                  "tag": "ch"
+                }
+              ],
+              "fadeSeconds": 0.01,
+              "includeFutureScheduled": false
+            }
+          ]
+        },
+        "ride03": {
+          "cutoffRules": [
+            {
+              "id": "midi_ride03_cuts_previous_ride03",
+              "targets": [
+                {
+                  "tag": "ride03"
+                }
+              ],
+              "fadeSeconds": 0.01,
+              "includeFutureScheduled": false
+            }
+          ]
+        },
+        "ride04": {
+          "cutoffRules": [
+            {
+              "id": "midi_ride04_cuts_previous_ride04",
+              "targets": [
+                {
+                  "tag": "ride04"
+                }
+              ],
+              "fadeSeconds": 0.01,
+              "includeFutureScheduled": false
+            }
+          ]
+        },
+        "ridehard": {
+          "cutoffRules": [
+            {
+              "id": "midi_ridehard_cuts_previous_ridehard",
+              "targets": [
+                {
+                  "tag": "ridehard"
+                }
+              ],
+              "fadeSeconds": 0.01,
+              "includeFutureScheduled": false
+            }
+          ]
+        },
+        "snare": {
+          "cutoffRules": [
+            {
+              "id": "midi_snare_cuts_previous_snare",
+              "targets": [
+                {
+                  "tag": "snare"
+                }
+              ],
+              "fadeSeconds": 0.01,
+              "includeFutureScheduled": false
+            }
+          ]
+        },
+        "beepipe": {
+          "cutoffRules": [
+            {
+              "id": "midi_beepipe_cuts_previous_beepipe",
+              "targets": [
+                {
+                  "tag": "beepipe"
+                }
+              ],
+              "fadeSeconds": 0.01,
+              "includeFutureScheduled": false
+            }
+          ]
+        },
+        "rim": {
+          "cutoffRules": [
+            {
+              "id": "midi_rim_cuts_previous_rim",
+              "targets": [
+                {
+                  "tag": "rim"
+                }
+              ],
+              "fadeSeconds": 0.01,
+              "includeFutureScheduled": false
+            }
+          ]
+        },
+        "arp": {
+          "cutoffRules": [
+            {
+              "id": "midi_arp_cuts_previous_coin",
+              "targets": [
+                {
+                  "tag": "coin"
+                }
+              ],
+              "fadeSeconds": 0.01,
+              "includeFutureScheduled": false
+            }
+          ]
+        },
+        "done": {
+          "cutoffRules": [
+            {
+              "id": "midi_done_cuts_previous_arp",
+              "targets": [
+                {
+                  "tag": "arp"
+                }
+              ],
+              "fadeSeconds": 0.01,
+              "includeFutureScheduled": false
+            }
+          ]
+        }
+      },
       "byKey": {
         "samples/crash_metal_odd_metal (consolidated).wav": {
           "globalInclusionChance": 1,
