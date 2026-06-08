@@ -2533,8 +2533,20 @@ function isExtraRimMidiPattern(pattern) {
   return baseId.startsWith("rims_xtra") || key.includes("rims_xtra");
 }
 
+function isBeepipes2MidiPattern(pattern) {
+  const entry = getMidiPatternRuleEntry(pattern);
+  const tags = getMidiPatternRuleTags(pattern);
+  const baseId = normalizeRuleDecisionToken(getMidiPatternBaseId(pattern));
+  const key = normalizeRuleDecisionToken(entry?.key || pattern?.file || "");
+
+  return tags.includes("beepipes_2") || baseId.includes("beepipes_2") || key.includes("beepipes_2");
+}
 function normalHatChoiceClashesWithMidiPattern(choiceGroupId, pattern) {
   if (!choiceGroupId) return false;
+
+  if (isBeepipes2MidiPattern(pattern) && choiceGroupId !== "hats_wiv_beepipes") {
+    return true;
+  }
 
   if (choiceGroupId === "holdit_hats" && isRimMidiPattern(pattern)) {
     return true;
