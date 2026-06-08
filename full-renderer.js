@@ -2410,6 +2410,93 @@
     );
   }
 
+  function getMidiPatternRuleFamily(pattern) {
+    const entry = getMidiPatternRuleEntry(pattern);
+    return normalizeRuleDecisionToken(entry?.family || pattern?.id || pattern?.file || "");
+  }
+
+  function getMidiPatternRuleTags(pattern) {
+    const entry = getMidiPatternRuleEntry(pattern);
+    return new Set((entry?.tags || []).map(tag => normalizeRuleDecisionToken(tag)));
+  }
+
+  function getMidiPatternBaseId(pattern) {
+    let base = String(pattern?.id || pattern?.file || "").replace(/\.mid$/i, "");
+
+    const sampleSuffixes = [
+      "ridehard",
+      "ride04",
+      "ride03",
+      "beepipe",
+      "crash",
+      "snare",
+      "jump",
+      "done",
+      "coin",
+      "rim",
+      "arp",
+      "ch",
+      "oh"
+    ];
+
+    for (const suffix of sampleSuffixes) {
+      const ending = `_${suffix}`;
+      if (base.endsWith(ending)) {
+        return base.slice(0, -ending.length);
+      }
+    }
+
+    return base;
+  }
+
+  function isJazzMidiHatPattern(pattern) {
+    const family = getMidiPatternRuleFamily(pattern);
+    const tags = getMidiPatternRuleTags(pattern);
+    const key = String(pattern?.file || pattern?.id || "").toLowerCase();
+
+    return (
+      family === "jazz_hats" ||
+      family === "jazz_rides" ||
+      family === "jazz_ghost_rides" ||
+      tags.has("jazz_hats") ||
+      tags.has("jazz_rides") ||
+      tags.has("jazz_ghost_rides") ||
+      key.includes("jazz_")
+    );
+  }
+
+  function isNormalMidiHatPattern(pattern) {
+    const tags = getMidiPatternRuleTags(pattern);
+    const key = String(pattern?.file || pattern?.id || "").toLowerCase();
+
+    return tags.has("hats") && key.includes("hats") && !isJazzMidiHatPattern(pattern);
+  }
+
+  function getNormalMidiHatCompanionGroupId(pattern) {
+    if (!isNormalMidiHatPattern(pattern)) return "";
+    return normalizeRuleDecisionToken(getMidiPatternBaseId(pattern));
+  }
+
+  function getNormalMidiHatChoiceGroupId(pattern) {
+    if (!isNormalMidiHatPattern(pattern)) return "";
+
+    const base = normalizeRuleDecisionToken(getMidiPatternBaseId(pattern));
+
+    if (base.startsWith("main_hats")) return "main_hats";
+    if (base.startsWith("hats_hook_metal")) return "hook_hats";
+    if (base.startsWith("hats_wiv_beepipes")) return "hats_wiv_beepipes";
+    if (base.startsWith("holdit_hats_forlyrix")) return "holdit_hats_forlyrix";
+    if (base.startsWith("holdit_hats")) return "holdit_hats";
+    if (base.startsWith("lego_hats")) return "lego_hats";
+    if (base.startsWith("messy_hats_fast_ends_in_main_hats")) return "messy_hats_fast_ends_in_main_hats";
+    if (base.startsWith("messy_hats_fast")) return "messy_hats_fast";
+    if (base.startsWith("messy_hats")) return "messy_hats";
+    if (base.startsWith("speedy_hats")) return "speedy_hats";
+    if (base.startsWith("trap_hats")) return "trap_hats";
+
+    return base;
+  }
+
   function getBaseActivationChance(entry) {
     const key = entry.key.toLowerCase();
 
