@@ -2501,14 +2501,37 @@
       const everythingIntroCandidates = catalog.rulePools.everythingIntro.candidates || [];
       const everythingIntro = chooseOne(random, everythingIntroCandidates);
 
-      if (everythingIntro) selectedAudio.add(everythingIntro);
+      if (everythingIntro) {
+        forceIncludeAudioSelection({
+          random,
+          globalInclusionState,
+          requiredActivationState,
+          selectedAudio,
+          key: everythingIntro,
+          reason: "forced_everything_intro_candidate"
+        });
+      }
 
       for (const ah of catalog.rulePools.everythingIntro.ahMains) {
-        selectedAudio.add(ah);
+        forceIncludeAudioSelection({
+          random,
+          globalInclusionState,
+          requiredActivationState,
+          selectedAudio,
+          key: ah,
+          reason: "forced_everything_intro_ah_main"
+        });
       }
 
       if (catalog.rulePools.everythingIntro.crash) {
-        selectedAudio.add(catalog.rulePools.everythingIntro.crash);
+        forceIncludeAudioSelection({
+          random,
+          globalInclusionState,
+          requiredActivationState,
+          selectedAudio,
+          key: catalog.rulePools.everythingIntro.crash,
+          reason: "forced_everything_intro_crash"
+        });
       }
 
       addSection("everything_intro", 8, {
