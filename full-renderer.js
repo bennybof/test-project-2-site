@@ -842,6 +842,83 @@
     return true;
   }
 
+  function cutOffPlaybackItemsAtTime(playbackState, filter = {}, cutTimeSeconds = 0, options = {}) {
+    const items = getActivePlaybackItemsAtTime(playbackState, cutTimeSeconds, filter);
+    let count = 0;
+
+    for (const item of items) {
+      if (cutOffPlaybackItem(playbackState, item, cutTimeSeconds, options)) {
+        count += 1;
+      }
+    }
+
+    return count;
+  }
+
+  function cutOffFuturePlaybackItemsAfterTime(playbackState, filter = {}, cutTimeSeconds = 0, options = {}) {
+    const items = getFuturePlaybackItemsAfterTime(playbackState, cutTimeSeconds, filter);
+    let count = 0;
+
+    for (const item of items) {
+      if (cutOffPlaybackItem(playbackState, item, cutTimeSeconds, options)) {
+        count += 1;
+      }
+    }
+
+    return count;
+  }
+
+  function applyGenericCutoffAction(playbackState, {
+    cutTimeSeconds = 0,
+    filter = {},
+    includeFutureScheduled = false,
+    fadeSeconds = 0.01,
+    reason = "generic_cutoff",
+    blockNewActivationsUntilSeconds = null,
+    blockFilter = null
+  } = {}) {
+    if (!playbackState) {
+      return {
+        activeCutCount: 0,
+        futureCutCount: 0,
+        blockWindow: null
+      };
+    }
+
+    const activeCutCount = cutOffPlaybackItemsAtTime(playbackState, filter, cutTimeSeconds, {
+      fadeSeconds,
+      reason
+    });
+
+    const futureCutCount = includeFutureScheduled
+      ? cutOffFuturePlaybackItemsAfterTime(playbackState, filter, cutTimeSeconds, {
+          fadeSeconds,
+          reason: `${reason}_future`
+        })
+      : 0;
+
+    let blockWindow = null;
+
+    if (Number.isFinite(Number(blockNewActivationsUntilSeconds))) {
+      const activeBlockFilter = blockFilter || filter;
+
+      blockWindow = addActivationBlockWindow(playbackState, {
+        startsAtSeconds: cutTimeSeconds,
+        endsAtSeconds: Number(blockNewActivationsUntilSeconds),
+        kind: activeBlockFilter.kind || "",
+        key: activeBlockFilter.key || "",
+        family: activeBlockFilter.family || "",
+        tag: activeBlockFilter.tag || "",
+        reason
+      });
+    }
+
+    return {
+      activeCutCount,
+      futureCutCount,
+      blockWindow
+    };
+  }
   function cutOffMatchingPlaybackItems(playbackState, filter = {}, cutTimeSeconds = 0, options = {}) {
     const items = getActivePlaybackItems(playbackState, filter);
     let count = 0;
