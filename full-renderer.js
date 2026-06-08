@@ -1142,16 +1142,51 @@
     );
   }
 
-  function getRuleProfileForMidiPattern(pattern) {
-    if (!pattern) return {};
+  function getMidiPatternSampleTag(pattern) {
+    const samplePath = String(pattern?.samplePath || "");
+    const fileName = samplePath.split(/[\\/]/).pop() || "";
+    const cleanName = fileName.replace(/\.[^.]+$/, "");
+    return normalizeRuleDecisionToken(cleanName);
+  }
 
-    return getRuleProfileForEntry({
+  function getMidiPatternRuleEntry(pattern) {
+    if (!pattern) return null;
+
+    const entry = getCatalogEntry(pattern.file);
+    const sampleTag = getMidiPatternSampleTag(pattern);
+    const tags = new Set(entry?.tags || []);
+
+    if (sampleTag) tags.add(sampleTag);
+
+    if (entry) {
+      return {
+        ...entry,
+        tags: [...tags],
+        midi: {
+          ...(entry.midi || {}),
+          samplePath: pattern.samplePath,
+          noteCount: pattern.notes?.length ?? entry.midi?.noteCount ?? null,
+          lengthBeats: pattern.lengthBeats ?? entry.midi?.lengthBeats ?? null
+        }
+      };
+    }
+
+    return {
       key: pattern.file,
       type: "midi",
       folder: "midi files",
       family: pattern.id || pattern.file,
-      tags: ["midi"]
-    });
+      tags: [...tags, "midi"],
+      midi: {
+        samplePath: pattern.samplePath,
+        noteCount: pattern.notes?.length ?? null,
+        lengthBeats: pattern.lengthBeats ?? null
+      }
+    };
+  }
+
+  function getRuleProfileForMidiPattern(pattern) {
+    return getRuleProfileForEntry(getMidiPatternRuleEntry(pattern));
   }
 
   function getRuleChance(profile, names, fallback = 0) {
@@ -3042,7 +3077,7 @@
     const sampleBuffer = buffers.get(pattern.samplePath);
     if (!sampleBuffer) return 0;
 
-    const entry = getCatalogEntry(pattern.file);
+    const entry = getMidiPatternRuleEntry(pattern);
     let scheduledCount = 0;
 
     for (const note of pattern.notes) {
