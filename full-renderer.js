@@ -2505,6 +2505,51 @@
 
   return weight;
 }
+function isRimMidiPattern(pattern) {
+  const entry = getMidiPatternRuleEntry(pattern);
+  const tags = getMidiPatternRuleTags(pattern);
+  const baseId = normalizeRuleDecisionToken(getMidiPatternBaseId(pattern));
+  const key = normalizeRuleDecisionToken(entry?.key || pattern?.file || "");
+
+  return tags.includes("rim") || baseId.includes("rim") || key.includes("rim");
+}
+
+function isExtraRimMidiPattern(pattern) {
+  const baseId = normalizeRuleDecisionToken(getMidiPatternBaseId(pattern));
+  const key = normalizeRuleDecisionToken(pattern?.file || "");
+
+  return baseId.startsWith("rims_xtra") || key.includes("rims_xtra");
+}
+
+function normalHatChoiceClashesWithMidiPattern(choiceGroupId, pattern) {
+  if (!choiceGroupId) return false;
+
+  if (choiceGroupId === "holdit_hats" && isRimMidiPattern(pattern)) {
+    return true;
+  }
+
+  if (!isExtraRimMidiPattern(pattern)) {
+    return false;
+  }
+
+  if (
+    choiceGroupId === "main_hats" ||
+    choiceGroupId === "trap_hats" ||
+    choiceGroupId === "lego_hats" ||
+    choiceGroupId === "messy_hats" ||
+    choiceGroupId === "messy_hats_fast" ||
+    choiceGroupId === "messy_hats_fast_ends_in_main_hats"
+  ) {
+    return true;
+  }
+
+  if (choiceGroupId === "speedy_hats") {
+    const baseId = normalizeRuleDecisionToken(getMidiPatternBaseId(pattern));
+    return baseId.startsWith("rims_xtra_1");
+  }
+
+  return false;
+}
 function getNormalMidiHatChoiceGroupId(pattern) {
     if (!isNormalMidiHatPattern(pattern)) return "";
 
@@ -3105,6 +3150,8 @@ function getNormalMidiHatChoiceGroupId(pattern) {
         }))
         .filter(item => item.weight > 0);
 
+      let selectedNormalHatChoice = null;
+
       if (availableHatChoices.length) {
         const totalWeight = availableHatChoices.reduce((total, item) => total + item.weight, 0);
         let roll = random() * totalWeight;
@@ -3117,6 +3164,8 @@ function getNormalMidiHatChoiceGroupId(pattern) {
             break;
           }
         }
+
+        selectedNormalHatChoice = chosenChoice;
 
         const companionGroups = normalHatGroupsByChoice.get(chosenChoice);
         let chosenPatterns = [];
@@ -3164,8 +3213,11 @@ function getNormalMidiHatChoiceGroupId(pattern) {
       }
 
       const nonNormalLimit = sectionSelectedMidi.size > 0 ? 2 : 3;
+      const eligibleNonNormalMidi = nonNormalMidi.filter(pattern =>
+        !normalHatChoiceClashesWithMidiPattern(selectedNormalHatChoice, pattern)
+      );
 
-      for (const pattern of shuffle(random, nonNormalMidi).slice(0, nonNormalLimit)) {
+      for (const pattern of shuffle(random, eligibleNonNormalMidi).slice(0, nonNormalLimit)) {
         let p = 0.35;
         const key = pattern.file.toLowerCase();
 
