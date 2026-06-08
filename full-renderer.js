@@ -311,6 +311,26 @@
 
     return false;
   }
+  function isLifecycleItemEligible(state) {
+    return Boolean(
+      state &&
+      state.included &&
+      state.introduced &&
+      state.available &&
+      !state.withdrawn
+    );
+  }
+
+  function isLifecycleIdEligible(lifecycleStates, id) {
+    return isLifecycleItemEligible(getLifecycleState(lifecycleStates, id));
+  }
+
+  function setLifecycleEligible(lifecycleStates, id) {
+    includeLifecycleItem(lifecycleStates, id);
+    introduceLifecycleItem(lifecycleStates, id);
+    setLifecycleAvailability(lifecycleStates, id, true);
+    return getLifecycleState(lifecycleStates, id);
+  }
   function shuffle(random, items) {
     const copy = [...items];
     for (let i = copy.length - 1; i > 0; i--) {
