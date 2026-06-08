@@ -1327,6 +1327,137 @@
       "crescendo"
     ]);
   }
+  function normalizeRuleTargetFilter(target = {}) {
+    if (typeof target === "string") {
+      return {
+        key: "",
+        family: "",
+        tag: normalizeRuleDecisionToken(target),
+        kind: "",
+        type: "",
+        sectionType: ""
+      };
+    }
+
+    if (!target || typeof target !== "object") {
+      return {
+        key: "",
+        family: "",
+        tag: "",
+        kind: "",
+        type: "",
+        sectionType: ""
+      };
+    }
+
+    return {
+      key: String(target.key || target.file || target.stem || ""),
+      family: normalizeRuleDecisionToken(target.family || target.group || ""),
+      tag: normalizeRuleDecisionToken(target.tag || target.hasTag || target.tagged || ""),
+      kind: normalizeRuleDecisionToken(target.kind || ""),
+      type: normalizeRuleDecisionToken(target.type || ""),
+      sectionType: normalizeRuleDecisionToken(target.sectionType || target.section || "")
+    };
+  }
+
+  function getRuleTargets(rule) {
+    if (!rule) return [];
+
+    if (Array.isArray(rule)) return rule.map(target => normalizeRuleTargetFilter(target));
+
+    const rawTargets =
+      rule.targets ||
+      rule.target ||
+      rule.items ||
+      rule.item ||
+      rule.with ||
+      rule.against ||
+      rule.cuts ||
+      rule.blocks ||
+      [];
+
+    const targets = Array.isArray(rawTargets) ? rawTargets : [rawTargets];
+
+    return targets.map(target => normalizeRuleTargetFilter(target));
+  }
+
+  function doesRuleTargetMatchEntry(target, entry) {
+    if (!entry) return false;
+
+    const filter = normalizeRuleTargetFilter(target);
+    const tags = getEntryRuleDecisionTags(entry);
+
+    if (filter.key && filter.key !== entry.key) return false;
+    if (filter.family && normalizeRuleDecisionToken(entry.family) !== filter.family) return false;
+    if (filter.tag && !tags.has(filter.tag)) return false;
+    if (filter.kind && normalizeRuleDecisionToken(entry.type) !== filter.kind) return false;
+    if (filter.type && normalizeRuleDecisionToken(entry.type) !== filter.type) return false;
+
+    return Boolean(filter.key || filter.family || filter.tag || filter.kind || filter.type);
+  }
+
+  function doesRuleTargetMatchContext(target, context) {
+    if (!context) return false;
+
+    const filter = normalizeRuleTargetFilter(target);
+
+    if (filter.key && filter.key !== context.itemKey) return false;
+    if (filter.kind && normalizeRuleDecisionToken(context.kind) !== filter.kind) return false;
+    if (filter.sectionType && normalizeRuleDecisionToken(context.sectionType) !== filter.sectionType) return false;
+
+    if (filter.family) {
+      const familyTag = `family:${filter.family}`;
+      if (!context.itemTags?.has(familyTag) && !context.itemTags?.has(filter.family)) return false;
+    }
+
+    if (filter.tag && !context.itemTags?.has(filter.tag)) return false;
+
+    return Boolean(filter.key || filter.family || filter.tag || filter.kind || filter.sectionType);
+  }
+
+  function doesRuleTargetMatchPlaybackItem(target, item) {
+    if (!item) return false;
+
+    const filter = normalizeRuleTargetFilter(target);
+
+    if (filter.key && filter.key !== item.key) return false;
+    if (filter.kind && normalizeRuleDecisionToken(item.kind) !== filter.kind) return false;
+    if (filter.family && normalizeRuleDecisionToken(item.family) !== filter.family) return false;
+    if (filter.tag && !item.tags.includes(filter.tag)) return false;
+
+    return Boolean(filter.key || filter.family || filter.tag || filter.kind);
+  }
+
+  function getPlaybackFilterFromRuleTarget(target) {
+    const filter = normalizeRuleTargetFilter(target);
+
+    return {
+      key: filter.key,
+      family: filter.family,
+      tag: filter.tag,
+      kind: filter.kind
+    };
+  }
+
+  function findActivePlaybackItemsForRuleTargets(playbackState, targets, timeSeconds = null) {
+    const list = Array.isArray(targets) ? targets : [targets];
+    const matches = [];
+
+    for (const target of list) {
+      const filter = getPlaybackFilterFromRuleTarget(target);
+      const items = timeSeconds === null
+        ? getActivePlaybackItems(playbackState, filter)
+        : getActivePlaybackItemsAtTime(playbackState, timeSeconds, filter);
+
+      for (const item of items) {
+        if (!matches.some(existing => existing.id === item.id)) {
+          matches.push(item);
+        }
+      }
+    }
+
+    return matches;
+  }
   function shuffle(random, items) {
     const copy = [...items];
     for (let i = copy.length - 1; i > 0; i--) {
