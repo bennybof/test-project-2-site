@@ -1640,6 +1640,8 @@
     baseChance = 1,
     profile = null
   } = {}) {
+    const safeRandom = typeof random === "function" ? random : (() => 1);
+
     const activeProfile = profile || (
       kind === "midi"
         ? getRuleProfileForMidiPattern(pattern)
@@ -1662,9 +1664,9 @@
       baseChance
     });
 
-    applyRuleProfileToDecision(playbackState, context, decision, activeProfile, random);
+    applyRuleProfileToDecision(playbackState, context, decision, activeProfile, safeRandom);
 
-    const allowed = finalizeRuleDecision(random, decision);
+    const allowed = finalizeRuleDecision(safeRandom, decision);
     recordRuleDecisionDebug(plan, decision);
 
     return {
