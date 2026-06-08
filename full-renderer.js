@@ -1323,7 +1323,7 @@
           scheduledLyrixGroupIds.add(groupId);
         }
 
-        scheduleAudioStemInSection({
+        const scheduledCount = scheduleAudioStemInSection({
           offlineContext,
           destination,
           key,
@@ -1331,6 +1331,14 @@
           random,
           section
         });
+
+        if (scheduledCount > 0) {
+          activateLifecycleItem(
+            lifecycleStates,
+            getAudioLifecycleId(key),
+            `${section.id}:${key}`
+          );
+        }
       }
     }
 
