@@ -104,6 +104,10 @@
     ].includes(tensionLabel);
   }
 
+  function chooseBridgeLeadInBars(random) {
+    return chance(random, 0.5) ? 2 : 3;
+  }
+
   function selectIncludedBridgeLyrixSections(random) {
     const bridgeRules = getBridgeLyrixGlobalRules();
 
