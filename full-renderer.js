@@ -2323,6 +2323,8 @@
         suppressLyrixLeadIn: Boolean(options.suppressLyrixLeadIn)
       };
 
+      attachSectionEnergyContext(section);
+
       sectionTimeline.push(section);
 
       if (section.reset) {
