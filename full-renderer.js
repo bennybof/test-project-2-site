@@ -1516,6 +1516,39 @@
     };
   }
 
+  function scheduleAudioBufferWithPlaybackState({
+    offlineContext,
+    destination,
+    buffer,
+    startTime,
+    gainValue = 1,
+    offset = 0,
+    playbackState = null,
+    key = "",
+    entry = null,
+    section = null,
+    family = ""
+  } = {}) {
+    const scheduleHandle = scheduleBuffer(
+      offlineContext,
+      destination,
+      buffer,
+      startTime,
+      gainValue,
+      offset
+    );
+
+    registerScheduledPlaybackHandle(playbackState, {
+      kind: "audio",
+      key,
+      entry,
+      scheduleHandle,
+      section,
+      family
+    });
+
+    return scheduleHandle;
+  }
   function scheduleMidiPattern({ offlineContext, destination, pattern, buffers, barStart, beatSeconds, gainValue }) {
     const sampleBuffer = buffers.get(pattern.samplePath);
     if (!sampleBuffer) return 0;
