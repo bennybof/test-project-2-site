@@ -1133,87 +1133,96 @@
   }
   function scheduleAudioStemInSection({ offlineContext, destination, key, buffer, random, section }) {
     const entry = getCatalogEntry(key);
-    if (!entry || !buffer) return;
-    if (!audioMatchesSection(entry, section)) return;
+    if (!entry || !buffer) return 0;
+    if (!audioMatchesSection(entry, section)) return 0;
 
     const keyLower = key.toLowerCase();
     const gain = sectionGainForAudio(entry, section);
 
     if (entry.folder === "alternate downloads") {
       if (chance(random, 0.005)) {
-        scheduleBuffer(offlineContext, destination, buffer, section.startSeconds, 0.8);
+        return scheduleBuffer(offlineContext, destination, buffer, section.startSeconds, 0.8) ? 1 : 0;
       }
-      return;
+      return 0;
     }
 
     if (keyLower.includes("everything_intro")) {
-      scheduleBuffer(offlineContext, destination, buffer, section.startSeconds, gain);
-      return;
+      return scheduleBuffer(offlineContext, destination, buffer, section.startSeconds, gain) ? 1 : 0;
     }
 
     if (keyLower.includes("drop_") || keyLower.includes("dropped_")) {
       const localBar = Math.floor(random() * Math.max(1, section.bars));
-      scheduleBuffer(offlineContext, destination, buffer, section.startSeconds + localBar * section.barSeconds, gain);
-      return;
+      return scheduleBuffer(offlineContext, destination, buffer, section.startSeconds + localBar * section.barSeconds, gain) ? 1 : 0;
     }
 
     if (keyLower.includes("outburst")) {
-      scheduleBuffer(offlineContext, destination, buffer, section.startSeconds, gain);
-      return;
+      return scheduleBuffer(offlineContext, destination, buffer, section.startSeconds, gain) ? 1 : 0;
     }
 
     if (keyLower.includes("grm_") || keyLower.includes("rewind_sfx")) {
       const localBar = Math.floor(random() * Math.max(1, section.bars));
-      scheduleBuffer(offlineContext, destination, buffer, section.startSeconds + localBar * section.barSeconds, gain);
-      return;
+      return scheduleBuffer(offlineContext, destination, buffer, section.startSeconds + localBar * section.barSeconds, gain) ? 1 : 0;
     }
 
-        if (isLyrix(entry)) {
-      scheduleLyrixGroupInSection({
+    if (isLyrix(entry)) {
+      return scheduleLyrixGroupInSection({
         offlineContext,
         destination,
         key,
         random,
         section,
         buffers: currentRenderBuffers
-      });
-      return;
+      }) ? 1 : 0;
     }
 
     if (isLikelyOneShot(entry)) {
       const allowedBars = getAllowedLocalBarIndexesForKey(key, section);
+      let scheduledCount = 0;
 
       for (const localBarIndex of allowedBars) {
         if (chance(random, 0.12)) {
-          scheduleBuffer(
+          const scheduled = scheduleBuffer(
             offlineContext,
             destination,
             buffer,
             section.startSeconds + localBarIndex * section.barSeconds,
             gain
           );
+
+          if (scheduled) {
+            scheduledCount += 1;
+          }
         }
       }
-      return;
+
+      return scheduledCount;
     }
 
     const phraseRepeats = section.type === "normal" ? 1 : 2;
     const allowedPhraseBars = getAllowedLocalBarIndexesForKey(key, section);
 
-    if (!allowedPhraseBars.length) return;
+    if (!allowedPhraseBars.length) return 0;
+
+    let scheduledCount = 0;
 
     for (let i = 0; i < phraseRepeats; i++) {
       if (chance(random, 0.45)) {
         const localBar = chooseOne(random, allowedPhraseBars);
-        scheduleBuffer(
+        const scheduled = scheduleBuffer(
           offlineContext,
           destination,
           buffer,
           section.startSeconds + localBar * section.barSeconds,
           gain
         );
+
+        if (scheduled) {
+          scheduledCount += 1;
+        }
       }
     }
+
+    return scheduledCount;
   }
 
   function schedulePlan({ offlineContext, destination, buffers, plan, random, duration }) {
