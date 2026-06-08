@@ -3032,6 +3032,11 @@
         const choiceGroupId = getNormalMidiHatChoiceGroupId(pattern);
         const companionGroupId = getNormalMidiHatCompanionGroupId(pattern);
 
+        if (choiceGroupId === "hats_wiv_beepipes") {
+          // These hats can only play with beepipes_2, so keep them out of the generic hat picker.
+          continue;
+        }
+
         if (!choiceGroupId || !companionGroupId) {
           nonNormalMidi.push(pattern);
           continue;
