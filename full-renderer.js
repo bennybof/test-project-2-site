@@ -3233,7 +3233,24 @@
             continue;
           }
 
-          if (chance(random, 0.7)) {
+          const midiProfile = getRuleProfileForMidiPattern(pattern);
+          const midiBaseChance = getActivationChance(midiProfile, 0.7);
+
+          const midiDecisionResult = resolveRuleProfileDecision({
+            random,
+            plan,
+            playbackState,
+            kind: "midi",
+            pattern,
+            section,
+            lifecycleStates,
+            localBarIndex,
+            startSeconds: t,
+            baseChance: midiBaseChance,
+            profile: midiProfile
+          });
+
+          if (midiDecisionResult.allowed) {
             const scheduledCount = scheduleMidiPattern({
               offlineContext,
               destination,
