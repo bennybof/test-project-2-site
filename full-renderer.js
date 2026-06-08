@@ -421,6 +421,8 @@
     const selectedAudio = new Set();
     const selectedMidi = new Set();
 
+    const lifecycleStates = new Map();
+
     const sectionTimeline = [];
     const resetPoints = [];
     const lyrixSectionUsage = new Map();
@@ -750,9 +752,24 @@
 
     expandSelectedWetDryPairs(selectedAudio);
 
+    for (const key of selectedAudio) {
+      const lifecycleId = `audio:${key}`;
+      includeLifecycleItem(lifecycleStates, lifecycleId);
+      introduceLifecycleItem(lifecycleStates, lifecycleId);
+      setLifecycleAvailability(lifecycleStates, lifecycleId, true);
+    }
+
+    for (const key of selectedMidi) {
+      const lifecycleId = `midi:${key}`;
+      includeLifecycleItem(lifecycleStates, lifecycleId);
+      introduceLifecycleItem(lifecycleStates, lifecycleId);
+      setLifecycleAvailability(lifecycleStates, lifecycleId, true);
+    }
+
     return {
       selectedAudio: [...selectedAudio],
       selectedMidi: [...selectedMidi],
+      lifecycleStates: [...lifecycleStates.values()],
       sectionTimeline,
       resetPoints
     };
