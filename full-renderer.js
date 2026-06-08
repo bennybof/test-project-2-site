@@ -1557,7 +1557,10 @@
         context.startSeconds
       );
 
-      if (activeMatches.length && chance(rule.random || (() => 1), clampProbability(rule.chance ?? 1, 1))) {
+      const ruleChance = clampProbability(rule.chance ?? 1, 1);
+      const ruleRoll = Number.isFinite(Number(rule.roll)) ? Number(rule.roll) : 0;
+
+      if (activeMatches.length && ruleRoll < ruleChance) {
         const endSeconds = Number(context.startSeconds || 0) + durationSeconds;
 
         addActivationBlockWindow(playbackState, {
