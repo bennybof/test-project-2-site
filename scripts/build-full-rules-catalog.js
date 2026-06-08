@@ -300,6 +300,25 @@ const rulePools = {
     )
   },
 
+  ruleProfiles: {
+    byKey: {
+      "samples/crash_metal_odd_metal (consolidated).wav": {
+        globalInclusionChance: 1,
+        activationChance: 1,
+        cutoffRules: [
+          {
+            id: "proof_crash_cuts_previous_crash_audio",
+            targets: [
+              { family: "crash" }
+            ],
+            fadeSeconds: 0.01,
+            includeFutureScheduled: false
+          }
+        ]
+      }
+    }
+  },
+
   midi: {
     patternCount: midiPatterns.patternCount,
     patterns: midiPatterns.patterns.map(pattern => ({
