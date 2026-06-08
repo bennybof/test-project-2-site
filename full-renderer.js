@@ -3029,6 +3029,11 @@
           continue;
         }
 
+        if (baseId.startsWith("speedy_hats_cont")) {
+          // #cont versions are only for continuing an already-active matching pattern.
+          continue;
+        }
+
         const choiceGroupId = getNormalMidiHatChoiceGroupId(pattern);
         const companionGroupId = getNormalMidiHatCompanionGroupId(pattern);
 
