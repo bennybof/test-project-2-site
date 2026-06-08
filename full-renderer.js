@@ -2109,6 +2109,113 @@
       "crescendo_multiplier"
     );
   }
+  function includeAudioByGlobalDecision({
+    random,
+    globalInclusionState = null,
+    requiredActivationState = null,
+    selectedAudio = null,
+    key = "",
+    entry = null,
+    fallbackChance = 0,
+    force = false,
+    reason = ""
+  } = {}) {
+    if (!selectedAudio) return false;
+
+    const activeEntry = entry || getCatalogEntry(key);
+    if (!activeEntry?.key) return false;
+
+    const profile = getRuleProfileForEntry(activeEntry);
+
+    const decision = force
+      ? setGlobalInclusionDecision(globalInclusionState, {
+          kind: "audio",
+          key: activeEntry.key,
+          included: true,
+          globalChance: 1,
+          roll: 0,
+          forced: true,
+          reason: reason || "forced_global_selection",
+          profileSummary: {
+            family: activeEntry.family || "",
+            tags: activeEntry.tags || []
+          }
+        })
+      : resolveGlobalInclusionDecision({
+          random,
+          globalInclusionState,
+          kind: "audio",
+          key: activeEntry.key,
+          entry: activeEntry,
+          profile,
+          fallbackChance
+        });
+
+    if (!decision?.included) return false;
+
+    selectedAudio.add(activeEntry.key);
+
+    addRequiredActivationRulesFromProfile(requiredActivationState, {
+      kind: "audio",
+      key: activeEntry.key,
+      entry: activeEntry,
+      profile
+    });
+
+    return true;
+  }
+
+  function includeMidiByGlobalDecision({
+    random,
+    globalInclusionState = null,
+    requiredActivationState = null,
+    selectedMidi = null,
+    pattern = null,
+    fallbackChance = 0,
+    force = false,
+    reason = ""
+  } = {}) {
+    if (!selectedMidi || !pattern?.file) return false;
+
+    const profile = getRuleProfileForMidiPattern(pattern);
+
+    const decision = force
+      ? setGlobalInclusionDecision(globalInclusionState, {
+          kind: "midi",
+          key: pattern.file,
+          included: true,
+          globalChance: 1,
+          roll: 0,
+          forced: true,
+          reason: reason || "forced_global_selection",
+          profileSummary: {
+            family: pattern.id || "",
+            tags: ["midi"]
+          }
+        })
+      : resolveGlobalInclusionDecision({
+          random,
+          globalInclusionState,
+          kind: "midi",
+          key: pattern.file,
+          pattern,
+          profile,
+          fallbackChance
+        });
+
+    if (!decision?.included) return false;
+
+    selectedMidi.add(pattern.file);
+
+    addRequiredActivationRulesFromProfile(requiredActivationState, {
+      kind: "midi",
+      key: pattern.file,
+      pattern,
+      profile
+    });
+
+    return true;
+  }
   function shuffle(random, items) {
     const copy = [...items];
     for (let i = copy.length - 1; i > 0; i--) {
