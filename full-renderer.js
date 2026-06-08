@@ -1851,7 +1851,7 @@
 
     return true;
   }
-  function scheduleAudioStemInSection({ offlineContext, destination, key, buffer, random, section }) {
+  function scheduleAudioStemInSection({ offlineContext, destination, key, buffer, random, playbackState = null, section }) {
     const entry = getCatalogEntry(key);
     if (!entry || !buffer) return 0;
     if (!audioMatchesSection(entry, section)) return 0;
@@ -1861,27 +1861,77 @@
 
     if (entry.folder === "alternate downloads") {
       if (chance(random, 0.005)) {
-        return scheduleBuffer(offlineContext, destination, buffer, section.startSeconds, 0.8) ? 1 : 0;
+        return scheduleAudioBufferWithPlaybackState({
+          offlineContext,
+          destination,
+          buffer,
+          startTime: section.startSeconds,
+          gainValue: 0.8,
+          playbackState,
+          key,
+          entry,
+          section
+        }) ? 1 : 0;
       }
       return 0;
     }
 
     if (keyLower.includes("everything_intro")) {
-      return scheduleBuffer(offlineContext, destination, buffer, section.startSeconds, gain) ? 1 : 0;
+      return scheduleAudioBufferWithPlaybackState({
+        offlineContext,
+        destination,
+        buffer,
+        startTime: section.startSeconds,
+        gainValue: gain,
+        playbackState,
+        key,
+        entry,
+        section
+      }) ? 1 : 0;
     }
 
     if (keyLower.includes("drop_") || keyLower.includes("dropped_")) {
       const localBar = Math.floor(random() * Math.max(1, section.bars));
-      return scheduleBuffer(offlineContext, destination, buffer, section.startSeconds + localBar * section.barSeconds, gain) ? 1 : 0;
+      return scheduleAudioBufferWithPlaybackState({
+        offlineContext,
+        destination,
+        buffer,
+        startTime: section.startSeconds + localBar * section.barSeconds,
+        gainValue: gain,
+        playbackState,
+        key,
+        entry,
+        section
+      }) ? 1 : 0;
     }
 
     if (keyLower.includes("outburst")) {
-      return scheduleBuffer(offlineContext, destination, buffer, section.startSeconds, gain) ? 1 : 0;
+      return scheduleAudioBufferWithPlaybackState({
+        offlineContext,
+        destination,
+        buffer,
+        startTime: section.startSeconds,
+        gainValue: gain,
+        playbackState,
+        key,
+        entry,
+        section
+      }) ? 1 : 0;
     }
 
     if (keyLower.includes("grm_") || keyLower.includes("rewind_sfx")) {
       const localBar = Math.floor(random() * Math.max(1, section.bars));
-      return scheduleBuffer(offlineContext, destination, buffer, section.startSeconds + localBar * section.barSeconds, gain) ? 1 : 0;
+      return scheduleAudioBufferWithPlaybackState({
+        offlineContext,
+        destination,
+        buffer,
+        startTime: section.startSeconds + localBar * section.barSeconds,
+        gainValue: gain,
+        playbackState,
+        key,
+        entry,
+        section
+      }) ? 1 : 0;
     }
 
     if (isLyrix(entry)) {
@@ -1901,13 +1951,17 @@
 
       for (const localBarIndex of allowedBars) {
         if (chance(random, 0.12)) {
-          const scheduled = scheduleBuffer(
+          const scheduled = scheduleAudioBufferWithPlaybackState({
             offlineContext,
             destination,
             buffer,
-            section.startSeconds + localBarIndex * section.barSeconds,
-            gain
-          );
+            startTime: section.startSeconds + localBarIndex * section.barSeconds,
+            gainValue: gain,
+            playbackState,
+            key,
+            entry,
+            section
+          });
 
           if (scheduled) {
             scheduledCount += 1;
@@ -1928,13 +1982,17 @@
     for (let i = 0; i < phraseRepeats; i++) {
       if (chance(random, 0.45)) {
         const localBar = chooseOne(random, allowedPhraseBars);
-        const scheduled = scheduleBuffer(
+        const scheduled = scheduleAudioBufferWithPlaybackState({
           offlineContext,
           destination,
           buffer,
-          section.startSeconds + localBar * section.barSeconds,
-          gain
-        );
+          startTime: section.startSeconds + localBar * section.barSeconds,
+          gainValue: gain,
+          playbackState,
+          key,
+          entry,
+          section
+        });
 
         if (scheduled) {
           scheduledCount += 1;
@@ -2060,6 +2118,7 @@
           key,
           buffer: buffers.get(key),
           random,
+          playbackState,
           section
         });
 
