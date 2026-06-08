@@ -253,6 +253,31 @@
     state.withdrawn = true;
     return state;
   }
+  function getAudioLifecycleId(key) {
+    return `audio:${key}`;
+  }
+
+  function getMidiLifecycleId(key) {
+    return `midi:${key}`;
+  }
+
+  function createLifecycleMapFromPlan(plan) {
+    const lifecycleStates = new Map();
+
+    for (const state of plan?.lifecycleStates || []) {
+      if (state?.id) {
+        lifecycleStates.set(state.id, { ...state });
+      }
+    }
+
+    return lifecycleStates;
+  }
+
+  function writeLifecycleMapToPlan(plan, lifecycleStates) {
+    if (!plan || !lifecycleStates) return plan;
+    plan.lifecycleStates = [...lifecycleStates.values()];
+    return plan;
+  }
   function shuffle(random, items) {
     const copy = [...items];
     for (let i = copy.length - 1; i > 0; i--) {
