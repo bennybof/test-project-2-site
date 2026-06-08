@@ -3054,7 +3054,7 @@
 
     return true;
   }
-  function scheduleAudioStemInSection({ offlineContext, destination, key, buffer, random, playbackState = null, section }) {
+  function scheduleAudioStemInSection({ offlineContext, destination, key, buffer, random, plan = null, lifecycleStates = null, playbackState = null, section }) {
     const entry = getCatalogEntry(key);
     if (!entry || !buffer) return 0;
     if (!audioMatchesSection(entry, section)) return 0;
@@ -3338,6 +3338,8 @@
           key,
           buffer: buffers.get(key),
           random,
+          plan,
+          lifecycleStates,
           playbackState,
           section
         });
