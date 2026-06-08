@@ -84,15 +84,31 @@
     const bridgeRules = getBridgeLyrixGlobalRules();
     return clampProbability(section?.dropoutChance ?? bridgeRules?.dropoutChance ?? 0);
   }
-  function chooseBridgeLyrixSection(random, lyrixSectionUsage = new Map()) {
+  function getBridgeLyrixActivationChance(section) {
+    const bridgeRules = getBridgeLyrixGlobalRules();
+    return clampProbability(section?.activationChance ?? bridgeRules?.activationChanceEach ?? 0.02);
+  }
+
+  function selectIncludedBridgeLyrixSections(random) {
     const bridgeRules = getBridgeLyrixGlobalRules();
 
-    const candidates = getBridgeLyrixSections().filter(section => {
+    return getBridgeLyrixSections().filter(section => {
+      const globalInclusionChance = clampProbability(
+        section.globalInclusionChance ?? bridgeRules?.globalInclusionChanceEach ?? 0
+      );
+
+      return chance(random, globalInclusionChance);
+    });
+  }
+
+  function chooseBridgeLyrixSection(random, includedBridgeLyrixSections, lyrixSectionUsage = new Map()) {
+    const bridgeRules = getBridgeLyrixGlobalRules();
+
+    const candidates = (includedBridgeLyrixSections || []).filter(section => {
       const maxSeparateOccasions = Number(section.maxSeparateOccasions ?? bridgeRules?.maxSeparateOccasions ?? 0);
       const currentUsage = lyrixSectionUsage.get(section.id) || 0;
 
       return (
-        Number(section.globalInclusionChance ?? bridgeRules?.globalInclusionChanceEach ?? 0) > 0 &&
         (!maxSeparateOccasions || currentUsage < maxSeparateOccasions) &&
         getLyrixSectionLengthBars(section) > 0 &&
         Array.isArray(section.parts) &&
@@ -100,12 +116,12 @@
       );
     });
 
-    const included = candidates.filter(section =>
-      chance(random, Number(section.globalInclusionChance ?? bridgeRules?.globalInclusionChanceEach ?? 0) || 0)
+    const activated = candidates.filter(section =>
+      chance(random, getBridgeLyrixActivationChance(section))
     );
 
-    if (!included.length) return null;
-    return chooseOne(random, included);
+    if (!activated.length) return null;
+    return chooseOne(random, activated);
   }
   function getLyrixSectionAudioFiles(section) {
     const files = [];
