@@ -3384,6 +3384,36 @@ function getNormalMidiHatChoiceGroupId(pattern) {
 
         if (included) {
           sectionSelectedMidi.add(pattern.file);
+
+          if (isBeepipes2MidiPattern(pattern)) {
+            const beepipes2HatFiles = [
+              "midi files/hats_wiv-beepipes_2_metal_odd_ch.mid",
+              "midi files/hats_wiv-beepipes_2_metal_odd_oh.mid"
+            ];
+
+            for (const hatFile of beepipes2HatFiles) {
+              const hatPattern = midiPatternPool.find(item => item.file === hatFile);
+
+              if (!hatPattern) {
+                continue;
+              }
+
+              const hatIncluded = includeMidiByGlobalDecision({
+                random,
+                globalInclusionState,
+                requiredActivationState,
+                selectedMidi,
+                pattern: hatPattern,
+                fallbackChance: 1,
+                force: true,
+                reason: "beepipes_2_matching_hats"
+              });
+
+              if (hatIncluded) {
+                sectionSelectedMidi.add(hatFile);
+              }
+            }
+          }
         }
       }
 
