@@ -1878,6 +1878,80 @@
 
     return plan;
   }
+  function getRequiredActivationRules(profile) {
+    return getRuleArray(profile, [
+      "requiredActivations",
+      "requiredActivationRules",
+      "requiredActivation",
+      "mustActivate",
+      "mustAppear",
+      "activationObligations"
+    ]);
+  }
+
+  function normalizeRequiredActivationRule(rule, {
+    kind = "audio",
+    key = "",
+    entry = null,
+    pattern = null
+  } = {}) {
+    const target = normalizeRuleTargetFilter(rule?.target || rule || {});
+    const itemKey = getRuleDecisionItemKey({ key, entry, pattern });
+
+    return {
+      kind: normalizeRuleDecisionToken(rule?.kind || target.kind || kind),
+      key: String(rule?.key || rule?.file || target.key || itemKey || ""),
+      family: normalizeRuleDecisionToken(rule?.family || rule?.group || target.family || entry?.family || pattern?.id || ""),
+      tag: normalizeRuleDecisionToken(rule?.tag || target.tag || ""),
+      reason: String(rule?.reason || rule?.id || "required_activation_rule"),
+      minActivations: Math.max(1, Number(rule?.minActivations ?? rule?.minimum ?? 1) || 1),
+      maxActivations: Number.isFinite(Number(rule?.maxActivations ?? rule?.maximum))
+        ? Math.max(0, Number(rule.maxActivations ?? rule.maximum))
+        : null,
+      allowedSectionTypes: Array.isArray(rule?.allowedSectionTypes || rule?.allowedSections)
+        ? (rule.allowedSectionTypes || rule.allowedSections)
+        : [],
+      forbiddenSectionTypes: Array.isArray(rule?.forbiddenSectionTypes || rule?.forbiddenSections)
+        ? (rule.forbiddenSectionTypes || rule.forbiddenSections)
+        : []
+    };
+  }
+
+  function addRequiredActivationRulesFromProfile(requiredActivationState, {
+    kind = "audio",
+    key = "",
+    entry = null,
+    pattern = null,
+    profile = null
+  } = {}) {
+    if (!requiredActivationState) return [];
+
+    const activeProfile = profile || (
+      kind === "midi"
+        ? getRuleProfileForMidiPattern(pattern)
+        : getRuleProfileForEntry(entry)
+    );
+
+    const rules = getRequiredActivationRules(activeProfile);
+    const obligations = [];
+
+    for (const rule of rules) {
+      const normalized = normalizeRequiredActivationRule(rule, {
+        kind,
+        key,
+        entry,
+        pattern
+      });
+
+      const obligation = addRequiredActivationObligation(requiredActivationState, normalized);
+
+      if (obligation) {
+        obligations.push(obligation);
+      }
+    }
+
+    return obligations;
+  }
   function shuffle(random, items) {
     const copy = [...items];
     for (let i = copy.length - 1; i > 0; i--) {
