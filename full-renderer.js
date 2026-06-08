@@ -2709,9 +2709,15 @@
         const chanceMultiplier = section.type === "normal" ? 0.65 : 1.0;
         const p = Math.min(0.9, getBaseActivationChance(entry) * chanceMultiplier);
 
-        if (chance(random, p)) {
-          selectedAudio.add(entry.key);
-        }
+        includeAudioByGlobalDecision({
+          random,
+          globalInclusionState,
+          requiredActivationState,
+          selectedAudio,
+          entry,
+          fallbackChance: p,
+          reason: `section_selection:${section.type}`
+        });
       }
     }
 
