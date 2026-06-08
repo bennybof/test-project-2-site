@@ -278,6 +278,39 @@
     plan.lifecycleStates = [...lifecycleStates.values()];
     return plan;
   }
+  function clampProbability(value, fallback = 0) {
+    const number = Number(value);
+
+    if (!Number.isFinite(number)) return fallback;
+    if (number < 0) return 0;
+    if (number > 1) return 1;
+
+    return number;
+  }
+
+  function calculateLifecycleDropoutChance(state, options = {}) {
+    const baseChance = clampProbability(options.baseChance ?? 0);
+    const increasePerActivation = clampProbability(options.increasePerActivation ?? 0);
+    const maxChance = clampProbability(options.maxChance ?? 1, 1);
+    const activationCount = Math.max(0, Number(state?.activationCount || 0));
+
+    return Math.min(maxChance, baseChance + activationCount * increasePerActivation);
+  }
+
+  function shouldDropoutLifecycleItem(random, lifecycleStates, id, options = {}) {
+    const state = getLifecycleState(lifecycleStates, id);
+
+    if (!state.activated) return false;
+
+    const dropoutChance = calculateLifecycleDropoutChance(state, options);
+
+    if (chance(random, dropoutChance)) {
+      dropoutLifecycleItem(lifecycleStates, id);
+      return true;
+    }
+
+    return false;
+  }
   function shuffle(random, items) {
     const copy = [...items];
     for (let i = copy.length - 1; i > 0; i--) {
