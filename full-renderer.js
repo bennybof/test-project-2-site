@@ -778,14 +778,14 @@
     expandSelectedWetDryPairs(selectedAudio);
 
     for (const key of selectedAudio) {
-      const lifecycleId = `audio:${key}`;
+      const lifecycleId = getAudioLifecycleId(key);
       includeLifecycleItem(lifecycleStates, lifecycleId);
       introduceLifecycleItem(lifecycleStates, lifecycleId);
       setLifecycleAvailability(lifecycleStates, lifecycleId, true);
     }
 
     for (const key of selectedMidi) {
-      const lifecycleId = `midi:${key}`;
+      const lifecycleId = getMidiLifecycleId(key);
       includeLifecycleItem(lifecycleStates, lifecycleId);
       introduceLifecycleItem(lifecycleStates, lifecycleId);
       setLifecycleAvailability(lifecycleStates, lifecycleId, true);
