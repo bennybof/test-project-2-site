@@ -3273,6 +3273,14 @@
       tags: ["audio", "lyrix"]
     };
 
+    const lyrixProfile = getRuleProfileForEntry(entry);
+
+    applyCutoffRulesForAllowedDecision(playbackState, {
+      entry,
+      section,
+      startSeconds: startTime
+    }, lyrixProfile);
+
     return scheduleAudioBufferWithPlaybackState({
       offlineContext,
       destination,
