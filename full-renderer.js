@@ -2867,7 +2867,18 @@
 
     if (selectedMidi.size === 0) {
       const fallback = midiPatterns.patterns.find(pattern => pattern.file === "midi files/main_hats_ch_metal_ch.mid");
-      if (fallback) selectedMidi.add(fallback.file);
+      if (fallback) {
+        includeMidiByGlobalDecision({
+          random,
+          globalInclusionState,
+          requiredActivationState,
+          selectedMidi,
+          pattern: fallback,
+          fallbackChance: 1,
+          force: true,
+          reason: "forced_midi_fallback"
+        });
+      }
     }
 
     expandSelectedWetDryPairs(selectedAudio);
