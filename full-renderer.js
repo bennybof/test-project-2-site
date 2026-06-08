@@ -2477,7 +2477,19 @@
     return normalizeRuleDecisionToken(getMidiPatternBaseId(pattern));
   }
 
-  function getNormalHatChoiceWeight(choiceGroupId, section) {
+  function getNormalHatPatternDropoutChance(choiceGroupId) {
+  if (
+    choiceGroupId === "trap_hats" ||
+    choiceGroupId === "holdit_hats" ||
+    choiceGroupId === "messy_hats_fast" ||
+    choiceGroupId === "messy_hats_fast_ends_in_main_hats"
+  ) {
+    return 0.2;
+  }
+
+  return 0.02;
+}
+function getNormalHatChoiceWeight(choiceGroupId, section) {
   const baseWeights = new Map([
     ["trap_hats", 2],
     ["holdit_hats", 2],
@@ -3088,6 +3100,7 @@ function getNormalMidiHatChoiceGroupId(pattern) {
       }
     }
 
+    let activeNormalHatChoice = null;
     let normalHatsSystemWasActive = false;
 
     // MIDI pattern selection by section.
@@ -3156,18 +3169,31 @@ function getNormalMidiHatChoiceGroupId(pattern) {
         .filter(item => item.weight > 0);
 
       const normalHatsSystemDropsOut = normalHatsSystemWasActive && random() < 0.01;
+      const availableHatChoiceIds = new Set(availableHatChoices.map(item => item.choiceGroupId));
+      const activeNormalHatCanContinue = Boolean(activeNormalHatChoice && availableHatChoiceIds.has(activeNormalHatChoice));
+      const activeNormalHatDropsOut = activeNormalHatCanContinue && random() < getNormalHatPatternDropoutChance(activeNormalHatChoice);
       let selectedNormalHatChoice = null;
 
       if (availableHatChoices.length && !normalHatsSystemDropsOut) {
-        const totalWeight = availableHatChoices.reduce((total, item) => total + item.weight, 0);
-        let roll = random() * totalWeight;
-        let chosenChoice = availableHatChoices[availableHatChoices.length - 1].choiceGroupId;
+        let chosenChoice = activeNormalHatCanContinue && !activeNormalHatDropsOut
+          ? activeNormalHatChoice
+          : null;
 
-        for (const item of availableHatChoices) {
-          roll -= item.weight;
-          if (roll <= 0) {
-            chosenChoice = item.choiceGroupId;
-            break;
+        if (!chosenChoice) {
+          const candidateHatChoices = activeNormalHatCanContinue
+            ? availableHatChoices.filter(item => item.choiceGroupId !== activeNormalHatChoice)
+            : availableHatChoices;
+          const choicesToRoll = candidateHatChoices.length ? candidateHatChoices : availableHatChoices;
+          const totalWeight = choicesToRoll.reduce((total, item) => total + item.weight, 0);
+          let roll = random() * totalWeight;
+          chosenChoice = choicesToRoll[choicesToRoll.length - 1].choiceGroupId;
+
+          for (const item of choicesToRoll) {
+            roll -= item.weight;
+            if (roll <= 0) {
+              chosenChoice = item.choiceGroupId;
+              break;
+            }
           }
         }
 
@@ -3219,6 +3245,7 @@ function getNormalMidiHatChoiceGroupId(pattern) {
       }
 
       normalHatsSystemWasActive = Boolean(selectedNormalHatChoice) && sectionSelectedMidi.size > 0;
+      activeNormalHatChoice = normalHatsSystemWasActive ? selectedNormalHatChoice : null;
 
       const nonNormalLimit = sectionSelectedMidi.size > 0 ? 2 : 3;
       const eligibleNonNormalMidi = nonNormalMidi.filter(pattern =>
