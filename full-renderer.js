@@ -2627,7 +2627,16 @@
           tags: ["drop", "major_reset"]
         });
 
-        for (const key of catalog.rulePools.drop.files) selectedAudio.add(key);
+        for (const key of catalog.rulePools.drop.files) {
+          forceIncludeAudioSelection({
+            random,
+            globalInclusionState,
+            requiredActivationState,
+            selectedAudio,
+            key,
+            reason: "forced_drop_section"
+          });
+        }
         continue;
       }
 
@@ -2642,7 +2651,16 @@
           tags: ["outburst"]
         });
 
-        for (const key of catalog.rulePools.outburst.files) selectedAudio.add(key);
+        for (const key of catalog.rulePools.outburst.files) {
+          forceIncludeAudioSelection({
+            random,
+            globalInclusionState,
+            requiredActivationState,
+            selectedAudio,
+            key,
+            reason: "forced_outburst_section"
+          });
+        }
         continue;
       }
 
@@ -2661,7 +2679,16 @@
 
         exitGrimeyToNewMainGrid();
 
-        for (const key of catalog.rulePools.grimey.files) selectedAudio.add(key);
+        for (const key of catalog.rulePools.grimey.files) {
+          forceIncludeAudioSelection({
+            random,
+            globalInclusionState,
+            requiredActivationState,
+            selectedAudio,
+            key,
+            reason: "forced_grimey_section"
+          });
+        }
         continue;
       }
 
