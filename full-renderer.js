@@ -3748,6 +3748,7 @@
           });
 
           if (midiDecisionResult.allowed) {
+            applyCutoffRulesForAllowedDecision(playbackState, midiDecisionResult.context, midiProfile);
             const scheduledCount = scheduleMidiPattern({
               offlineContext,
               destination,
