@@ -63,6 +63,27 @@
     return chooseOne(random, included);
   }
 
+  function getBridgeLyrixGlobalRules() {
+    return (lyrixRules?.specialSystems || []).find(system => system.id === "bridge_lyrix_global_rules") || null;
+  }
+
+  function getBridgeLyrixSections() {
+    if (!lyrixRules?.sections) return [];
+
+    const bridgeRules = getBridgeLyrixGlobalRules();
+    const bridgeSectionIds = new Set(bridgeRules?.sectionIds || []);
+
+    return lyrixRules.sections.filter(section =>
+      bridgeSectionIds.has(section.id) ||
+      section.kind === "bridge" ||
+      (Array.isArray(section.tags) && section.tags.includes("bridge"))
+    );
+  }
+
+  function getBridgeLyrixDropoutChance(section) {
+    const bridgeRules = getBridgeLyrixGlobalRules();
+    return clampProbability(section?.dropoutChance ?? bridgeRules?.dropoutChance ?? 0);
+  }
   function getLyrixSectionAudioFiles(section) {
     const files = [];
     if (!section?.parts) return files;
