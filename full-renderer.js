@@ -2003,6 +2003,61 @@
 
     return decision;
   }
+  function getSectionEnergyContext(section = {}) {
+    return {
+      densityScore: Number(section.densityScore ?? section.density ?? 0),
+      densityBand: String(section.densityBand || section.densityLevel || ""),
+      tensionValue: Number(section.tensionValue ?? section.tension ?? 0),
+      tensionBand: String(section.tensionBand || section.tensionLevel || ""),
+      isCrescendo: Boolean(section.isCrescendo || section.crescendo),
+      isEmphasis: Boolean(section.isEmphasis || section.emphasis),
+      sectionType: String(section.type || ""),
+      sectionId: String(section.id || "")
+    };
+  }
+
+  function getDensityBandFromScore(score) {
+    const value = Number(score) || 0;
+
+    if (value <= 3) return "low";
+    if (value <= 6) return "medium";
+    return "high";
+  }
+
+  function attachSectionEnergyContext(section, energy = {}) {
+    if (!section) return section;
+
+    const densityScore = Number(energy.densityScore ?? section.densityScore ?? 0);
+    const tensionValue = Number(energy.tensionValue ?? section.tensionValue ?? 0);
+
+    section.densityScore = densityScore;
+    section.densityBand = String(energy.densityBand || section.densityBand || getDensityBandFromScore(densityScore));
+    section.tensionValue = tensionValue;
+    section.tensionBand = String(energy.tensionBand || section.tensionBand || "");
+    section.isCrescendo = Boolean(energy.isCrescendo ?? section.isCrescendo ?? false);
+    section.isEmphasis = Boolean(energy.isEmphasis ?? section.isEmphasis ?? false);
+
+    return section;
+  }
+
+  function getEnergyRuleMultiplier(rule, energyContext) {
+    if (!rule || !energyContext) return 1;
+
+    if (rule.densityBand && String(rule.densityBand) !== energyContext.densityBand) return 1;
+    if (rule.tensionBand && String(rule.tensionBand) !== energyContext.tensionBand) return 1;
+
+    if (Number.isFinite(Number(rule.minDensity)) && energyContext.densityScore < Number(rule.minDensity)) return 1;
+    if (Number.isFinite(Number(rule.maxDensity)) && energyContext.densityScore > Number(rule.maxDensity)) return 1;
+    if (Number.isFinite(Number(rule.minTension)) && energyContext.tensionValue < Number(rule.minTension)) return 1;
+    if (Number.isFinite(Number(rule.maxTension)) && energyContext.tensionValue > Number(rule.maxTension)) return 1;
+
+    if (rule.requiresCrescendo && !energyContext.isCrescendo) return 1;
+    if (rule.requiresEmphasis && !energyContext.isEmphasis) return 1;
+
+    const multiplier = Number(rule.multiplier ?? rule.chanceMultiplier ?? rule.activationMultiplier ?? 1);
+
+    return Number.isFinite(multiplier) ? Math.max(0, multiplier) : 1;
+  }
   function shuffle(random, items) {
     const copy = [...items];
     for (let i = copy.length - 1; i > 0; i--) {
