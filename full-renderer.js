@@ -3148,17 +3148,36 @@
       }) ? 1 : 0;
     }
 
+    const audioProfile = getRuleProfileForEntry(entry);
+
     if (isLikelyOneShot(entry)) {
       const allowedBars = getAllowedLocalBarIndexesForKey(key, section);
+      const oneShotBaseChance = getActivationChance(audioProfile, 0.12);
       let scheduledCount = 0;
 
       for (const localBarIndex of allowedBars) {
-        if (chance(random, 0.12)) {
+        const startSeconds = section.startSeconds + localBarIndex * section.barSeconds;
+        const audioDecisionResult = resolveRuleProfileDecision({
+          random,
+          plan,
+          playbackState,
+          kind: "audio",
+          key,
+          entry,
+          section,
+          lifecycleStates,
+          localBarIndex,
+          startSeconds,
+          baseChance: oneShotBaseChance,
+          profile: audioProfile
+        });
+
+        if (audioDecisionResult.allowed) {
           const scheduled = scheduleAudioBufferWithPlaybackState({
             offlineContext,
             destination,
             buffer,
-            startTime: section.startSeconds + localBarIndex * section.barSeconds,
+            startTime: startSeconds,
             gainValue: gain,
             playbackState,
             key,
@@ -3180,16 +3199,33 @@
 
     if (!allowedPhraseBars.length) return 0;
 
+    const phraseBaseChance = getActivationChance(audioProfile, 0.45);
     let scheduledCount = 0;
 
     for (let i = 0; i < phraseRepeats; i++) {
-      if (chance(random, 0.45)) {
-        const localBar = chooseOne(random, allowedPhraseBars);
+      const localBar = chooseOne(random, allowedPhraseBars);
+      const startSeconds = section.startSeconds + localBar * section.barSeconds;
+      const audioDecisionResult = resolveRuleProfileDecision({
+        random,
+        plan,
+        playbackState,
+        kind: "audio",
+        key,
+        entry,
+        section,
+        lifecycleStates,
+        localBarIndex: localBar,
+        startSeconds,
+        baseChance: phraseBaseChance,
+        profile: audioProfile
+      });
+
+      if (audioDecisionResult.allowed) {
         const scheduled = scheduleAudioBufferWithPlaybackState({
           offlineContext,
           destination,
           buffer,
-          startTime: section.startSeconds + localBar * section.barSeconds,
+          startTime: startSeconds,
           gainValue: gain,
           playbackState,
           key,
