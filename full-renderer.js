@@ -2371,7 +2371,7 @@
     return 0.12;
   }
 
-  function expandSelectedWetDryPairs(selectedAudio) {
+  function expandSelectedWetDryPairs(selectedAudio, random, globalInclusionState, requiredActivationState) {
     const wetDryPairs = catalog?.groups?.wetDryPairs || {};
 
     for (const pairName of Object.keys(wetDryPairs)) {
@@ -2385,7 +2385,14 @@
       if (anySelected) {
         for (const key of allPairKeys) {
           if (getCatalogEntry(key)) {
-            selectedAudio.add(key);
+            forceIncludeAudioSelection({
+              random,
+              globalInclusionState,
+              requiredActivationState,
+              selectedAudio,
+              key,
+              reason: `forced_wet_dry_pair:${pairName}`
+            });
           }
         }
       }
@@ -2881,7 +2888,7 @@
       }
     }
 
-    expandSelectedWetDryPairs(selectedAudio);
+    expandSelectedWetDryPairs(selectedAudio, random, globalInclusionState, requiredActivationState);
 
     for (const key of selectedAudio) {
       const lifecycleId = getAudioLifecycleId(key);
