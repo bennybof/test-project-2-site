@@ -1931,6 +1931,8 @@
 
     const lifecycleStates = new Map();
 
+    const globalInclusionState = createGlobalInclusionState();
+
     const sectionTimeline = [];
     const resetPoints = [];
     const lyrixSectionUsage = new Map();
@@ -2311,6 +2313,7 @@
       selectedAudio: [...selectedAudio],
       selectedMidi: [...selectedMidi],
       lifecycleStates: [...lifecycleStates.values()],
+      globalInclusionDebug: globalInclusionState.debug.map(item => ({ ...item })),
       sectionTimeline,
       resetPoints
     };
