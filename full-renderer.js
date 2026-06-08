@@ -641,6 +641,224 @@
         : []
     });
   }
+
+  function createPlaybackRuleState() {
+    return {
+      activeItems: new Map(),
+      blockedWindows: [],
+      cutoffEvents: [],
+      familyLocks: new Map()
+    };
+  }
+
+  function getPlaybackItemId(kind, key) {
+    return `${normalizeRuleDecisionToken(kind)}:${String(key || "")}`;
+  }
+
+  function registerActivePlaybackItem(playbackState, {
+    kind = "audio",
+    key = "",
+    family = "",
+    startSeconds = 0,
+    endSeconds = null,
+    source = null,
+    gainNode = null,
+    sectionId = "",
+    tags = []
+  } = {}) {
+    if (!playbackState) return null;
+
+    const id = getPlaybackItemId(kind, key);
+
+    const item = {
+      id,
+      kind,
+      key,
+      family: normalizeRuleDecisionToken(family),
+      startSeconds: Number(startSeconds) || 0,
+      endSeconds: Number.isFinite(Number(endSeconds)) ? Number(endSeconds) : null,
+      source,
+      gainNode,
+      sectionId: String(sectionId || ""),
+      tags: Array.isArray(tags)
+        ? tags.map(tag => normalizeRuleDecisionToken(tag)).filter(Boolean)
+        : []
+    };
+
+    playbackState.activeItems.set(id, item);
+
+    if (item.family) {
+      playbackState.familyLocks.set(item.family, id);
+    }
+
+    return item;
+  }
+
+  function unregisterActivePlaybackItem(playbackState, idOrItem) {
+    if (!playbackState || !idOrItem) return;
+
+    const id = typeof idOrItem === "string" ? idOrItem : idOrItem.id;
+    const item = playbackState.activeItems.get(id);
+
+    if (item?.family && playbackState.familyLocks.get(item.family) === id) {
+      playbackState.familyLocks.delete(item.family);
+    }
+
+    playbackState.activeItems.delete(id);
+  }
+
+  function getActivePlaybackItems(playbackState, filter = {}) {
+    if (!playbackState) return [];
+
+    const kind = filter.kind ? normalizeRuleDecisionToken(filter.kind) : "";
+    const family = filter.family ? normalizeRuleDecisionToken(filter.family) : "";
+    const tag = filter.tag ? normalizeRuleDecisionToken(filter.tag) : "";
+    const key = filter.key ? String(filter.key) : "";
+
+    return [...playbackState.activeItems.values()].filter(item => {
+      if (kind && normalizeRuleDecisionToken(item.kind) !== kind) return false;
+      if (family && item.family !== family) return false;
+      if (tag && !item.tags.includes(tag)) return false;
+      if (key && item.key !== key) return false;
+      return true;
+    });
+  }
+
+  function cutOffPlaybackItem(playbackState, item, cutTimeSeconds, options = {}) {
+    if (!playbackState || !item) return false;
+
+    const cutTime = Math.max(0, Number(cutTimeSeconds) || 0);
+    const fadeSeconds = Math.max(0, Number(options.fadeSeconds) || 0);
+
+    if (item.gainNode && fadeSeconds > 0) {
+      try {
+        item.gainNode.gain.setValueAtTime(item.gainNode.gain.value, cutTime);
+        item.gainNode.gain.linearRampToValueAtTime(0, cutTime + fadeSeconds);
+      } catch (error) {
+        console.warn("Cutoff gain ramp failed:", error);
+      }
+    }
+
+    if (item.source) {
+      try {
+        item.source.stop(cutTime + fadeSeconds);
+      } catch (error) {
+        console.warn("Cutoff source stop failed:", error);
+      }
+    }
+
+    playbackState.cutoffEvents.push({
+      itemId: item.id,
+      key: item.key,
+      family: item.family,
+      cutTimeSeconds: cutTime,
+      fadeSeconds,
+      reason: String(options.reason || "cutoff")
+    });
+
+    unregisterActivePlaybackItem(playbackState, item);
+
+    return true;
+  }
+
+  function cutOffMatchingPlaybackItems(playbackState, filter = {}, cutTimeSeconds = 0, options = {}) {
+    const items = getActivePlaybackItems(playbackState, filter);
+    let count = 0;
+
+    for (const item of items) {
+      if (cutOffPlaybackItem(playbackState, item, cutTimeSeconds, options)) {
+        count += 1;
+      }
+    }
+
+    return count;
+  }
+
+  function addActivationBlockWindow(playbackState, {
+    startsAtSeconds = 0,
+    endsAtSeconds = 0,
+    kind = "",
+    key = "",
+    family = "",
+    tag = "",
+    reason = "blocked_window"
+  } = {}) {
+    if (!playbackState) return null;
+
+    const window = {
+      startsAtSeconds: Math.max(0, Number(startsAtSeconds) || 0),
+      endsAtSeconds: Math.max(0, Number(endsAtSeconds) || 0),
+      kind: normalizeRuleDecisionToken(kind),
+      key: String(key || ""),
+      family: normalizeRuleDecisionToken(family),
+      tag: normalizeRuleDecisionToken(tag),
+      reason: String(reason || "blocked_window")
+    };
+
+    if (window.endsAtSeconds < window.startsAtSeconds) {
+      const temp = window.startsAtSeconds;
+      window.startsAtSeconds = window.endsAtSeconds;
+      window.endsAtSeconds = temp;
+    }
+
+    playbackState.blockedWindows.push(window);
+    return window;
+  }
+
+  function getMatchingActivationBlockWindow(playbackState, context) {
+    if (!playbackState || !context) return null;
+
+    const startSeconds = Number(context.startSeconds ?? 0);
+    const kind = normalizeRuleDecisionToken(context.kind);
+    const key = String(context.itemKey || "");
+    const itemTags = context.itemTags || new Set();
+
+    for (const window of playbackState.blockedWindows) {
+      if (startSeconds < window.startsAtSeconds || startSeconds >= window.endsAtSeconds) continue;
+      if (window.kind && window.kind !== kind) continue;
+      if (window.key && window.key !== key) continue;
+      if (window.family && !itemTags.has(`family:${window.family}`) && !itemTags.has(window.family)) continue;
+      if (window.tag && !itemTags.has(window.tag)) continue;
+
+      return window;
+    }
+
+    return null;
+  }
+
+  function applyActivationBlockWindows(playbackState, context, decision) {
+    const window = getMatchingActivationBlockWindow(playbackState, context);
+
+    if (!window) return decision;
+
+    return blockRuleDecision(decision, "activation_block_window", {
+      reason: window.reason,
+      startsAtSeconds: window.startsAtSeconds,
+      endsAtSeconds: window.endsAtSeconds
+    });
+  }
+
+  function isFamilyLockedByOtherItem(playbackState, family, itemId) {
+    if (!playbackState || !family) return false;
+
+    const normalizedFamily = normalizeRuleDecisionToken(family);
+    const lockedItemId = playbackState.familyLocks.get(normalizedFamily);
+
+    return Boolean(lockedItemId && lockedItemId !== itemId);
+  }
+
+  function applyFamilyLock(playbackState, context, decision, family) {
+    if (!playbackState || !context || !family) return decision;
+
+    if (isFamilyLockedByOtherItem(playbackState, family, context.lifecycleId || context.itemKey)) {
+      return blockRuleDecision(decision, "family_locked", {
+        family: normalizeRuleDecisionToken(family),
+        lockedBy: playbackState.familyLocks.get(normalizeRuleDecisionToken(family))
+      });
+    }
+
+    return decision;
+  }
   function shuffle(random, items) {
     const copy = [...items];
     for (let i = copy.length - 1; i > 0; i--) {
