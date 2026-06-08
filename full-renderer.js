@@ -1625,6 +1625,55 @@
 
     return decision;
   }
+  function resolveRuleProfileDecision({
+    random,
+    plan = null,
+    playbackState = null,
+    kind = "audio",
+    key = "",
+    entry = null,
+    pattern = null,
+    section = null,
+    lifecycleStates = null,
+    localBarIndex = null,
+    startSeconds = null,
+    baseChance = 1,
+    profile = null
+  } = {}) {
+    const activeProfile = profile || (
+      kind === "midi"
+        ? getRuleProfileForMidiPattern(pattern)
+        : getRuleProfileForEntry(entry)
+    );
+
+    const context = createRuleDecisionContext({
+      kind,
+      key,
+      entry,
+      pattern,
+      section,
+      lifecycleStates,
+      localBarIndex,
+      startSeconds,
+      baseChance
+    });
+
+    const decision = createRuleDecisionResult(context, {
+      baseChance
+    });
+
+    applyRuleProfileToDecision(playbackState, context, decision, activeProfile, random);
+
+    const allowed = finalizeRuleDecision(random, decision);
+    recordRuleDecisionDebug(plan, decision);
+
+    return {
+      allowed,
+      context,
+      decision,
+      profile: activeProfile
+    };
+  }
   function shuffle(random, items) {
     const copy = [...items];
     for (let i = copy.length - 1; i > 0; i--) {
