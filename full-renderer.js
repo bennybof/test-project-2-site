@@ -3088,6 +3088,8 @@ function getNormalMidiHatChoiceGroupId(pattern) {
       }
     }
 
+    let normalHatsSystemWasActive = false;
+
     // MIDI pattern selection by section.
     for (const section of sectionTimeline) {
       const sectionSelectedMidi = new Set();
@@ -3153,9 +3155,10 @@ function getNormalMidiHatChoiceGroupId(pattern) {
         }))
         .filter(item => item.weight > 0);
 
+      const normalHatsSystemDropsOut = normalHatsSystemWasActive && random() < 0.01;
       let selectedNormalHatChoice = null;
 
-      if (availableHatChoices.length) {
+      if (availableHatChoices.length && !normalHatsSystemDropsOut) {
         const totalWeight = availableHatChoices.reduce((total, item) => total + item.weight, 0);
         let roll = random() * totalWeight;
         let chosenChoice = availableHatChoices[availableHatChoices.length - 1].choiceGroupId;
@@ -3214,6 +3217,8 @@ function getNormalMidiHatChoiceGroupId(pattern) {
           }
         }
       }
+
+      normalHatsSystemWasActive = Boolean(selectedNormalHatChoice) && sectionSelectedMidi.size > 0;
 
       const nonNormalLimit = sectionSelectedMidi.size > 0 ? 2 : 3;
       const eligibleNonNormalMidi = nonNormalMidi.filter(pattern =>
