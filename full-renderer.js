@@ -806,13 +806,21 @@
 
   function scheduleMidiPattern({ offlineContext, destination, pattern, buffers, barStart, beatSeconds, gainValue }) {
     const sampleBuffer = buffers.get(pattern.samplePath);
-    if (!sampleBuffer) return;
+    if (!sampleBuffer) return 0;
+
+    let scheduledCount = 0;
 
     for (const note of pattern.notes) {
       const start = barStart + note.beats * beatSeconds;
       const velocityGain = Math.max(0.05, note.velocity01 ?? 0.7);
-      scheduleBuffer(offlineContext, destination, sampleBuffer, start, gainValue * velocityGain);
+      const scheduled = scheduleBuffer(offlineContext, destination, sampleBuffer, start, gainValue * velocityGain);
+
+      if (scheduled) {
+        scheduledCount += 1;
+      }
     }
+
+    return scheduledCount;
   }
 
    function audioMatchesSection(entry, section) {
