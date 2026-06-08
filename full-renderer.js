@@ -1285,6 +1285,10 @@
         .filter(pattern => midiMatchesSection(pattern, section));
 
       for (const pattern of sectionMidi) {
+        const midiLifecycleId = getMidiLifecycleId(pattern.file);
+
+        if (!isLifecycleIdEligible(lifecycleStates, midiLifecycleId)) continue;
+
         const repeatEveryBars = pattern.lengthBeats > 8 ? 4 : 2;
         const repeatEverySeconds = section.barSeconds * repeatEveryBars;
 
@@ -1309,7 +1313,7 @@
             if (scheduledCount > 0) {
               activateLifecycleItem(
                 lifecycleStates,
-                getMidiLifecycleId(pattern.file),
+                midiLifecycleId,
                 `${section.id}:${t}`
               );
             }
@@ -1345,6 +1349,7 @@
 
           if (chosenLyrix) {
             plan.selectedAudio.push(chosenLyrix.key);
+            setLifecycleEligible(lifecycleStates, getAudioLifecycleId(chosenLyrix.key));
           }
         }
       }
@@ -1363,6 +1368,10 @@
 
       for (const key of plan.selectedAudio) {
         const entry = getCatalogEntry(key);
+        const audioLifecycleId = getAudioLifecycleId(key);
+
+        if (!isLifecycleIdEligible(lifecycleStates, audioLifecycleId)) continue;
+
 
         if (entry && isLyrix(entry)) {
           if (key !== chosenLyrixKeyForSection) continue;
@@ -1384,7 +1393,7 @@
         if (scheduledCount > 0) {
           activateLifecycleItem(
             lifecycleStates,
-            getAudioLifecycleId(key),
+            audioLifecycleId,
             `${section.id}:${key}`
           );
         }
