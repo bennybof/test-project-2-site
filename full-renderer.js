@@ -1952,6 +1952,45 @@
 
     return obligations;
   }
+  function applyLifecycleDropoutToDecision(random, lifecycleStates, context, decision, profile = {}) {
+    if (!lifecycleStates || !context || !decision || !context.lifecycleId) {
+      return decision;
+    }
+
+    const dropoutConfig = getDropoutRuleConfig(profile);
+
+    if (dropoutConfig.baseChance <= 0 && dropoutConfig.increasePerActivation <= 0) {
+      return decision;
+    }
+
+    const state = getLifecycleState(lifecycleStates, context.lifecycleId);
+
+    if (!state.activated) {
+      return decision;
+    }
+
+    const dropoutChance = calculateLifecycleDropoutChance(state, dropoutConfig);
+
+    if (chance(random, dropoutChance)) {
+      dropoutLifecycleItem(lifecycleStates, context.lifecycleId);
+
+      return markRuleDecisionDropout(decision, "lifecycle_dropout", {
+        lifecycleId: context.lifecycleId,
+        dropoutChance,
+        activationCount: state.activationCount,
+        dropoutCount: state.dropoutCount
+      });
+    }
+
+    addRuleDecisionReason(decision, "lifecycle_dropout_survived", {
+      lifecycleId: context.lifecycleId,
+      dropoutChance,
+      activationCount: state.activationCount,
+      dropoutCount: state.dropoutCount
+    });
+
+    return decision;
+  }
   function shuffle(random, items) {
     const copy = [...items];
     for (let i = copy.length - 1; i > 0; i--) {
