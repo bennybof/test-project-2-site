@@ -788,8 +788,8 @@
   }
 
   function scheduleBuffer(offlineContext, destination, buffer, startTime, gainValue = 1, offset = 0) {
-    if (!buffer) return;
-    if (startTime >= offlineContext.length / offlineContext.sampleRate) return;
+    if (!buffer) return false;
+    if (startTime >= offlineContext.length / offlineContext.sampleRate) return false;
 
     const source = offlineContext.createBufferSource();
     const gain = offlineContext.createGain();
@@ -801,6 +801,7 @@
     gain.connect(destination);
 
     source.start(Math.max(0, startTime), Math.max(0, offset));
+    return true;
   }
 
   function scheduleMidiPattern({ offlineContext, destination, pattern, buffers, barStart, beatSeconds, gainValue }) {
