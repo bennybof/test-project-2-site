@@ -108,6 +108,23 @@
     return chance(random, 0.5) ? 2 : 3;
   }
 
+  function getLyrixSectionParityRequirement(section) {
+    const tags = Array.isArray(section?.tags) ? section.tags.map(tag => String(tag).toLowerCase()) : [];
+
+    if (tags.includes("odd")) return "odd";
+    if (tags.includes("even")) return "even";
+
+    return null;
+  }
+
+  function doesBarOffsetPreserveLyrixParity(section, offsetBars) {
+    const parityRequirement = getLyrixSectionParityRequirement(section);
+
+    if (!parityRequirement) return true;
+
+    return Math.abs(Number(offsetBars) || 0) % 2 === 0;
+  }
+
   function selectIncludedBridgeLyrixSections(random) {
     const bridgeRules = getBridgeLyrixGlobalRules();
 
