@@ -3103,6 +3103,9 @@ function getNormalMidiHatChoiceGroupId(pattern) {
     let activeNormalHatChoice = null;
     let forcedNextNormalHatChoice = null;
     let messyEndsInMainMustResolve = false;
+    let messyHatsActivationCount = 0;
+    let messyHatsAddinStarted = false;
+    let messyHatsAddinNoteCount = 0;
     let normalHatsSystemWasActive = false;
 
     // MIDI pattern selection by section.
@@ -3267,6 +3270,46 @@ function getNormalMidiHatChoiceGroupId(pattern) {
 
       normalHatsSystemWasActive = Boolean(selectedNormalHatChoice) && sectionSelectedMidi.size > 0;
       activeNormalHatChoice = normalHatsSystemWasActive ? selectedNormalHatChoice : null;
+
+      if (
+        normalHatsSystemWasActive &&
+        selectedNormalHatChoice === "messy_hats" &&
+        sectionSelectedMidi.has("midi files/messy_hats_metal_odd_ch.mid")
+      ) {
+        messyHatsActivationCount += 1;
+
+        if (messyHatsActivationCount >= 2) {
+          if (!messyHatsAddinStarted && random() < 0.9) {
+            messyHatsAddinStarted = true;
+          }
+
+          if (messyHatsAddinStarted) {
+            messyHatsAddinNoteCount += 1;
+
+            const messyHatsAddinFile = "midi files/messy_hats_addin_metal_odd_ch.mid";
+            const messyHatsAddinPattern = midiPatternPool.find(pattern => pattern.file === messyHatsAddinFile);
+
+            if (messyHatsAddinPattern) {
+              const included = includeMidiByGlobalDecision({
+                random,
+                globalInclusionState,
+                requiredActivationState,
+                selectedMidi,
+                pattern: messyHatsAddinPattern,
+                fallbackChance: 1,
+                force: true,
+                reason: "messy_hats_addin_progression"
+              });
+
+              if (included) {
+                sectionSelectedMidi.add(messyHatsAddinFile);
+                section.midiNoteLimits = section.midiNoteLimits || {};
+                section.midiNoteLimits[messyHatsAddinFile] = messyHatsAddinNoteCount;
+              }
+            }
+          }
+        }
+      }
 
       if (normalHatsSystemWasActive && selectedNormalHatChoice === "messy_hats_fast_ends_in_main_hats") {
         if (messyEndsInMainMustResolve) {
@@ -4103,7 +4146,21 @@ function getNormalMidiHatChoiceGroupId(pattern) {
       expirePlaybackItemsAtTime(playbackState, section.startSeconds);
       const sectionMidiKeys = Array.isArray(section.selectedMidi) ? section.selectedMidi : plan.selectedMidi;
       const sectionMidi = sectionMidiKeys
-        .map(file => midiPatterns.patterns.find(item => item.file === file))
+        .map(file => {
+          const pattern = midiPatterns.patterns.find(item => item.file === file);
+          const noteLimit = section.midiNoteLimits?.[file];
+
+          if (!pattern || !Number.isFinite(noteLimit)) {
+            return pattern;
+          }
+
+          return {
+            ...pattern,
+            notes: Array.isArray(pattern.notes)
+              ? pattern.notes.slice(0, Math.max(0, Math.floor(noteLimit)))
+              : pattern.notes
+          };
+        })
         .filter(Boolean)
         .filter(pattern => midiMatchesSection(pattern, section));
 
