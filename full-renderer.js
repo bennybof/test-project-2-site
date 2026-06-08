@@ -2535,11 +2535,21 @@ function isExtraRimMidiPattern(pattern) {
 
 function isBeepipes2MidiPattern(pattern) {
   const entry = getMidiPatternRuleEntry(pattern);
-  const tags = getMidiPatternRuleTags(pattern);
+  const rawTags = getMidiPatternRuleTags(pattern);
+  const tags = Array.isArray(rawTags)
+    ? rawTags
+    : rawTags instanceof Set
+      ? [...rawTags]
+      : typeof rawTags === "string"
+        ? [rawTags]
+        : [];
   const baseId = normalizeRuleDecisionToken(getMidiPatternBaseId(pattern));
   const key = normalizeRuleDecisionToken(entry?.key || pattern?.file || "");
+  const hasBeepipes2Tag = tags.some(tag =>
+    normalizeRuleDecisionToken(tag).includes("beepipes_2")
+  );
 
-  return tags.includes("beepipes_2") || baseId.includes("beepipes_2") || key.includes("beepipes_2");
+  return hasBeepipes2Tag || baseId.includes("beepipes_2") || key.includes("beepipes_2");
 }
 function normalHatChoiceClashesWithMidiPattern(choiceGroupId, pattern) {
   if (!choiceGroupId) return false;
