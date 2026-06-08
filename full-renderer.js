@@ -832,16 +832,12 @@
 
     for (const key of selectedAudio) {
       const lifecycleId = getAudioLifecycleId(key);
-      includeLifecycleItem(lifecycleStates, lifecycleId);
-      introduceLifecycleItem(lifecycleStates, lifecycleId);
-      setLifecycleAvailability(lifecycleStates, lifecycleId, true);
+      setLifecycleEligible(lifecycleStates, lifecycleId);
     }
 
     for (const key of selectedMidi) {
       const lifecycleId = getMidiLifecycleId(key);
-      includeLifecycleItem(lifecycleStates, lifecycleId);
-      introduceLifecycleItem(lifecycleStates, lifecycleId);
-      setLifecycleAvailability(lifecycleStates, lifecycleId, true);
+      setLifecycleEligible(lifecycleStates, lifecycleId);
     }
 
     return {
