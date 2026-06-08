@@ -3101,6 +3101,8 @@ function getNormalMidiHatChoiceGroupId(pattern) {
     }
 
     let activeNormalHatChoice = null;
+    let forcedNextNormalHatChoice = null;
+    let messyEndsInMainMustResolve = false;
     let normalHatsSystemWasActive = false;
 
     // MIDI pattern selection by section.
@@ -3170,14 +3172,33 @@ function getNormalMidiHatChoiceGroupId(pattern) {
 
       const normalHatsSystemDropsOut = normalHatsSystemWasActive && random() < 0.01;
       const availableHatChoiceIds = new Set(availableHatChoices.map(item => item.choiceGroupId));
+
+      if (forcedNextNormalHatChoice && !availableHatChoiceIds.has(forcedNextNormalHatChoice)) {
+        forcedNextNormalHatChoice = null;
+        messyEndsInMainMustResolve = false;
+      }
+
+      if (normalHatsSystemDropsOut) {
+        forcedNextNormalHatChoice = null;
+        messyEndsInMainMustResolve = false;
+      }
+
+      const forcedNormalHatCanRun = Boolean(forcedNextNormalHatChoice && availableHatChoiceIds.has(forcedNextNormalHatChoice));
       const activeNormalHatCanContinue = Boolean(activeNormalHatChoice && availableHatChoiceIds.has(activeNormalHatChoice));
       const activeNormalHatDropsOut = activeNormalHatCanContinue && random() < getNormalHatPatternDropoutChance(activeNormalHatChoice);
       let selectedNormalHatChoice = null;
 
       if (availableHatChoices.length && !normalHatsSystemDropsOut) {
-        let chosenChoice = activeNormalHatCanContinue && !activeNormalHatDropsOut
-          ? activeNormalHatChoice
-          : null;
+        let chosenChoice = null;
+
+        if (forcedNormalHatCanRun) {
+          chosenChoice = forcedNextNormalHatChoice;
+          forcedNextNormalHatChoice = null;
+        } else {
+          chosenChoice = activeNormalHatCanContinue && !activeNormalHatDropsOut
+            ? activeNormalHatChoice
+            : null;
+        }
 
         if (!chosenChoice) {
           const candidateHatChoices = activeNormalHatCanContinue
@@ -3246,6 +3267,21 @@ function getNormalMidiHatChoiceGroupId(pattern) {
 
       normalHatsSystemWasActive = Boolean(selectedNormalHatChoice) && sectionSelectedMidi.size > 0;
       activeNormalHatChoice = normalHatsSystemWasActive ? selectedNormalHatChoice : null;
+
+      if (normalHatsSystemWasActive && selectedNormalHatChoice === "messy_hats_fast_ends_in_main_hats") {
+        if (messyEndsInMainMustResolve) {
+          forcedNextNormalHatChoice = "main_hats";
+          messyEndsInMainMustResolve = false;
+        } else if (random() < 0.5) {
+          forcedNextNormalHatChoice = "messy_hats_fast_ends_in_main_hats";
+          messyEndsInMainMustResolve = true;
+        } else {
+          forcedNextNormalHatChoice = "main_hats";
+          messyEndsInMainMustResolve = false;
+        }
+      } else if (selectedNormalHatChoice !== "messy_hats_fast_ends_in_main_hats") {
+        messyEndsInMainMustResolve = false;
+      }
 
       const nonNormalLimit = sectionSelectedMidi.size > 0 ? 2 : 3;
       const eligibleNonNormalMidi = nonNormalMidi.filter(pattern =>
