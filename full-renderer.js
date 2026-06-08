@@ -782,6 +782,29 @@
     });
   }
 
+  function doesPlaybackItemOverlapTime(item, timeSeconds) {
+    if (!item) return false;
+
+    const time = Math.max(0, Number(timeSeconds) || 0);
+    const start = Math.max(0, Number(item.startSeconds) || 0);
+    const end = item.endSeconds === null
+      ? Infinity
+      : Math.max(start, Number(item.endSeconds) || start);
+
+    return start <= time && time < end;
+  }
+
+  function getActivePlaybackItemsAtTime(playbackState, timeSeconds, filter = {}) {
+    return getActivePlaybackItems(playbackState, filter)
+      .filter(item => doesPlaybackItemOverlapTime(item, timeSeconds));
+  }
+
+  function getFuturePlaybackItemsAfterTime(playbackState, timeSeconds, filter = {}) {
+    const time = Math.max(0, Number(timeSeconds) || 0);
+
+    return getActivePlaybackItems(playbackState, filter)
+      .filter(item => Math.max(0, Number(item.startSeconds) || 0) >= time);
+  }
   function cutOffPlaybackItem(playbackState, item, cutTimeSeconds, options = {}) {
     if (!playbackState || !item) return false;
 
