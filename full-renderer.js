@@ -3028,10 +3028,21 @@
 
     return scheduleHandle;
   }
-  function scheduleMidiPattern({ offlineContext, destination, pattern, buffers, barStart, beatSeconds, gainValue }) {
+  function scheduleMidiPattern({
+    offlineContext,
+    destination,
+    pattern,
+    buffers,
+    barStart,
+    beatSeconds,
+    gainValue,
+    playbackState = null,
+    section = null
+  }) {
     const sampleBuffer = buffers.get(pattern.samplePath);
     if (!sampleBuffer) return 0;
 
+    const entry = getCatalogEntry(pattern.file);
     let scheduledCount = 0;
 
     for (const note of pattern.notes) {
@@ -3041,6 +3052,15 @@
 
       if (scheduled) {
         scheduledCount += 1;
+
+        registerScheduledPlaybackHandle(playbackState, {
+          kind: "midi",
+          key: pattern.file,
+          entry,
+          scheduleHandle: scheduled,
+          section,
+          family: entry?.family || pattern.id || ""
+        });
       }
     }
 
@@ -3700,7 +3720,9 @@
               buffers,
               barStart: t,
               beatSeconds: section.barSeconds / 4,
-              gainValue: 0.62
+              gainValue: 0.62,
+              playbackState,
+              section
             });
 
             if (scheduledCount > 0) {
