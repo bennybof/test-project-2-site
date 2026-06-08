@@ -1427,11 +1427,15 @@
   }
 
   function scheduleBuffer(offlineContext, destination, buffer, startTime, gainValue = 1, offset = 0) {
-    if (!buffer) return false;
-    if (startTime >= offlineContext.length / offlineContext.sampleRate) return false;
+    if (!buffer) return null;
+    if (startTime >= offlineContext.length / offlineContext.sampleRate) return null;
 
     const source = offlineContext.createBufferSource();
     const gain = offlineContext.createGain();
+
+    const safeStartTime = Math.max(0, startTime);
+    const safeOffset = Math.max(0, offset);
+    const playableDuration = Math.max(0, buffer.duration - safeOffset);
 
     source.buffer = buffer;
     gain.gain.value = gainValue;
@@ -1439,8 +1443,19 @@
     source.connect(gain);
     gain.connect(destination);
 
-    source.start(Math.max(0, startTime), Math.max(0, offset));
-    return true;
+    source.start(safeStartTime, safeOffset);
+
+    return {
+      scheduled: true,
+      source,
+      gainNode: gain,
+      buffer,
+      startTime: safeStartTime,
+      offset: safeOffset,
+      duration: playableDuration,
+      endTime: safeStartTime + playableDuration,
+      gainValue
+    };
   }
 
   function scheduleMidiPattern({ offlineContext, destination, pattern, buffers, barStart, beatSeconds, gainValue }) {
