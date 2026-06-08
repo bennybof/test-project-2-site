@@ -1609,6 +1609,9 @@
     applyActivationBlockWindows(playbackState, context, decision);
     if (decision.blocked) return decision;
 
+    applyTimedBlockRulesToDecision(playbackState, context, decision, getTimedBlockRules(profile), random);
+    if (decision.blocked) return decision;
+
     applyFamilyLockRulesToDecision(playbackState, context, decision, getFamilyLockRules(profile));
     if (decision.blocked) return decision;
 
