@@ -1605,6 +1605,42 @@
     return decision;
   }
 
+  function applyCutoffRulesForAllowedDecision(playbackState, context, profile = {}) {
+    if (!playbackState || !context || !profile) return [];
+
+    const events = [];
+
+    for (const rule of getCutoffRules(profile)) {
+      const targets = getRuleTargets(rule);
+      if (!targets.length) continue;
+
+      const fadeSeconds = Math.max(0, Number(rule.fadeSeconds ?? rule.fade ?? 0.01));
+      const includeFutureScheduled = Boolean(rule.includeFutureScheduled ?? rule.includeFuture ?? false);
+
+      for (const target of targets) {
+        const filter = getPlaybackFilterFromRuleTarget(target);
+        const result = applyGenericCutoffAction(playbackState, {
+          cutTimeSeconds: context.startSeconds,
+          filter,
+          includeFutureScheduled,
+          fadeSeconds,
+          reason: rule.id || "rule_profile_cutoff"
+        });
+
+        if (result.activeCutCount || result.futureCutCount || result.blockWindow) {
+          events.push({
+            ruleId: rule.id || "",
+            target,
+            activeCutCount: result.activeCutCount,
+            futureCutCount: result.futureCutCount,
+            blockWindow: result.blockWindow
+          });
+        }
+      }
+    }
+
+    return events;
+  }
   function applyRuleProfileToDecision(playbackState, context, decision, profile = {}, random = null) {
     applyActivationBlockWindows(playbackState, context, decision);
     if (decision.blocked) return decision;
@@ -3541,6 +3577,7 @@
         });
 
         if (audioDecisionResult.allowed) {
+          applyCutoffRulesForAllowedDecision(playbackState, audioDecisionResult.context, audioProfile);
           const scheduled = scheduleAudioBufferWithPlaybackState({
             offlineContext,
             destination,
@@ -3589,6 +3626,7 @@
       });
 
       if (audioDecisionResult.allowed) {
+        applyCutoffRulesForAllowedDecision(playbackState, audioDecisionResult.context, audioProfile);
         const scheduled = scheduleAudioBufferWithPlaybackState({
           offlineContext,
           destination,
