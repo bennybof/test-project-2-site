@@ -84,6 +84,29 @@
     const bridgeRules = getBridgeLyrixGlobalRules();
     return clampProbability(section?.dropoutChance ?? bridgeRules?.dropoutChance ?? 0);
   }
+  function chooseBridgeLyrixSection(random, lyrixSectionUsage = new Map()) {
+    const bridgeRules = getBridgeLyrixGlobalRules();
+
+    const candidates = getBridgeLyrixSections().filter(section => {
+      const maxSeparateOccasions = Number(section.maxSeparateOccasions ?? bridgeRules?.maxSeparateOccasions ?? 0);
+      const currentUsage = lyrixSectionUsage.get(section.id) || 0;
+
+      return (
+        Number(section.globalInclusionChance ?? bridgeRules?.globalInclusionChanceEach ?? 0) > 0 &&
+        (!maxSeparateOccasions || currentUsage < maxSeparateOccasions) &&
+        getLyrixSectionLengthBars(section) > 0 &&
+        Array.isArray(section.parts) &&
+        section.parts.length > 0
+      );
+    });
+
+    const included = candidates.filter(section =>
+      chance(random, Number(section.globalInclusionChance ?? bridgeRules?.globalInclusionChanceEach ?? 0) || 0)
+    );
+
+    if (!included.length) return null;
+    return chooseOne(random, included);
+  }
   function getLyrixSectionAudioFiles(section) {
     const files = [];
     if (!section?.parts) return files;
