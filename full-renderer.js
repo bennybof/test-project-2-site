@@ -1458,6 +1458,165 @@
 
     return matches;
   }
+  function applyHardClashRulesToDecision(playbackState, context, decision, rules = []) {
+    if (!playbackState || !context || !decision || !Array.isArray(rules)) return decision;
+
+    for (const rule of rules) {
+      const targets = getRuleTargets(rule);
+      if (!targets.length) continue;
+
+      const activeMatches = findActivePlaybackItemsForRuleTargets(
+        playbackState,
+        targets,
+        context.startSeconds
+      );
+
+      if (activeMatches.length) {
+        return blockRuleDecision(decision, "hard_clash", {
+          ruleId: rule.id || "",
+          targets,
+          activeMatches: activeMatches.map(item => ({
+            id: item.id,
+            key: item.key,
+            family: item.family
+          }))
+        });
+      }
+    }
+
+    return decision;
+  }
+
+  function applySoftMultiplierRulesToDecision(playbackState, context, decision, rules = []) {
+    if (!playbackState || !context || !decision || !Array.isArray(rules)) return decision;
+
+    for (const rule of rules) {
+      const targets = getRuleTargets(rule);
+      const multiplier = Number(rule.multiplier ?? rule.chanceMultiplier ?? rule.activationMultiplier ?? 1);
+
+      if (!targets.length || !Number.isFinite(multiplier)) continue;
+
+      const activeMatches = findActivePlaybackItemsForRuleTargets(
+        playbackState,
+        targets,
+        context.startSeconds
+      );
+
+      if (activeMatches.length) {
+        multiplyRuleDecisionChance(decision, multiplier, "soft_multiplier", {
+          ruleId: rule.id || "",
+          targets,
+          activeMatches: activeMatches.map(item => ({
+            id: item.id,
+            key: item.key,
+            family: item.family
+          }))
+        });
+      }
+    }
+
+    return decision;
+  }
+
+  function applyDependencyRulesToDecision(playbackState, context, decision, rules = []) {
+    if (!playbackState || !context || !decision || !Array.isArray(rules)) return decision;
+
+    for (const rule of rules) {
+      const targets = getRuleTargets(rule);
+      if (!targets.length) continue;
+
+      const activeMatches = findActivePlaybackItemsForRuleTargets(
+        playbackState,
+        targets,
+        context.startSeconds
+      );
+
+      if (!activeMatches.length) {
+        return blockRuleDecision(decision, "dependency_missing", {
+          ruleId: rule.id || "",
+          targets
+        });
+      }
+    }
+
+    return decision;
+  }
+
+  function applyTimedBlockRulesToDecision(playbackState, context, decision, rules = []) {
+    if (!playbackState || !context || !decision || !Array.isArray(rules)) return decision;
+
+    for (const rule of rules) {
+      const targets = getRuleTargets(rule);
+      const durationSeconds = Number(rule.durationSeconds ?? rule.seconds ?? 0);
+
+      if (!targets.length || !Number.isFinite(durationSeconds) || durationSeconds <= 0) continue;
+
+      const activeMatches = findActivePlaybackItemsForRuleTargets(
+        playbackState,
+        targets,
+        context.startSeconds
+      );
+
+      if (activeMatches.length && chance(rule.random || (() => 1), clampProbability(rule.chance ?? 1, 1))) {
+        const endSeconds = Number(context.startSeconds || 0) + durationSeconds;
+
+        addActivationBlockWindow(playbackState, {
+          startsAtSeconds: context.startSeconds,
+          endsAtSeconds: endSeconds,
+          kind: context.kind,
+          key: context.itemKey,
+          reason: rule.id || "timed_block_rule"
+        });
+
+        return blockRuleDecision(decision, "timed_block_rule", {
+          ruleId: rule.id || "",
+          untilSeconds: endSeconds
+        });
+      }
+    }
+
+    return decision;
+  }
+
+  function applyFamilyLockRulesToDecision(playbackState, context, decision, rules = []) {
+    if (!playbackState || !context || !decision || !Array.isArray(rules)) return decision;
+
+    for (const rule of rules) {
+      const family = rule.family || rule.group || rule.id || "";
+
+      if (!family) continue;
+
+      applyFamilyLock(playbackState, context, decision, family);
+
+      if (decision.blocked) {
+        addRuleDecisionReason(decision, "family_lock_rule", {
+          ruleId: rule.id || "",
+          family: normalizeRuleDecisionToken(family)
+        });
+        return decision;
+      }
+    }
+
+    return decision;
+  }
+
+  function applyRuleProfileToDecision(playbackState, context, decision, profile = {}) {
+    applyActivationBlockWindows(playbackState, context, decision);
+    if (decision.blocked) return decision;
+
+    applyFamilyLockRulesToDecision(playbackState, context, decision, getFamilyLockRules(profile));
+    if (decision.blocked) return decision;
+
+    applyDependencyRulesToDecision(playbackState, context, decision, getDependencyRules(profile));
+    if (decision.blocked) return decision;
+
+    applyHardClashRulesToDecision(playbackState, context, decision, getHardClashRules(profile));
+    if (decision.blocked) return decision;
+
+    applySoftMultiplierRulesToDecision(playbackState, context, decision, getSoftMultiplierRules(profile));
+
+    return decision;
+  }
   function shuffle(random, items) {
     const copy = [...items];
     for (let i = copy.length - 1; i > 0; i--) {
