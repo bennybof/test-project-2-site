@@ -3222,6 +3222,12 @@ function getNormalMidiHatChoiceGroupId(pattern) {
         }
 
         selectedNormalHatChoice = chosenChoice;
+        const continuingNormalHatChoice = (
+          chosenChoice === activeNormalHatChoice &&
+          activeNormalHatCanContinue &&
+          !activeNormalHatDropsOut &&
+          !forcedNormalHatCanRun
+        );
 
         const companionGroups = normalHatGroupsByChoice.get(chosenChoice);
         let chosenPatterns = [];
@@ -3246,6 +3252,12 @@ function getNormalMidiHatChoiceGroupId(pattern) {
           if (!chosenPatterns.length) {
             chosenPatterns = chooseOne(random, [...companionGroups.values()]) || [];
           }
+        } else if (chosenChoice === "speedy_hats" && continuingNormalHatChoice) {
+          const speedyContFile = "midi files/speedy_hats_cont_metal_ch.mid";
+          const speedyContPattern = midiPatternPool.find(pattern => pattern.file === speedyContFile);
+          chosenPatterns = speedyContPattern
+            ? [speedyContPattern]
+            : (chooseOne(random, [...companionGroups.values()]) || []);
         } else {
           chosenPatterns = chooseOne(random, [...companionGroups.values()]) || [];
         }
