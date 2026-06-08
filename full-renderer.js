@@ -2664,9 +2664,18 @@
     ];
 
     for (const key of foundationCandidates) {
-      if (getCatalogEntry(key) && chance(random, 0.65)) {
-        selectedAudio.add(key);
-      }
+      const entry = getCatalogEntry(key);
+
+      includeAudioByGlobalDecision({
+        random,
+        globalInclusionState,
+        requiredActivationState,
+        selectedAudio,
+        key,
+        entry,
+        fallbackChance: 0.65,
+        reason: "foundation_candidate"
+      });
     }
 
     // Select section-relevant audio instead of selecting everything equally.
