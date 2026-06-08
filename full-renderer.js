@@ -1915,8 +1915,10 @@
   function schedulePlan({ offlineContext, destination, buffers, plan, random, duration }) {
     const sections = plan.sectionTimeline || [];
     const lifecycleStates = createLifecycleMapFromPlan(plan);
+    const playbackState = createPlaybackRuleState();
 
     for (const section of sections) {
+      expirePlaybackItemsAtTime(playbackState, section.startSeconds);
       const sectionMidi = plan.selectedMidi
         .map(file => midiPatterns.patterns.find(item => item.file === file))
         .filter(Boolean)
@@ -2037,6 +2039,18 @@
         }
       }
     }
+
+    expirePlaybackItemsAtTime(playbackState, duration);
+
+    plan.playbackRuleDebug = {
+      activeItemsRemaining: playbackState.activeItems.size,
+      blockedWindows: playbackState.blockedWindows.map(window => ({ ...window })),
+      cutoffEvents: playbackState.cutoffEvents.map(event => ({ ...event })),
+      familyLocks: [...playbackState.familyLocks.entries()].map(([family, itemId]) => ({
+        family,
+        itemId
+      }))
+    };
 
     writeLifecycleMapToPlan(plan, lifecycleStates);
   }
