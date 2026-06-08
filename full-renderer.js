@@ -2750,9 +2750,15 @@
         if (key.includes("jazz")) p = 0.18;
         if (key.includes("messy")) p = 0.18;
 
-        if (chance(random, p)) {
-          selectedMidi.add(pattern.file);
-        }
+        includeMidiByGlobalDecision({
+          random,
+          globalInclusionState,
+          requiredActivationState,
+          selectedMidi,
+          pattern,
+          fallbackChance: p,
+          reason: `section_selection:${section.type}`
+        });
       }
     }
 
