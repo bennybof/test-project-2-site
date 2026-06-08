@@ -125,6 +125,16 @@
     return Math.abs(Number(offsetBars) || 0) % 2 === 0;
   }
 
+  function chooseSafeBridgeLeadInBars(random, targetLyrixSection) {
+    const preferred = chooseBridgeLeadInBars(random);
+    const fallback = preferred === 2 ? 3 : 2;
+
+    if (doesBarOffsetPreserveLyrixParity(targetLyrixSection, preferred)) return preferred;
+    if (doesBarOffsetPreserveLyrixParity(targetLyrixSection, fallback)) return fallback;
+
+    return null;
+  }
+
   function selectIncludedBridgeLyrixSections(random) {
     const bridgeRules = getBridgeLyrixGlobalRules();
 
