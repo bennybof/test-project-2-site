@@ -1218,6 +1218,7 @@
 
   function schedulePlan({ offlineContext, destination, buffers, plan, random, duration }) {
     const sections = plan.sectionTimeline || [];
+    const lifecycleStates = createLifecycleMapFromPlan(plan);
 
     for (const section of sections) {
       const sectionMidi = plan.selectedMidi
@@ -1237,7 +1238,7 @@
           }
 
           if (chance(random, 0.7)) {
-            scheduleMidiPattern({
+            const scheduledCount = scheduleMidiPattern({
               offlineContext,
               destination,
               pattern,
@@ -1246,6 +1247,14 @@
               beatSeconds: section.barSeconds / 4,
               gainValue: 0.62
             });
+
+            if (scheduledCount > 0) {
+              activateLifecycleItem(
+                lifecycleStates,
+                getMidiLifecycleId(pattern.file),
+                `${section.id}:${t}`
+              );
+            }
           }
         }
       }
@@ -1315,6 +1324,8 @@
         });
       }
     }
+
+    writeLifecycleMapToPlan(plan, lifecycleStates);
   }
 
   async function renderTrack(format) {
