@@ -3079,10 +3079,34 @@
           }
         }
 
-        const companionGroups = [...normalHatGroupsByChoice.get(chosenChoice).values()];
-        const chosenCompanionGroup = chooseOne(random, companionGroups) || [];
+        const companionGroups = normalHatGroupsByChoice.get(chosenChoice);
+        let chosenPatterns = [];
 
-        for (const pattern of chosenCompanionGroup) {
+        if (chosenChoice === "main_hats") {
+          const mainCh = (companionGroups.get("main_hats_ch_metal") || [])
+            .filter(pattern => pattern.file === "midi files/main_hats_ch_metal_ch.mid");
+
+          const mainOhChoices = [
+            ...(companionGroups.get("main_hats_oh_metal") || [])
+              .filter(pattern => pattern.file === "midi files/main_hats_oh_metal_oh.mid"),
+            ...(companionGroups.get("main_hats_oh_cont_metal") || [])
+              .filter(pattern => pattern.file === "midi files/main_hats_oh_cont_metal_oh.mid")
+          ];
+
+          chosenPatterns = [...mainCh];
+
+          if (mainOhChoices.length && random() >= 0.1) {
+            chosenPatterns.push(chooseOne(random, mainOhChoices));
+          }
+
+          if (!chosenPatterns.length) {
+            chosenPatterns = chooseOne(random, [...companionGroups.values()]) || [];
+          }
+        } else {
+          chosenPatterns = chooseOne(random, [...companionGroups.values()]) || [];
+        }
+
+        for (const pattern of chosenPatterns.filter(Boolean)) {
           const included = includeMidiByGlobalDecision({
             random,
             globalInclusionState,
