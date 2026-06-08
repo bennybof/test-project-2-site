@@ -2583,7 +2583,14 @@
                 });
 
                 for (const key of getLyrixSectionAudioFiles(bridgeLyrixSection)) {
-                  selectedAudio.add(key);
+                  forceIncludeAudioSelection({
+                    random,
+                    globalInclusionState,
+                    requiredActivationState,
+                    selectedAudio,
+                    key,
+                    reason: "forced_bridge_lyrix_section"
+                  });
                 }
 
                 if (bridgeGapBars > 0) {
@@ -2604,7 +2611,14 @@
           });
 
           for (const key of getLyrixSectionAudioFiles(lyrixSection)) {
-            selectedAudio.add(key);
+            forceIncludeAudioSelection({
+              random,
+              globalInclusionState,
+              requiredActivationState,
+              selectedAudio,
+              key,
+              reason: "forced_lyrix_section"
+            });
           }
 
 
@@ -2630,7 +2644,14 @@
               });
 
               for (const key of getLyrixSectionAudioFiles(lyrixSection)) {
-                selectedAudio.add(key);
+                forceIncludeAudioSelection({
+                  random,
+                  globalInclusionState,
+                  requiredActivationState,
+                  selectedAudio,
+                  key,
+                  reason: "forced_lyrix_section_repeat_immediate"
+                });
               }
             }
           }
