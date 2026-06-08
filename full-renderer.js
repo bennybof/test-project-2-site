@@ -3515,6 +3515,12 @@ function getNormalMidiHatChoiceGroupId(pattern) {
     return 1;
   }
 
+  const opportunityMatch = key.match(/(?:^|[_\s-])x(2|4|6|8)(?:[_\s.-]|$)/);
+
+  if (opportunityMatch) {
+    return Number(opportunityMatch[1]);
+  }
+
   return pattern?.lengthBeats > 8 ? 4 : 2;
 }
 function scheduleMidiPattern({
