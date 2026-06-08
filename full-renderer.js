@@ -3508,7 +3508,16 @@ function getNormalMidiHatChoiceGroupId(pattern) {
 
     return scheduleHandle;
   }
-  function scheduleMidiPattern({
+  function getMidiRepeatEveryBars(pattern) {
+  const key = String(pattern?.file || "").toLowerCase();
+
+  if (key.includes("x0.5")) {
+    return 1;
+  }
+
+  return pattern?.lengthBeats > 8 ? 4 : 2;
+}
+function scheduleMidiPattern({
     offlineContext,
     destination,
     pattern,
@@ -4188,7 +4197,7 @@ function getNormalMidiHatChoiceGroupId(pattern) {
 
         if (!isLifecycleIdEligible(lifecycleStates, midiLifecycleId)) continue;
 
-        const repeatEveryBars = pattern.lengthBeats > 8 ? 4 : 2;
+        const repeatEveryBars = getMidiRepeatEveryBars(pattern);
         const repeatEverySeconds = section.barSeconds * repeatEveryBars;
 
         for (let t = section.startSeconds; t < section.endSeconds; t += repeatEverySeconds) {
