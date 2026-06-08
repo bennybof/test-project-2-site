@@ -3012,6 +3012,11 @@
       const nonNormalMidi = [];
 
       for (const pattern of sectionMidi) {
+        if (isJazzMidiHatPattern(pattern)) {
+          // Jazz hats/rides use their own takeover system, not the generic normal MIDI picker.
+          continue;
+        }
+
         if (!isNormalMidiHatPattern(pattern)) {
           nonNormalMidi.push(pattern);
           continue;
