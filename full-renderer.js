@@ -3805,7 +3805,8 @@
 
     for (const section of sections) {
       expirePlaybackItemsAtTime(playbackState, section.startSeconds);
-      const sectionMidi = plan.selectedMidi
+      const sectionMidiKeys = Array.isArray(section.selectedMidi) ? section.selectedMidi : plan.selectedMidi;
+      const sectionMidi = sectionMidiKeys
         .map(file => midiPatterns.patterns.find(item => item.file === file))
         .filter(Boolean)
         .filter(pattern => midiMatchesSection(pattern, section));
