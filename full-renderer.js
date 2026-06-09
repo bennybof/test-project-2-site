@@ -2551,6 +2551,78 @@ function getMidiPatternRuleTagList(pattern) {
 
   return [];
 }
+function isBeepipesMidiPattern(pattern) {
+  const entry = getMidiPatternRuleEntry(pattern);
+  const tags = getMidiPatternRuleTagList(pattern);
+  const baseId = normalizeRuleDecisionToken(getMidiPatternBaseId(pattern));
+  const key = normalizeRuleDecisionToken(entry?.key || pattern?.file || "");
+  const hasBeepipesTag = tags.some(tag =>
+    normalizeRuleDecisionToken(tag).includes("beepipes")
+  );
+
+  return hasBeepipesTag || baseId.includes("beepipes") || key.includes("beepipes");
+}
+
+function isSnarePatternMidiPattern(pattern) {
+  const baseId = normalizeRuleDecisionToken(getMidiPatternBaseId(pattern));
+  const key = normalizeRuleDecisionToken(pattern?.file || "");
+
+  return baseId.startsWith("snare_pattern") || key.includes("snare_pattern");
+}
+
+function midiPatternClashesWithSelectedSection(pattern, selectedMidiFiles, midiPatternPool) {
+  const selectedPatterns = [...selectedMidiFiles]
+    .map(file => midiPatternPool.find(item => item.file === file))
+    .filter(Boolean);
+
+  for (const selectedPattern of selectedPatterns) {
+    if (
+      isBeepipes2MidiPattern(pattern) &&
+      isBeepipesMidiPattern(selectedPattern) &&
+      !isBeepipes2MidiPattern(selectedPattern)
+    ) {
+      return true;
+    }
+
+    if (
+      isBeepipes2MidiPattern(selectedPattern) &&
+      isBeepipesMidiPattern(pattern) &&
+      !isBeepipes2MidiPattern(pattern)
+    ) {
+      return true;
+    }
+
+    if (
+      isBeepipesMidiPattern(pattern) &&
+      isSnarePatternMidiPattern(selectedPattern)
+    ) {
+      return true;
+    }
+
+    if (
+      isBeepipesMidiPattern(selectedPattern) &&
+      isSnarePatternMidiPattern(pattern)
+    ) {
+      return true;
+    }
+
+    if (
+      isBeepipesMidiPattern(pattern) &&
+      isExtraRimMidiPattern(selectedPattern)
+    ) {
+      return true;
+    }
+
+    if (
+      isBeepipesMidiPattern(selectedPattern) &&
+      isExtraRimMidiPattern(pattern)
+    ) {
+      return true;
+    }
+  }
+
+  return false;
+}
 function isBeepipes2MidiPattern(pattern) {
   const entry = getMidiPatternRuleEntry(pattern);
   const tags = getMidiPatternRuleTagList(pattern);
@@ -3384,6 +3456,10 @@ function getNormalMidiHatChoiceGroupId(pattern) {
       );
 
       for (const pattern of shuffle(random, eligibleNonNormalMidi).slice(0, nonNormalLimit)) {
+        if (midiPatternClashesWithSelectedSection(pattern, sectionSelectedMidi, midiPatternPool)) {
+          continue;
+        }
+
         let p = 0.35;
         const key = pattern.file.toLowerCase();
 
