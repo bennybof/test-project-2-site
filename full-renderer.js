@@ -2588,6 +2588,31 @@ function getMidiPatternRuleTagList(pattern) {
 
   return [];
 }
+function isBeepipes1MidiPattern(pattern) {
+  const entry = getMidiPatternRuleEntry(pattern);
+  const tags = getMidiPatternRuleTagList(pattern);
+  const baseId = normalizeRuleDecisionToken(getMidiPatternBaseId(pattern));
+  const key = normalizeRuleDecisionToken(entry?.key || pattern?.file || "");
+  const hasBeepipes1Tag = tags.some(tag =>
+    normalizeRuleDecisionToken(tag).includes("beepipes_1")
+  );
+
+  return hasBeepipes1Tag || baseId.includes("beepipes_1") || key.includes("beepipes_1");
+}
+
+function getBeepipes1DensityChanceMultiplier(section = {}) {
+  const densityScore = Number(section.densityScore ?? section.density ?? 0);
+
+  if (densityScore > 6) {
+    return 0.5;
+  }
+
+  if (densityScore > 3) {
+    return 0.75;
+  }
+
+  return 1;
+}
 function isBeepipesMidiPattern(pattern) {
   const entry = getMidiPatternRuleEntry(pattern);
   const tags = getMidiPatternRuleTagList(pattern);
@@ -3531,6 +3556,10 @@ function getNormalMidiHatChoiceGroupId(pattern) {
         if (key.includes("hook")) p = 0.45;
         if (key.includes("jazz")) p = 0.18;
         if (key.includes("messy")) p = 0.18;
+
+        if (isBeepipes1MidiPattern(pattern)) {
+          p *= getBeepipes1DensityChanceMultiplier(section);
+        }
 
         const included = includeMidiByGlobalDecision({
           random,
