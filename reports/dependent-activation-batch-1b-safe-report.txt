@@ -1,0 +1,13 @@
+TEST PROJECT 2 - DEPENDENT ACTIVATION BATCH 1B SAFE REPORT
+
+Generated: 2026-06-09T21:27:57.990Z
+Catalog change: two dependent activation rules added
+Renderer change: none
+
+Important:
+- This batch does not set dependentActivationOnly.
+- Target files keep their independent activation chances.
+
+Dependent source rules:
+- samples/glock_ext_even (consolidated).wav -> samples/glock_ext_even_dlay (consolidated).wav @ 0.5: added
+- samples/breathe_vox_stutter_odd_x2_xtra (consolidated).wav -> samples/breathe_vox_stutter_dlay_odd_x2 (consolidated).wav @ 0.2: added

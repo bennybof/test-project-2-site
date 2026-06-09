@@ -1636,7 +1636,19 @@
           "dropoutChance": 0.01
         },
         "samples/glock_ext_even (consolidated).wav": {
-          "activationChance": 0.2
+          "activationChance": 0.2,
+          "dependentActivationRules": [
+            {
+              "id": "dependent_glock_ext_delay_after_glock_ext",
+              "chance": 0.5,
+              "targets": [
+                {
+                  "key": "samples/glock_ext_even_dlay (consolidated).wav"
+                }
+              ],
+              "sourceNote": "Definitions: glock delay can activate with 50% chance when matching glock activates, while still keeping its independent activation chance."
+            }
+          ]
         },
         "samples/glock_ext_even_dlay (consolidated).wav": {
           "globalInclusionChance": 0.5,
@@ -2245,6 +2257,18 @@
                 }
               ],
               "sourceNote": "Definitions doc: breathe stutter and non-stutter breathe_vox are much less likely together; exact-key safe version."
+            }
+          ],
+          "dependentActivationRules": [
+            {
+              "id": "dependent_breathe_stutter_delay_after_first_stutter",
+              "chance": 0.2,
+              "targets": [
+                {
+                  "key": "samples/breathe_vox_stutter_dlay_odd_x2 (consolidated).wav"
+                }
+              ],
+              "sourceNote": "Definitions: breathe_vox_stutter_dlay has 20% chance with first stutter part, while still keeping its independent 5% activation chance."
             }
           ]
         },

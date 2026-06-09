@@ -1,0 +1,22 @@
+{
+  "generatedAt": "2026-06-09T21:27:57.990Z",
+  "batch": "dependent activation batch 1B safe",
+  "catalogPath": "data/full-rules-catalog.json",
+  "note": "Adds dependent activation rules only for candidates that should keep independent activation. No dependentActivationOnly flags are set in this batch.",
+  "dependentRuleResults": [
+    {
+      "sourceKey": "samples/glock_ext_even (consolidated).wav",
+      "targetKey": "samples/glock_ext_even_dlay (consolidated).wav",
+      "chance": 0.5,
+      "id": "dependent_glock_ext_delay_after_glock_ext",
+      "status": "added"
+    },
+    {
+      "sourceKey": "samples/breathe_vox_stutter_odd_x2_xtra (consolidated).wav",
+      "targetKey": "samples/breathe_vox_stutter_dlay_odd_x2 (consolidated).wav",
+      "chance": 0.2,
+      "id": "dependent_breathe_stutter_delay_after_first_stutter",
+      "status": "added"
+    }
+  ]
+}
