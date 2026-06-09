@@ -1640,13 +1640,13 @@
           "dependentActivationRules": [
             {
               "id": "dependent_glock_ext_delay_after_glock_ext",
-              "chance": 0.5,
+              "chance": 0.2,
               "targets": [
                 {
                   "key": "samples/glock_ext_even_dlay (consolidated).wav"
                 }
               ],
-              "sourceNote": "Definitions: glock delay can activate with 50% chance when matching glock activates, while still keeping its independent activation chance."
+              "sourceNote": "Saved definitions absolute final 2: glock_ext_even_dlay has a 20% chance to activate when glock_ext_even activates."
             }
           ]
         },
@@ -2461,6 +2461,20 @@
                 }
               ],
               "sourceNote": "Definitions doc: tbone_2 is x0.1 as likely with trumpet."
+            }
+          ]
+        },
+        "samples/glock_odd (consolidated).wav": {
+          "dependentActivationRules": [
+            {
+              "id": "dependent_glock_odd_delay_after_glock_odd",
+              "targets": [
+                {
+                  "key": "samples/glock_odd_dlay (consolidated).wav"
+                }
+              ],
+              "chance": 0.2,
+              "sourceNote": "Saved definitions absolute final 2: glock_odd_dlay has a 20% chance to activate when glock_odd activates."
             }
           ]
         }

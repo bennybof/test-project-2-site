@@ -1,0 +1,13 @@
+TEST PROJECT 2 - FIX GLOCK DEPENDENT ACTIVATION CHANCES REPORT
+
+Generated: 2026-06-09T21:31:56.697Z
+Renderer change: none
+Catalog change: correct/add glock dependent activation rules
+
+Important:
+- Saved definitions say glock delay stems have 20% chance when the matching glock activates.
+- This correction does not change independent activationChance/globalInclusionChance values.
+
+Results:
+- samples/glock_ext_even (consolidated).wav -> samples/glock_ext_even_dlay (consolidated).wav: updated, previousChance=0.5, newChance=0.2
+- samples/glock_odd (consolidated).wav -> samples/glock_odd_dlay (consolidated).wav: added, previousChance=none, newChance=0.2

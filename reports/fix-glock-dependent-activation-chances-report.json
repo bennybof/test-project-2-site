@@ -1,0 +1,24 @@
+{
+  "generatedAt": "2026-06-09T21:31:56.697Z",
+  "batch": "fix glock dependent activation chances",
+  "catalogPath": "data/full-rules-catalog.json",
+  "note": "Corrects glock dependent delay activation from the saved definitions source. Does not change independent activationChance/globalInclusionChance values.",
+  "results": [
+    {
+      "sourceKey": "samples/glock_ext_even (consolidated).wav",
+      "targetKey": "samples/glock_ext_even_dlay (consolidated).wav",
+      "id": "dependent_glock_ext_delay_after_glock_ext",
+      "chance": 0.2,
+      "previousChance": 0.5,
+      "status": "updated"
+    },
+    {
+      "sourceKey": "samples/glock_odd (consolidated).wav",
+      "targetKey": "samples/glock_odd_dlay (consolidated).wav",
+      "id": "dependent_glock_odd_delay_after_glock_odd",
+      "chance": 0.2,
+      "previousChance": null,
+      "status": "added"
+    }
+  ]
+}
