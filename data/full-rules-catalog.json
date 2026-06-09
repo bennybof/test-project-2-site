@@ -1412,10 +1412,24 @@
           "activationChance": 0.5
         },
         "samples/jazz_crash_metal_odd (consolidated).wav": {
-          "activationChance": 0.4
+          "activationChance": 0.4,
+          "dependentActivationRules": [
+            {
+              "id": "dependent_jazz_crash_dlay_after_jazz_crash",
+              "targets": [
+                {
+                  "key": "samples/jazz_crash_metal_dlay_odd_xtra (consolidated).wav"
+                }
+              ],
+              "chance": 0.4,
+              "sourceNote": "Saved definitions absolute final 2: jazz_crash_metal_dlay_odd_xtra can only activate if jazz crash is active. User confirmed it should roll at 40% after jazz crash activates."
+            }
+          ]
         },
         "samples/jazz_crash_metal_dlay_odd_xtra (consolidated).wav": {
-          "activationChance": 0.4
+          "activationChance": 0,
+          "dependentActivationOnly": true,
+          "sourceNote": "Dependent activation target only: jazz_crash_metal_dlay_odd_xtra should only roll after jazz_crash_metal_odd activates."
         },
         "samples/jazz_crash_metal_hook_odd.wav": {
           "activationChance": 0.4

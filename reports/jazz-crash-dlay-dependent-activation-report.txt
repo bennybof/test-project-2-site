@@ -1,0 +1,15 @@
+TEST PROJECT 2 - JAZZ CRASH DLAY DEPENDENT ACTIVATION REPORT
+
+Generated: 2026-06-09T21:45:46.053Z
+Renderer change: none
+Catalog change: jazz_crash_metal_dlay_odd_xtra dependent activation
+
+Rule:
+- jazz_crash_metal_dlay_odd_xtra has 40% chance after jazz_crash_metal_odd activates.
+- jazz_crash_metal_dlay_odd_xtra is marked dependentActivationOnly so it does not roll independently.
+
+Dependent rule result:
+- samples/jazz_crash_metal_odd (consolidated).wav -> samples/jazz_crash_metal_dlay_odd_xtra (consolidated).wav: added, chance=0.4
+
+Dependent-only target result:
+- samples/jazz_crash_metal_dlay_odd_xtra (consolidated).wav: set_dependent_only, previousActivationChance=0.4, newActivationChance=0

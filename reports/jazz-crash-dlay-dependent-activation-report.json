@@ -1,0 +1,20 @@
+{
+  "generatedAt": "2026-06-09T21:45:46.053Z",
+  "batch": "jazz crash dlay dependent activation",
+  "catalogPath": "data/full-rules-catalog.json",
+  "note": "Adds jazz_crash_metal_dlay_odd_xtra as a dependent activation target of jazz crash at 40%, and prevents independent direct activation.",
+  "dependentRuleResult": {
+    "sourceKey": "samples/jazz_crash_metal_odd (consolidated).wav",
+    "targetKey": "samples/jazz_crash_metal_dlay_odd_xtra (consolidated).wav",
+    "id": "dependent_jazz_crash_dlay_after_jazz_crash",
+    "chance": 0.4,
+    "previousChance": null,
+    "status": "added"
+  },
+  "dependentOnlyResult": {
+    "targetKey": "samples/jazz_crash_metal_dlay_odd_xtra (consolidated).wav",
+    "previousActivationChance": 0.4,
+    "previousDependentActivationOnly": null,
+    "status": "set_dependent_only"
+  }
+}
