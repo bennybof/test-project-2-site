@@ -1135,6 +1135,62 @@
     return merged;
   }
 
+  function escapeRulePatternForRegExp(value) {
+    return String(value || "").replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  }
+
+  function doesRuleKeyPatternMatch(pattern, key) {
+    const patternText = String(pattern || "");
+    const targetKey = String(key || "");
+
+    if (!patternText || !targetKey) return false;
+
+    if (patternText.startsWith("regex:")) {
+      try {
+        return new RegExp(patternText.slice("regex:".length)).test(targetKey);
+      } catch (error) {
+        return false;
+      }
+    }
+
+    if (patternText.startsWith("/") && patternText.lastIndexOf("/") > 0) {
+      const finalSlashIndex = patternText.lastIndexOf("/");
+      const source = patternText.slice(1, finalSlashIndex);
+      const flags = patternText.slice(finalSlashIndex + 1);
+
+      try {
+        return new RegExp(source, flags).test(targetKey);
+      } catch (error) {
+        return false;
+      }
+    }
+
+    if (patternText.includes("*") || patternText.includes("?")) {
+      const source = "^" + escapeRulePatternForRegExp(patternText)
+        .replace(/\\\*/g, ".*")
+        .replace(/\\\?/g, ".") + "$";
+
+      try {
+        return new RegExp(source).test(targetKey);
+      } catch (error) {
+        return false;
+      }
+    }
+
+    return targetKey.includes(patternText);
+  }
+
+  function getRuleObjectsMatchingKeyPatterns(patternMap, key) {
+    const matches = [];
+
+    for (const [pattern, rules] of Object.entries(patternMap || {})) {
+      if (!rules || typeof rules !== "object") continue;
+      if (doesRuleKeyPatternMatch(pattern, key)) matches.push(rules);
+    }
+
+    return matches;
+  }
+
   function getRuleProfileForEntry(entry) {
     if (!entry) return {};
 
@@ -1151,6 +1207,14 @@
       "files"
     ]);
 
+    const byKeyPattern = getRuleMapByName(pool, [
+      "byKeyPattern",
+      "byKeyPatterns",
+      "keyPatterns",
+      "filenamePatterns",
+      "filePatterns"
+    ]);
+
     const byFamily = getRuleMapByName(pool, [
       "byFamily",
       "families",
@@ -1164,6 +1228,7 @@
     ]);
 
     const keyRules = getRuleObjectFromMap(byKey, entry.key);
+    const keyPatternRules = getRuleObjectsMatchingKeyPatterns(byKeyPattern, entry.key);
     const familyRules = getRuleObjectFromMap(byFamily, entry.family);
 
     const tagRules = [];
@@ -1177,6 +1242,7 @@
       defaultRules,
       ...tagRules,
       familyRules,
+      ...keyPatternRules,
       keyRules
     );
   }
