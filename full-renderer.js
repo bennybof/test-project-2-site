@@ -2449,6 +2449,8 @@
     return base;
   }
 
+  const JAZZ_HOOK_HATS_RIDE04_FILE = "midi files/jazz_hats_metal_hook_even_~_ride04.mid";
+  const JAZZ_HOOK_HATS_RIDEHARD_FILE = "midi files/jazz_hats_metal_hook_even_~_ridehard.mid";
   const JAZZ_GHOST_RIDES_FILE = "midi files/jazz_ghost_rides_metal_ride04.mid";
   const JAZZ_RIDE_WITH_HATS_FILE = "midi files/jazz_rides_wiv-jazz-hats_metal_ridehard.mid";
   const JAZZ_RIDE_WITH_HATS_AND_CRASH_FILE = "midi files/jazz_ride_wiv-jazz_hats_wiv-jazz_crash_metal_odd_ridehard.mid";
@@ -2456,6 +2458,17 @@
   function isJazzRideWithHatsVariantPattern(pattern) {
     const file = String(pattern?.file || "");
     return file === JAZZ_RIDE_WITH_HATS_FILE || file === JAZZ_RIDE_WITH_HATS_AND_CRASH_FILE;
+  }
+
+  function isHookJazzHatsPattern(pattern) {
+    const file = String(pattern?.file || "");
+    return file === JAZZ_HOOK_HATS_RIDE04_FILE || file === JAZZ_HOOK_HATS_RIDEHARD_FILE;
+  }
+
+  function getHookJazzHatsPairFromSectionMidi(sectionMidi) {
+    const ride04 = sectionMidi.find(pattern => pattern.file === JAZZ_HOOK_HATS_RIDE04_FILE);
+    const ridehard = sectionMidi.find(pattern => pattern.file === JAZZ_HOOK_HATS_RIDEHARD_FILE);
+    return ride04 && ridehard ? [ride04, ridehard] : [];
   }
 
   function sectionHasScheduledJazzCrash(section) {
