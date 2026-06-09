@@ -1,0 +1,177 @@
+﻿TEST PROJECT 2 — GROUPED ACTIVATION PATCH ANCHOR CHECK
+
+Generated: 2026-06-09T20:55:27.2886311+01:00
+
+----- getSoftMultiplierRules AREA -----
+LINE 1305: function getSoftMultiplierRules(profile) {
+    return getRuleArray(profile, [
+      "hardClashes",
+      "hardClashRules",
+      "clashes",
+      "cannotPlayWith"
+    ]);
+  }
+
+  function getSoftMultiplierRules(profile) {
+    return getRuleArray(profile, [
+      "softMultipliers",
+      "softMultiplierRules",
+      "activationMultipliers",
+      "chanceMultipliers"
+    ]);
+  }
+
+  function getTimedBlockRules(profile) {
+    return getRuleArray(profile, [
+      "timedBlocks",
+      "timedBlockRules",
+      "shutoffWindows",
+      "blockedWindows",
+
+----- createPlaybackRuleState AREA -----
+LINE 645: function createPlaybackRuleState() {
+        : []
+    });
+  }
+
+  function createPlaybackRuleState() {
+    return {
+      activeItems: new Map(),
+      blockedWindows: [],
+      cutoffEvents: [],
+      familyLocks: new Map(),
+      nextItemId: 1
+    };
+  }
+
+  function getPlaybackItemId(kind, key) {
+    return `${normalizeRuleDecisionToken(kind)}:${String(key || "")}`;
+  }
+
+  function registerActivePlaybackItem(playbackState, {
+
+----- applySoftMultiplierRulesToDecision AREA -----
+LINE 1525: function applySoftMultiplierRulesToDecision(playbackState, context, decision, rules = []) {
+
+    return decision;
+  }
+
+  function applySoftMultiplierRulesToDecision(playbackState, context, decision, rules = []) {
+    if (!playbackState || !context || !decision || !Array.isArray(rules)) return decision;
+
+    for (const rule of rules) {
+      const targets = getRuleTargets(rule);
+      const multiplier = Number(rule.multiplier ?? rule.chanceMultiplier ?? rule.activationMultiplier ?? 1);
+
+      if (!targets.length || !Number.isFinite(multiplier)) continue;
+
+      const activeMatches = findActivePlaybackItemsForRuleTargets(
+        playbackState,
+        targets,
+        context.startSeconds
+      );
+
+      if (activeMatches.length) {
+        multiplyRuleDecisionChance(decision, multiplier, "soft_multiplier", {
+          ruleId: rule.id || "",
+          targets,
+          activeMatches: activeMatches.map(item => ({
+            id: item.id,
+            key: item.key,
+            family: item.family
+          }))
+        });
+      }
+    }
+
+    return decision;
+  }
+
+  function applyDependencyRulesToDecision(playbackState, context, decision, rules = []) {
+    if (!playbackState || !context || !decision || !Array.isArray(rules)) return decision;
+
+    for (const rule of rules) {
+      const targets = getRuleTargets(rule);
+      if (!targets.length) continue;
+
+      const activeMatches = findActivePlaybackItemsForRuleTargets(
+        playbackState,
+        targets,
+
+----- applyRuleProfileToDecision AREA -----
+LINE 1679: function applyRuleProfileToDecision(playbackState, context, decision, profile = {}, random = null) {
+    }
+
+    return events;
+  }
+  function applyRuleProfileToDecision(playbackState, context, decision, profile = {}, random = null) {
+    applyActivationBlockWindows(playbackState, context, decision);
+    if (decision.blocked) return decision;
+
+    applyTimedBlockRulesToDecision(playbackState, context, decision, getTimedBlockRules(profile), random);
+    if (decision.blocked) return decision;
+
+    applyFamilyLockRulesToDecision(playbackState, context, decision, getFamilyLockRules(profile));
+    if (decision.blocked) return decision;
+
+    applyDependencyRulesToDecision(playbackState, context, decision, getDependencyRules(profile));
+    if (decision.blocked) return decision;
+
+    applyHardClashRulesToDecision(playbackState, context, decision, getHardClashRules(profile));
+    if (decision.blocked) return decision;
+
+    applySoftMultiplierRulesToDecision(playbackState, context, decision, getSoftMultiplierRules(profile));
+
+    applyDensityRulesToDecision(context, decision, profile);
+    applyTensionRulesToDecision(context, decision, profile);
+    applyCrescendoRulesToDecision(context, decision, profile);
+
+    return decision;
+  }
+  function resolveRuleProfileDecision({
+    random,
+    plan = null,
+    playbackState = null,
+    kind = "audio",
+    key = "",
+    entry = null,
+    pattern = null,
+    section = null,
+    lifecycleStates = null,
+    localBarIndex = null,
+    startSeconds = null,
+    baseChance = 1,
+    profile = null
+  } = {}) {
+    const safeRandom = typeof random === "function" ? random : (() => 1);
+
+    const activeProfile = profile || (
+      kind === "midi"
+        ? getRuleProfileForMidiPattern(pattern)
+        : getRuleProfileForEntry(entry)
+    );
+
+    const context = createRuleDecisionContext({
+      kind,
+      key,
+      entry,
+      pattern,
+      section,
+      lifecycleStates,
+      localBarIndex,
+      startSeconds,
+      baseChance
+    });
+
+    const decision = createRuleDecisionResult(context, {
+      baseChance
+    });
+
+    applyLifecycleDropoutToDecision(safeRandom, lifecycleStates, context, decision, activeProfile);
+    if (decision.droppedOut) {
+      recordRuleDecisionDebug(plan, decision);
+
+      return {
+        allowed: false,
+        context,
+        decision,
