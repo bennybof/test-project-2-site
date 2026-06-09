@@ -2861,6 +2861,22 @@ function getNormalMidiHatChoiceGroupId(pattern) {
     }
   }
 
+  function recordSectionPlannedAudio(section, entry) {
+    if (!section || !entry?.key) return;
+
+    if (!Array.isArray(section.plannedAudio)) section.plannedAudio = [];
+    if (!Array.isArray(section.plannedAudioKeys)) section.plannedAudioKeys = [];
+
+    if (!section.plannedAudioKeys.includes(entry.key)) {
+      section.plannedAudioKeys.push(entry.key);
+      section.plannedAudio.push({
+        key: entry.key,
+        family: getEntryPrimaryFamily(entry),
+        tags: getEntryPlaybackTags(entry)
+      });
+    }
+  }
+
     function buildFullPlan(random) {
     const duration = Math.max(180, rules.songLengthSeconds || 180);
 
@@ -3282,7 +3298,7 @@ function getNormalMidiHatChoiceGroupId(pattern) {
         const chanceMultiplier = section.type === "normal" ? 0.65 : 1.0;
         const p = Math.min(0.9, getBaseActivationChance(entry) * chanceMultiplier);
 
-        includeAudioByGlobalDecision({
+        const included = includeAudioByGlobalDecision({
           random,
           globalInclusionState,
           requiredActivationState,
@@ -3291,6 +3307,10 @@ function getNormalMidiHatChoiceGroupId(pattern) {
           fallbackChance: p,
           reason: `section_selection:${section.type}`
         });
+
+        if (included) {
+          recordSectionPlannedAudio(section, entry);
+        }
       }
     }
 
