@@ -2451,25 +2451,25 @@
 
   function isJazzMidiHatPattern(pattern) {
     const family = getMidiPatternRuleFamily(pattern);
-    const tags = getMidiPatternRuleTags(pattern);
+    const tags = getMidiPatternRuleTagList(pattern).map(tag => normalizeRuleDecisionToken(tag));
     const key = String(pattern?.file || pattern?.id || "").toLowerCase();
 
     return (
       family === "jazz_hats" ||
       family === "jazz_rides" ||
       family === "jazz_ghost_rides" ||
-      tags.has("jazz_hats") ||
-      tags.has("jazz_rides") ||
-      tags.has("jazz_ghost_rides") ||
+      tags.includes("jazz_hats") ||
+      tags.includes("jazz_rides") ||
+      tags.includes("jazz_ghost_rides") ||
       key.includes("jazz_")
     );
   }
 
   function isNormalMidiHatPattern(pattern) {
-    const tags = getMidiPatternRuleTags(pattern);
+    const tags = getMidiPatternRuleTagList(pattern).map(tag => normalizeRuleDecisionToken(tag));
     const key = String(pattern?.file || pattern?.id || "").toLowerCase();
 
-    return tags.has("hats") && key.includes("hats") && !isJazzMidiHatPattern(pattern);
+    return tags.includes("hats") && key.includes("hats") && !isJazzMidiHatPattern(pattern);
   }
 
   function getNormalMidiHatCompanionGroupId(pattern) {
