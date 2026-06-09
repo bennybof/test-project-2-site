@@ -104,6 +104,44 @@
     ].includes(tensionLabel);
   }
 
+  function getLyrixTensionRange(tensionLabel) {
+    const label = String(tensionLabel || "").toLowerCase();
+
+    if (label === "highest") return [0.8, 1];
+    if (label === "high") return [0.5, 0.8];
+    if (label === "medium_high") return [0.2, 0.5];
+    if (label === "neutral" || label === "medium") return [0, 0];
+    if (label === "medium_low") return [-0.2, -0.5];
+    if (label === "low") return [-0.5, -0.8];
+    if (label === "lowest") return [-0.8, -1];
+
+    return null;
+  }
+
+  function chooseTensionValueFromRange(random, range) {
+    if (!Array.isArray(range) || range.length < 2) return 0;
+
+    const start = Number(range[0]);
+    const end = Number(range[1]);
+
+    if (!Number.isFinite(start) || !Number.isFinite(end)) return 0;
+    if (start === end) return start;
+
+    return start + (end - start) * random();
+  }
+
+  function getLyrixSectionEnergyOptions(random, lyrixSection) {
+    const tensionBand = String(lyrixSection?.tensionLabel || "").toLowerCase();
+    const tensionRange = getLyrixTensionRange(tensionBand);
+
+    if (!tensionRange) return {};
+
+    return {
+      tensionValue: chooseTensionValueFromRange(random, tensionRange),
+      tensionBand
+    };
+  }
+
   function chooseBridgeLeadInBars(random) {
     return chance(random, 0.5) ? 2 : 3;
   }
@@ -3389,13 +3427,15 @@ function getNormalMidiHatChoiceGroupId(pattern) {
         suppressLyrixLeadIn: Boolean(options.suppressLyrixLeadIn)
       };
 
+      const inferredLyrixEnergy = getLyrixSectionEnergyOptions(random, options.lyrixSection);
+
       attachSectionEnergyContext(section, {
-        densityScore: options.densityScore,
-        densityBand: options.densityBand,
-        tensionValue: options.tensionValue,
-        tensionBand: options.tensionBand,
-        isCrescendo: options.isCrescendo,
-        isEmphasis: options.isEmphasis
+        densityScore: options.densityScore ?? inferredLyrixEnergy.densityScore,
+        densityBand: options.densityBand ?? inferredLyrixEnergy.densityBand,
+        tensionValue: options.tensionValue ?? inferredLyrixEnergy.tensionValue,
+        tensionBand: options.tensionBand ?? inferredLyrixEnergy.tensionBand,
+        isCrescendo: options.isCrescendo ?? inferredLyrixEnergy.isCrescendo,
+        isEmphasis: options.isEmphasis ?? inferredLyrixEnergy.isEmphasis
       });
 
       sectionTimeline.push(section);
