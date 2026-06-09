@@ -2534,6 +2534,43 @@ function isExtraRimMidiPattern(pattern) {
   return baseId.startsWith("rims_xtra") || key.includes("rims_xtra");
 }
 
+function isRimsDrumsRimMidiPattern(pattern) {
+  const baseId = normalizeRuleDecisionToken(getMidiPatternBaseId(pattern));
+  const key = normalizeRuleDecisionToken(pattern?.file || "");
+
+  return baseId === "rims_drums_rim" || key.includes("rims_drums_rim");
+}
+
+function midiFileTriggersRimsDrumsRimFirstNoteMute(file) {
+  const rawKey = String(file || "").toLowerCase();
+  const key = normalizeRuleDecisionToken(file || "");
+
+  return (
+    key.includes("pre_snare") ||
+    key.includes("presnare") ||
+    rawKey.includes("pre-snare") ||
+    key.includes("snare_xtra") ||
+    key.includes("jazz_crash") ||
+    key.includes("crash")
+  );
+}
+
+function shouldSkipMidiPatternNote(pattern, noteIndex, section) {
+  if (noteIndex !== 0) {
+    return false;
+  }
+
+  if (!isRimsDrumsRimMidiPattern(pattern)) {
+    return false;
+  }
+
+  const selectedMidi = Array.isArray(section?.selectedMidi) ? section.selectedMidi : [];
+
+  return selectedMidi.some(file =>
+    file !== pattern.file && midiFileTriggersRimsDrumsRimFirstNoteMute(file)
+  );
+}
+
 function getMidiPatternRuleTagList(pattern) {
   const rawTags = getMidiPatternRuleTags(pattern);
 
