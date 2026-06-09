@@ -1,0 +1,2574 @@
+{
+  "generatedAt": "2026-06-09T20:18:40.604Z",
+  "source": "reports/rule-profile-fast-slow-split.json",
+  "catalogPath": "data/full-rules-catalog.json",
+  "totalFastChanceOnlyCandidates": 247,
+  "appliedCount": 242,
+  "unchangedCount": 3,
+  "skippedExistingDifferentCount": 2,
+  "skippedCount": 0,
+  "applied": [
+    {
+      "key": "midi files/hats_hook_metal_#2_ch.mid",
+      "changedFields": {
+        "activationChance": 0.2,
+        "dropoutChance": 0.08
+      },
+      "finalProfile": {
+        "activationChance": 0.2,
+        "dropoutChance": 0.08
+      }
+    },
+    {
+      "key": "samples/breathe_vox_big_dry_even_x2.wav",
+      "changedFields": {
+        "activationChance": 0.4,
+        "dropoutChance": 0.2
+      },
+      "finalProfile": {
+        "activationChance": 0.4,
+        "dropoutChance": 0.2
+      }
+    },
+    {
+      "key": "samples/breathe_vox_wet_big_even_x2.wav",
+      "changedFields": {
+        "activationChance": 0.4,
+        "dropoutChance": 0.2
+      },
+      "finalProfile": {
+        "activationChance": 0.4,
+        "dropoutChance": 0.2
+      }
+    },
+    {
+      "key": "samples/breathe_vox_wet_small_different_even_x2 (consolidated).wav",
+      "changedFields": {
+        "activationChance": 0.2,
+        "dropoutChance": 0.5
+      },
+      "finalProfile": {
+        "activationChance": 0.2,
+        "dropoutChance": 0.5
+      }
+    },
+    {
+      "key": "samples/breathe_vox_stutter_dlay_odd_x2 (consolidated).wav",
+      "changedFields": {
+        "activationChance": 0.05,
+        "dropoutChance": 0.2
+      },
+      "finalProfile": {
+        "activationChance": 0.05,
+        "dropoutChance": 0.2
+      }
+    },
+    {
+      "key": "samples/breathe_vox_stutter_xtra #2 (consolidated).wav",
+      "changedFields": {
+        "activationChance": 0.5
+      },
+      "finalProfile": {
+        "activationChance": 0.5
+      }
+    },
+    {
+      "key": "samples/breathe_vox_stutter_xtra #3 (consolidated).wav",
+      "changedFields": {
+        "activationChance": 0.5,
+        "dropoutChance": 0.5
+      },
+      "finalProfile": {
+        "activationChance": 0.5,
+        "dropoutChance": 0.5
+      }
+    },
+    {
+      "key": "midi files/hats_hook_metal_odd_ch.mid",
+      "changedFields": {
+        "activationChance": 0.2,
+        "dropoutChance": 0.05
+      },
+      "finalProfile": {
+        "activationChance": 0.2,
+        "dropoutChance": 0.05
+      }
+    },
+    {
+      "key": "midi files/hats_hook_metal_odd_oh.mid",
+      "changedFields": {
+        "activationChance": 0.2,
+        "dropoutChance": 0.08
+      },
+      "finalProfile": {
+        "activationChance": 0.2,
+        "dropoutChance": 0.08
+      }
+    },
+    {
+      "key": "midi files/hats_hook_metal_#2_oh.mid",
+      "changedFields": {
+        "activationChance": 0.2,
+        "dropoutChance": 0.08
+      },
+      "finalProfile": {
+        "activationChance": 0.2,
+        "dropoutChance": 0.08
+      }
+    },
+    {
+      "key": "midi files/samples/ride03.wav",
+      "changedFields": {
+        "activationChance": 0.25,
+        "dropoutChance": 0.15
+      },
+      "finalProfile": {
+        "activationChance": 0.25,
+        "dropoutChance": 0.15
+      }
+    },
+    {
+      "key": "midi files/samples/ridehard.wav",
+      "changedFields": {
+        "activationChance": 0.4,
+        "dropoutChance": 0.3
+      },
+      "finalProfile": {
+        "activationChance": 0.4,
+        "dropoutChance": 0.3
+      }
+    },
+    {
+      "key": "midi files/samples/ride04.wav",
+      "changedFields": {
+        "activationChance": 0.9,
+        "dropoutChance": 0.3
+      },
+      "finalProfile": {
+        "activationChance": 0.9,
+        "dropoutChance": 0.3
+      }
+    },
+    {
+      "key": "midi files/beepipes_2_drums_odd_beepipe.mid",
+      "changedFields": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.005
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.005
+      }
+    },
+    {
+      "key": "midi files/beepipes_ghosts_drums_beepipe.mid",
+      "changedFields": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.005
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.005
+      }
+    },
+    {
+      "key": "midi files/snare_pattern_drums_snare.mid",
+      "changedFields": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.15,
+        "dropoutChance": 0.4
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.15,
+        "dropoutChance": 0.4
+      }
+    },
+    {
+      "key": "midi files/samples/snare.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.15,
+        "dropoutChance": 0.4
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.15,
+        "dropoutChance": 0.4
+      }
+    },
+    {
+      "key": "midi files/snare_xtra_drums_even_snare.mid",
+      "changedFields": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.15,
+        "dropoutChance": 0.4
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.15,
+        "dropoutChance": 0.4
+      }
+    },
+    {
+      "key": "midi files/samples/crash.wav",
+      "changedFields": {
+        "activationChance": 0.8,
+        "dropoutChance": 0.05
+      },
+      "finalProfile": {
+        "activationChance": 0.8,
+        "dropoutChance": 0.05
+      }
+    },
+    {
+      "key": "midi files/samples/rim.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.5,
+        "dropoutChance": 0.05
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.5,
+        "dropoutChance": 0.05
+      }
+    },
+    {
+      "key": "midi files/rims_xtra_2_drums_rim.mid",
+      "changedFields": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.02,
+        "dropoutChance": 0.2
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.02,
+        "dropoutChance": 0.2
+      }
+    },
+    {
+      "key": "midi files/rims_xtra_3_drums_rim.mid",
+      "changedFields": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.5,
+        "dropoutChance": 0.05
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.5,
+        "dropoutChance": 0.05
+      }
+    },
+    {
+      "key": "midi files/crash_small_hook_intro_metal_odd_crash.mid",
+      "changedFields": {
+        "activationChance": 0.8,
+        "dropoutChance": 0.05
+      },
+      "finalProfile": {
+        "activationChance": 0.8,
+        "dropoutChance": 0.05
+      }
+    },
+    {
+      "key": "samples/crash_dlay_odd (consolidated).wav",
+      "changedFields": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.5
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.5
+      }
+    },
+    {
+      "key": "samples/big_crash_layer_odd_metal (consolidated).wav",
+      "changedFields": {
+        "globalInclusionChance": 1,
+        "activationChance": 0.02
+      },
+      "finalProfile": {
+        "globalInclusionChance": 1,
+        "activationChance": 0.02
+      }
+    },
+    {
+      "key": "samples/big_crash_layer_odd_dlay_metal (consolidated).wav",
+      "changedFields": {
+        "globalInclusionChance": 1,
+        "activationChance": 0.02
+      },
+      "finalProfile": {
+        "globalInclusionChance": 1,
+        "activationChance": 0.02
+      }
+    },
+    {
+      "key": "samples/crash_washes_metal_even (consolidated).wav",
+      "changedFields": {
+        "globalInclusionChance": 0.2,
+        "activationChance": 0.2,
+        "dropoutChance": 0.5
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.2,
+        "activationChance": 0.2,
+        "dropoutChance": 0.5
+      }
+    },
+    {
+      "key": "samples/crash_washes_metal_dlay_even (consolidated).wav",
+      "changedFields": {
+        "globalInclusionChance": 0.2,
+        "activationChance": 0.2,
+        "dropoutChance": 0.5
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.2,
+        "activationChance": 0.2,
+        "dropoutChance": 0.5
+      }
+    },
+    {
+      "key": "samples/crash_wash_hook_xtra_metal.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.5
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.5
+      }
+    },
+    {
+      "key": "samples/crash_wash_hook_xtra_metal_2.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.2,
+        "activationChance": 0.5
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.2,
+        "activationChance": 0.5
+      }
+    },
+    {
+      "key": "samples/jazz_crash_metal_odd (consolidated).wav",
+      "changedFields": {
+        "activationChance": 0.4
+      },
+      "finalProfile": {
+        "activationChance": 0.4
+      }
+    },
+    {
+      "key": "samples/jazz_crash_metal_dlay_odd_xtra (consolidated).wav",
+      "changedFields": {
+        "activationChance": 0.4
+      },
+      "finalProfile": {
+        "activationChance": 0.4
+      }
+    },
+    {
+      "key": "samples/jazz_crash_metal_hook_odd.wav",
+      "changedFields": {
+        "activationChance": 0.4
+      },
+      "finalProfile": {
+        "activationChance": 0.4
+      }
+    },
+    {
+      "key": "samples/real_bass_hook_cont (consolidated).wav",
+      "changedFields": {
+        "globalInclusionChance": 0.6,
+        "activationChance": 0.2,
+        "dropoutChance": 0.1
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.6,
+        "activationChance": 0.2,
+        "dropoutChance": 0.1
+      }
+    },
+    {
+      "key": "samples/synth_bass_1_hook_odd_x4 (consolidated).wav",
+      "changedFields": {
+        "activationChance": 0.4
+      },
+      "finalProfile": {
+        "activationChance": 0.4
+      }
+    },
+    {
+      "key": "samples/synth_bass_1_hook #2 (consolidated).wav",
+      "changedFields": {
+        "globalInclusionChance": 1,
+        "activationChance": 0.5
+      },
+      "finalProfile": {
+        "globalInclusionChance": 1,
+        "activationChance": 0.5
+      }
+    },
+    {
+      "key": "samples/cello_even_x2 (consolidated).wav",
+      "changedFields": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.8,
+        "dropoutChance": 0.05
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.8,
+        "dropoutChance": 0.05
+      }
+    },
+    {
+      "key": "samples/cello_high_even_x2 (consolidated).wav",
+      "changedFields": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.8,
+        "dropoutChance": 0.05
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.8,
+        "dropoutChance": 0.05
+      }
+    },
+    {
+      "key": "samples/cello_wiv-bass_even (consolidated).wav",
+      "changedFields": {
+        "globalInclusionChance": 1,
+        "activationChance": 0.005,
+        "dropoutChance": 0.05
+      },
+      "finalProfile": {
+        "globalInclusionChance": 1,
+        "activationChance": 0.005,
+        "dropoutChance": 0.05
+      }
+    },
+    {
+      "key": "samples/bassish_glitchy_hook_odd_x4 (consolidated).wav",
+      "changedFields": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.7
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.7
+      }
+    },
+    {
+      "key": "samples/bassish_glitchy_hook_odd_x4 #2 (consolidated).wav",
+      "changedFields": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.7
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.7
+      }
+    },
+    {
+      "key": "samples/high_bassish_hook_odd_x2 (consolidated) #2.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.8,
+        "activationChance": 0.5,
+        "dropoutChance": 0.1
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.8,
+        "activationChance": 0.5,
+        "dropoutChance": 0.1
+      }
+    },
+    {
+      "key": "samples/high_bassish_2_hook_odd_x2 (consolidated).wav",
+      "changedFields": {
+        "globalInclusionChance": 0.8,
+        "activationChance": 0.5,
+        "dropoutChance": 0.1
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.8,
+        "activationChance": 0.5,
+        "dropoutChance": 0.1
+      }
+    },
+    {
+      "key": "samples/high_bassish_2_hook #2 (consolidated).wav",
+      "changedFields": {
+        "globalInclusionChance": 0.8,
+        "activationChance": 0.5,
+        "dropoutChance": 0.1
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.8,
+        "activationChance": 0.5,
+        "dropoutChance": 0.1
+      }
+    },
+    {
+      "key": "samples/pad_wiv-bass (consolidated).wav",
+      "changedFields": {
+        "globalInclusionChance": 1,
+        "activationChance": 0.005,
+        "dropoutChance": 0.05
+      },
+      "finalProfile": {
+        "globalInclusionChance": 1,
+        "activationChance": 0.005,
+        "dropoutChance": 0.05
+      }
+    },
+    {
+      "key": "samples/hippy_synth_wiv-bass_odd (consolidated).wav",
+      "changedFields": {
+        "globalInclusionChance": 1,
+        "activationChance": 0.005,
+        "dropoutChance": 0.05
+      },
+      "finalProfile": {
+        "globalInclusionChance": 1,
+        "activationChance": 0.005,
+        "dropoutChance": 0.05
+      }
+    },
+    {
+      "key": "samples/synth_main_odd (consolidated).wav",
+      "changedFields": {
+        "activationChance": 0.02,
+        "dropoutChance": 0.2
+      },
+      "finalProfile": {
+        "activationChance": 0.02,
+        "dropoutChance": 0.2
+      }
+    },
+    {
+      "key": "samples/synth_high_odd (consolidated).wav",
+      "changedFields": {
+        "activationChance": 0.02,
+        "dropoutChance": 0.03
+      },
+      "finalProfile": {
+        "activationChance": 0.02,
+        "dropoutChance": 0.03
+      }
+    },
+    {
+      "key": "samples/synth_frozen_verb_odd_~ #3 (consolidated).wav",
+      "changedFields": {
+        "activationChance": 0.6
+      },
+      "finalProfile": {
+        "activationChance": 0.6
+      }
+    },
+    {
+      "key": "samples/synth_frozen_verb_odd_~ #4 (consolidated).wav",
+      "changedFields": {
+        "activationChance": 0.6
+      },
+      "finalProfile": {
+        "activationChance": 0.6
+      }
+    },
+    {
+      "key": "samples/synth_downsampled_odd_xtra #3 (consolidated).wav",
+      "changedFields": {
+        "activationChance": 0.01,
+        "dropoutChance": 0.3
+      },
+      "finalProfile": {
+        "activationChance": 0.01,
+        "dropoutChance": 0.3
+      }
+    },
+    {
+      "key": "samples/synth_downsampled_odd_xtra #4 (consolidated).wav",
+      "changedFields": {
+        "activationChance": 0.005,
+        "dropoutChance": 0.3
+      },
+      "finalProfile": {
+        "activationChance": 0.005,
+        "dropoutChance": 0.3
+      }
+    },
+    {
+      "key": "samples/synth_elephant_odd_~_xtra.wav",
+      "changedFields": {
+        "activationChance": 0.005
+      },
+      "finalProfile": {
+        "activationChance": 0.005
+      }
+    },
+    {
+      "key": "samples/sax_1_hook_odd_x2 (consolidated).wav",
+      "changedFields": {
+        "globalInclusionChance": 0.6,
+        "activationChance": 0.4
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.6,
+        "activationChance": 0.4
+      }
+    },
+    {
+      "key": "samples/floot_1_even_x4 (consolidated).wav",
+      "changedFields": {
+        "globalInclusionChance": 0.4,
+        "activationChance": 0.1,
+        "dropoutChance": 0.2
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.4,
+        "activationChance": 0.1,
+        "dropoutChance": 0.2
+      }
+    },
+    {
+      "key": "samples/floot_2_even_x4 (consolidated).wav",
+      "changedFields": {
+        "globalInclusionChance": 0.4,
+        "activationChance": 0.1,
+        "dropoutChance": 0.2
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.4,
+        "activationChance": 0.1,
+        "dropoutChance": 0.2
+      }
+    },
+    {
+      "key": "samples/floot_hook_even_x2 (consolidated).wav",
+      "changedFields": {
+        "globalInclusionChance": 0.4,
+        "dropoutChance": 0.2
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.4,
+        "dropoutChance": 0.2
+      }
+    },
+    {
+      "key": "samples/trumpet_even_x4.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.1,
+        "activationChance": 0.01,
+        "dropoutChance": 0.5
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.1,
+        "activationChance": 0.01,
+        "dropoutChance": 0.5
+      }
+    },
+    {
+      "key": "samples/trumpet_hook_odd_x4 (consolidated).wav",
+      "changedFields": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.2,
+        "dropoutChance": 0.5
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.2,
+        "dropoutChance": 0.5
+      }
+    },
+    {
+      "key": "samples/trumpet_hook_odd_x4 (consolidated) #2.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.2,
+        "dropoutChance": 0.5
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.2,
+        "dropoutChance": 0.5
+      }
+    },
+    {
+      "key": "samples/clarinet_even_x2 (consolidated).wav",
+      "changedFields": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.2,
+        "dropoutChance": 0.5
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.2,
+        "dropoutChance": 0.5
+      }
+    },
+    {
+      "key": "samples/clarinet_hook_x4_even (consolidated).wav",
+      "changedFields": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.2,
+        "dropoutChance": 0.5
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.2,
+        "dropoutChance": 0.5
+      }
+    },
+    {
+      "key": "samples/accordian_odd_x4 (consolidated).wav",
+      "changedFields": {
+        "globalInclusionChance": 0.2,
+        "activationChance": 0.7
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.2,
+        "activationChance": 0.7
+      }
+    },
+    {
+      "key": "samples/accordian_1_hook #2 (consolidated).wav",
+      "changedFields": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.5
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.5
+      }
+    },
+    {
+      "key": "samples/accordian_1_hook #3 (consolidated).wav",
+      "changedFields": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.7,
+        "dropoutChance": 0.7
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.7,
+        "dropoutChance": 0.7
+      }
+    },
+    {
+      "key": "samples/accordian_2_hook_odd_x4 (consolidated).wav",
+      "changedFields": {
+        "globalInclusionChance": 0.1,
+        "activationChance": 0.7,
+        "dropoutChance": 0.7
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.1,
+        "activationChance": 0.7,
+        "dropoutChance": 0.7
+      }
+    },
+    {
+      "key": "samples/vlins_1_even_x2 (consolidated).wav",
+      "changedFields": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.005,
+        "dropoutChance": 0.3
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.005,
+        "dropoutChance": 0.3
+      }
+    },
+    {
+      "key": "samples/vlins_long_suspense_odd_x2 (consolidated).wav",
+      "changedFields": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.005,
+        "dropoutChance": 0.3
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.005,
+        "dropoutChance": 0.3
+      }
+    },
+    {
+      "key": "samples/rhodes_low_hook_odd_x4 (consolidated).wav",
+      "changedFields": {
+        "globalInclusionChance": 0.7,
+        "activationChance": 0.3,
+        "dropoutChance": 0.3
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.7,
+        "activationChance": 0.3,
+        "dropoutChance": 0.3
+      }
+    },
+    {
+      "key": "samples/rhodes_low_2_hook_odd_x4 (consolidated).wav",
+      "changedFields": {
+        "globalInclusionChance": 0.7,
+        "activationChance": 0.3,
+        "dropoutChance": 0.3
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.7,
+        "activationChance": 0.3,
+        "dropoutChance": 0.3
+      }
+    },
+    {
+      "key": "samples/glock_odd_dlay (consolidated).wav",
+      "changedFields": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.01,
+        "dropoutChance": 0.01
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.01,
+        "dropoutChance": 0.01
+      }
+    },
+    {
+      "key": "samples/glock_ext_even (consolidated).wav",
+      "changedFields": {
+        "activationChance": 0.2
+      },
+      "finalProfile": {
+        "activationChance": 0.2
+      }
+    },
+    {
+      "key": "samples/glock_ext_even_dlay (consolidated).wav",
+      "changedFields": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.005,
+        "dropoutChance": 0.01
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.005,
+        "dropoutChance": 0.01
+      }
+    },
+    {
+      "key": "samples/chimes_odd (consolidated).wav",
+      "changedFields": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.1,
+        "dropoutChance": 0.1
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.1,
+        "dropoutChance": 0.1
+      }
+    },
+    {
+      "key": "samples/beeps_intro_odd (consolidated).wav",
+      "changedFields": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.2
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.2
+      }
+    },
+    {
+      "key": "samples/beeps_odd_x2_xtra (consolidated).wav",
+      "changedFields": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.2,
+        "dropoutChance": 0.5
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.2,
+        "dropoutChance": 0.5
+      }
+    },
+    {
+      "key": "samples/beeps_xtra_odd (consolidated).wav",
+      "changedFields": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.2,
+        "dropoutChance": 0.5
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.2,
+        "dropoutChance": 0.5
+      }
+    },
+    {
+      "key": "midi files/samples/coin.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.2,
+        "activationChance": 0.5,
+        "dropoutChance": 0.01
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.2,
+        "activationChance": 0.5,
+        "dropoutChance": 0.01
+      }
+    },
+    {
+      "key": "midi files/arcade_sfx_xtra_done.mid",
+      "changedFields": {
+        "globalInclusionChance": 0.2,
+        "activationChance": 0.5,
+        "dropoutChance": 0.01
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.2,
+        "activationChance": 0.5,
+        "dropoutChance": 0.01
+      }
+    },
+    {
+      "key": "midi files/samples/done.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.2,
+        "activationChance": 0.5,
+        "dropoutChance": 0.01
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.2,
+        "activationChance": 0.5,
+        "dropoutChance": 0.01
+      }
+    },
+    {
+      "key": "midi files/arcade_sfx_xtra_jump.mid",
+      "changedFields": {
+        "globalInclusionChance": 0.2,
+        "activationChance": 0.5,
+        "dropoutChance": 0.01
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.2,
+        "activationChance": 0.5,
+        "dropoutChance": 0.01
+      }
+    },
+    {
+      "key": "midi files/samples/jump.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.2,
+        "activationChance": 0.5,
+        "dropoutChance": 0.01
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.2,
+        "activationChance": 0.5,
+        "dropoutChance": 0.01
+      }
+    },
+    {
+      "key": "samples/pad_1_xtra (consolidated).wav",
+      "changedFields": {
+        "globalInclusionChance": 0.1,
+        "activationChance": 0.2,
+        "dropoutChance": 0.01
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.1,
+        "activationChance": 0.2,
+        "dropoutChance": 0.01
+      }
+    },
+    {
+      "key": "samples/pad_2_odd_xtra (consolidated).wav",
+      "changedFields": {
+        "globalInclusionChance": 0.1,
+        "activationChance": 0.2,
+        "dropoutChance": 0.01
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.1,
+        "activationChance": 0.2,
+        "dropoutChance": 0.01
+      }
+    },
+    {
+      "key": "samples/bagoo_odd (consolidated).wav",
+      "changedFields": {
+        "globalInclusionChance": 0.9,
+        "activationChance": 0.5,
+        "dropoutChance": 0.2
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.9,
+        "activationChance": 0.5,
+        "dropoutChance": 0.2
+      }
+    },
+    {
+      "key": "samples/bagoo_ext_even (consolidated).wav",
+      "changedFields": {
+        "globalInclusionChance": 0.9,
+        "activationChance": 0.5,
+        "dropoutChance": 0.2
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.9,
+        "activationChance": 0.5,
+        "dropoutChance": 0.2
+      }
+    },
+    {
+      "key": "samples/bagoo_low_odd (consolidated).wav",
+      "changedFields": {
+        "globalInclusionChance": 0.9,
+        "activationChance": 0.5,
+        "dropoutChance": 0.2
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.9,
+        "activationChance": 0.5,
+        "dropoutChance": 0.2
+      }
+    },
+    {
+      "key": "samples/random_vox_dry_x4_even_~.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.2,
+        "activationChance": 0.05
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.2,
+        "activationChance": 0.05
+      }
+    },
+    {
+      "key": "samples/random_vox_wet_x4_even_~.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.2,
+        "activationChance": 0.05
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.2,
+        "activationChance": 0.05
+      }
+    },
+    {
+      "key": "samples/other_vox_dry_even_x2.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.1,
+        "dropoutChance": 0.3
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.1,
+        "dropoutChance": 0.3
+      }
+    },
+    {
+      "key": "samples/other_vox_wet_even_x2.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.1,
+        "dropoutChance": 0.3
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.1,
+        "dropoutChance": 0.3
+      }
+    },
+    {
+      "key": "samples/wierd_vox_dry_odd_x2 (consolidated).wav",
+      "changedFields": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.1,
+        "dropoutChance": 0.3
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.1,
+        "dropoutChance": 0.3
+      }
+    },
+    {
+      "key": "samples/wierd_vox_wet_odd_x2.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.1,
+        "dropoutChance": 0.3
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.1,
+        "dropoutChance": 0.3
+      }
+    },
+    {
+      "key": "samples/accbreath_1_~_even.wav",
+      "changedFields": {
+        "activationChance": 0.8
+      },
+      "finalProfile": {
+        "activationChance": 0.8
+      }
+    },
+    {
+      "key": "samples/accbreath_2_even.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.8
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.8
+      }
+    },
+    {
+      "key": "samples/accbreath_3_~_even.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.8,
+        "dropoutChance": 0.2
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.8,
+        "dropoutChance": 0.2
+      }
+    },
+    {
+      "key": "samples/accbreath_4_odd.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.8,
+        "dropoutChance": 0.2
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.8,
+        "dropoutChance": 0.2
+      }
+    },
+    {
+      "key": "samples/accbreath_5_~_even.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.8,
+        "dropoutChance": 0.2
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.8,
+        "dropoutChance": 0.2
+      }
+    },
+    {
+      "key": "samples/accbreath_long_x4.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.2,
+        "activationChance": 0.2
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.2,
+        "activationChance": 0.2
+      }
+    },
+    {
+      "key": "samples/big_wash_build_metal_suspense (consolidated).wav",
+      "changedFields": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.5
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.5
+      }
+    },
+    {
+      "key": "samples/small_wash_build_metal_odd_xtra (consolidated).wav",
+      "changedFields": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.5
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.5
+      }
+    },
+    {
+      "key": "samples/heartbeats_xtra.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.1,
+        "activationChance": 0.005,
+        "dropoutChance": 0.02
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.1,
+        "activationChance": 0.005,
+        "dropoutChance": 0.02
+      }
+    },
+    {
+      "key": "samples/vinyl_xtra (consolidated).wav",
+      "changedFields": {
+        "globalInclusionChance": 0.2,
+        "activationChance": 0.005,
+        "dropoutChance": 0.01
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.2,
+        "activationChance": 0.005,
+        "dropoutChance": 0.01
+      }
+    },
+    {
+      "key": "samples/slackjaw_scratch_xtra_even (consolidated).wav",
+      "changedFields": {
+        "globalInclusionChance": 0.1,
+        "activationChance": 0.05
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.1,
+        "activationChance": 0.05
+      }
+    },
+    {
+      "key": "samples/window_wipe_xtra_even_hook_x4.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.01,
+        "dropoutChance": 0.4
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.01,
+        "dropoutChance": 0.4
+      }
+    },
+    {
+      "key": "samples/window_wipe_2_xtra_even_hook_x4.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.01,
+        "dropoutChance": 0.4
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.01,
+        "dropoutChance": 0.4
+      }
+    },
+    {
+      "key": "samples/oh_rev_metal_odd_~_xtra.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.7,
+        "activationChance": 0.05,
+        "dropoutChance": 0.5
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.7,
+        "activationChance": 0.05,
+        "dropoutChance": 0.5
+      }
+    },
+    {
+      "key": "samples/oh_rev_metal_2_odd_xtra.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.7,
+        "activationChance": 0.05,
+        "dropoutChance": 0.5
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.7,
+        "activationChance": 0.05,
+        "dropoutChance": 0.5
+      }
+    },
+    {
+      "key": "samples/oh_rev_metal_hook_odd.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.7,
+        "activationChance": 0.05,
+        "dropoutChance": 0.5
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.7,
+        "activationChance": 0.05,
+        "dropoutChance": 0.5
+      }
+    },
+    {
+      "key": "samples/hippy_synth_odd (consolidated).wav",
+      "changedFields": {
+        "globalInclusionChance": 0.1,
+        "activationChance": 0.01,
+        "dropoutChance": 0.05
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.1,
+        "activationChance": 0.01,
+        "dropoutChance": 0.05
+      }
+    },
+    {
+      "key": "samples/shaker_small_xtra (consolidated).wav",
+      "changedFields": {
+        "globalInclusionChance": 0.2,
+        "activationChance": 0.005,
+        "dropoutChance": 0.01
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.2,
+        "activationChance": 0.005,
+        "dropoutChance": 0.01
+      }
+    },
+    {
+      "key": "samples/shaker_big_xtra (consolidated).wav",
+      "changedFields": {
+        "globalInclusionChance": 0.2,
+        "activationChance": 0.005,
+        "dropoutChance": 0.01
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.2,
+        "activationChance": 0.005,
+        "dropoutChance": 0.01
+      }
+    },
+    {
+      "key": "lyrix/clockout_lyrix_odd_dry (consolidated).wav",
+      "changedFields": {
+        "globalInclusionChance": 0.2
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.2
+      }
+    },
+    {
+      "key": "lyrix/clockout_lyrix_odd_dry (consolidated) #2.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.2
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.2
+      }
+    },
+    {
+      "key": "lyrix/clockout_lyrix_odd_dry (consolidated) #3.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.2
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.2
+      }
+    },
+    {
+      "key": "lyrix/clockout_lyrix_odd_dry (consolidated) #4.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.2
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.2
+      }
+    },
+    {
+      "key": "lyrix/clockout_lyrix_odd_dry (consolidated) #5.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.2
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.2
+      }
+    },
+    {
+      "key": "lyrix/clockout_lyrix_odd_dry (consolidated) #6.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.2
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.2
+      }
+    },
+    {
+      "key": "lyrix/clockout_lyrix_odd_dry (consolidated) #7.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.2
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.2
+      }
+    },
+    {
+      "key": "lyrix/clockout_lyrix_odd_dry (consolidated) #8.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.2
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.2
+      }
+    },
+    {
+      "key": "lyrix/clockout_lyrix_odd_wet (consolidated).wav",
+      "changedFields": {
+        "globalInclusionChance": 0.2
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.2
+      }
+    },
+    {
+      "key": "lyrix/clockout_lyrix_odd_wet (consolidated) #2.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.2
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.2
+      }
+    },
+    {
+      "key": "lyrix/clockout_lyrix_odd_wet (consolidated) #3.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.2
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.2
+      }
+    },
+    {
+      "key": "lyrix/clockout_lyrix_odd_wet (consolidated) #4.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.2
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.2
+      }
+    },
+    {
+      "key": "lyrix/clockout_lyrix_odd_wet (consolidated) #5.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.2
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.2
+      }
+    },
+    {
+      "key": "lyrix/clockout_lyrix_odd_wet (consolidated) #6.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.2
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.2
+      }
+    },
+    {
+      "key": "lyrix/clockout_lyrix_odd_wet (consolidated) #7.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.2
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.2
+      }
+    },
+    {
+      "key": "lyrix/clockout_lyrix_odd_wet (consolidated) #8.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.2
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.2
+      }
+    },
+    {
+      "key": "lyrix/kachow_lyrix_even_dry (consolidated) #2.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.2
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.2
+      }
+    },
+    {
+      "key": "lyrix/kachow_lyrix_even_dry (consolidated) #3.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.2
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.2
+      }
+    },
+    {
+      "key": "lyrix/kachow_lyrix_even_dry (consolidated) #4.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.2
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.2
+      }
+    },
+    {
+      "key": "lyrix/kachow_lyrix_even_dry (consolidated) #5.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.2
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.2
+      }
+    },
+    {
+      "key": "lyrix/kachow_lyrix_even_wet (consolidated).wav",
+      "changedFields": {
+        "globalInclusionChance": 0.2
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.2
+      }
+    },
+    {
+      "key": "lyrix/kachow_lyrix_even_wet (consolidated) #2.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.2
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.2
+      }
+    },
+    {
+      "key": "lyrix/kachow_lyrix_even_wet (consolidated) #3.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.2
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.2
+      }
+    },
+    {
+      "key": "lyrix/kachow_lyrix_even_wet (consolidated) #4.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.2
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.2
+      }
+    },
+    {
+      "key": "lyrix/kachow_lyrix_even_wet (consolidated) #5.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.2
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.2
+      }
+    },
+    {
+      "key": "lyrix/fall_lyrix_even_dry (consolidated).wav",
+      "changedFields": {
+        "globalInclusionChance": 0.15
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.15
+      }
+    },
+    {
+      "key": "lyrix/fall_lyrix_even_dry (consolidated) #2.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.15
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.15
+      }
+    },
+    {
+      "key": "lyrix/fall_lyrix_even_dry (consolidated) #3.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.15
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.15
+      }
+    },
+    {
+      "key": "lyrix/fall_lyrix_even_dry (consolidated) #4.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.15
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.15
+      }
+    },
+    {
+      "key": "lyrix/fall_lyrix_even_dry (consolidated) #5.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.15
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.15
+      }
+    },
+    {
+      "key": "lyrix/fall_lyrix_even_dry (consolidated) #6.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.15
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.15
+      }
+    },
+    {
+      "key": "lyrix/intrusive_afterbleep_lyrix_dry (consolidated).wav",
+      "changedFields": {
+        "globalInclusionChance": 0.15
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.15
+      }
+    },
+    {
+      "key": "lyrix/intrusive_afterbleep_lyrix_wet (consolidated).wav",
+      "changedFields": {
+        "globalInclusionChance": 0.15
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.15
+      }
+    },
+    {
+      "key": "lyrix/scooby_lyrix_odd_dry (consolidated) #10.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.1
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.1
+      }
+    },
+    {
+      "key": "lyrix/scooby_lyrix_odd_dry (consolidated) #11.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.1
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.1
+      }
+    },
+    {
+      "key": "lyrix/scooby_lyrix_odd_dry (consolidated) #12.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.1
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.1
+      }
+    },
+    {
+      "key": "lyrix/scooby_lyrix_odd_wet (consolidated).wav",
+      "changedFields": {
+        "globalInclusionChance": 0.1
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.1
+      }
+    },
+    {
+      "key": "lyrix/scooby_lyrix_odd_wet (consolidated) #2.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.1
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.1
+      }
+    },
+    {
+      "key": "lyrix/scooby_lyrix_odd_wet (consolidated) #3.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.1
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.1
+      }
+    },
+    {
+      "key": "lyrix/scooby_lyrix_odd_wet (consolidated) #4.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.1
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.1
+      }
+    },
+    {
+      "key": "lyrix/scooby_lyrix_odd_wet (consolidated) #5.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.1
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.1
+      }
+    },
+    {
+      "key": "lyrix/scooby_lyrix_odd_wet (consolidated) #6.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.1
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.1
+      }
+    },
+    {
+      "key": "lyrix/scooby_lyrix_odd_wet (consolidated) #7.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.1
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.1
+      }
+    },
+    {
+      "key": "lyrix/scooby_lyrix_odd_wet (consolidated) #8.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.1
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.1
+      }
+    },
+    {
+      "key": "lyrix/scooby_lyrix_odd_wet (consolidated) #9.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.1
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.1
+      }
+    },
+    {
+      "key": "lyrix/scooby_lyrix_odd_wet (consolidated) #10.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.1
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.1
+      }
+    },
+    {
+      "key": "lyrix/scooby_lyrix_odd_wet (consolidated) #11.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.1
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.1
+      }
+    },
+    {
+      "key": "lyrix/scooby_lyrix_odd_wet (consolidated) #12.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.1
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.1
+      }
+    },
+    {
+      "key": "lyrix/angry_lyrix_odd_dry (consolidated) #9.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.03
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.03
+      }
+    },
+    {
+      "key": "lyrix/angry_lyrix_odd_wet (consolidated).wav",
+      "changedFields": {
+        "globalInclusionChance": 0.03
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.03
+      }
+    },
+    {
+      "key": "lyrix/angry_lyrix_odd_wet (consolidated) #2.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.03
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.03
+      }
+    },
+    {
+      "key": "lyrix/angry_lyrix_odd_wet (consolidated) #3.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.03
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.03
+      }
+    },
+    {
+      "key": "lyrix/angry_lyrix_odd_wet (consolidated) #4.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.03
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.03
+      }
+    },
+    {
+      "key": "lyrix/angry_lyrix_odd_wet (consolidated) #5.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.03
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.03
+      }
+    },
+    {
+      "key": "lyrix/angry_lyrix_odd_wet (consolidated) #6.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.03
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.03
+      }
+    },
+    {
+      "key": "lyrix/angry_lyrix_odd_wet (consolidated) #7.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.03
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.03
+      }
+    },
+    {
+      "key": "lyrix/angry_lyrix_odd_wet (consolidated) #8.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.03
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.03
+      }
+    },
+    {
+      "key": "lyrix/angry_lyrix_odd_wet (consolidated) #9.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.03
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.03
+      }
+    },
+    {
+      "key": "lyrix/bollocks_lyrix_odd_wet (consolidated) #3.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.03
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.03
+      }
+    },
+    {
+      "key": "lyrix/bollocks_lyrix_odd_wet (consolidated) #4.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.03
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.03
+      }
+    },
+    {
+      "key": "lyrix/bollocks_lyrix_odd_wet (consolidated) #5.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.03
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.03
+      }
+    },
+    {
+      "key": "lyrix/bollocks_lyrix_odd_wet (consolidated) #6.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.03
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.03
+      }
+    },
+    {
+      "key": "lyrix/bollocks_idc_adlib_lyrix.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.03
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.03
+      }
+    },
+    {
+      "key": "lyrix/bollocks_peace_adlib_lyrix.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.03
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.03
+      }
+    },
+    {
+      "key": "lyrix/bollocks_yuck_adlib_lyrix (consolidated).wav",
+      "changedFields": {
+        "globalInclusionChance": 0.03
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.03
+      }
+    },
+    {
+      "key": "lyrix/crashout_lyrix_even_dry (consolidated).wav",
+      "changedFields": {
+        "globalInclusionChance": 0.02
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.02
+      }
+    },
+    {
+      "key": "lyrix/crashout_lyrix_even_dry (consolidated) #2.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.02
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.02
+      }
+    },
+    {
+      "key": "lyrix/crashout_lyrix_even_dry (consolidated) #3.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.02
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.02
+      }
+    },
+    {
+      "key": "lyrix/crashout_lyrix_even_dry (consolidated) #4.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.02
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.02
+      }
+    },
+    {
+      "key": "lyrix/crashout_lyrix_even_wet (consolidated) #2.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.02
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.02
+      }
+    },
+    {
+      "key": "lyrix/crashout_lyrix_even_wet (consolidated) #3.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.02
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.02
+      }
+    },
+    {
+      "key": "lyrix/crashout_lyrix_even_wet (consolidated) #4.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.02
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.02
+      }
+    },
+    {
+      "key": "lyrix/bahh_crashout_adlib_lyrix #3.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.02
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.02
+      }
+    },
+    {
+      "key": "lyrix/buf_burnout_lyrix (consolidated).wav",
+      "changedFields": {
+        "globalInclusionChance": 0.12
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.12
+      }
+    },
+    {
+      "key": "lyrix/buf_dontdeepit_lyrix (consolidated).wav",
+      "changedFields": {
+        "globalInclusionChance": 0.12
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.12
+      }
+    },
+    {
+      "key": "lyrix/buf_easy_lyrix (consolidated).wav",
+      "changedFields": {
+        "globalInclusionChance": 0.12
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.12
+      }
+    },
+    {
+      "key": "lyrix/buf_flippedround_lyrix (consolidated).wav",
+      "changedFields": {
+        "globalInclusionChance": 0.12
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.12
+      }
+    },
+    {
+      "key": "lyrix/buf_freakout_lyrix (consolidated).wav",
+      "changedFields": {
+        "globalInclusionChance": 0.12
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.12
+      }
+    },
+    {
+      "key": "lyrix/buf_nobodyelse_lyrix (consolidated).wav",
+      "changedFields": {
+        "globalInclusionChance": 0.12
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.12
+      }
+    },
+    {
+      "key": "lyrix/buf_turnsout_lyrix (consolidated).wav",
+      "changedFields": {
+        "globalInclusionChance": 0.12
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.12
+      }
+    },
+    {
+      "key": "lyrix/buf_adlib_1_lyrix.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.12
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.12
+      }
+    },
+    {
+      "key": "lyrix/buf_adlib_2_lyrix.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.12
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.12
+      }
+    },
+    {
+      "key": "lyrix/buf_adlib_3_lyrix.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.12
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.12
+      }
+    },
+    {
+      "key": "lyrix/buf_adlib_4_lyrix.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.12
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.12
+      }
+    },
+    {
+      "key": "lyrix/buf_adlib_5_lyrix.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.12
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.12
+      }
+    },
+    {
+      "key": "lyrix/buf_adlib_6_lyrix.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.12
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.12
+      }
+    },
+    {
+      "key": "lyrix/buf_adlib_7_lyrix.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.12
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.12
+      }
+    },
+    {
+      "key": "lyrix/buf_adlib_8_lyrix.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.12
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.12
+      }
+    },
+    {
+      "key": "lyrix/buf_adlib_9_lyrix.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.12
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.12
+      }
+    },
+    {
+      "key": "lyrix/buf_adlib_10_lyrix.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.12
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.12
+      }
+    },
+    {
+      "key": "lyrix/buf_cardtalk_lyrix_odd_dry (consolidated) #2.wav",
+      "changedFields": {
+        "activationChance": 0.1
+      },
+      "finalProfile": {
+        "activationChance": 0.1
+      }
+    },
+    {
+      "key": "lyrix/buf_cardtalk_lyrix_odd_dry (consolidated) #3.wav",
+      "changedFields": {
+        "activationChance": 0.1
+      },
+      "finalProfile": {
+        "activationChance": 0.1
+      }
+    },
+    {
+      "key": "lyrix/buf_cardtalk_lyrix_odd_dry (consolidated) #4.wav",
+      "changedFields": {
+        "activationChance": 0.1
+      },
+      "finalProfile": {
+        "activationChance": 0.1
+      }
+    },
+    {
+      "key": "lyrix/buf_cardtalk_lyrix_odd_dry (consolidated) #5.wav",
+      "changedFields": {
+        "activationChance": 0.1
+      },
+      "finalProfile": {
+        "activationChance": 0.1
+      }
+    },
+    {
+      "key": "lyrix/buf_cardtalk_lyrix_odd_dry (consolidated) #6.wav",
+      "changedFields": {
+        "activationChance": 0.1
+      },
+      "finalProfile": {
+        "activationChance": 0.1
+      }
+    },
+    {
+      "key": "lyrix/buf_cardtalk_lyrix_odd_dry (consolidated) #7.wav",
+      "changedFields": {
+        "activationChance": 0.1
+      },
+      "finalProfile": {
+        "activationChance": 0.1
+      }
+    },
+    {
+      "key": "lyrix/buf_cardtalk_lyrix_odd_dry (consolidated) #8.wav",
+      "changedFields": {
+        "activationChance": 0.1
+      },
+      "finalProfile": {
+        "activationChance": 0.1
+      }
+    },
+    {
+      "key": "lyrix/buf_cardtalk_lyrix_odd_wet (consolidated).wav",
+      "changedFields": {
+        "activationChance": 0.1
+      },
+      "finalProfile": {
+        "activationChance": 0.1
+      }
+    },
+    {
+      "key": "lyrix/buf_cardtalk_lyrix_odd_wet (consolidated) #2.wav",
+      "changedFields": {
+        "activationChance": 0.1
+      },
+      "finalProfile": {
+        "activationChance": 0.1
+      }
+    },
+    {
+      "key": "lyrix/buf_cardtalk_lyrix_odd_wet (consolidated) #3.wav",
+      "changedFields": {
+        "activationChance": 0.1
+      },
+      "finalProfile": {
+        "activationChance": 0.1
+      }
+    },
+    {
+      "key": "lyrix/buf_cardtalk_lyrix_odd_wet (consolidated) #4.wav",
+      "changedFields": {
+        "activationChance": 0.1
+      },
+      "finalProfile": {
+        "activationChance": 0.1
+      }
+    },
+    {
+      "key": "lyrix/buf_cardtalk_lyrix_odd_wet (consolidated) #5.wav",
+      "changedFields": {
+        "activationChance": 0.1
+      },
+      "finalProfile": {
+        "activationChance": 0.1
+      }
+    },
+    {
+      "key": "lyrix/buf_cardtalk_lyrix_odd_wet (consolidated) #6.wav",
+      "changedFields": {
+        "activationChance": 0.1
+      },
+      "finalProfile": {
+        "activationChance": 0.1
+      }
+    },
+    {
+      "key": "lyrix/buf_cardtalk_lyrix_odd_wet (consolidated) #7.wav",
+      "changedFields": {
+        "activationChance": 0.1
+      },
+      "finalProfile": {
+        "activationChance": 0.1
+      }
+    },
+    {
+      "key": "lyrix/buf_cardtalk_lyrix_odd_wet (consolidated) #8.wav",
+      "changedFields": {
+        "activationChance": 0.1
+      },
+      "finalProfile": {
+        "activationChance": 0.1
+      }
+    },
+    {
+      "key": "lyrix/nosound_lyrix_odd_leadin_wet.wav",
+      "changedFields": {
+        "dropoutChance": 0.3
+      },
+      "finalProfile": {
+        "dropoutChance": 0.3
+      }
+    },
+    {
+      "key": "lyrix/nosound_lyrix_wet (consolidated) #4.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.2
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.2
+      }
+    },
+    {
+      "key": "lyrix/nosound_lyrix_wet (consolidated) #5.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.2
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.2
+      }
+    },
+    {
+      "key": "lyrix/nosound_lyrix_wet (consolidated) #6.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.2
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.2
+      }
+    },
+    {
+      "key": "lyrix/nosound_lyrix_wet (consolidated) #7.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.2
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.2
+      }
+    },
+    {
+      "key": "lyrix/nosound_lyrix_scenes_dry (consolidated).wav",
+      "changedFields": {
+        "globalInclusionChance": 0.2,
+        "activationChance": 0.5,
+        "dropoutChance": 0.3
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.2,
+        "activationChance": 0.5,
+        "dropoutChance": 0.3
+      }
+    },
+    {
+      "key": "lyrix/nosound_lyrix_scenes_wet (consolidated).wav",
+      "changedFields": {
+        "globalInclusionChance": 0.2,
+        "activationChance": 0.5,
+        "dropoutChance": 0.3
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.2,
+        "activationChance": 0.5,
+        "dropoutChance": 0.3
+      }
+    },
+    {
+      "key": "lyrix/wow_adlib_nosound_lyrix #7.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.2,
+        "activationChance": 0.5,
+        "dropoutChance": 0.3
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.2,
+        "activationChance": 0.5,
+        "dropoutChance": 0.3
+      }
+    },
+    {
+      "key": "lyrix/fast_hook_hums_lyrix_odd.wav",
+      "changedFields": {
+        "activationChance": 0.05
+      },
+      "finalProfile": {
+        "activationChance": 0.05
+      }
+    },
+    {
+      "key": "lyrix/hook_nextmove_main_lyrix_odd_dry (consolidated) #5.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.3
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.3
+      }
+    },
+    {
+      "key": "lyrix/hook_nextmove_main_lyrix_odd_dry (consolidated) #6.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.3
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.3
+      }
+    },
+    {
+      "key": "lyrix/hook_nextmove_main_lyrix_odd_dry (consolidated) #7.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.3
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.3
+      }
+    },
+    {
+      "key": "lyrix/hook_nextmove_main_lyrix_odd_dry (consolidated) #8.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.3
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.3
+      }
+    },
+    {
+      "key": "lyrix/hook_nextmove_main_lyrix_odd_dry (consolidated) #9.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.3
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.3
+      }
+    },
+    {
+      "key": "lyrix/hook_nextmove_main_lyrix_odd_dry (consolidated) #10.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.3
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.3
+      }
+    },
+    {
+      "key": "lyrix/hook_nextmove_main_lyrix_odd_wet (consolidated).wav",
+      "changedFields": {
+        "globalInclusionChance": 0.3
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.3
+      }
+    },
+    {
+      "key": "lyrix/hook_nextmove_main_lyrix_odd_wet (consolidated) #2.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.3
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.3
+      }
+    },
+    {
+      "key": "lyrix/hook_nextmove_main_lyrix_odd_wet (consolidated) #3.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.3
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.3
+      }
+    },
+    {
+      "key": "lyrix/hook_nextmove_main_lyrix_odd_wet (consolidated) #4.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.3
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.3
+      }
+    },
+    {
+      "key": "samples/everything_intro.wav",
+      "changedFields": {
+        "activationChance": 1
+      },
+      "finalProfile": {
+        "activationChance": 1
+      }
+    },
+    {
+      "key": "samples/typewriter_intro_odd_xtra.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.1
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.1
+      }
+    },
+    {
+      "key": "samples/typewriter_odd_xtra.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.1
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.1
+      }
+    },
+    {
+      "key": "samples/typewriter_even_xtra.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.1
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.1
+      }
+    },
+    {
+      "key": "samples/intrusive_bleep.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.15
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.15
+      }
+    },
+    {
+      "key": "samples/intrusive_feedback.wav",
+      "changedFields": {
+        "globalInclusionChance": 0.15
+      },
+      "finalProfile": {
+        "globalInclusionChance": 0.15
+      }
+    }
+  ],
+  "unchanged": [
+    {
+      "key": "midi files/jazz_hats_metal_ride03.mid",
+      "fields": {
+        "activationChance": 0.25,
+        "dropoutChance": 0.15
+      }
+    },
+    {
+      "key": "midi files/jazz_hats_metal_hook_even_~_ride04.mid",
+      "fields": {
+        "activationChance": 0.2,
+        "dropoutChance": 0.08
+      }
+    },
+    {
+      "key": "midi files/jazz_hats_metal_hook_even_~_ridehard.mid",
+      "fields": {
+        "activationChance": 0.2,
+        "dropoutChance": 0.08
+      }
+    }
+  ],
+  "skippedExistingDifferent": [
+    {
+      "key": "midi files/jazz_ghost_rides_metal_ride04.mid",
+      "conflictingFields": {
+        "activationChance": {
+          "existing": 0.4,
+          "candidate": 0.9
+        }
+      }
+    },
+    {
+      "key": "samples/crash_metal_odd_metal (consolidated).wav",
+      "conflictingFields": {
+        "activationChance": {
+          "existing": 1,
+          "candidate": 0.1
+        }
+      }
+    }
+  ],
+  "skipped": []
+}
