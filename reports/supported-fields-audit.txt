@@ -1,0 +1,76 @@
+TEST PROJECT 2 — SUPPORTED FIELDS AUDIT
+
+Generated: 2026-06-09T13:59:23.376Z
+Branch expectation: full-rules-build
+
+INPUT FILES
+- full-renderer.js: loaded
+- data/full-rules-catalog.json: loaded
+- data/lyrix-rules.json: loaded (57 sections)
+
+RULE PROFILE SCOPE SUMMARY
+- default/defaults: missing
+- byKey/keys/stems/audio/midi/files entries: 8
+- byFamily/families/familyRules entries: 0
+- byTag/tags/tagRules entries: 10
+
+CURRENT TOP-LEVEL FIELDS ALREADY USED IN ruleProfiles
+- activationChance: 8
+- cutoffRules: 11
+- dropoutChance: 4
+- globalInclusionChance: 1
+
+SUPPORTED CHANCE FIELD ALIASES
+- global inclusion: globalInclusionChance, globalChance, inclusionChance, globalSelectionChance
+- activation: activationChance, activationChanceEach, chance, opportunityChance
+- dropout: dropoutChance, dropOutChance, dropoutBaseChance
+
+SUPPORTED RULE ARRAY FIELD ALIASES
+- cutoffRules: cutoffRules, cutoffs, cutoff, cuts
+- hardClashRules: hardClashes, hardClashRules, clashes, cannotPlayWith
+- softMultiplierRules: softMultipliers, softMultiplierRules, activationMultipliers, chanceMultipliers
+- timedBlockRules: timedBlocks, timedBlockRules, shutoffWindows, blockedWindows, blockActivationWindows
+- familyLockRules: familyLocks, oneOfGroups, mutualExclusionGroups, exclusiveFamilies
+- dependencyRules: dependencies, requires, requiresActive, requiresIncluded
+- densityRules: densityRules, densityMultipliers, density
+- tensionRules: tensionRules, tensionMultipliers, tension
+- crescendoRules: crescendoRules, crescendoMultipliers, crescendo
+
+GENERIC SYSTEM READINESS
+- SUPPORTED | ruleProfiles by key/family/tag/default merge | usable for exact filename, family, and tag profiles
+- SUPPORTED | MIDI rule profiles | MIDI patterns can use ruleProfiles through getMidiPatternRuleEntry
+- SUPPORTED | globalInclusionChance aliases | globalInclusionChance, globalChance, inclusionChance, globalSelectionChance
+- SUPPORTED | activationChance aliases | activationChance, activationChanceEach, chance, opportunityChance
+- SUPPORTED | dropoutChance + increasing dropout | supports dropout, dropoutRule, dropoutIncreasePerActivation/dropoutChanceIncrease
+- SUPPORTED | hardClash | hardClashes, hardClashRules, clashes, cannotPlayWith
+- SUPPORTED | softMultiplier | softMultipliers, softMultiplierRules, activationMultipliers, chanceMultipliers
+- SUPPORTED | requiredActive / requiresActive dependencies | active-now dependencies are supported; previously-activated/history dependencies still need separate check
+- SUPPORTED | cutoffRules | cutoffRules, cutoffs, cutoff, cuts
+- SUPPORTED | timed blocks / shutoff windows | timedBlocks, timedBlockRules, shutoffWindows, blockedWindows, blockActivationWindows
+- SUPPORTED | family locks / mutual exclusion | familyLocks, oneOfGroups, mutualExclusionGroups, exclusiveFamilies
+- SUPPORTED | density/tension/crescendo multipliers | renderer has hooks, but musical completeness still needs later audit
+- NEEDS BUILD | groupedActivation generic system | specific hook jazz hats pair exists; generic groupedActivation still needs build
+- NEEDS BUILD | delayFollowsMain generic system | not detected as a generic named system
+- NEEDS BUILD | variantChooser generic system | specific jazz ride variant chooser exists; generic variantChooser still needs build
+- NEEDS BUILD | noDropoutBeforeBars | not detected
+
+INITIAL SPLIT
+FAST / BATCHABLE NOW
+- exact filename profiles through ruleProfiles.byKey
+- tag profiles through ruleProfiles.byTag
+- family profiles through ruleProfiles.byFamily
+- globalInclusionChance / activationChance / dropoutChance
+- cutoffRules, hardClashRules, softMultiplierRules, active-now dependencies, timed blocks, family locks
+
+GENERIC SYSTEMS TO BUILD BEFORE BIG AUTOMATIC PASSES
+- groupedActivation as a data-driven system
+- delayFollowsMain
+- generic variantChooser
+- noDropoutBeforeBars / minimum active duration before dropout
+- previously-activated or only-after-history dependency checks, if needed by definitions
+
+CUSTOM / CAREFUL
+- lyrix timing edge cases
+- section transitions
+- rules that must depend on actual scheduled material rather than planned material
+- anything that could reintroduce broad filename matching for _1/_2 branches
