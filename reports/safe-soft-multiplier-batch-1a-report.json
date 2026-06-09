@@ -1,0 +1,70 @@
+{
+  "generatedAt": "2026-06-09T20:48:08.684Z",
+  "catalogPath": "data/full-rules-catalog.json",
+  "registryPath": "data/stem-registry.json",
+  "batch": "safe soft multiplier rules batch 1A",
+  "note": "Safe subset only. No registry tag repair. No broad filename matching. Uses only exact tags already present in stem-registry.json.",
+  "addedCount": 8,
+  "unchangedCount": 0,
+  "skippedCount": 0,
+  "added": [
+    {
+      "sourceTag": "floot",
+      "targetTag": "tbone",
+      "multiplier": 0.1,
+      "id": "soft_floot_with_tbone_x0_1",
+      "status": "added"
+    },
+    {
+      "sourceTag": "tbone",
+      "targetTag": "floot",
+      "multiplier": 0.1,
+      "id": "soft_tbone_with_floot_x0_1",
+      "status": "added"
+    },
+    {
+      "sourceTag": "accordian",
+      "targetTag": "trumpet",
+      "multiplier": 0.1,
+      "id": "soft_accordian_with_trumpet_x0_1",
+      "status": "added"
+    },
+    {
+      "sourceTag": "trumpet",
+      "targetTag": "accordian",
+      "multiplier": 0.1,
+      "id": "soft_trumpet_with_accordian_x0_1",
+      "status": "added"
+    },
+    {
+      "sourceTag": "sax",
+      "targetTag": "glock",
+      "multiplier": 0.4,
+      "id": "soft_sax_with_glock_x0_4",
+      "status": "added"
+    },
+    {
+      "sourceTag": "tbone",
+      "targetTag": "glock",
+      "multiplier": 0.4,
+      "id": "soft_tbone_with_glock_x0_4",
+      "status": "added"
+    },
+    {
+      "sourceTag": "trumpet",
+      "targetTag": "glock",
+      "multiplier": 0.4,
+      "id": "soft_trumpet_with_glock_x0_4",
+      "status": "added"
+    },
+    {
+      "sourceTag": "clarinet",
+      "targetTag": "glock",
+      "multiplier": 0.4,
+      "id": "soft_clarinet_with_glock_x0_4",
+      "status": "added"
+    }
+  ],
+  "unchanged": [],
+  "skipped": []
+}

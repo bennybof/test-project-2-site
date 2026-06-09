@@ -468,6 +468,28 @@
               ],
               "sourceNote": "Definitions doc: bagoo hard clashes with tbone."
             }
+          ],
+          "softMultiplierRules": [
+            {
+              "id": "soft_tbone_with_floot_x0_1",
+              "multiplier": 0.1,
+              "targets": [
+                {
+                  "tag": "floot"
+                }
+              ],
+              "sourceNote": "Definitions doc: floot and tbone are x0.1 as likely together."
+            },
+            {
+              "id": "soft_tbone_with_glock_x0_4",
+              "multiplier": 0.4,
+              "targets": [
+                {
+                  "tag": "glock"
+                }
+              ],
+              "sourceNote": "Definitions doc: if glock is active, tbone activation chance is multiplied by x0.4."
+            }
           ]
         },
         "bagoo_ext": {
@@ -493,6 +515,18 @@
                 }
               ],
               "sourceNote": "Definitions doc: bagoo_ext hard clashes with clarinet."
+            }
+          ],
+          "softMultiplierRules": [
+            {
+              "id": "soft_clarinet_with_glock_x0_4",
+              "multiplier": 0.4,
+              "targets": [
+                {
+                  "tag": "glock"
+                }
+              ],
+              "sourceNote": "Definitions doc: if glock is active, clarinet activation chance is multiplied by x0.4."
             }
           ]
         },
@@ -730,6 +764,72 @@
                 }
               ],
               "sourceNote": "Definitions doc: cello_wiv-bass cannot play with nuva_bass."
+            }
+          ]
+        },
+        "floot": {
+          "softMultiplierRules": [
+            {
+              "id": "soft_floot_with_tbone_x0_1",
+              "multiplier": 0.1,
+              "targets": [
+                {
+                  "tag": "tbone"
+                }
+              ],
+              "sourceNote": "Definitions doc: floot and tbone are x0.1 as likely together."
+            }
+          ]
+        },
+        "accordian": {
+          "softMultiplierRules": [
+            {
+              "id": "soft_accordian_with_trumpet_x0_1",
+              "multiplier": 0.1,
+              "targets": [
+                {
+                  "tag": "trumpet"
+                }
+              ],
+              "sourceNote": "Definitions doc: accordian is x0.1 as likely with trumpet."
+            }
+          ]
+        },
+        "trumpet": {
+          "softMultiplierRules": [
+            {
+              "id": "soft_trumpet_with_accordian_x0_1",
+              "multiplier": 0.1,
+              "targets": [
+                {
+                  "tag": "accordian"
+                }
+              ],
+              "sourceNote": "Definitions doc: accordian is x0.1 as likely with trumpet."
+            },
+            {
+              "id": "soft_trumpet_with_glock_x0_4",
+              "multiplier": 0.4,
+              "targets": [
+                {
+                  "tag": "glock"
+                }
+              ],
+              "sourceNote": "Definitions doc: if glock is active, trumpet activation chance is multiplied by x0.4."
+            }
+          ]
+        },
+        "sax": {
+          "softMultiplierRules": [
+            {
+              "id": "soft_sax_with_glock_x0_4",
+              "multiplier": 0.4,
+              "targets": [
+                {
+                  "tag": "glock"
+                }
+              ],
+              "sourceNote": "Definitions doc: if glock is active, sax activation chance is multiplied by x0.4."
             }
           ]
         }

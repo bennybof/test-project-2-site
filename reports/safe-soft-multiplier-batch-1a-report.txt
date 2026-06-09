@@ -1,0 +1,26 @@
+TEST PROJECT 2 — SAFE SOFT MULTIPLIER BATCH 1A REPORT
+
+Generated: 2026-06-09T20:48:08.684Z
+Renderer/system change: none
+Catalog field used: ruleProfiles.byTag.*.softMultiplierRules
+Registry tag repair: none
+
+Added rules: 8
+Already existed: 0
+Skipped missing exact tags: 0
+
+ADDED
+- floot x0.1 when tbone is active (soft_floot_with_tbone_x0_1)
+- tbone x0.1 when floot is active (soft_tbone_with_floot_x0_1)
+- accordian x0.1 when trumpet is active (soft_accordian_with_trumpet_x0_1)
+- trumpet x0.1 when accordian is active (soft_trumpet_with_accordian_x0_1)
+- sax x0.4 when glock is active (soft_sax_with_glock_x0_4)
+- tbone x0.4 when glock is active (soft_tbone_with_glock_x0_4)
+- trumpet x0.4 when glock is active (soft_trumpet_with_glock_x0_4)
+- clarinet x0.4 when glock is active (soft_clarinet_with_glock_x0_4)
+
+SKIPPED
+- none
+
+UNCHANGED
+- none
