@@ -1515,6 +1515,145 @@
 
     return matches;
   }
+  function summarizePlaybackRuleMatch(item) {
+    return {
+      id: item.id,
+      key: item.key,
+      family: item.family,
+      kind: item.kind,
+      tags: item.tags
+    };
+  }
+
+  function getDependentActivationConditionTargets(rule, fieldNames = []) {
+    const containers = [
+      rule,
+      rule?.condition,
+      rule?.conditions,
+      rule?.when
+    ].filter(container => container && typeof container === "object" && !Array.isArray(container));
+
+    const targets = [];
+
+    for (const container of containers) {
+      for (const fieldName of fieldNames) {
+        const rawTargets = container[fieldName];
+
+        if (rawTargets === undefined || rawTargets === null) continue;
+
+        const list = Array.isArray(rawTargets) ? rawTargets : [rawTargets];
+
+        for (const rawTarget of list) {
+          const target = normalizeRuleTargetFilter(rawTarget);
+
+          if (target.key || target.family || target.tag || target.kind || target.type || target.sectionType) {
+            targets.push(target);
+          }
+        }
+      }
+    }
+
+    return targets;
+  }
+
+  function checkDependentActivationRuleConditions(playbackState, rule, timeSeconds) {
+    const requiredTargets = getDependentActivationConditionTargets(rule, [
+      "requiredActive",
+      "requiredActiveTargets",
+      "requiredActiveItems",
+      "requiresActive",
+      "onlyIfActive",
+      "ifActive"
+    ]);
+
+    const blockedTargets = getDependentActivationConditionTargets(rule, [
+      "blockedActive",
+      "blockedActiveTargets",
+      "blockedActiveItems",
+      "blockedIfActive",
+      "blockedByActive",
+      "unlessActive",
+      "withoutActive"
+    ]);
+
+    if (!requiredTargets.length && !blockedTargets.length) {
+      return {
+        allowed: true,
+        reason: "",
+        requiredTargets,
+        blockedTargets,
+        requiredMatches: [],
+        blockedMatches: [],
+        missingRequiredTargets: []
+      };
+    }
+
+    if (!playbackState) {
+      return {
+        allowed: false,
+        reason: "missing_playback_state",
+        requiredTargets,
+        blockedTargets,
+        requiredMatches: [],
+        blockedMatches: [],
+        missingRequiredTargets: requiredTargets
+      };
+    }
+
+    const requiredMatches = [];
+    const missingRequiredTargets = [];
+
+    for (const target of requiredTargets) {
+      const matches = findActivePlaybackItemsForRuleTargets(playbackState, [target], timeSeconds);
+
+      if (!matches.length) {
+        missingRequiredTargets.push(target);
+        continue;
+      }
+
+      requiredMatches.push(...matches.map(summarizePlaybackRuleMatch));
+    }
+
+    if (missingRequiredTargets.length) {
+      return {
+        allowed: false,
+        reason: "missing_required_active",
+        requiredTargets,
+        blockedTargets,
+        requiredMatches,
+        blockedMatches: [],
+        missingRequiredTargets
+      };
+    }
+
+    const blockedMatches = findActivePlaybackItemsForRuleTargets(
+      playbackState,
+      blockedTargets,
+      timeSeconds
+    ).map(summarizePlaybackRuleMatch);
+
+    if (blockedMatches.length) {
+      return {
+        allowed: false,
+        reason: "blocked_active",
+        requiredTargets,
+        blockedTargets,
+        requiredMatches,
+        blockedMatches,
+        missingRequiredTargets: []
+      };
+    }
+
+    return {
+      allowed: true,
+      reason: "",
+      requiredTargets,
+      blockedTargets,
+      requiredMatches,
+      blockedMatches,
+      missingRequiredTargets: []
+    };
+  }
   function applyHardClashRulesToDecision(playbackState, context, decision, rules = []) {
     if (!playbackState || !context || !decision || !Array.isArray(rules)) return decision;
 
@@ -4626,6 +4765,37 @@ function scheduleMidiPattern({
           Number(startSeconds || 0) +
           (Number.isFinite(offsetBars) ? offsetBars * Number(section?.barSeconds || 0) : 0) +
           (Number.isFinite(offsetSeconds) ? offsetSeconds : 0);
+
+        const conditionResult = checkDependentActivationRuleConditions(
+          playbackState,
+          rule,
+          targetStartSeconds
+        );
+
+        if (!conditionResult.allowed) {
+          if (section) {
+            if (!Array.isArray(section.dependentActivationDebug)) {
+              section.dependentActivationDebug = [];
+            }
+
+            section.dependentActivationDebug.push({
+              ruleId: rule.id || "",
+              sourceKey,
+              targetKey: targetEntry.key,
+              sourceStartSeconds: startSeconds,
+              targetStartSeconds,
+              skipped: true,
+              reason: conditionResult.reason,
+              requiredTargets: conditionResult.requiredTargets,
+              blockedTargets: conditionResult.blockedTargets,
+              requiredMatches: conditionResult.requiredMatches,
+              blockedMatches: conditionResult.blockedMatches,
+              missingRequiredTargets: conditionResult.missingRequiredTargets
+            });
+          }
+
+          continue;
+        }
 
         const targetLifecycleId = getAudioLifecycleId(targetEntry.key);
 
