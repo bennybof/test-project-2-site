@@ -1,0 +1,46 @@
+{
+  "generatedAt": "2026-06-09T20:39:02.492Z",
+  "registryPath": "data/stem-registry.json",
+  "note": "Removes broad beepipes tag from hats_wiv-beepipes_2 patterns. These are hats that work with beepipes_2, not beepipes themselves.",
+  "changedCount": 2,
+  "unchangedCount": 0,
+  "changed": [
+    {
+      "key": "midi files/hats_wiv-beepipes_2_metal_odd_ch.mid",
+      "before": [
+        "hats",
+        "metal",
+        "midi",
+        "midi_area",
+        "odd",
+        "beepipes"
+      ],
+      "after": [
+        "hats",
+        "metal",
+        "midi",
+        "midi_area",
+        "odd"
+      ]
+    },
+    {
+      "key": "midi files/hats_wiv-beepipes_2_metal_odd_oh.mid",
+      "before": [
+        "hats",
+        "metal",
+        "midi",
+        "midi_area",
+        "odd",
+        "beepipes"
+      ],
+      "after": [
+        "hats",
+        "metal",
+        "midi",
+        "midi_area",
+        "odd"
+      ]
+    }
+  ],
+  "unchanged": []
+}

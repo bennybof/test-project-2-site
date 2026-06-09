@@ -1,0 +1,19 @@
+TEST PROJECT 2 — HATS WIV-BEEPIPES TAG SCOPE FIX REPORT
+
+Generated: 2026-06-09T20:39:02.492Z
+Renderer/system change: none
+Purpose: remove accidental broad beepipes tag from hats_wiv-beepipes_2 patterns.
+
+Changed entries: 2
+Already unchanged: 0
+
+CHANGED
+- midi files/hats_wiv-beepipes_2_metal_odd_ch.mid
+  before: ["hats","metal","midi","midi_area","odd","beepipes"]
+  after:  ["hats","metal","midi","midi_area","odd"]
+- midi files/hats_wiv-beepipes_2_metal_odd_oh.mid
+  before: ["hats","metal","midi","midi_area","odd","beepipes"]
+  after:  ["hats","metal","midi","midi_area","odd"]
+
+UNCHANGED
+- none
