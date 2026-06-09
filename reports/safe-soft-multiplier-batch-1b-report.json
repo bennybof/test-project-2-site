@@ -1,0 +1,584 @@
+{
+  "generatedAt": "2026-06-09T20:52:53.021Z",
+  "catalogPath": "data/full-rules-catalog.json",
+  "registryPath": "data/stem-registry.json",
+  "batch": "safe soft multiplier rules batch 1B",
+  "note": "Exact-key safe batch. No registry tag repair. Broad synth/pno-synth and drowned/drowner rules intentionally excluded.",
+  "addedCount": 57,
+  "unchangedCount": 0,
+  "skippedCount": 0,
+  "added": [
+    {
+      "bucketName": "byKey",
+      "sourceName": "samples/breathe_vox_stutter_dlay_odd_x2 (consolidated).wav",
+      "target": {
+        "tag": "breathe_vox_big"
+      },
+      "multiplier": 0.2,
+      "id": "soft_byKey_samples_breathe_vox_stutter_dlay_odd_x2_consolidated_wav_with_tag_breathe_vox_big_x0_2",
+      "status": "added"
+    },
+    {
+      "bucketName": "byKey",
+      "sourceName": "samples/breathe_vox_stutter_dlay_odd_x2 (consolidated).wav",
+      "target": {
+        "tag": "breathe_vox_small"
+      },
+      "multiplier": 0.2,
+      "id": "soft_byKey_samples_breathe_vox_stutter_dlay_odd_x2_consolidated_wav_with_tag_breathe_vox_small_x0_2",
+      "status": "added"
+    },
+    {
+      "bucketName": "byTag",
+      "sourceName": "breathe_vox_big",
+      "target": {
+        "key": "samples/breathe_vox_stutter_dlay_odd_x2 (consolidated).wav"
+      },
+      "multiplier": 0.2,
+      "id": "soft_byTag_breathe_vox_big_with_key_samples_breathe_vox_stutter_dlay_odd_x2_consolidated_wav_x0_2",
+      "status": "added"
+    },
+    {
+      "bucketName": "byTag",
+      "sourceName": "breathe_vox_small",
+      "target": {
+        "key": "samples/breathe_vox_stutter_dlay_odd_x2 (consolidated).wav"
+      },
+      "multiplier": 0.2,
+      "id": "soft_byTag_breathe_vox_small_with_key_samples_breathe_vox_stutter_dlay_odd_x2_consolidated_wav_x0_2",
+      "status": "added"
+    },
+    {
+      "bucketName": "byKey",
+      "sourceName": "samples/breathe_vox_stutter_odd_x2_xtra (consolidated).wav",
+      "target": {
+        "tag": "breathe_vox_big"
+      },
+      "multiplier": 0.2,
+      "id": "soft_byKey_samples_breathe_vox_stutter_odd_x2_xtra_consolidated_wav_with_tag_breathe_vox_big_x0_2",
+      "status": "added"
+    },
+    {
+      "bucketName": "byKey",
+      "sourceName": "samples/breathe_vox_stutter_odd_x2_xtra (consolidated).wav",
+      "target": {
+        "tag": "breathe_vox_small"
+      },
+      "multiplier": 0.2,
+      "id": "soft_byKey_samples_breathe_vox_stutter_odd_x2_xtra_consolidated_wav_with_tag_breathe_vox_small_x0_2",
+      "status": "added"
+    },
+    {
+      "bucketName": "byTag",
+      "sourceName": "breathe_vox_big",
+      "target": {
+        "key": "samples/breathe_vox_stutter_odd_x2_xtra (consolidated).wav"
+      },
+      "multiplier": 0.2,
+      "id": "soft_byTag_breathe_vox_big_with_key_samples_breathe_vox_stutter_odd_x2_xtra_consolidated_wav_x0_2",
+      "status": "added"
+    },
+    {
+      "bucketName": "byTag",
+      "sourceName": "breathe_vox_small",
+      "target": {
+        "key": "samples/breathe_vox_stutter_odd_x2_xtra (consolidated).wav"
+      },
+      "multiplier": 0.2,
+      "id": "soft_byTag_breathe_vox_small_with_key_samples_breathe_vox_stutter_odd_x2_xtra_consolidated_wav_x0_2",
+      "status": "added"
+    },
+    {
+      "bucketName": "byKey",
+      "sourceName": "samples/breathe_vox_stutter_xtra #2 (consolidated).wav",
+      "target": {
+        "tag": "breathe_vox_big"
+      },
+      "multiplier": 0.2,
+      "id": "soft_byKey_samples_breathe_vox_stutter_xtra_2_consolidated_wav_with_tag_breathe_vox_big_x0_2",
+      "status": "added"
+    },
+    {
+      "bucketName": "byKey",
+      "sourceName": "samples/breathe_vox_stutter_xtra #2 (consolidated).wav",
+      "target": {
+        "tag": "breathe_vox_small"
+      },
+      "multiplier": 0.2,
+      "id": "soft_byKey_samples_breathe_vox_stutter_xtra_2_consolidated_wav_with_tag_breathe_vox_small_x0_2",
+      "status": "added"
+    },
+    {
+      "bucketName": "byTag",
+      "sourceName": "breathe_vox_big",
+      "target": {
+        "key": "samples/breathe_vox_stutter_xtra #2 (consolidated).wav"
+      },
+      "multiplier": 0.2,
+      "id": "soft_byTag_breathe_vox_big_with_key_samples_breathe_vox_stutter_xtra_2_consolidated_wav_x0_2",
+      "status": "added"
+    },
+    {
+      "bucketName": "byTag",
+      "sourceName": "breathe_vox_small",
+      "target": {
+        "key": "samples/breathe_vox_stutter_xtra #2 (consolidated).wav"
+      },
+      "multiplier": 0.2,
+      "id": "soft_byTag_breathe_vox_small_with_key_samples_breathe_vox_stutter_xtra_2_consolidated_wav_x0_2",
+      "status": "added"
+    },
+    {
+      "bucketName": "byKey",
+      "sourceName": "samples/breathe_vox_stutter_xtra #3 (consolidated).wav",
+      "target": {
+        "tag": "breathe_vox_big"
+      },
+      "multiplier": 0.2,
+      "id": "soft_byKey_samples_breathe_vox_stutter_xtra_3_consolidated_wav_with_tag_breathe_vox_big_x0_2",
+      "status": "added"
+    },
+    {
+      "bucketName": "byKey",
+      "sourceName": "samples/breathe_vox_stutter_xtra #3 (consolidated).wav",
+      "target": {
+        "tag": "breathe_vox_small"
+      },
+      "multiplier": 0.2,
+      "id": "soft_byKey_samples_breathe_vox_stutter_xtra_3_consolidated_wav_with_tag_breathe_vox_small_x0_2",
+      "status": "added"
+    },
+    {
+      "bucketName": "byTag",
+      "sourceName": "breathe_vox_big",
+      "target": {
+        "key": "samples/breathe_vox_stutter_xtra #3 (consolidated).wav"
+      },
+      "multiplier": 0.2,
+      "id": "soft_byTag_breathe_vox_big_with_key_samples_breathe_vox_stutter_xtra_3_consolidated_wav_x0_2",
+      "status": "added"
+    },
+    {
+      "bucketName": "byTag",
+      "sourceName": "breathe_vox_small",
+      "target": {
+        "key": "samples/breathe_vox_stutter_xtra #3 (consolidated).wav"
+      },
+      "multiplier": 0.2,
+      "id": "soft_byTag_breathe_vox_small_with_key_samples_breathe_vox_stutter_xtra_3_consolidated_wav_x0_2",
+      "status": "added"
+    },
+    {
+      "bucketName": "byKey",
+      "sourceName": "samples/breathe_vox_stutter_xtra #4 (consolidated).wav",
+      "target": {
+        "tag": "breathe_vox_big"
+      },
+      "multiplier": 0.2,
+      "id": "soft_byKey_samples_breathe_vox_stutter_xtra_4_consolidated_wav_with_tag_breathe_vox_big_x0_2",
+      "status": "added"
+    },
+    {
+      "bucketName": "byKey",
+      "sourceName": "samples/breathe_vox_stutter_xtra #4 (consolidated).wav",
+      "target": {
+        "tag": "breathe_vox_small"
+      },
+      "multiplier": 0.2,
+      "id": "soft_byKey_samples_breathe_vox_stutter_xtra_4_consolidated_wav_with_tag_breathe_vox_small_x0_2",
+      "status": "added"
+    },
+    {
+      "bucketName": "byTag",
+      "sourceName": "breathe_vox_big",
+      "target": {
+        "key": "samples/breathe_vox_stutter_xtra #4 (consolidated).wav"
+      },
+      "multiplier": 0.2,
+      "id": "soft_byTag_breathe_vox_big_with_key_samples_breathe_vox_stutter_xtra_4_consolidated_wav_x0_2",
+      "status": "added"
+    },
+    {
+      "bucketName": "byTag",
+      "sourceName": "breathe_vox_small",
+      "target": {
+        "key": "samples/breathe_vox_stutter_xtra #4 (consolidated).wav"
+      },
+      "multiplier": 0.2,
+      "id": "soft_byTag_breathe_vox_small_with_key_samples_breathe_vox_stutter_xtra_4_consolidated_wav_x0_2",
+      "status": "added"
+    },
+    {
+      "bucketName": "byKey",
+      "sourceName": "samples/breathe_vox_stutter_xtra #5 (consolidated).wav",
+      "target": {
+        "tag": "breathe_vox_big"
+      },
+      "multiplier": 0.2,
+      "id": "soft_byKey_samples_breathe_vox_stutter_xtra_5_consolidated_wav_with_tag_breathe_vox_big_x0_2",
+      "status": "added"
+    },
+    {
+      "bucketName": "byKey",
+      "sourceName": "samples/breathe_vox_stutter_xtra #5 (consolidated).wav",
+      "target": {
+        "tag": "breathe_vox_small"
+      },
+      "multiplier": 0.2,
+      "id": "soft_byKey_samples_breathe_vox_stutter_xtra_5_consolidated_wav_with_tag_breathe_vox_small_x0_2",
+      "status": "added"
+    },
+    {
+      "bucketName": "byTag",
+      "sourceName": "breathe_vox_big",
+      "target": {
+        "key": "samples/breathe_vox_stutter_xtra #5 (consolidated).wav"
+      },
+      "multiplier": 0.2,
+      "id": "soft_byTag_breathe_vox_big_with_key_samples_breathe_vox_stutter_xtra_5_consolidated_wav_x0_2",
+      "status": "added"
+    },
+    {
+      "bucketName": "byTag",
+      "sourceName": "breathe_vox_small",
+      "target": {
+        "key": "samples/breathe_vox_stutter_xtra #5 (consolidated).wav"
+      },
+      "multiplier": 0.2,
+      "id": "soft_byTag_breathe_vox_small_with_key_samples_breathe_vox_stutter_xtra_5_consolidated_wav_x0_2",
+      "status": "added"
+    },
+    {
+      "bucketName": "byKey",
+      "sourceName": "samples/breathe_vox_stutter_xtra #6 (consolidated).wav",
+      "target": {
+        "tag": "breathe_vox_big"
+      },
+      "multiplier": 0.2,
+      "id": "soft_byKey_samples_breathe_vox_stutter_xtra_6_consolidated_wav_with_tag_breathe_vox_big_x0_2",
+      "status": "added"
+    },
+    {
+      "bucketName": "byKey",
+      "sourceName": "samples/breathe_vox_stutter_xtra #6 (consolidated).wav",
+      "target": {
+        "tag": "breathe_vox_small"
+      },
+      "multiplier": 0.2,
+      "id": "soft_byKey_samples_breathe_vox_stutter_xtra_6_consolidated_wav_with_tag_breathe_vox_small_x0_2",
+      "status": "added"
+    },
+    {
+      "bucketName": "byTag",
+      "sourceName": "breathe_vox_big",
+      "target": {
+        "key": "samples/breathe_vox_stutter_xtra #6 (consolidated).wav"
+      },
+      "multiplier": 0.2,
+      "id": "soft_byTag_breathe_vox_big_with_key_samples_breathe_vox_stutter_xtra_6_consolidated_wav_x0_2",
+      "status": "added"
+    },
+    {
+      "bucketName": "byTag",
+      "sourceName": "breathe_vox_small",
+      "target": {
+        "key": "samples/breathe_vox_stutter_xtra #6 (consolidated).wav"
+      },
+      "multiplier": 0.2,
+      "id": "soft_byTag_breathe_vox_small_with_key_samples_breathe_vox_stutter_xtra_6_consolidated_wav_x0_2",
+      "status": "added"
+    },
+    {
+      "bucketName": "byKey",
+      "sourceName": "samples/breathe_vox_stutter_xtra #7 (consolidated).wav",
+      "target": {
+        "tag": "breathe_vox_big"
+      },
+      "multiplier": 0.2,
+      "id": "soft_byKey_samples_breathe_vox_stutter_xtra_7_consolidated_wav_with_tag_breathe_vox_big_x0_2",
+      "status": "added"
+    },
+    {
+      "bucketName": "byKey",
+      "sourceName": "samples/breathe_vox_stutter_xtra #7 (consolidated).wav",
+      "target": {
+        "tag": "breathe_vox_small"
+      },
+      "multiplier": 0.2,
+      "id": "soft_byKey_samples_breathe_vox_stutter_xtra_7_consolidated_wav_with_tag_breathe_vox_small_x0_2",
+      "status": "added"
+    },
+    {
+      "bucketName": "byTag",
+      "sourceName": "breathe_vox_big",
+      "target": {
+        "key": "samples/breathe_vox_stutter_xtra #7 (consolidated).wav"
+      },
+      "multiplier": 0.2,
+      "id": "soft_byTag_breathe_vox_big_with_key_samples_breathe_vox_stutter_xtra_7_consolidated_wav_x0_2",
+      "status": "added"
+    },
+    {
+      "bucketName": "byTag",
+      "sourceName": "breathe_vox_small",
+      "target": {
+        "key": "samples/breathe_vox_stutter_xtra #7 (consolidated).wav"
+      },
+      "multiplier": 0.2,
+      "id": "soft_byTag_breathe_vox_small_with_key_samples_breathe_vox_stutter_xtra_7_consolidated_wav_x0_2",
+      "status": "added"
+    },
+    {
+      "bucketName": "byKey",
+      "sourceName": "samples/breathe_vox_stutter_xtra #8 (consolidated).wav",
+      "target": {
+        "tag": "breathe_vox_big"
+      },
+      "multiplier": 0.2,
+      "id": "soft_byKey_samples_breathe_vox_stutter_xtra_8_consolidated_wav_with_tag_breathe_vox_big_x0_2",
+      "status": "added"
+    },
+    {
+      "bucketName": "byKey",
+      "sourceName": "samples/breathe_vox_stutter_xtra #8 (consolidated).wav",
+      "target": {
+        "tag": "breathe_vox_small"
+      },
+      "multiplier": 0.2,
+      "id": "soft_byKey_samples_breathe_vox_stutter_xtra_8_consolidated_wav_with_tag_breathe_vox_small_x0_2",
+      "status": "added"
+    },
+    {
+      "bucketName": "byTag",
+      "sourceName": "breathe_vox_big",
+      "target": {
+        "key": "samples/breathe_vox_stutter_xtra #8 (consolidated).wav"
+      },
+      "multiplier": 0.2,
+      "id": "soft_byTag_breathe_vox_big_with_key_samples_breathe_vox_stutter_xtra_8_consolidated_wav_x0_2",
+      "status": "added"
+    },
+    {
+      "bucketName": "byTag",
+      "sourceName": "breathe_vox_small",
+      "target": {
+        "key": "samples/breathe_vox_stutter_xtra #8 (consolidated).wav"
+      },
+      "multiplier": 0.2,
+      "id": "soft_byTag_breathe_vox_small_with_key_samples_breathe_vox_stutter_xtra_8_consolidated_wav_x0_2",
+      "status": "added"
+    },
+    {
+      "bucketName": "byKey",
+      "sourceName": "samples/breathe_vox_stutter_xtra #9 (consolidated).wav",
+      "target": {
+        "tag": "breathe_vox_big"
+      },
+      "multiplier": 0.2,
+      "id": "soft_byKey_samples_breathe_vox_stutter_xtra_9_consolidated_wav_with_tag_breathe_vox_big_x0_2",
+      "status": "added"
+    },
+    {
+      "bucketName": "byKey",
+      "sourceName": "samples/breathe_vox_stutter_xtra #9 (consolidated).wav",
+      "target": {
+        "tag": "breathe_vox_small"
+      },
+      "multiplier": 0.2,
+      "id": "soft_byKey_samples_breathe_vox_stutter_xtra_9_consolidated_wav_with_tag_breathe_vox_small_x0_2",
+      "status": "added"
+    },
+    {
+      "bucketName": "byTag",
+      "sourceName": "breathe_vox_big",
+      "target": {
+        "key": "samples/breathe_vox_stutter_xtra #9 (consolidated).wav"
+      },
+      "multiplier": 0.2,
+      "id": "soft_byTag_breathe_vox_big_with_key_samples_breathe_vox_stutter_xtra_9_consolidated_wav_x0_2",
+      "status": "added"
+    },
+    {
+      "bucketName": "byTag",
+      "sourceName": "breathe_vox_small",
+      "target": {
+        "key": "samples/breathe_vox_stutter_xtra #9 (consolidated).wav"
+      },
+      "multiplier": 0.2,
+      "id": "soft_byTag_breathe_vox_small_with_key_samples_breathe_vox_stutter_xtra_9_consolidated_wav_x0_2",
+      "status": "added"
+    },
+    {
+      "bucketName": "byTag",
+      "sourceName": "sax",
+      "target": {
+        "key": "samples/vlins_long_suspense_odd_x2 (consolidated).wav"
+      },
+      "multiplier": 0.1,
+      "id": "soft_byTag_sax_with_key_samples_vlins_long_suspense_odd_x2_consolidated_wav_x0_1",
+      "status": "added"
+    },
+    {
+      "bucketName": "byTag",
+      "sourceName": "accordian",
+      "target": {
+        "key": "samples/vlins_long_suspense_odd_x2 (consolidated).wav"
+      },
+      "multiplier": 0.1,
+      "id": "soft_byTag_accordian_with_key_samples_vlins_long_suspense_odd_x2_consolidated_wav_x0_1",
+      "status": "added"
+    },
+    {
+      "bucketName": "byTag",
+      "sourceName": "trumpet",
+      "target": {
+        "key": "samples/vlins_long_suspense_odd_x2 (consolidated).wav"
+      },
+      "multiplier": 0.1,
+      "id": "soft_byTag_trumpet_with_key_samples_vlins_long_suspense_odd_x2_consolidated_wav_x0_1",
+      "status": "added"
+    },
+    {
+      "bucketName": "byKey",
+      "sourceName": "samples/tbone_1_even_x2 (consolidated).wav",
+      "target": {
+        "key": "samples/vlins_long_suspense_odd_x2 (consolidated).wav"
+      },
+      "multiplier": 0.1,
+      "id": "soft_byKey_samples_tbone_1_even_x2_consolidated_wav_with_key_samples_vlins_long_suspense_odd_x2_consolidated_wav_x0_1",
+      "status": "added"
+    },
+    {
+      "bucketName": "byTag",
+      "sourceName": "clarinet",
+      "target": {
+        "key": "samples/vlins_long_suspense_odd_x2 (consolidated).wav"
+      },
+      "multiplier": 0.1,
+      "id": "soft_byTag_clarinet_with_key_samples_vlins_long_suspense_odd_x2_consolidated_wav_x0_1",
+      "status": "added"
+    },
+    {
+      "bucketName": "byKey",
+      "sourceName": "samples/cello_high_even_x2 (consolidated).wav",
+      "target": {
+        "key": "samples/vlins_long_suspense_odd_x2 (consolidated).wav"
+      },
+      "multiplier": 0.1,
+      "id": "soft_byKey_samples_cello_high_even_x2_consolidated_wav_with_key_samples_vlins_long_suspense_odd_x2_consolidated_wav_x0_1",
+      "status": "added"
+    },
+    {
+      "bucketName": "byKey",
+      "sourceName": "samples/floot_1_even_x4 (consolidated).wav",
+      "target": {
+        "key": "samples/vlins_long_suspense_odd_x2 (consolidated).wav"
+      },
+      "multiplier": 0.1,
+      "id": "soft_byKey_samples_floot_1_even_x4_consolidated_wav_with_key_samples_vlins_long_suspense_odd_x2_consolidated_wav_x0_1",
+      "status": "added"
+    },
+    {
+      "bucketName": "byTag",
+      "sourceName": "clarinet",
+      "target": {
+        "key": "samples/tbone_1_even_x2 (consolidated).wav"
+      },
+      "multiplier": 0.1,
+      "id": "soft_byTag_clarinet_with_key_samples_tbone_1_even_x2_consolidated_wav_x0_1",
+      "status": "added"
+    },
+    {
+      "bucketName": "byKey",
+      "sourceName": "samples/tbone_1_even_x2 (consolidated).wav",
+      "target": {
+        "tag": "clarinet"
+      },
+      "multiplier": 0.1,
+      "id": "soft_byKey_samples_tbone_1_even_x2_consolidated_wav_with_tag_clarinet_x0_1",
+      "status": "added"
+    },
+    {
+      "bucketName": "byKey",
+      "sourceName": "samples/tbone_1_even_x2 (consolidated).wav",
+      "target": {
+        "key": "samples/cello_high_even_x2 (consolidated).wav"
+      },
+      "multiplier": 0.1,
+      "id": "soft_byKey_samples_tbone_1_even_x2_consolidated_wav_with_key_samples_cello_high_even_x2_consolidated_wav_x0_1",
+      "status": "added"
+    },
+    {
+      "bucketName": "byKey",
+      "sourceName": "samples/cello_high_even_x2 (consolidated).wav",
+      "target": {
+        "key": "samples/tbone_1_even_x2 (consolidated).wav"
+      },
+      "multiplier": 0.1,
+      "id": "soft_byKey_samples_cello_high_even_x2_consolidated_wav_with_key_samples_tbone_1_even_x2_consolidated_wav_x0_1",
+      "status": "added"
+    },
+    {
+      "bucketName": "byTag",
+      "sourceName": "trumpet",
+      "target": {
+        "key": "samples/floot_2_even_x4 (consolidated).wav"
+      },
+      "multiplier": 0.1,
+      "id": "soft_byTag_trumpet_with_key_samples_floot_2_even_x4_consolidated_wav_x0_1",
+      "status": "added"
+    },
+    {
+      "bucketName": "byKey",
+      "sourceName": "samples/floot_2_even_x4 (consolidated).wav",
+      "target": {
+        "tag": "trumpet"
+      },
+      "multiplier": 0.1,
+      "id": "soft_byKey_samples_floot_2_even_x4_consolidated_wav_with_tag_trumpet_x0_1",
+      "status": "added"
+    },
+    {
+      "bucketName": "byTag",
+      "sourceName": "trumpet",
+      "target": {
+        "key": "samples/tbone_2_even_x2 (consolidated).wav"
+      },
+      "multiplier": 0.1,
+      "id": "soft_byTag_trumpet_with_key_samples_tbone_2_even_x2_consolidated_wav_x0_1",
+      "status": "added"
+    },
+    {
+      "bucketName": "byKey",
+      "sourceName": "samples/tbone_2_even_x2 (consolidated).wav",
+      "target": {
+        "tag": "trumpet"
+      },
+      "multiplier": 0.1,
+      "id": "soft_byKey_samples_tbone_2_even_x2_consolidated_wav_with_tag_trumpet_x0_1",
+      "status": "added"
+    },
+    {
+      "bucketName": "byTag",
+      "sourceName": "trumpet",
+      "target": {
+        "key": "samples/vlins_1_even_x2 (consolidated).wav"
+      },
+      "multiplier": 0.1,
+      "id": "soft_byTag_trumpet_with_key_samples_vlins_1_even_x2_consolidated_wav_x0_1",
+      "status": "added"
+    },
+    {
+      "bucketName": "byKey",
+      "sourceName": "samples/vlins_1_even_x2 (consolidated).wav",
+      "target": {
+        "tag": "trumpet"
+      },
+      "multiplier": 0.1,
+      "id": "soft_byKey_samples_vlins_1_even_x2_consolidated_wav_with_tag_trumpet_x0_1",
+      "status": "added"
+    }
+  ],
+  "unchanged": [],
+  "skipped": []
+}

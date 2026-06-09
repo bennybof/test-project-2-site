@@ -319,6 +319,108 @@
               ],
               "sourceNote": "Definitions doc: breathe_vox_small and breathe_vox_big cannot activate at the same time."
             }
+          ],
+          "softMultiplierRules": [
+            {
+              "id": "soft_byTag_breathe_vox_small_with_key_samples_breathe_vox_stutter_dlay_odd_x2_consolidated_wav_x0_2",
+              "multiplier": 0.2,
+              "targets": [
+                {
+                  "key": "samples/breathe_vox_stutter_dlay_odd_x2 (consolidated).wav"
+                }
+              ],
+              "sourceNote": "Definitions doc: breathe stutter and non-stutter breathe_vox are much less likely together; exact-key safe reverse rule."
+            },
+            {
+              "id": "soft_byTag_breathe_vox_small_with_key_samples_breathe_vox_stutter_odd_x2_xtra_consolidated_wav_x0_2",
+              "multiplier": 0.2,
+              "targets": [
+                {
+                  "key": "samples/breathe_vox_stutter_odd_x2_xtra (consolidated).wav"
+                }
+              ],
+              "sourceNote": "Definitions doc: breathe stutter and non-stutter breathe_vox are much less likely together; exact-key safe reverse rule."
+            },
+            {
+              "id": "soft_byTag_breathe_vox_small_with_key_samples_breathe_vox_stutter_xtra_2_consolidated_wav_x0_2",
+              "multiplier": 0.2,
+              "targets": [
+                {
+                  "key": "samples/breathe_vox_stutter_xtra #2 (consolidated).wav"
+                }
+              ],
+              "sourceNote": "Definitions doc: breathe stutter and non-stutter breathe_vox are much less likely together; exact-key safe reverse rule."
+            },
+            {
+              "id": "soft_byTag_breathe_vox_small_with_key_samples_breathe_vox_stutter_xtra_3_consolidated_wav_x0_2",
+              "multiplier": 0.2,
+              "targets": [
+                {
+                  "key": "samples/breathe_vox_stutter_xtra #3 (consolidated).wav"
+                }
+              ],
+              "sourceNote": "Definitions doc: breathe stutter and non-stutter breathe_vox are much less likely together; exact-key safe reverse rule."
+            },
+            {
+              "id": "soft_byTag_breathe_vox_small_with_key_samples_breathe_vox_stutter_xtra_4_consolidated_wav_x0_2",
+              "multiplier": 0.2,
+              "targets": [
+                {
+                  "key": "samples/breathe_vox_stutter_xtra #4 (consolidated).wav"
+                }
+              ],
+              "sourceNote": "Definitions doc: breathe stutter and non-stutter breathe_vox are much less likely together; exact-key safe reverse rule."
+            },
+            {
+              "id": "soft_byTag_breathe_vox_small_with_key_samples_breathe_vox_stutter_xtra_5_consolidated_wav_x0_2",
+              "multiplier": 0.2,
+              "targets": [
+                {
+                  "key": "samples/breathe_vox_stutter_xtra #5 (consolidated).wav"
+                }
+              ],
+              "sourceNote": "Definitions doc: breathe stutter and non-stutter breathe_vox are much less likely together; exact-key safe reverse rule."
+            },
+            {
+              "id": "soft_byTag_breathe_vox_small_with_key_samples_breathe_vox_stutter_xtra_6_consolidated_wav_x0_2",
+              "multiplier": 0.2,
+              "targets": [
+                {
+                  "key": "samples/breathe_vox_stutter_xtra #6 (consolidated).wav"
+                }
+              ],
+              "sourceNote": "Definitions doc: breathe stutter and non-stutter breathe_vox are much less likely together; exact-key safe reverse rule."
+            },
+            {
+              "id": "soft_byTag_breathe_vox_small_with_key_samples_breathe_vox_stutter_xtra_7_consolidated_wav_x0_2",
+              "multiplier": 0.2,
+              "targets": [
+                {
+                  "key": "samples/breathe_vox_stutter_xtra #7 (consolidated).wav"
+                }
+              ],
+              "sourceNote": "Definitions doc: breathe stutter and non-stutter breathe_vox are much less likely together; exact-key safe reverse rule."
+            },
+            {
+              "id": "soft_byTag_breathe_vox_small_with_key_samples_breathe_vox_stutter_xtra_8_consolidated_wav_x0_2",
+              "multiplier": 0.2,
+              "targets": [
+                {
+                  "key": "samples/breathe_vox_stutter_xtra #8 (consolidated).wav"
+                }
+              ],
+              "sourceNote": "Definitions doc: breathe stutter and non-stutter breathe_vox are much less likely together; exact-key safe reverse rule."
+            },
+            {
+              "id": "soft_byTag_breathe_vox_small_with_key_samples_breathe_vox_stutter_xtra_9_consolidated_wav_x0_2",
+              "multiplier": 0.2,
+              "targets": [
+                {
+                  "key": "samples/breathe_vox_stutter_xtra #9 (consolidated).wav"
+                }
+              ],
+              "sourceNote": "Definitions doc: breathe stutter and non-stutter breathe_vox are much less likely together; exact-key safe reverse rule."
+            }
           ]
         },
         "breathe_vox_big": {
@@ -331,6 +433,108 @@
                 }
               ],
               "sourceNote": "Definitions doc: breathe_vox_small and breathe_vox_big cannot activate at the same time."
+            }
+          ],
+          "softMultiplierRules": [
+            {
+              "id": "soft_byTag_breathe_vox_big_with_key_samples_breathe_vox_stutter_dlay_odd_x2_consolidated_wav_x0_2",
+              "multiplier": 0.2,
+              "targets": [
+                {
+                  "key": "samples/breathe_vox_stutter_dlay_odd_x2 (consolidated).wav"
+                }
+              ],
+              "sourceNote": "Definitions doc: breathe stutter and non-stutter breathe_vox are much less likely together; exact-key safe reverse rule."
+            },
+            {
+              "id": "soft_byTag_breathe_vox_big_with_key_samples_breathe_vox_stutter_odd_x2_xtra_consolidated_wav_x0_2",
+              "multiplier": 0.2,
+              "targets": [
+                {
+                  "key": "samples/breathe_vox_stutter_odd_x2_xtra (consolidated).wav"
+                }
+              ],
+              "sourceNote": "Definitions doc: breathe stutter and non-stutter breathe_vox are much less likely together; exact-key safe reverse rule."
+            },
+            {
+              "id": "soft_byTag_breathe_vox_big_with_key_samples_breathe_vox_stutter_xtra_2_consolidated_wav_x0_2",
+              "multiplier": 0.2,
+              "targets": [
+                {
+                  "key": "samples/breathe_vox_stutter_xtra #2 (consolidated).wav"
+                }
+              ],
+              "sourceNote": "Definitions doc: breathe stutter and non-stutter breathe_vox are much less likely together; exact-key safe reverse rule."
+            },
+            {
+              "id": "soft_byTag_breathe_vox_big_with_key_samples_breathe_vox_stutter_xtra_3_consolidated_wav_x0_2",
+              "multiplier": 0.2,
+              "targets": [
+                {
+                  "key": "samples/breathe_vox_stutter_xtra #3 (consolidated).wav"
+                }
+              ],
+              "sourceNote": "Definitions doc: breathe stutter and non-stutter breathe_vox are much less likely together; exact-key safe reverse rule."
+            },
+            {
+              "id": "soft_byTag_breathe_vox_big_with_key_samples_breathe_vox_stutter_xtra_4_consolidated_wav_x0_2",
+              "multiplier": 0.2,
+              "targets": [
+                {
+                  "key": "samples/breathe_vox_stutter_xtra #4 (consolidated).wav"
+                }
+              ],
+              "sourceNote": "Definitions doc: breathe stutter and non-stutter breathe_vox are much less likely together; exact-key safe reverse rule."
+            },
+            {
+              "id": "soft_byTag_breathe_vox_big_with_key_samples_breathe_vox_stutter_xtra_5_consolidated_wav_x0_2",
+              "multiplier": 0.2,
+              "targets": [
+                {
+                  "key": "samples/breathe_vox_stutter_xtra #5 (consolidated).wav"
+                }
+              ],
+              "sourceNote": "Definitions doc: breathe stutter and non-stutter breathe_vox are much less likely together; exact-key safe reverse rule."
+            },
+            {
+              "id": "soft_byTag_breathe_vox_big_with_key_samples_breathe_vox_stutter_xtra_6_consolidated_wav_x0_2",
+              "multiplier": 0.2,
+              "targets": [
+                {
+                  "key": "samples/breathe_vox_stutter_xtra #6 (consolidated).wav"
+                }
+              ],
+              "sourceNote": "Definitions doc: breathe stutter and non-stutter breathe_vox are much less likely together; exact-key safe reverse rule."
+            },
+            {
+              "id": "soft_byTag_breathe_vox_big_with_key_samples_breathe_vox_stutter_xtra_7_consolidated_wav_x0_2",
+              "multiplier": 0.2,
+              "targets": [
+                {
+                  "key": "samples/breathe_vox_stutter_xtra #7 (consolidated).wav"
+                }
+              ],
+              "sourceNote": "Definitions doc: breathe stutter and non-stutter breathe_vox are much less likely together; exact-key safe reverse rule."
+            },
+            {
+              "id": "soft_byTag_breathe_vox_big_with_key_samples_breathe_vox_stutter_xtra_8_consolidated_wav_x0_2",
+              "multiplier": 0.2,
+              "targets": [
+                {
+                  "key": "samples/breathe_vox_stutter_xtra #8 (consolidated).wav"
+                }
+              ],
+              "sourceNote": "Definitions doc: breathe stutter and non-stutter breathe_vox are much less likely together; exact-key safe reverse rule."
+            },
+            {
+              "id": "soft_byTag_breathe_vox_big_with_key_samples_breathe_vox_stutter_xtra_9_consolidated_wav_x0_2",
+              "multiplier": 0.2,
+              "targets": [
+                {
+                  "key": "samples/breathe_vox_stutter_xtra #9 (consolidated).wav"
+                }
+              ],
+              "sourceNote": "Definitions doc: breathe stutter and non-stutter breathe_vox are much less likely together; exact-key safe reverse rule."
             }
           ]
         },
@@ -527,6 +731,26 @@
                 }
               ],
               "sourceNote": "Definitions doc: if glock is active, clarinet activation chance is multiplied by x0.4."
+            },
+            {
+              "id": "soft_byTag_clarinet_with_key_samples_vlins_long_suspense_odd_x2_consolidated_wav_x0_1",
+              "multiplier": 0.1,
+              "targets": [
+                {
+                  "key": "samples/vlins_long_suspense_odd_x2 (consolidated).wav"
+                }
+              ],
+              "sourceNote": "Definitions doc: if vlins_long_suspense is active, clarinet activation chance is multiplied by x0.1."
+            },
+            {
+              "id": "soft_byTag_clarinet_with_key_samples_tbone_1_even_x2_consolidated_wav_x0_1",
+              "multiplier": 0.1,
+              "targets": [
+                {
+                  "key": "samples/tbone_1_even_x2 (consolidated).wav"
+                }
+              ],
+              "sourceNote": "Definitions doc: tbone_1 is x0.1 as likely with clarinet patterns."
             }
           ]
         },
@@ -792,6 +1016,16 @@
                 }
               ],
               "sourceNote": "Definitions doc: accordian is x0.1 as likely with trumpet."
+            },
+            {
+              "id": "soft_byTag_accordian_with_key_samples_vlins_long_suspense_odd_x2_consolidated_wav_x0_1",
+              "multiplier": 0.1,
+              "targets": [
+                {
+                  "key": "samples/vlins_long_suspense_odd_x2 (consolidated).wav"
+                }
+              ],
+              "sourceNote": "Definitions doc: if vlins_long_suspense is active, accordian activation chance is multiplied by x0.1."
             }
           ]
         },
@@ -816,6 +1050,46 @@
                 }
               ],
               "sourceNote": "Definitions doc: if glock is active, trumpet activation chance is multiplied by x0.4."
+            },
+            {
+              "id": "soft_byTag_trumpet_with_key_samples_vlins_long_suspense_odd_x2_consolidated_wav_x0_1",
+              "multiplier": 0.1,
+              "targets": [
+                {
+                  "key": "samples/vlins_long_suspense_odd_x2 (consolidated).wav"
+                }
+              ],
+              "sourceNote": "Definitions doc: if vlins_long_suspense is active, trumpet activation chance is multiplied by x0.1."
+            },
+            {
+              "id": "soft_byTag_trumpet_with_key_samples_floot_2_even_x4_consolidated_wav_x0_1",
+              "multiplier": 0.1,
+              "targets": [
+                {
+                  "key": "samples/floot_2_even_x4 (consolidated).wav"
+                }
+              ],
+              "sourceNote": "Definitions doc: floot_2 is x0.1 as likely with trumpet."
+            },
+            {
+              "id": "soft_byTag_trumpet_with_key_samples_tbone_2_even_x2_consolidated_wav_x0_1",
+              "multiplier": 0.1,
+              "targets": [
+                {
+                  "key": "samples/tbone_2_even_x2 (consolidated).wav"
+                }
+              ],
+              "sourceNote": "Definitions doc: tbone_2 is x0.1 as likely with trumpet."
+            },
+            {
+              "id": "soft_byTag_trumpet_with_key_samples_vlins_1_even_x2_consolidated_wav_x0_1",
+              "multiplier": 0.1,
+              "targets": [
+                {
+                  "key": "samples/vlins_1_even_x2 (consolidated).wav"
+                }
+              ],
+              "sourceNote": "Definitions doc: vlins_1 is x0.1 as likely with trumpet."
             }
           ]
         },
@@ -830,6 +1104,16 @@
                 }
               ],
               "sourceNote": "Definitions doc: if glock is active, sax activation chance is multiplied by x0.4."
+            },
+            {
+              "id": "soft_byTag_sax_with_key_samples_vlins_long_suspense_odd_x2_consolidated_wav_x0_1",
+              "multiplier": 0.1,
+              "targets": [
+                {
+                  "key": "samples/vlins_long_suspense_odd_x2 (consolidated).wav"
+                }
+              ],
+              "sourceNote": "Definitions doc: if vlins_long_suspense is active, sax activation chance is multiplied by x0.1."
             }
           ]
         }
@@ -894,14 +1178,80 @@
         },
         "samples/breathe_vox_stutter_dlay_odd_x2 (consolidated).wav": {
           "activationChance": 0.05,
-          "dropoutChance": 0.2
+          "dropoutChance": 0.2,
+          "softMultiplierRules": [
+            {
+              "id": "soft_byKey_samples_breathe_vox_stutter_dlay_odd_x2_consolidated_wav_with_tag_breathe_vox_big_x0_2",
+              "multiplier": 0.2,
+              "targets": [
+                {
+                  "tag": "breathe_vox_big"
+                }
+              ],
+              "sourceNote": "Definitions doc: breathe stutter and non-stutter breathe_vox are much less likely together; exact-key safe version."
+            },
+            {
+              "id": "soft_byKey_samples_breathe_vox_stutter_dlay_odd_x2_consolidated_wav_with_tag_breathe_vox_small_x0_2",
+              "multiplier": 0.2,
+              "targets": [
+                {
+                  "tag": "breathe_vox_small"
+                }
+              ],
+              "sourceNote": "Definitions doc: breathe stutter and non-stutter breathe_vox are much less likely together; exact-key safe version."
+            }
+          ]
         },
         "samples/breathe_vox_stutter_xtra #2 (consolidated).wav": {
-          "activationChance": 0.5
+          "activationChance": 0.5,
+          "softMultiplierRules": [
+            {
+              "id": "soft_byKey_samples_breathe_vox_stutter_xtra_2_consolidated_wav_with_tag_breathe_vox_big_x0_2",
+              "multiplier": 0.2,
+              "targets": [
+                {
+                  "tag": "breathe_vox_big"
+                }
+              ],
+              "sourceNote": "Definitions doc: breathe stutter and non-stutter breathe_vox are much less likely together; exact-key safe version."
+            },
+            {
+              "id": "soft_byKey_samples_breathe_vox_stutter_xtra_2_consolidated_wav_with_tag_breathe_vox_small_x0_2",
+              "multiplier": 0.2,
+              "targets": [
+                {
+                  "tag": "breathe_vox_small"
+                }
+              ],
+              "sourceNote": "Definitions doc: breathe stutter and non-stutter breathe_vox are much less likely together; exact-key safe version."
+            }
+          ]
         },
         "samples/breathe_vox_stutter_xtra #3 (consolidated).wav": {
           "activationChance": 0.5,
-          "dropoutChance": 0.5
+          "dropoutChance": 0.5,
+          "softMultiplierRules": [
+            {
+              "id": "soft_byKey_samples_breathe_vox_stutter_xtra_3_consolidated_wav_with_tag_breathe_vox_big_x0_2",
+              "multiplier": 0.2,
+              "targets": [
+                {
+                  "tag": "breathe_vox_big"
+                }
+              ],
+              "sourceNote": "Definitions doc: breathe stutter and non-stutter breathe_vox are much less likely together; exact-key safe version."
+            },
+            {
+              "id": "soft_byKey_samples_breathe_vox_stutter_xtra_3_consolidated_wav_with_tag_breathe_vox_small_x0_2",
+              "multiplier": 0.2,
+              "targets": [
+                {
+                  "tag": "breathe_vox_small"
+                }
+              ],
+              "sourceNote": "Definitions doc: breathe stutter and non-stutter breathe_vox are much less likely together; exact-key safe version."
+            }
+          ]
         },
         "midi files/hats_hook_metal_odd_ch.mid": {
           "activationChance": 0.2,
@@ -1032,7 +1382,29 @@
         "samples/cello_high_even_x2 (consolidated).wav": {
           "globalInclusionChance": 0.5,
           "activationChance": 0.8,
-          "dropoutChance": 0.05
+          "dropoutChance": 0.05,
+          "softMultiplierRules": [
+            {
+              "id": "soft_byKey_samples_cello_high_even_x2_consolidated_wav_with_key_samples_vlins_long_suspense_odd_x2_consolidated_wav_x0_1",
+              "multiplier": 0.1,
+              "targets": [
+                {
+                  "key": "samples/vlins_long_suspense_odd_x2 (consolidated).wav"
+                }
+              ],
+              "sourceNote": "Definitions doc: if vlins_long_suspense is active, cello_high activation chance is multiplied by x0.1."
+            },
+            {
+              "id": "soft_byKey_samples_cello_high_even_x2_consolidated_wav_with_key_samples_tbone_1_even_x2_consolidated_wav_x0_1",
+              "multiplier": 0.1,
+              "targets": [
+                {
+                  "key": "samples/tbone_1_even_x2 (consolidated).wav"
+                }
+              ],
+              "sourceNote": "Definitions doc: cello_high is x0.1 as likely with tbone_1."
+            }
+          ]
         },
         "samples/cello_wiv-bass_even (consolidated).wav": {
           "globalInclusionChance": 1,
@@ -1104,12 +1476,36 @@
         "samples/floot_1_even_x4 (consolidated).wav": {
           "globalInclusionChance": 0.4,
           "activationChance": 0.1,
-          "dropoutChance": 0.2
+          "dropoutChance": 0.2,
+          "softMultiplierRules": [
+            {
+              "id": "soft_byKey_samples_floot_1_even_x4_consolidated_wav_with_key_samples_vlins_long_suspense_odd_x2_consolidated_wav_x0_1",
+              "multiplier": 0.1,
+              "targets": [
+                {
+                  "key": "samples/vlins_long_suspense_odd_x2 (consolidated).wav"
+                }
+              ],
+              "sourceNote": "Definitions doc: if vlins_long_suspense is active, floot_1 activation chance is multiplied by x0.1."
+            }
+          ]
         },
         "samples/floot_2_even_x4 (consolidated).wav": {
           "globalInclusionChance": 0.4,
           "activationChance": 0.1,
-          "dropoutChance": 0.2
+          "dropoutChance": 0.2,
+          "softMultiplierRules": [
+            {
+              "id": "soft_byKey_samples_floot_2_even_x4_consolidated_wav_with_tag_trumpet_x0_1",
+              "multiplier": 0.1,
+              "targets": [
+                {
+                  "tag": "trumpet"
+                }
+              ],
+              "sourceNote": "Definitions doc: floot_2 is x0.1 as likely with trumpet."
+            }
+          ]
         },
         "samples/floot_hook_even_x2 (consolidated).wav": {
           "globalInclusionChance": 0.4,
@@ -1161,7 +1557,19 @@
         "samples/vlins_1_even_x2 (consolidated).wav": {
           "globalInclusionChance": 0.5,
           "activationChance": 0.005,
-          "dropoutChance": 0.3
+          "dropoutChance": 0.3,
+          "softMultiplierRules": [
+            {
+              "id": "soft_byKey_samples_vlins_1_even_x2_consolidated_wav_with_tag_trumpet_x0_1",
+              "multiplier": 0.1,
+              "targets": [
+                {
+                  "tag": "trumpet"
+                }
+              ],
+              "sourceNote": "Definitions doc: vlins_1 is x0.1 as likely with trumpet."
+            }
+          ]
         },
         "samples/vlins_long_suspense_odd_x2 (consolidated).wav": {
           "globalInclusionChance": 0.5,
@@ -1771,6 +2179,222 @@
         },
         "samples/intrusive_feedback.wav": {
           "globalInclusionChance": 0.15
+        },
+        "samples/breathe_vox_stutter_odd_x2_xtra (consolidated).wav": {
+          "softMultiplierRules": [
+            {
+              "id": "soft_byKey_samples_breathe_vox_stutter_odd_x2_xtra_consolidated_wav_with_tag_breathe_vox_big_x0_2",
+              "multiplier": 0.2,
+              "targets": [
+                {
+                  "tag": "breathe_vox_big"
+                }
+              ],
+              "sourceNote": "Definitions doc: breathe stutter and non-stutter breathe_vox are much less likely together; exact-key safe version."
+            },
+            {
+              "id": "soft_byKey_samples_breathe_vox_stutter_odd_x2_xtra_consolidated_wav_with_tag_breathe_vox_small_x0_2",
+              "multiplier": 0.2,
+              "targets": [
+                {
+                  "tag": "breathe_vox_small"
+                }
+              ],
+              "sourceNote": "Definitions doc: breathe stutter and non-stutter breathe_vox are much less likely together; exact-key safe version."
+            }
+          ]
+        },
+        "samples/breathe_vox_stutter_xtra #4 (consolidated).wav": {
+          "softMultiplierRules": [
+            {
+              "id": "soft_byKey_samples_breathe_vox_stutter_xtra_4_consolidated_wav_with_tag_breathe_vox_big_x0_2",
+              "multiplier": 0.2,
+              "targets": [
+                {
+                  "tag": "breathe_vox_big"
+                }
+              ],
+              "sourceNote": "Definitions doc: breathe stutter and non-stutter breathe_vox are much less likely together; exact-key safe version."
+            },
+            {
+              "id": "soft_byKey_samples_breathe_vox_stutter_xtra_4_consolidated_wav_with_tag_breathe_vox_small_x0_2",
+              "multiplier": 0.2,
+              "targets": [
+                {
+                  "tag": "breathe_vox_small"
+                }
+              ],
+              "sourceNote": "Definitions doc: breathe stutter and non-stutter breathe_vox are much less likely together; exact-key safe version."
+            }
+          ]
+        },
+        "samples/breathe_vox_stutter_xtra #5 (consolidated).wav": {
+          "softMultiplierRules": [
+            {
+              "id": "soft_byKey_samples_breathe_vox_stutter_xtra_5_consolidated_wav_with_tag_breathe_vox_big_x0_2",
+              "multiplier": 0.2,
+              "targets": [
+                {
+                  "tag": "breathe_vox_big"
+                }
+              ],
+              "sourceNote": "Definitions doc: breathe stutter and non-stutter breathe_vox are much less likely together; exact-key safe version."
+            },
+            {
+              "id": "soft_byKey_samples_breathe_vox_stutter_xtra_5_consolidated_wav_with_tag_breathe_vox_small_x0_2",
+              "multiplier": 0.2,
+              "targets": [
+                {
+                  "tag": "breathe_vox_small"
+                }
+              ],
+              "sourceNote": "Definitions doc: breathe stutter and non-stutter breathe_vox are much less likely together; exact-key safe version."
+            }
+          ]
+        },
+        "samples/breathe_vox_stutter_xtra #6 (consolidated).wav": {
+          "softMultiplierRules": [
+            {
+              "id": "soft_byKey_samples_breathe_vox_stutter_xtra_6_consolidated_wav_with_tag_breathe_vox_big_x0_2",
+              "multiplier": 0.2,
+              "targets": [
+                {
+                  "tag": "breathe_vox_big"
+                }
+              ],
+              "sourceNote": "Definitions doc: breathe stutter and non-stutter breathe_vox are much less likely together; exact-key safe version."
+            },
+            {
+              "id": "soft_byKey_samples_breathe_vox_stutter_xtra_6_consolidated_wav_with_tag_breathe_vox_small_x0_2",
+              "multiplier": 0.2,
+              "targets": [
+                {
+                  "tag": "breathe_vox_small"
+                }
+              ],
+              "sourceNote": "Definitions doc: breathe stutter and non-stutter breathe_vox are much less likely together; exact-key safe version."
+            }
+          ]
+        },
+        "samples/breathe_vox_stutter_xtra #7 (consolidated).wav": {
+          "softMultiplierRules": [
+            {
+              "id": "soft_byKey_samples_breathe_vox_stutter_xtra_7_consolidated_wav_with_tag_breathe_vox_big_x0_2",
+              "multiplier": 0.2,
+              "targets": [
+                {
+                  "tag": "breathe_vox_big"
+                }
+              ],
+              "sourceNote": "Definitions doc: breathe stutter and non-stutter breathe_vox are much less likely together; exact-key safe version."
+            },
+            {
+              "id": "soft_byKey_samples_breathe_vox_stutter_xtra_7_consolidated_wav_with_tag_breathe_vox_small_x0_2",
+              "multiplier": 0.2,
+              "targets": [
+                {
+                  "tag": "breathe_vox_small"
+                }
+              ],
+              "sourceNote": "Definitions doc: breathe stutter and non-stutter breathe_vox are much less likely together; exact-key safe version."
+            }
+          ]
+        },
+        "samples/breathe_vox_stutter_xtra #8 (consolidated).wav": {
+          "softMultiplierRules": [
+            {
+              "id": "soft_byKey_samples_breathe_vox_stutter_xtra_8_consolidated_wav_with_tag_breathe_vox_big_x0_2",
+              "multiplier": 0.2,
+              "targets": [
+                {
+                  "tag": "breathe_vox_big"
+                }
+              ],
+              "sourceNote": "Definitions doc: breathe stutter and non-stutter breathe_vox are much less likely together; exact-key safe version."
+            },
+            {
+              "id": "soft_byKey_samples_breathe_vox_stutter_xtra_8_consolidated_wav_with_tag_breathe_vox_small_x0_2",
+              "multiplier": 0.2,
+              "targets": [
+                {
+                  "tag": "breathe_vox_small"
+                }
+              ],
+              "sourceNote": "Definitions doc: breathe stutter and non-stutter breathe_vox are much less likely together; exact-key safe version."
+            }
+          ]
+        },
+        "samples/breathe_vox_stutter_xtra #9 (consolidated).wav": {
+          "softMultiplierRules": [
+            {
+              "id": "soft_byKey_samples_breathe_vox_stutter_xtra_9_consolidated_wav_with_tag_breathe_vox_big_x0_2",
+              "multiplier": 0.2,
+              "targets": [
+                {
+                  "tag": "breathe_vox_big"
+                }
+              ],
+              "sourceNote": "Definitions doc: breathe stutter and non-stutter breathe_vox are much less likely together; exact-key safe version."
+            },
+            {
+              "id": "soft_byKey_samples_breathe_vox_stutter_xtra_9_consolidated_wav_with_tag_breathe_vox_small_x0_2",
+              "multiplier": 0.2,
+              "targets": [
+                {
+                  "tag": "breathe_vox_small"
+                }
+              ],
+              "sourceNote": "Definitions doc: breathe stutter and non-stutter breathe_vox are much less likely together; exact-key safe version."
+            }
+          ]
+        },
+        "samples/tbone_1_even_x2 (consolidated).wav": {
+          "softMultiplierRules": [
+            {
+              "id": "soft_byKey_samples_tbone_1_even_x2_consolidated_wav_with_key_samples_vlins_long_suspense_odd_x2_consolidated_wav_x0_1",
+              "multiplier": 0.1,
+              "targets": [
+                {
+                  "key": "samples/vlins_long_suspense_odd_x2 (consolidated).wav"
+                }
+              ],
+              "sourceNote": "Definitions doc: if vlins_long_suspense is active, tbone_1 activation chance is multiplied by x0.1."
+            },
+            {
+              "id": "soft_byKey_samples_tbone_1_even_x2_consolidated_wav_with_tag_clarinet_x0_1",
+              "multiplier": 0.1,
+              "targets": [
+                {
+                  "tag": "clarinet"
+                }
+              ],
+              "sourceNote": "Definitions doc: tbone_1 is x0.1 as likely with clarinet patterns."
+            },
+            {
+              "id": "soft_byKey_samples_tbone_1_even_x2_consolidated_wav_with_key_samples_cello_high_even_x2_consolidated_wav_x0_1",
+              "multiplier": 0.1,
+              "targets": [
+                {
+                  "key": "samples/cello_high_even_x2 (consolidated).wav"
+                }
+              ],
+              "sourceNote": "Definitions doc: tbone_1 is x0.1 as likely with cello_high."
+            }
+          ]
+        },
+        "samples/tbone_2_even_x2 (consolidated).wav": {
+          "softMultiplierRules": [
+            {
+              "id": "soft_byKey_samples_tbone_2_even_x2_consolidated_wav_with_tag_trumpet_x0_1",
+              "multiplier": 0.1,
+              "targets": [
+                {
+                  "tag": "trumpet"
+                }
+              ],
+              "sourceNote": "Definitions doc: tbone_2 is x0.1 as likely with trumpet."
+            }
+          ]
         }
       }
     },

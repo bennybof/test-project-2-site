@@ -1,0 +1,76 @@
+TEST PROJECT 2 — SAFE SOFT MULTIPLIER BATCH 1B REPORT
+
+Generated: 2026-06-09T20:52:53.021Z
+Renderer/system change: none
+Catalog fields used: ruleProfiles.byKey.*.softMultiplierRules and ruleProfiles.byTag.*.softMultiplierRules
+Registry tag repair: none
+Excluded: broad synth rules, pno/synth rules, drowned/drowner rules
+
+Added rules: 57
+Already existed: 0
+Skipped missing exact source/target: 0
+
+ADDED
+- byKey.samples/breathe_vox_stutter_dlay_odd_x2 (consolidated).wav x0.2 when tag:breathe_vox_big is active (soft_byKey_samples_breathe_vox_stutter_dlay_odd_x2_consolidated_wav_with_tag_breathe_vox_big_x0_2)
+- byKey.samples/breathe_vox_stutter_dlay_odd_x2 (consolidated).wav x0.2 when tag:breathe_vox_small is active (soft_byKey_samples_breathe_vox_stutter_dlay_odd_x2_consolidated_wav_with_tag_breathe_vox_small_x0_2)
+- byTag.breathe_vox_big x0.2 when key:samples/breathe_vox_stutter_dlay_odd_x2 (consolidated).wav is active (soft_byTag_breathe_vox_big_with_key_samples_breathe_vox_stutter_dlay_odd_x2_consolidated_wav_x0_2)
+- byTag.breathe_vox_small x0.2 when key:samples/breathe_vox_stutter_dlay_odd_x2 (consolidated).wav is active (soft_byTag_breathe_vox_small_with_key_samples_breathe_vox_stutter_dlay_odd_x2_consolidated_wav_x0_2)
+- byKey.samples/breathe_vox_stutter_odd_x2_xtra (consolidated).wav x0.2 when tag:breathe_vox_big is active (soft_byKey_samples_breathe_vox_stutter_odd_x2_xtra_consolidated_wav_with_tag_breathe_vox_big_x0_2)
+- byKey.samples/breathe_vox_stutter_odd_x2_xtra (consolidated).wav x0.2 when tag:breathe_vox_small is active (soft_byKey_samples_breathe_vox_stutter_odd_x2_xtra_consolidated_wav_with_tag_breathe_vox_small_x0_2)
+- byTag.breathe_vox_big x0.2 when key:samples/breathe_vox_stutter_odd_x2_xtra (consolidated).wav is active (soft_byTag_breathe_vox_big_with_key_samples_breathe_vox_stutter_odd_x2_xtra_consolidated_wav_x0_2)
+- byTag.breathe_vox_small x0.2 when key:samples/breathe_vox_stutter_odd_x2_xtra (consolidated).wav is active (soft_byTag_breathe_vox_small_with_key_samples_breathe_vox_stutter_odd_x2_xtra_consolidated_wav_x0_2)
+- byKey.samples/breathe_vox_stutter_xtra #2 (consolidated).wav x0.2 when tag:breathe_vox_big is active (soft_byKey_samples_breathe_vox_stutter_xtra_2_consolidated_wav_with_tag_breathe_vox_big_x0_2)
+- byKey.samples/breathe_vox_stutter_xtra #2 (consolidated).wav x0.2 when tag:breathe_vox_small is active (soft_byKey_samples_breathe_vox_stutter_xtra_2_consolidated_wav_with_tag_breathe_vox_small_x0_2)
+- byTag.breathe_vox_big x0.2 when key:samples/breathe_vox_stutter_xtra #2 (consolidated).wav is active (soft_byTag_breathe_vox_big_with_key_samples_breathe_vox_stutter_xtra_2_consolidated_wav_x0_2)
+- byTag.breathe_vox_small x0.2 when key:samples/breathe_vox_stutter_xtra #2 (consolidated).wav is active (soft_byTag_breathe_vox_small_with_key_samples_breathe_vox_stutter_xtra_2_consolidated_wav_x0_2)
+- byKey.samples/breathe_vox_stutter_xtra #3 (consolidated).wav x0.2 when tag:breathe_vox_big is active (soft_byKey_samples_breathe_vox_stutter_xtra_3_consolidated_wav_with_tag_breathe_vox_big_x0_2)
+- byKey.samples/breathe_vox_stutter_xtra #3 (consolidated).wav x0.2 when tag:breathe_vox_small is active (soft_byKey_samples_breathe_vox_stutter_xtra_3_consolidated_wav_with_tag_breathe_vox_small_x0_2)
+- byTag.breathe_vox_big x0.2 when key:samples/breathe_vox_stutter_xtra #3 (consolidated).wav is active (soft_byTag_breathe_vox_big_with_key_samples_breathe_vox_stutter_xtra_3_consolidated_wav_x0_2)
+- byTag.breathe_vox_small x0.2 when key:samples/breathe_vox_stutter_xtra #3 (consolidated).wav is active (soft_byTag_breathe_vox_small_with_key_samples_breathe_vox_stutter_xtra_3_consolidated_wav_x0_2)
+- byKey.samples/breathe_vox_stutter_xtra #4 (consolidated).wav x0.2 when tag:breathe_vox_big is active (soft_byKey_samples_breathe_vox_stutter_xtra_4_consolidated_wav_with_tag_breathe_vox_big_x0_2)
+- byKey.samples/breathe_vox_stutter_xtra #4 (consolidated).wav x0.2 when tag:breathe_vox_small is active (soft_byKey_samples_breathe_vox_stutter_xtra_4_consolidated_wav_with_tag_breathe_vox_small_x0_2)
+- byTag.breathe_vox_big x0.2 when key:samples/breathe_vox_stutter_xtra #4 (consolidated).wav is active (soft_byTag_breathe_vox_big_with_key_samples_breathe_vox_stutter_xtra_4_consolidated_wav_x0_2)
+- byTag.breathe_vox_small x0.2 when key:samples/breathe_vox_stutter_xtra #4 (consolidated).wav is active (soft_byTag_breathe_vox_small_with_key_samples_breathe_vox_stutter_xtra_4_consolidated_wav_x0_2)
+- byKey.samples/breathe_vox_stutter_xtra #5 (consolidated).wav x0.2 when tag:breathe_vox_big is active (soft_byKey_samples_breathe_vox_stutter_xtra_5_consolidated_wav_with_tag_breathe_vox_big_x0_2)
+- byKey.samples/breathe_vox_stutter_xtra #5 (consolidated).wav x0.2 when tag:breathe_vox_small is active (soft_byKey_samples_breathe_vox_stutter_xtra_5_consolidated_wav_with_tag_breathe_vox_small_x0_2)
+- byTag.breathe_vox_big x0.2 when key:samples/breathe_vox_stutter_xtra #5 (consolidated).wav is active (soft_byTag_breathe_vox_big_with_key_samples_breathe_vox_stutter_xtra_5_consolidated_wav_x0_2)
+- byTag.breathe_vox_small x0.2 when key:samples/breathe_vox_stutter_xtra #5 (consolidated).wav is active (soft_byTag_breathe_vox_small_with_key_samples_breathe_vox_stutter_xtra_5_consolidated_wav_x0_2)
+- byKey.samples/breathe_vox_stutter_xtra #6 (consolidated).wav x0.2 when tag:breathe_vox_big is active (soft_byKey_samples_breathe_vox_stutter_xtra_6_consolidated_wav_with_tag_breathe_vox_big_x0_2)
+- byKey.samples/breathe_vox_stutter_xtra #6 (consolidated).wav x0.2 when tag:breathe_vox_small is active (soft_byKey_samples_breathe_vox_stutter_xtra_6_consolidated_wav_with_tag_breathe_vox_small_x0_2)
+- byTag.breathe_vox_big x0.2 when key:samples/breathe_vox_stutter_xtra #6 (consolidated).wav is active (soft_byTag_breathe_vox_big_with_key_samples_breathe_vox_stutter_xtra_6_consolidated_wav_x0_2)
+- byTag.breathe_vox_small x0.2 when key:samples/breathe_vox_stutter_xtra #6 (consolidated).wav is active (soft_byTag_breathe_vox_small_with_key_samples_breathe_vox_stutter_xtra_6_consolidated_wav_x0_2)
+- byKey.samples/breathe_vox_stutter_xtra #7 (consolidated).wav x0.2 when tag:breathe_vox_big is active (soft_byKey_samples_breathe_vox_stutter_xtra_7_consolidated_wav_with_tag_breathe_vox_big_x0_2)
+- byKey.samples/breathe_vox_stutter_xtra #7 (consolidated).wav x0.2 when tag:breathe_vox_small is active (soft_byKey_samples_breathe_vox_stutter_xtra_7_consolidated_wav_with_tag_breathe_vox_small_x0_2)
+- byTag.breathe_vox_big x0.2 when key:samples/breathe_vox_stutter_xtra #7 (consolidated).wav is active (soft_byTag_breathe_vox_big_with_key_samples_breathe_vox_stutter_xtra_7_consolidated_wav_x0_2)
+- byTag.breathe_vox_small x0.2 when key:samples/breathe_vox_stutter_xtra #7 (consolidated).wav is active (soft_byTag_breathe_vox_small_with_key_samples_breathe_vox_stutter_xtra_7_consolidated_wav_x0_2)
+- byKey.samples/breathe_vox_stutter_xtra #8 (consolidated).wav x0.2 when tag:breathe_vox_big is active (soft_byKey_samples_breathe_vox_stutter_xtra_8_consolidated_wav_with_tag_breathe_vox_big_x0_2)
+- byKey.samples/breathe_vox_stutter_xtra #8 (consolidated).wav x0.2 when tag:breathe_vox_small is active (soft_byKey_samples_breathe_vox_stutter_xtra_8_consolidated_wav_with_tag_breathe_vox_small_x0_2)
+- byTag.breathe_vox_big x0.2 when key:samples/breathe_vox_stutter_xtra #8 (consolidated).wav is active (soft_byTag_breathe_vox_big_with_key_samples_breathe_vox_stutter_xtra_8_consolidated_wav_x0_2)
+- byTag.breathe_vox_small x0.2 when key:samples/breathe_vox_stutter_xtra #8 (consolidated).wav is active (soft_byTag_breathe_vox_small_with_key_samples_breathe_vox_stutter_xtra_8_consolidated_wav_x0_2)
+- byKey.samples/breathe_vox_stutter_xtra #9 (consolidated).wav x0.2 when tag:breathe_vox_big is active (soft_byKey_samples_breathe_vox_stutter_xtra_9_consolidated_wav_with_tag_breathe_vox_big_x0_2)
+- byKey.samples/breathe_vox_stutter_xtra #9 (consolidated).wav x0.2 when tag:breathe_vox_small is active (soft_byKey_samples_breathe_vox_stutter_xtra_9_consolidated_wav_with_tag_breathe_vox_small_x0_2)
+- byTag.breathe_vox_big x0.2 when key:samples/breathe_vox_stutter_xtra #9 (consolidated).wav is active (soft_byTag_breathe_vox_big_with_key_samples_breathe_vox_stutter_xtra_9_consolidated_wav_x0_2)
+- byTag.breathe_vox_small x0.2 when key:samples/breathe_vox_stutter_xtra #9 (consolidated).wav is active (soft_byTag_breathe_vox_small_with_key_samples_breathe_vox_stutter_xtra_9_consolidated_wav_x0_2)
+- byTag.sax x0.1 when key:samples/vlins_long_suspense_odd_x2 (consolidated).wav is active (soft_byTag_sax_with_key_samples_vlins_long_suspense_odd_x2_consolidated_wav_x0_1)
+- byTag.accordian x0.1 when key:samples/vlins_long_suspense_odd_x2 (consolidated).wav is active (soft_byTag_accordian_with_key_samples_vlins_long_suspense_odd_x2_consolidated_wav_x0_1)
+- byTag.trumpet x0.1 when key:samples/vlins_long_suspense_odd_x2 (consolidated).wav is active (soft_byTag_trumpet_with_key_samples_vlins_long_suspense_odd_x2_consolidated_wav_x0_1)
+- byKey.samples/tbone_1_even_x2 (consolidated).wav x0.1 when key:samples/vlins_long_suspense_odd_x2 (consolidated).wav is active (soft_byKey_samples_tbone_1_even_x2_consolidated_wav_with_key_samples_vlins_long_suspense_odd_x2_consolidated_wav_x0_1)
+- byTag.clarinet x0.1 when key:samples/vlins_long_suspense_odd_x2 (consolidated).wav is active (soft_byTag_clarinet_with_key_samples_vlins_long_suspense_odd_x2_consolidated_wav_x0_1)
+- byKey.samples/cello_high_even_x2 (consolidated).wav x0.1 when key:samples/vlins_long_suspense_odd_x2 (consolidated).wav is active (soft_byKey_samples_cello_high_even_x2_consolidated_wav_with_key_samples_vlins_long_suspense_odd_x2_consolidated_wav_x0_1)
+- byKey.samples/floot_1_even_x4 (consolidated).wav x0.1 when key:samples/vlins_long_suspense_odd_x2 (consolidated).wav is active (soft_byKey_samples_floot_1_even_x4_consolidated_wav_with_key_samples_vlins_long_suspense_odd_x2_consolidated_wav_x0_1)
+- byTag.clarinet x0.1 when key:samples/tbone_1_even_x2 (consolidated).wav is active (soft_byTag_clarinet_with_key_samples_tbone_1_even_x2_consolidated_wav_x0_1)
+- byKey.samples/tbone_1_even_x2 (consolidated).wav x0.1 when tag:clarinet is active (soft_byKey_samples_tbone_1_even_x2_consolidated_wav_with_tag_clarinet_x0_1)
+- byKey.samples/tbone_1_even_x2 (consolidated).wav x0.1 when key:samples/cello_high_even_x2 (consolidated).wav is active (soft_byKey_samples_tbone_1_even_x2_consolidated_wav_with_key_samples_cello_high_even_x2_consolidated_wav_x0_1)
+- byKey.samples/cello_high_even_x2 (consolidated).wav x0.1 when key:samples/tbone_1_even_x2 (consolidated).wav is active (soft_byKey_samples_cello_high_even_x2_consolidated_wav_with_key_samples_tbone_1_even_x2_consolidated_wav_x0_1)
+- byTag.trumpet x0.1 when key:samples/floot_2_even_x4 (consolidated).wav is active (soft_byTag_trumpet_with_key_samples_floot_2_even_x4_consolidated_wav_x0_1)
+- byKey.samples/floot_2_even_x4 (consolidated).wav x0.1 when tag:trumpet is active (soft_byKey_samples_floot_2_even_x4_consolidated_wav_with_tag_trumpet_x0_1)
+- byTag.trumpet x0.1 when key:samples/tbone_2_even_x2 (consolidated).wav is active (soft_byTag_trumpet_with_key_samples_tbone_2_even_x2_consolidated_wav_x0_1)
+- byKey.samples/tbone_2_even_x2 (consolidated).wav x0.1 when tag:trumpet is active (soft_byKey_samples_tbone_2_even_x2_consolidated_wav_with_tag_trumpet_x0_1)
+- byTag.trumpet x0.1 when key:samples/vlins_1_even_x2 (consolidated).wav is active (soft_byTag_trumpet_with_key_samples_vlins_1_even_x2_consolidated_wav_x0_1)
+- byKey.samples/vlins_1_even_x2 (consolidated).wav x0.1 when tag:trumpet is active (soft_byKey_samples_vlins_1_even_x2_consolidated_wav_with_tag_trumpet_x0_1)
+
+SKIPPED
+- none
+
+UNCHANGED
+- none
