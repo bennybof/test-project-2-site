@@ -3753,6 +3753,36 @@ function getNormalMidiHatChoiceGroupId(pattern) {
     };
   }
 
+  function recordSectionScheduledAudio(section, {
+    key = "",
+    entry = null,
+    scheduleHandle = null,
+    family = ""
+  } = {}) {
+    if (!section || !scheduleHandle?.scheduled) return;
+
+    const activeKey = key || entry?.key || "";
+    const activeEntry = entry || (activeKey ? getCatalogEntry(activeKey) : null);
+    const activeFamily = family || getEntryPrimaryFamily(activeEntry);
+
+    if (!Array.isArray(section.scheduledAudio)) section.scheduledAudio = [];
+    if (!Array.isArray(section.scheduledAudioKeys)) section.scheduledAudioKeys = [];
+
+    section.scheduledAudio.push({
+      key: activeKey,
+      family: activeFamily,
+      tags: getEntryPlaybackTags(activeEntry),
+      startTime: scheduleHandle.startTime,
+      endTime: scheduleHandle.endTime,
+      duration: scheduleHandle.duration,
+      gainValue: scheduleHandle.gainValue
+    });
+
+    if (activeKey && !section.scheduledAudioKeys.includes(activeKey)) {
+      section.scheduledAudioKeys.push(activeKey);
+    }
+  }
+
   function scheduleAudioBufferWithPlaybackState({
     offlineContext,
     destination,
@@ -3774,6 +3804,13 @@ function getNormalMidiHatChoiceGroupId(pattern) {
       gainValue,
       offset
     );
+
+    recordSectionScheduledAudio(section, {
+      key,
+      entry,
+      scheduleHandle,
+      family
+    });
 
     registerScheduledPlaybackHandle(playbackState, {
       kind: "audio",
