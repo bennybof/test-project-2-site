@@ -2465,6 +2465,22 @@
     );
   }
 
+  function sectionHasPlannedJazzCrash(section) {
+    const plannedAudioKeys = Array.isArray(section?.plannedAudioKeys) ? section.plannedAudioKeys : [];
+    const plannedAudio = Array.isArray(section?.plannedAudio) ? section.plannedAudio : [];
+
+    if (plannedAudioKeys.some(key => String(key).toLowerCase().includes("jazz_crash"))) {
+      return true;
+    }
+
+    return plannedAudio.some(item => {
+      const key = String(item?.key || "").toLowerCase();
+      const tags = Array.isArray(item?.tags) ? item.tags.map(tag => normalizeRuleDecisionToken(tag)) : [];
+
+      return key.includes("jazz_crash") || tags.includes("jazz_crash");
+    });
+  }
+
   function isNormalMidiHatPattern(pattern) {
     const tags = getMidiPatternRuleTagList(pattern).map(tag => normalizeRuleDecisionToken(tag));
     const key = String(pattern?.file || pattern?.id || "").toLowerCase();
@@ -3388,6 +3404,13 @@ function getNormalMidiHatChoiceGroupId(pattern) {
       const jazzRideWithHatsPattern = midiPatternPool.find(pattern =>
         pattern.file === "midi files/jazz_rides_wiv-jazz-hats_metal_ridehard.mid"
       );
+      const jazzRideWithHatsAndCrashPattern = midiPatternPool.find(pattern =>
+        pattern.file === "midi files/jazz_ride_wiv-jazz_hats_wiv-jazz_crash_metal_odd_ridehard.mid"
+      );
+      const jazzCrashPlannedForSection = sectionHasPlannedJazzCrash(section);
+      const jazzRidePatternForSection = jazzCrashPlannedForSection && jazzRideWithHatsAndCrashPattern
+        ? jazzRideWithHatsAndCrashPattern
+        : jazzRideWithHatsPattern;
       const sectionTensionForJazz = Number(section.tensionValue ?? section.tension ?? 0);
       const sectionBarsForJazz = Math.max(1, Number(section.lengthBars ?? section.bars ?? 1));
       let jazzHatsActiveForSection = false;
@@ -3405,7 +3428,7 @@ function getNormalMidiHatChoiceGroupId(pattern) {
       }
 
       if (jazzHatsActiveForSection) {
-        for (const jazzPattern of [jazzHatsPattern, jazzRideWithHatsPattern].filter(Boolean)) {
+        for (const jazzPattern of [jazzHatsPattern, jazzRidePatternForSection].filter(Boolean)) {
           const jazzIncluded = includeMidiByGlobalDecision({
             random,
             globalInclusionState,
