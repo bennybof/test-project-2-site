@@ -1,0 +1,3259 @@
+{
+  "instructions": [
+    "This file is intentionally disabled by default.",
+    "Only entries with enabled:true will be applied.",
+    "Only globalInclusionChance, activationChance, and dropoutChance are allowed by this apply script.",
+    "Run without --apply first for dry-run.",
+    "Run with --apply only after reviewing the dry-run output."
+  ],
+  "source": "reports/rule-profile-fast-slow-split.json",
+  "generatedAt": "2026-06-09T14:10:42.458Z",
+  "entries": [
+    {
+      "enabled": false,
+      "key": "midi files/hats_hook_metal_#2_ch.mid",
+      "profile": {
+        "activationChance": 0.2,
+        "dropoutChance": 0.08
+      },
+      "sourceLines": [
+        10,
+        77,
+        610,
+        2941,
+        6300
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/breathe_vox_big_dry_even_x2.wav",
+      "profile": {
+        "activationChance": 0.4,
+        "dropoutChance": 0.2
+      },
+      "sourceLines": [
+        325,
+        4130
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/breathe_vox_wet_big_even_x2.wav",
+      "profile": {
+        "activationChance": 0.4,
+        "dropoutChance": 0.2
+      },
+      "sourceLines": [
+        332,
+        4138,
+        11982,
+        12235
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/breathe_vox_wet_small_different_even_x2 (consolidated).wav",
+      "profile": {
+        "activationChance": 0.2,
+        "dropoutChance": 0.5
+      },
+      "sourceLines": [
+        349,
+        4176
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/breathe_vox_stutter_dlay_odd_x2 (consolidated).wav",
+      "profile": {
+        "activationChance": 0.05,
+        "dropoutChance": 0.2
+      },
+      "sourceLines": [
+        394,
+        4244
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/breathe_vox_stutter_xtra #2 (consolidated).wav",
+      "profile": {
+        "activationChance": 0.5
+      },
+      "sourceLines": [
+        409,
+        4214
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/breathe_vox_stutter_xtra #3 (consolidated).wav",
+      "profile": {
+        "activationChance": 0.5,
+        "dropoutChance": 0.5
+      },
+      "sourceLines": [
+        416,
+        4222
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "midi files/hats_hook_metal_odd_ch.mid",
+      "profile": {
+        "activationChance": 0.2,
+        "dropoutChance": 0.05
+      },
+      "sourceLines": [
+        588,
+        2939,
+        6298
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "midi files/hats_hook_metal_odd_oh.mid",
+      "profile": {
+        "activationChance": 0.2,
+        "dropoutChance": 0.08
+      },
+      "sourceLines": [
+        599,
+        2940,
+        6299
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "midi files/hats_hook_metal_#2_oh.mid",
+      "profile": {
+        "activationChance": 0.2,
+        "dropoutChance": 0.08
+      },
+      "sourceLines": [
+        621,
+        2942,
+        6301
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "midi files/jazz_hats_metal_ride03.mid",
+      "profile": {
+        "activationChance": 0.25,
+        "dropoutChance": 0.15
+      },
+      "sourceLines": [
+        701,
+        4711
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "midi files/samples/ride03.wav",
+      "profile": {
+        "activationChance": 0.25,
+        "dropoutChance": 0.15
+      },
+      "sourceLines": [
+        709,
+        4719
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "midi files/samples/ridehard.wav",
+      "profile": {
+        "activationChance": 0.4,
+        "dropoutChance": 0.3
+      },
+      "sourceLines": [
+        720,
+        733,
+        747,
+        785,
+        4748,
+        4793,
+        4805,
+        4819
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "midi files/jazz_ghost_rides_metal_ride04.mid",
+      "profile": {
+        "activationChance": 0.9,
+        "dropoutChance": 0.3
+      },
+      "sourceLines": [
+        750,
+        4829
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "midi files/samples/ride04.wav",
+      "profile": {
+        "activationChance": 0.9,
+        "dropoutChance": 0.3
+      },
+      "sourceLines": [
+        758,
+        770,
+        4736,
+        4837
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "midi files/jazz_hats_metal_hook_even_~_ride04.mid",
+      "profile": {
+        "activationChance": 0.2,
+        "dropoutChance": 0.08
+      },
+      "sourceLines": [
+        759,
+        4725,
+        16768
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "midi files/jazz_hats_metal_hook_even_~_ridehard.mid",
+      "profile": {
+        "activationChance": 0.2,
+        "dropoutChance": 0.08
+      },
+      "sourceLines": [
+        774,
+        4737,
+        16770
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "midi files/beepipes_2_drums_odd_beepipe.mid",
+      "profile": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.005
+      },
+      "sourceLines": [
+        811,
+        6023
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "midi files/beepipes_ghosts_drums_beepipe.mid",
+      "profile": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.005
+      },
+      "sourceLines": [
+        828,
+        6010
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "midi files/snare_pattern_drums_snare.mid",
+      "profile": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.15,
+        "dropoutChance": 0.4
+      },
+      "sourceLines": [
+        862,
+        6190
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "midi files/samples/snare.wav",
+      "profile": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.15,
+        "dropoutChance": 0.4
+      },
+      "sourceLines": [
+        868,
+        877,
+        6196,
+        6206
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "midi files/snare_xtra_drums_even_snare.mid",
+      "profile": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.15,
+        "dropoutChance": 0.4
+      },
+      "sourceLines": [
+        869,
+        986,
+        6172,
+        6197
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "midi files/samples/crash.wav",
+      "profile": {
+        "activationChance": 0.8,
+        "dropoutChance": 0.05
+      },
+      "sourceLines": [
+        909,
+        1078,
+        1091,
+        6292
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "midi files/samples/rim.wav",
+      "profile": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.5,
+        "dropoutChance": 0.05
+      },
+      "sourceLines": [
+        947,
+        956,
+        965,
+        974,
+        6116,
+        6126,
+        6136,
+        6146
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "midi files/rims_xtra_2_drums_rim.mid",
+      "profile": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.02,
+        "dropoutChance": 0.2
+      },
+      "sourceLines": [
+        957,
+        980,
+        999,
+        6127
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "midi files/rims_xtra_3_drums_rim.mid",
+      "profile": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.5,
+        "dropoutChance": 0.05
+      },
+      "sourceLines": [
+        966,
+        981,
+        1000,
+        6137
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "midi files/crash_small_hook_intro_metal_odd_crash.mid",
+      "profile": {
+        "activationChance": 0.8,
+        "dropoutChance": 0.05
+      },
+      "sourceLines": [
+        1080,
+        1094,
+        2927,
+        2955,
+        6283
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/crash_dlay_odd (consolidated).wav",
+      "profile": {
+        "activationChance": 0.5,
+        "globalInclusionChance": 0.5
+      },
+      "sourceLines": [
+        1106,
+        4382
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/big_crash_layer_odd_metal (consolidated).wav",
+      "profile": {
+        "globalInclusionChance": 1,
+        "activationChance": 0.02
+      },
+      "sourceLines": [
+        1113,
+        4016
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/big_crash_layer_odd_dlay_metal (consolidated).wav",
+      "profile": {
+        "globalInclusionChance": 1,
+        "activationChance": 0.02
+      },
+      "sourceLines": [
+        1119,
+        4026
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/crash_washes_metal_even (consolidated).wav",
+      "profile": {
+        "globalInclusionChance": 0.2,
+        "activationChance": 0.2,
+        "dropoutChance": 0.5
+      },
+      "sourceLines": [
+        1130,
+        4409
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/crash_washes_metal_dlay_even (consolidated).wav",
+      "profile": {
+        "globalInclusionChance": 0.2,
+        "activationChance": 0.2,
+        "dropoutChance": 0.5
+      },
+      "sourceLines": [
+        1135,
+        4416
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/crash_wash_hook_xtra_metal.wav",
+      "profile": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.5
+      },
+      "sourceLines": [
+        1144,
+        4392
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/crash_wash_hook_xtra_metal_2.wav",
+      "profile": {
+        "globalInclusionChance": 0.2,
+        "activationChance": 0.5
+      },
+      "sourceLines": [
+        1150,
+        2966,
+        4398
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/jazz_crash_metal_odd (consolidated).wav",
+      "profile": {
+        "activationChance": 0.4
+      },
+      "sourceLines": [
+        1159,
+        4754
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/jazz_crash_metal_dlay_odd_xtra (consolidated).wav",
+      "profile": {
+        "activationChance": 0.4
+      },
+      "sourceLines": [
+        1165,
+        4760
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/jazz_crash_metal_hook_odd.wav",
+      "profile": {
+        "activationChance": 0.4
+      },
+      "sourceLines": [
+        1173,
+        2930,
+        2963,
+        4768
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/real_bass_hook_cont (consolidated).wav",
+      "profile": {
+        "globalInclusionChance": 0.6,
+        "activationChance": 0.2,
+        "dropoutChance": 0.1
+      },
+      "sourceLines": [
+        1305,
+        5053
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/synth_bass_1_hook_odd_x4 (consolidated).wav",
+      "profile": {
+        "activationChance": 0.4
+      },
+      "sourceLines": [
+        1361,
+        2970,
+        5003
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/synth_bass_1_hook #2 (consolidated).wav",
+      "profile": {
+        "activationChance": 0.5,
+        "globalInclusionChance": 1
+      },
+      "sourceLines": [
+        1369,
+        2971,
+        5011
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/cello_even_x2 (consolidated).wav",
+      "profile": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.8,
+        "dropoutChance": 0.05
+      },
+      "sourceLines": [
+        1399,
+        4269
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/cello_high_even_x2 (consolidated).wav",
+      "profile": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.8,
+        "dropoutChance": 0.05
+      },
+      "sourceLines": [
+        1405,
+        4276
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/cello_wiv-bass_even (consolidated).wav",
+      "profile": {
+        "activationChance": 0.005,
+        "globalInclusionChance": 1,
+        "dropoutChance": 0.05
+      },
+      "sourceLines": [
+        1411,
+        1474,
+        1501,
+        4298,
+        4644,
+        4657
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/bassish_glitchy_hook_odd_x4 (consolidated).wav",
+      "profile": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.7
+      },
+      "sourceLines": [
+        1425,
+        3906
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/bassish_glitchy_hook_odd_x4 #2 (consolidated).wav",
+      "profile": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.7
+      },
+      "sourceLines": [
+        1432,
+        3913
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/high_bassish_hook_odd_x2 (consolidated) #2.wav",
+      "profile": {
+        "globalInclusionChance": 0.8,
+        "activationChance": 0.5,
+        "dropoutChance": 0.1
+      },
+      "sourceLines": [
+        1447,
+        3936
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/high_bassish_2_hook_odd_x2 (consolidated).wav",
+      "profile": {
+        "globalInclusionChance": 0.8,
+        "activationChance": 0.5,
+        "dropoutChance": 0.1
+      },
+      "sourceLines": [
+        1455,
+        3944
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/high_bassish_2_hook #2 (consolidated).wav",
+      "profile": {
+        "globalInclusionChance": 0.8,
+        "activationChance": 0.5,
+        "dropoutChance": 0.1
+      },
+      "sourceLines": [
+        1462,
+        3952
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/pad_wiv-bass (consolidated).wav",
+      "profile": {
+        "activationChance": 0.005,
+        "globalInclusionChance": 1,
+        "dropoutChance": 0.05
+      },
+      "sourceLines": [
+        1475,
+        1484,
+        1502,
+        2344,
+        2357,
+        4637,
+        4656
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/hippy_synth_wiv-bass_odd (consolidated).wav",
+      "profile": {
+        "activationChance": 0.005,
+        "globalInclusionChance": 1,
+        "dropoutChance": 0.05
+      },
+      "sourceLines": [
+        1476,
+        1490,
+        1503,
+        4629,
+        4655
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/synth_main_odd (consolidated).wav",
+      "profile": {
+        "activationChance": 0.02,
+        "dropoutChance": 0.2
+      },
+      "sourceLines": [
+        1542,
+        5090
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/synth_high_odd (consolidated).wav",
+      "profile": {
+        "activationChance": 0.02,
+        "dropoutChance": 0.03
+      },
+      "sourceLines": [
+        1578,
+        5099
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/synth_frozen_verb_odd_~ #3 (consolidated).wav",
+      "profile": {
+        "activationChance": 0.6
+      },
+      "sourceLines": [
+        1751,
+        5190
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/synth_frozen_verb_odd_~ #4 (consolidated).wav",
+      "profile": {
+        "activationChance": 0.6
+      },
+      "sourceLines": [
+        1761,
+        5200
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/synth_downsampled_odd_xtra #3 (consolidated).wav",
+      "profile": {
+        "activationChance": 0.01,
+        "dropoutChance": 0.3
+      },
+      "sourceLines": [
+        1791,
+        5237
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/synth_downsampled_odd_xtra #4 (consolidated).wav",
+      "profile": {
+        "activationChance": 0.005,
+        "dropoutChance": 0.3
+      },
+      "sourceLines": [
+        1799,
+        5246
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/synth_elephant_odd_~_xtra.wav",
+      "profile": {
+        "activationChance": 0.005
+      },
+      "sourceLines": [
+        1821,
+        5261
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/sax_1_hook_odd_x2 (consolidated).wav",
+      "profile": {
+        "activationChance": 0.4,
+        "globalInclusionChance": 0.6
+      },
+      "sourceLines": [
+        1900,
+        5434
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/floot_1_even_x4 (consolidated).wav",
+      "profile": {
+        "globalInclusionChance": 0.4,
+        "activationChance": 0.1,
+        "dropoutChance": 0.2
+      },
+      "sourceLines": [
+        1930,
+        4441
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/floot_2_even_x4 (consolidated).wav",
+      "profile": {
+        "globalInclusionChance": 0.4,
+        "activationChance": 0.1,
+        "dropoutChance": 0.2
+      },
+      "sourceLines": [
+        1937,
+        4448
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/floot_hook_even_x2 (consolidated).wav",
+      "profile": {
+        "globalInclusionChance": 0.4,
+        "dropoutChance": 0.2
+      },
+      "sourceLines": [
+        1944,
+        4466
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/trumpet_even_x4.wav",
+      "profile": {
+        "globalInclusionChance": 0.1,
+        "activationChance": 0.01,
+        "dropoutChance": 0.5
+      },
+      "sourceLines": [
+        1952,
+        5368
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/trumpet_hook_odd_x4 (consolidated).wav",
+      "profile": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.2,
+        "dropoutChance": 0.5
+      },
+      "sourceLines": [
+        1958,
+        5374,
+        5402
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/trumpet_hook_odd_x4 (consolidated) #2.wav",
+      "profile": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.2,
+        "dropoutChance": 0.5
+      },
+      "sourceLines": [
+        1965,
+        5381,
+        5403
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/clarinet_even_x2 (consolidated).wav",
+      "profile": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.2,
+        "dropoutChance": 0.5
+      },
+      "sourceLines": [
+        1989,
+        4330
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/clarinet_hook_x4_even (consolidated).wav",
+      "profile": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.2,
+        "dropoutChance": 0.5
+      },
+      "sourceLines": [
+        1995,
+        4337
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/accordian_odd_x4 (consolidated).wav",
+      "profile": {
+        "globalInclusionChance": 0.2,
+        "activationChance": 0.7
+      },
+      "sourceLines": [
+        2003,
+        3733
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/accordian_1_hook #2 (consolidated).wav",
+      "profile": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.5
+      },
+      "sourceLines": [
+        2017,
+        3754
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/accordian_1_hook #3 (consolidated).wav",
+      "profile": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.7,
+        "dropoutChance": 0.7
+      },
+      "sourceLines": [
+        2024,
+        3762
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/accordian_2_hook_odd_x4 (consolidated).wav",
+      "profile": {
+        "globalInclusionChance": 0.1,
+        "activationChance": 0.7,
+        "dropoutChance": 0.7
+      },
+      "sourceLines": [
+        2031,
+        3770
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/vlins_1_even_x2 (consolidated).wav",
+      "profile": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.005,
+        "dropoutChance": 0.3
+      },
+      "sourceLines": [
+        2042,
+        5774
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/vlins_long_suspense_odd_x2 (consolidated).wav",
+      "profile": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.005,
+        "dropoutChance": 0.3
+      },
+      "sourceLines": [
+        2049,
+        5781
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/rhodes_low_hook_odd_x4 (consolidated).wav",
+      "profile": {
+        "globalInclusionChance": 0.7,
+        "activationChance": 0.3,
+        "dropoutChance": 0.3
+      },
+      "sourceLines": [
+        2180,
+        5740
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/rhodes_low_2_hook_odd_x4 (consolidated).wav",
+      "profile": {
+        "globalInclusionChance": 0.7,
+        "activationChance": 0.3,
+        "dropoutChance": 0.3
+      },
+      "sourceLines": [
+        2188,
+        5748
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/glock_odd_dlay (consolidated).wav",
+      "profile": {
+        "activationChance": 0.01,
+        "globalInclusionChance": 0.5,
+        "dropoutChance": 0.01
+      },
+      "sourceLines": [
+        2219,
+        4516
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/glock_ext_even (consolidated).wav",
+      "profile": {
+        "activationChance": 0.2
+      },
+      "sourceLines": [
+        2226,
+        4507
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/glock_ext_even_dlay (consolidated).wav",
+      "profile": {
+        "activationChance": 0.005,
+        "globalInclusionChance": 0.5,
+        "dropoutChance": 0.01
+      },
+      "sourceLines": [
+        2233,
+        4525
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/chimes_odd (consolidated).wav",
+      "profile": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.1,
+        "dropoutChance": 0.1
+      },
+      "sourceLines": [
+        2248,
+        4306,
+        11983,
+        12236
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/beeps_intro_odd (consolidated).wav",
+      "profile": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.2
+      },
+      "sourceLines": [
+        2257,
+        3977
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/beeps_odd_x2_xtra (consolidated).wav",
+      "profile": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.2,
+        "dropoutChance": 0.5
+      },
+      "sourceLines": [
+        2264,
+        3984
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/beeps_xtra_odd (consolidated).wav",
+      "profile": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.2,
+        "dropoutChance": 0.5
+      },
+      "sourceLines": [
+        2272,
+        3992
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "midi files/samples/coin.wav",
+      "profile": {
+        "activationChance": 0.5,
+        "globalInclusionChance": 0.2,
+        "dropoutChance": 0.01
+      },
+      "sourceLines": [
+        2301,
+        5922
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "midi files/arcade_sfx_xtra_done.mid",
+      "profile": {
+        "activationChance": 0.5,
+        "globalInclusionChance": 0.2,
+        "dropoutChance": 0.01
+      },
+      "sourceLines": [
+        2302,
+        5923
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "midi files/samples/done.wav",
+      "profile": {
+        "activationChance": 0.5,
+        "globalInclusionChance": 0.2,
+        "dropoutChance": 0.01
+      },
+      "sourceLines": [
+        2310,
+        5932
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "midi files/arcade_sfx_xtra_jump.mid",
+      "profile": {
+        "activationChance": 0.5,
+        "globalInclusionChance": 0.2,
+        "dropoutChance": 0.01
+      },
+      "sourceLines": [
+        2311,
+        5933
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "midi files/samples/jump.wav",
+      "profile": {
+        "activationChance": 0.5,
+        "globalInclusionChance": 0.2,
+        "dropoutChance": 0.01
+      },
+      "sourceLines": [
+        2319,
+        5942
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/pad_1_xtra (consolidated).wav",
+      "profile": {
+        "globalInclusionChance": 0.1,
+        "activationChance": 0.2,
+        "dropoutChance": 0.01
+      },
+      "sourceLines": [
+        2333,
+        2355,
+        5587,
+        11984,
+        12237
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/pad_2_odd_xtra (consolidated).wav",
+      "profile": {
+        "globalInclusionChance": 0.1,
+        "activationChance": 0.2,
+        "dropoutChance": 0.01
+      },
+      "sourceLines": [
+        2338,
+        2356,
+        5595
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/bagoo_odd (consolidated).wav",
+      "profile": {
+        "globalInclusionChance": 0.9,
+        "activationChance": 0.5,
+        "dropoutChance": 0.2
+      },
+      "sourceLines": [
+        2359,
+        3853
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/bagoo_ext_even (consolidated).wav",
+      "profile": {
+        "globalInclusionChance": 0.9,
+        "activationChance": 0.5,
+        "dropoutChance": 0.2
+      },
+      "sourceLines": [
+        2363,
+        3858
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/bagoo_low_odd (consolidated).wav",
+      "profile": {
+        "globalInclusionChance": 0.9,
+        "activationChance": 0.5,
+        "dropoutChance": 0.2
+      },
+      "sourceLines": [
+        2368,
+        3864
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/random_vox_dry_x4_even_~.wav",
+      "profile": {
+        "globalInclusionChance": 0.2,
+        "activationChance": 0.05
+      },
+      "sourceLines": [
+        2453,
+        5823
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/random_vox_wet_x4_even_~.wav",
+      "profile": {
+        "globalInclusionChance": 0.2,
+        "activationChance": 0.05
+      },
+      "sourceLines": [
+        2461,
+        5832
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/other_vox_dry_even_x2.wav",
+      "profile": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.1,
+        "dropoutChance": 0.3
+      },
+      "sourceLines": [
+        2469,
+        5850
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/other_vox_wet_even_x2.wav",
+      "profile": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.1,
+        "dropoutChance": 0.3
+      },
+      "sourceLines": [
+        2476,
+        5857
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/wierd_vox_dry_odd_x2 (consolidated).wav",
+      "profile": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.1,
+        "dropoutChance": 0.3
+      },
+      "sourceLines": [
+        2483,
+        5871
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/wierd_vox_wet_odd_x2.wav",
+      "profile": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.1,
+        "dropoutChance": 0.3
+      },
+      "sourceLines": [
+        2490,
+        5879,
+        11985,
+        12238
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/accbreath_1_~_even.wav",
+      "profile": {
+        "activationChance": 0.8
+      },
+      "sourceLines": [
+        2507,
+        2636,
+        3660,
+        3703
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/accbreath_2_even.wav",
+      "profile": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.8
+      },
+      "sourceLines": [
+        2512,
+        2641,
+        3667,
+        3704
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/accbreath_3_~_even.wav",
+      "profile": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.8,
+        "dropoutChance": 0.2
+      },
+      "sourceLines": [
+        2516,
+        2645,
+        3673,
+        3705
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/accbreath_4_odd.wav",
+      "profile": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.8,
+        "dropoutChance": 0.2
+      },
+      "sourceLines": [
+        2521,
+        2650,
+        3680,
+        3706
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/accbreath_5_~_even.wav",
+      "profile": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.8,
+        "dropoutChance": 0.2
+      },
+      "sourceLines": [
+        2525,
+        2654,
+        3686,
+        3707
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/accbreath_long_x4.wav",
+      "profile": {
+        "activationChance": 0.2,
+        "globalInclusionChance": 0.2
+      },
+      "sourceLines": [
+        2530,
+        2659,
+        3653,
+        3702,
+        3713,
+        3714,
+        3715
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/big_wash_build_metal_suspense (consolidated).wav",
+      "profile": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.5
+      },
+      "sourceLines": [
+        2537,
+        2666,
+        5554
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/small_wash_build_metal_odd_xtra (consolidated).wav",
+      "profile": {
+        "globalInclusionChance": 0.5,
+        "activationChance": 0.5
+      },
+      "sourceLines": [
+        2543,
+        2672,
+        5561
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/heartbeats_xtra.wav",
+      "profile": {
+        "globalInclusionChance": 0.1,
+        "activationChance": 0.005,
+        "dropoutChance": 0.02
+      },
+      "sourceLines": [
+        2560,
+        2689,
+        4563
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/vinyl_xtra (consolidated).wav",
+      "profile": {
+        "globalInclusionChance": 0.2,
+        "activationChance": 0.005,
+        "dropoutChance": 0.01
+      },
+      "sourceLines": [
+        2565,
+        2694,
+        4586
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/slackjaw_scratch_xtra_even (consolidated).wav",
+      "profile": {
+        "globalInclusionChance": 0.1,
+        "activationChance": 0.05
+      },
+      "sourceLines": [
+        2574,
+        2703,
+        5531
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/window_wipe_xtra_even_hook_x4.wav",
+      "profile": {
+        "activationChance": 0.01,
+        "globalInclusionChance": 0.5,
+        "dropoutChance": 0.4
+      },
+      "sourceLines": [
+        2583,
+        2712,
+        6336
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/window_wipe_2_xtra_even_hook_x4.wav",
+      "profile": {
+        "activationChance": 0.01,
+        "globalInclusionChance": 0.5,
+        "dropoutChance": 0.4
+      },
+      "sourceLines": [
+        2591,
+        2720,
+        6344
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/oh_rev_metal_odd_~_xtra.wav",
+      "profile": {
+        "globalInclusionChance": 0.7,
+        "activationChance": 0.05,
+        "dropoutChance": 0.5
+      },
+      "sourceLines": [
+        2605,
+        2734,
+        6241
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/oh_rev_metal_2_odd_xtra.wav",
+      "profile": {
+        "globalInclusionChance": 0.7,
+        "activationChance": 0.05,
+        "dropoutChance": 0.5
+      },
+      "sourceLines": [
+        2612,
+        2741,
+        6249
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/oh_rev_metal_hook_odd.wav",
+      "profile": {
+        "globalInclusionChance": 0.7,
+        "activationChance": 0.05,
+        "dropoutChance": 0.5
+      },
+      "sourceLines": [
+        2618,
+        2747,
+        6256
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/crash_metal_odd_metal (consolidated).wav",
+      "profile": {
+        "activationChance": 0.1
+      },
+      "sourceLines": [
+        4372,
+        12255
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/hippy_synth_odd (consolidated).wav",
+      "profile": {
+        "globalInclusionChance": 0.1,
+        "activationChance": 0.01,
+        "dropoutChance": 0.05
+      },
+      "sourceLines": [
+        4613
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/shaker_small_xtra (consolidated).wav",
+      "profile": {
+        "globalInclusionChance": 0.2,
+        "activationChance": 0.005,
+        "dropoutChance": 0.01
+      },
+      "sourceLines": [
+        5503
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/shaker_big_xtra (consolidated).wav",
+      "profile": {
+        "globalInclusionChance": 0.2,
+        "activationChance": 0.005,
+        "dropoutChance": 0.01
+      },
+      "sourceLines": [
+        5508
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/clockout_lyrix_odd_dry (consolidated).wav",
+      "profile": {
+        "globalInclusionChance": 0.2
+      },
+      "sourceLines": [
+        7545,
+        12759
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/clockout_lyrix_odd_dry (consolidated) #2.wav",
+      "profile": {
+        "globalInclusionChance": 0.2
+      },
+      "sourceLines": [
+        7546,
+        12760
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/clockout_lyrix_odd_dry (consolidated) #3.wav",
+      "profile": {
+        "globalInclusionChance": 0.2
+      },
+      "sourceLines": [
+        7547,
+        12761
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/clockout_lyrix_odd_dry (consolidated) #4.wav",
+      "profile": {
+        "globalInclusionChance": 0.2
+      },
+      "sourceLines": [
+        7548,
+        12762
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/clockout_lyrix_odd_dry (consolidated) #5.wav",
+      "profile": {
+        "globalInclusionChance": 0.2
+      },
+      "sourceLines": [
+        7549,
+        12763
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/clockout_lyrix_odd_dry (consolidated) #6.wav",
+      "profile": {
+        "globalInclusionChance": 0.2
+      },
+      "sourceLines": [
+        7550,
+        12764
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/clockout_lyrix_odd_dry (consolidated) #7.wav",
+      "profile": {
+        "globalInclusionChance": 0.2
+      },
+      "sourceLines": [
+        7551,
+        12765
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/clockout_lyrix_odd_dry (consolidated) #8.wav",
+      "profile": {
+        "globalInclusionChance": 0.2
+      },
+      "sourceLines": [
+        7552,
+        12766
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/clockout_lyrix_odd_wet (consolidated).wav",
+      "profile": {
+        "globalInclusionChance": 0.2
+      },
+      "sourceLines": [
+        7553,
+        12767
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/clockout_lyrix_odd_wet (consolidated) #2.wav",
+      "profile": {
+        "globalInclusionChance": 0.2
+      },
+      "sourceLines": [
+        7554,
+        12768
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/clockout_lyrix_odd_wet (consolidated) #3.wav",
+      "profile": {
+        "globalInclusionChance": 0.2
+      },
+      "sourceLines": [
+        7555,
+        12769
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/clockout_lyrix_odd_wet (consolidated) #4.wav",
+      "profile": {
+        "globalInclusionChance": 0.2
+      },
+      "sourceLines": [
+        7556,
+        12770
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/clockout_lyrix_odd_wet (consolidated) #5.wav",
+      "profile": {
+        "globalInclusionChance": 0.2
+      },
+      "sourceLines": [
+        7557,
+        12771
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/clockout_lyrix_odd_wet (consolidated) #6.wav",
+      "profile": {
+        "globalInclusionChance": 0.2
+      },
+      "sourceLines": [
+        7558,
+        12772
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/clockout_lyrix_odd_wet (consolidated) #7.wav",
+      "profile": {
+        "globalInclusionChance": 0.2
+      },
+      "sourceLines": [
+        7559,
+        12773
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/clockout_lyrix_odd_wet (consolidated) #8.wav",
+      "profile": {
+        "globalInclusionChance": 0.2
+      },
+      "sourceLines": [
+        7560,
+        12774
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/kachow_lyrix_even_dry (consolidated) #2.wav",
+      "profile": {
+        "globalInclusionChance": 0.2
+      },
+      "sourceLines": [
+        7610,
+        13381
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/kachow_lyrix_even_dry (consolidated) #3.wav",
+      "profile": {
+        "globalInclusionChance": 0.2
+      },
+      "sourceLines": [
+        7611,
+        13382
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/kachow_lyrix_even_dry (consolidated) #4.wav",
+      "profile": {
+        "globalInclusionChance": 0.2
+      },
+      "sourceLines": [
+        7612,
+        13383
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/kachow_lyrix_even_dry (consolidated) #5.wav",
+      "profile": {
+        "globalInclusionChance": 0.2
+      },
+      "sourceLines": [
+        7613,
+        13384
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/kachow_lyrix_even_wet (consolidated).wav",
+      "profile": {
+        "globalInclusionChance": 0.2
+      },
+      "sourceLines": [
+        7614,
+        13385
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/kachow_lyrix_even_wet (consolidated) #2.wav",
+      "profile": {
+        "globalInclusionChance": 0.2
+      },
+      "sourceLines": [
+        7615,
+        13386
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/kachow_lyrix_even_wet (consolidated) #3.wav",
+      "profile": {
+        "globalInclusionChance": 0.2
+      },
+      "sourceLines": [
+        7616,
+        13387
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/kachow_lyrix_even_wet (consolidated) #4.wav",
+      "profile": {
+        "globalInclusionChance": 0.2
+      },
+      "sourceLines": [
+        7617,
+        13388
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/kachow_lyrix_even_wet (consolidated) #5.wav",
+      "profile": {
+        "globalInclusionChance": 0.2
+      },
+      "sourceLines": [
+        7618,
+        13389
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/fall_lyrix_even_dry (consolidated).wav",
+      "profile": {
+        "globalInclusionChance": 0.15
+      },
+      "sourceLines": [
+        7647,
+        13462
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/fall_lyrix_even_dry (consolidated) #2.wav",
+      "profile": {
+        "globalInclusionChance": 0.15
+      },
+      "sourceLines": [
+        7648,
+        13463
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/fall_lyrix_even_dry (consolidated) #3.wav",
+      "profile": {
+        "globalInclusionChance": 0.15
+      },
+      "sourceLines": [
+        7649,
+        13464
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/fall_lyrix_even_dry (consolidated) #4.wav",
+      "profile": {
+        "globalInclusionChance": 0.15
+      },
+      "sourceLines": [
+        7650,
+        13465
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/fall_lyrix_even_dry (consolidated) #5.wav",
+      "profile": {
+        "globalInclusionChance": 0.15
+      },
+      "sourceLines": [
+        7651,
+        13466
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/fall_lyrix_even_dry (consolidated) #6.wav",
+      "profile": {
+        "globalInclusionChance": 0.15
+      },
+      "sourceLines": [
+        7652,
+        13467
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/intrusive_afterbleep_lyrix_dry (consolidated).wav",
+      "profile": {
+        "globalInclusionChance": 0.15
+      },
+      "sourceLines": [
+        7743,
+        13858,
+        13933,
+        13946
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/intrusive_afterbleep_lyrix_wet (consolidated).wav",
+      "profile": {
+        "globalInclusionChance": 0.15
+      },
+      "sourceLines": [
+        7744,
+        13859,
+        13934,
+        13947
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/scooby_lyrix_odd_dry (consolidated) #10.wav",
+      "profile": {
+        "globalInclusionChance": 0.1
+      },
+      "sourceLines": [
+        7888,
+        13990
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/scooby_lyrix_odd_dry (consolidated) #11.wav",
+      "profile": {
+        "globalInclusionChance": 0.1
+      },
+      "sourceLines": [
+        7889,
+        13991
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/scooby_lyrix_odd_dry (consolidated) #12.wav",
+      "profile": {
+        "globalInclusionChance": 0.1
+      },
+      "sourceLines": [
+        7890,
+        13992
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/scooby_lyrix_odd_wet (consolidated).wav",
+      "profile": {
+        "globalInclusionChance": 0.1
+      },
+      "sourceLines": [
+        7891,
+        13993
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/scooby_lyrix_odd_wet (consolidated) #2.wav",
+      "profile": {
+        "globalInclusionChance": 0.1
+      },
+      "sourceLines": [
+        7892,
+        13994
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/scooby_lyrix_odd_wet (consolidated) #3.wav",
+      "profile": {
+        "globalInclusionChance": 0.1
+      },
+      "sourceLines": [
+        7893,
+        13995
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/scooby_lyrix_odd_wet (consolidated) #4.wav",
+      "profile": {
+        "globalInclusionChance": 0.1
+      },
+      "sourceLines": [
+        7894,
+        13996
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/scooby_lyrix_odd_wet (consolidated) #5.wav",
+      "profile": {
+        "globalInclusionChance": 0.1
+      },
+      "sourceLines": [
+        7895,
+        13997
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/scooby_lyrix_odd_wet (consolidated) #6.wav",
+      "profile": {
+        "globalInclusionChance": 0.1
+      },
+      "sourceLines": [
+        7896,
+        13998
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/scooby_lyrix_odd_wet (consolidated) #7.wav",
+      "profile": {
+        "globalInclusionChance": 0.1
+      },
+      "sourceLines": [
+        7897,
+        13999
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/scooby_lyrix_odd_wet (consolidated) #8.wav",
+      "profile": {
+        "globalInclusionChance": 0.1
+      },
+      "sourceLines": [
+        7898,
+        14000
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/scooby_lyrix_odd_wet (consolidated) #9.wav",
+      "profile": {
+        "globalInclusionChance": 0.1
+      },
+      "sourceLines": [
+        7899,
+        14001
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/scooby_lyrix_odd_wet (consolidated) #10.wav",
+      "profile": {
+        "globalInclusionChance": 0.1
+      },
+      "sourceLines": [
+        7900,
+        14002
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/scooby_lyrix_odd_wet (consolidated) #11.wav",
+      "profile": {
+        "globalInclusionChance": 0.1
+      },
+      "sourceLines": [
+        7901,
+        14003
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/scooby_lyrix_odd_wet (consolidated) #12.wav",
+      "profile": {
+        "globalInclusionChance": 0.1
+      },
+      "sourceLines": [
+        7902,
+        14004
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/angry_lyrix_odd_dry (consolidated) #9.wav",
+      "profile": {
+        "globalInclusionChance": 0.03
+      },
+      "sourceLines": [
+        7929,
+        13071
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/angry_lyrix_odd_wet (consolidated).wav",
+      "profile": {
+        "globalInclusionChance": 0.03
+      },
+      "sourceLines": [
+        7930,
+        13072
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/angry_lyrix_odd_wet (consolidated) #2.wav",
+      "profile": {
+        "globalInclusionChance": 0.03
+      },
+      "sourceLines": [
+        7931,
+        13073
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/angry_lyrix_odd_wet (consolidated) #3.wav",
+      "profile": {
+        "globalInclusionChance": 0.03
+      },
+      "sourceLines": [
+        7932,
+        13074
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/angry_lyrix_odd_wet (consolidated) #4.wav",
+      "profile": {
+        "globalInclusionChance": 0.03
+      },
+      "sourceLines": [
+        7933,
+        13075
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/angry_lyrix_odd_wet (consolidated) #5.wav",
+      "profile": {
+        "globalInclusionChance": 0.03
+      },
+      "sourceLines": [
+        7934,
+        13076
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/angry_lyrix_odd_wet (consolidated) #6.wav",
+      "profile": {
+        "globalInclusionChance": 0.03
+      },
+      "sourceLines": [
+        7935,
+        13077
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/angry_lyrix_odd_wet (consolidated) #7.wav",
+      "profile": {
+        "globalInclusionChance": 0.03
+      },
+      "sourceLines": [
+        7936,
+        13078
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/angry_lyrix_odd_wet (consolidated) #8.wav",
+      "profile": {
+        "globalInclusionChance": 0.03
+      },
+      "sourceLines": [
+        7937,
+        13079
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/angry_lyrix_odd_wet (consolidated) #9.wav",
+      "profile": {
+        "globalInclusionChance": 0.03
+      },
+      "sourceLines": [
+        7938,
+        13080
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/bollocks_lyrix_odd_wet (consolidated) #3.wav",
+      "profile": {
+        "globalInclusionChance": 0.03
+      },
+      "sourceLines": [
+        7968,
+        13172
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/bollocks_lyrix_odd_wet (consolidated) #4.wav",
+      "profile": {
+        "globalInclusionChance": 0.03
+      },
+      "sourceLines": [
+        7969,
+        13173
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/bollocks_lyrix_odd_wet (consolidated) #5.wav",
+      "profile": {
+        "globalInclusionChance": 0.03
+      },
+      "sourceLines": [
+        7970,
+        13174
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/bollocks_lyrix_odd_wet (consolidated) #6.wav",
+      "profile": {
+        "globalInclusionChance": 0.03
+      },
+      "sourceLines": [
+        7971,
+        13175
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/bollocks_idc_adlib_lyrix.wav",
+      "profile": {
+        "globalInclusionChance": 0.03
+      },
+      "sourceLines": [
+        7973,
+        13177
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/bollocks_peace_adlib_lyrix.wav",
+      "profile": {
+        "globalInclusionChance": 0.03
+      },
+      "sourceLines": [
+        7974,
+        13178
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/bollocks_yuck_adlib_lyrix (consolidated).wav",
+      "profile": {
+        "globalInclusionChance": 0.03
+      },
+      "sourceLines": [
+        7975,
+        13179
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/crashout_lyrix_even_dry (consolidated).wav",
+      "profile": {
+        "globalInclusionChance": 0.02
+      },
+      "sourceLines": [
+        7994,
+        12965
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/crashout_lyrix_even_dry (consolidated) #2.wav",
+      "profile": {
+        "globalInclusionChance": 0.02
+      },
+      "sourceLines": [
+        7995,
+        12966
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/crashout_lyrix_even_dry (consolidated) #3.wav",
+      "profile": {
+        "globalInclusionChance": 0.02
+      },
+      "sourceLines": [
+        7996,
+        12967
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/crashout_lyrix_even_dry (consolidated) #4.wav",
+      "profile": {
+        "globalInclusionChance": 0.02
+      },
+      "sourceLines": [
+        7997,
+        12968
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/crashout_lyrix_even_wet (consolidated) #2.wav",
+      "profile": {
+        "globalInclusionChance": 0.02
+      },
+      "sourceLines": [
+        7998,
+        12192,
+        12969,
+        13017
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/crashout_lyrix_even_wet (consolidated) #3.wav",
+      "profile": {
+        "globalInclusionChance": 0.02
+      },
+      "sourceLines": [
+        7999,
+        12970
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/crashout_lyrix_even_wet (consolidated) #4.wav",
+      "profile": {
+        "globalInclusionChance": 0.02
+      },
+      "sourceLines": [
+        8000,
+        12971
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/bahh_crashout_adlib_lyrix #3.wav",
+      "profile": {
+        "globalInclusionChance": 0.02
+      },
+      "sourceLines": [
+        8002,
+        12973,
+        13031,
+        13038
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/buf_burnout_lyrix (consolidated).wav",
+      "profile": {
+        "globalInclusionChance": 0.12
+      },
+      "sourceLines": [
+        8070,
+        13547
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/buf_dontdeepit_lyrix (consolidated).wav",
+      "profile": {
+        "globalInclusionChance": 0.12
+      },
+      "sourceLines": [
+        8071,
+        13548
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/buf_easy_lyrix (consolidated).wav",
+      "profile": {
+        "globalInclusionChance": 0.12
+      },
+      "sourceLines": [
+        8072,
+        13549
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/buf_flippedround_lyrix (consolidated).wav",
+      "profile": {
+        "globalInclusionChance": 0.12
+      },
+      "sourceLines": [
+        8073,
+        13550
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/buf_freakout_lyrix (consolidated).wav",
+      "profile": {
+        "globalInclusionChance": 0.12
+      },
+      "sourceLines": [
+        8074,
+        13551
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/buf_nobodyelse_lyrix (consolidated).wav",
+      "profile": {
+        "globalInclusionChance": 0.12
+      },
+      "sourceLines": [
+        8075,
+        13552
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/buf_turnsout_lyrix (consolidated).wav",
+      "profile": {
+        "globalInclusionChance": 0.12
+      },
+      "sourceLines": [
+        8076,
+        13553
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/buf_adlib_1_lyrix.wav",
+      "profile": {
+        "globalInclusionChance": 0.12
+      },
+      "sourceLines": [
+        8078,
+        13555
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/buf_adlib_2_lyrix.wav",
+      "profile": {
+        "globalInclusionChance": 0.12
+      },
+      "sourceLines": [
+        8079,
+        13556
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/buf_adlib_3_lyrix.wav",
+      "profile": {
+        "globalInclusionChance": 0.12
+      },
+      "sourceLines": [
+        8080,
+        13557
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/buf_adlib_4_lyrix.wav",
+      "profile": {
+        "globalInclusionChance": 0.12
+      },
+      "sourceLines": [
+        8081,
+        13558
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/buf_adlib_5_lyrix.wav",
+      "profile": {
+        "globalInclusionChance": 0.12
+      },
+      "sourceLines": [
+        8082,
+        13559
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/buf_adlib_6_lyrix.wav",
+      "profile": {
+        "globalInclusionChance": 0.12
+      },
+      "sourceLines": [
+        8083,
+        13560
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/buf_adlib_7_lyrix.wav",
+      "profile": {
+        "globalInclusionChance": 0.12
+      },
+      "sourceLines": [
+        8084,
+        13561
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/buf_adlib_8_lyrix.wav",
+      "profile": {
+        "globalInclusionChance": 0.12
+      },
+      "sourceLines": [
+        8085,
+        13562
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/buf_adlib_9_lyrix.wav",
+      "profile": {
+        "globalInclusionChance": 0.12
+      },
+      "sourceLines": [
+        8086,
+        13563
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/buf_adlib_10_lyrix.wav",
+      "profile": {
+        "globalInclusionChance": 0.12
+      },
+      "sourceLines": [
+        8087,
+        13564
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/buf_cardtalk_lyrix_odd_dry (consolidated) #2.wav",
+      "profile": {
+        "activationChance": 0.1
+      },
+      "sourceLines": [
+        8102,
+        13619
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/buf_cardtalk_lyrix_odd_dry (consolidated) #3.wav",
+      "profile": {
+        "activationChance": 0.1
+      },
+      "sourceLines": [
+        8103,
+        13620
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/buf_cardtalk_lyrix_odd_dry (consolidated) #4.wav",
+      "profile": {
+        "activationChance": 0.1
+      },
+      "sourceLines": [
+        8104,
+        13621
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/buf_cardtalk_lyrix_odd_dry (consolidated) #5.wav",
+      "profile": {
+        "activationChance": 0.1
+      },
+      "sourceLines": [
+        8105,
+        13622
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/buf_cardtalk_lyrix_odd_dry (consolidated) #6.wav",
+      "profile": {
+        "activationChance": 0.1
+      },
+      "sourceLines": [
+        8106,
+        13623
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/buf_cardtalk_lyrix_odd_dry (consolidated) #7.wav",
+      "profile": {
+        "activationChance": 0.1
+      },
+      "sourceLines": [
+        8107,
+        13624
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/buf_cardtalk_lyrix_odd_dry (consolidated) #8.wav",
+      "profile": {
+        "activationChance": 0.1
+      },
+      "sourceLines": [
+        8108,
+        13625
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/buf_cardtalk_lyrix_odd_wet (consolidated).wav",
+      "profile": {
+        "activationChance": 0.1
+      },
+      "sourceLines": [
+        8109,
+        13626
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/buf_cardtalk_lyrix_odd_wet (consolidated) #2.wav",
+      "profile": {
+        "activationChance": 0.1
+      },
+      "sourceLines": [
+        8110,
+        13627
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/buf_cardtalk_lyrix_odd_wet (consolidated) #3.wav",
+      "profile": {
+        "activationChance": 0.1
+      },
+      "sourceLines": [
+        8111,
+        13628
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/buf_cardtalk_lyrix_odd_wet (consolidated) #4.wav",
+      "profile": {
+        "activationChance": 0.1
+      },
+      "sourceLines": [
+        8112,
+        13629
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/buf_cardtalk_lyrix_odd_wet (consolidated) #5.wav",
+      "profile": {
+        "activationChance": 0.1
+      },
+      "sourceLines": [
+        8113,
+        13630
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/buf_cardtalk_lyrix_odd_wet (consolidated) #6.wav",
+      "profile": {
+        "activationChance": 0.1
+      },
+      "sourceLines": [
+        8114,
+        13631
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/buf_cardtalk_lyrix_odd_wet (consolidated) #7.wav",
+      "profile": {
+        "activationChance": 0.1
+      },
+      "sourceLines": [
+        8115,
+        13632
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/buf_cardtalk_lyrix_odd_wet (consolidated) #8.wav",
+      "profile": {
+        "activationChance": 0.1
+      },
+      "sourceLines": [
+        8116,
+        13633
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/nosound_lyrix_odd_leadin_wet.wav",
+      "profile": {
+        "dropoutChance": 0.3
+      },
+      "sourceLines": [
+        8135,
+        13729,
+        13807
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/nosound_lyrix_wet (consolidated) #4.wav",
+      "profile": {
+        "globalInclusionChance": 0.2
+      },
+      "sourceLines": [
+        8146,
+        13741
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/nosound_lyrix_wet (consolidated) #5.wav",
+      "profile": {
+        "globalInclusionChance": 0.2
+      },
+      "sourceLines": [
+        8147,
+        13742
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/nosound_lyrix_wet (consolidated) #6.wav",
+      "profile": {
+        "globalInclusionChance": 0.2
+      },
+      "sourceLines": [
+        8148,
+        13743
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/nosound_lyrix_wet (consolidated) #7.wav",
+      "profile": {
+        "globalInclusionChance": 0.2
+      },
+      "sourceLines": [
+        8149,
+        13744
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/nosound_lyrix_scenes_dry (consolidated).wav",
+      "profile": {
+        "globalInclusionChance": 0.2,
+        "dropoutChance": 0.3,
+        "activationChance": 0.5
+      },
+      "sourceLines": [
+        8151,
+        13746,
+        13789,
+        13808
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/nosound_lyrix_scenes_wet (consolidated).wav",
+      "profile": {
+        "globalInclusionChance": 0.2,
+        "dropoutChance": 0.3,
+        "activationChance": 0.5
+      },
+      "sourceLines": [
+        8152,
+        13747,
+        13790,
+        13809
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/wow_adlib_nosound_lyrix #7.wav",
+      "profile": {
+        "globalInclusionChance": 0.2,
+        "activationChance": 0.5,
+        "dropoutChance": 0.3
+      },
+      "sourceLines": [
+        8154,
+        13749,
+        13800,
+        13810
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/fast_hook_hums_lyrix_odd.wav",
+      "profile": {
+        "activationChance": 0.05
+      },
+      "sourceLines": [
+        8976,
+        9135,
+        16009,
+        16023,
+        16574
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/hook_nextmove_main_lyrix_odd_dry (consolidated) #5.wav",
+      "profile": {
+        "globalInclusionChance": 0.3
+      },
+      "sourceLines": [
+        8994,
+        16038
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/hook_nextmove_main_lyrix_odd_dry (consolidated) #6.wav",
+      "profile": {
+        "globalInclusionChance": 0.3
+      },
+      "sourceLines": [
+        8995,
+        16039
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/hook_nextmove_main_lyrix_odd_dry (consolidated) #7.wav",
+      "profile": {
+        "globalInclusionChance": 0.3
+      },
+      "sourceLines": [
+        8996,
+        16040
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/hook_nextmove_main_lyrix_odd_dry (consolidated) #8.wav",
+      "profile": {
+        "globalInclusionChance": 0.3
+      },
+      "sourceLines": [
+        8997,
+        16041
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/hook_nextmove_main_lyrix_odd_dry (consolidated) #9.wav",
+      "profile": {
+        "globalInclusionChance": 0.3
+      },
+      "sourceLines": [
+        8998,
+        16042
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/hook_nextmove_main_lyrix_odd_dry (consolidated) #10.wav",
+      "profile": {
+        "globalInclusionChance": 0.3
+      },
+      "sourceLines": [
+        8999,
+        16043
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/hook_nextmove_main_lyrix_odd_wet (consolidated).wav",
+      "profile": {
+        "globalInclusionChance": 0.3
+      },
+      "sourceLines": [
+        9000,
+        16044
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/hook_nextmove_main_lyrix_odd_wet (consolidated) #2.wav",
+      "profile": {
+        "globalInclusionChance": 0.3
+      },
+      "sourceLines": [
+        9001,
+        16045
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/hook_nextmove_main_lyrix_odd_wet (consolidated) #3.wav",
+      "profile": {
+        "globalInclusionChance": 0.3
+      },
+      "sourceLines": [
+        9002,
+        16046
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "lyrix/hook_nextmove_main_lyrix_odd_wet (consolidated) #4.wav",
+      "profile": {
+        "globalInclusionChance": 0.3
+      },
+      "sourceLines": [
+        9003,
+        16047
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/everything_intro.wav",
+      "profile": {
+        "activationChance": 1
+      },
+      "sourceLines": [
+        11122
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/typewriter_intro_odd_xtra.wav",
+      "profile": {
+        "globalInclusionChance": 0.1
+      },
+      "sourceLines": [
+        11911,
+        11915,
+        12201,
+        12204
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/typewriter_odd_xtra.wav",
+      "profile": {
+        "globalInclusionChance": 0.1
+      },
+      "sourceLines": [
+        11912,
+        11916,
+        12202
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/typewriter_even_xtra.wav",
+      "profile": {
+        "globalInclusionChance": 0.1
+      },
+      "sourceLines": [
+        11913,
+        12203
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/intrusive_bleep.wav",
+      "profile": {
+        "globalInclusionChance": 0.15
+      },
+      "sourceLines": [
+        13861,
+        13928,
+        13948
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    },
+    {
+      "enabled": false,
+      "key": "samples/intrusive_feedback.wav",
+      "profile": {
+        "globalInclusionChance": 0.15
+      },
+      "sourceLines": [
+        13862,
+        13925,
+        13949
+      ],
+      "note": "Set enabled to true only after this entry has been reviewed."
+    }
+  ]
+}
