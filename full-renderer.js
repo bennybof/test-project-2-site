@@ -3263,6 +3263,7 @@ function getNormalMidiHatChoiceGroupId(pattern) {
         if (section.type.includes("grimey")) return key.includes("grm_") || key.includes("rewind_sfx");
 
         return (
+          key.includes("crash") ||
           key.includes("synth") ||
           key.includes("bass") ||
           key.includes("pad") ||
