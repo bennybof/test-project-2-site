@@ -1,0 +1,239 @@
+{
+  "generatedAt": "2026-06-09T20:27:57.283Z",
+  "catalogPath": "data/full-rules-catalog.json",
+  "batch": "high-confidence hard clash rules batch 1",
+  "note": "No new renderer system. Uses existing ruleProfiles.byTag hardClashRules only.",
+  "addedCount": 0,
+  "unchangedCount": 38,
+  "added": [],
+  "unchanged": [
+    {
+      "sourceTag": "breathe_vox_small",
+      "targetTag": "breathe_vox_big",
+      "id": "hard_clash_breathe_vox_small_with_breathe_vox_big",
+      "status": "unchanged_existing"
+    },
+    {
+      "sourceTag": "breathe_vox_big",
+      "targetTag": "breathe_vox_small",
+      "id": "hard_clash_breathe_vox_big_with_breathe_vox_small",
+      "status": "unchanged_existing"
+    },
+    {
+      "sourceTag": "pad_1",
+      "targetTag": "pad_2",
+      "id": "hard_clash_pad_1_with_pad_2",
+      "status": "unchanged_existing"
+    },
+    {
+      "sourceTag": "pad_2",
+      "targetTag": "pad_1",
+      "id": "hard_clash_pad_2_with_pad_1",
+      "status": "unchanged_existing"
+    },
+    {
+      "sourceTag": "pad",
+      "targetTag": "nuva_bass",
+      "id": "hard_clash_pad_with_nuva_bass",
+      "status": "unchanged_existing"
+    },
+    {
+      "sourceTag": "nuva_bass",
+      "targetTag": "pad",
+      "id": "hard_clash_nuva_bass_with_pad",
+      "status": "unchanged_existing"
+    },
+    {
+      "sourceTag": "bagoo_low",
+      "targetTag": "bagoo",
+      "id": "hard_clash_bagoo_low_with_bagoo",
+      "status": "unchanged_existing"
+    },
+    {
+      "sourceTag": "bagoo",
+      "targetTag": "bagoo_low",
+      "id": "hard_clash_bagoo_with_bagoo_low",
+      "status": "unchanged_existing"
+    },
+    {
+      "sourceTag": "bagoo",
+      "targetTag": "tbone",
+      "id": "hard_clash_bagoo_with_tbone",
+      "status": "unchanged_existing"
+    },
+    {
+      "sourceTag": "tbone",
+      "targetTag": "bagoo",
+      "id": "hard_clash_tbone_with_bagoo",
+      "status": "unchanged_existing"
+    },
+    {
+      "sourceTag": "bagoo_ext",
+      "targetTag": "clarinet",
+      "id": "hard_clash_bagoo_ext_with_clarinet",
+      "status": "unchanged_existing"
+    },
+    {
+      "sourceTag": "clarinet",
+      "targetTag": "bagoo_ext",
+      "id": "hard_clash_clarinet_with_bagoo_ext",
+      "status": "unchanged_existing"
+    },
+    {
+      "sourceTag": "random_vox",
+      "targetTag": "sax_1",
+      "id": "hard_clash_random_vox_with_sax_1",
+      "status": "unchanged_existing"
+    },
+    {
+      "sourceTag": "sax_1",
+      "targetTag": "random_vox",
+      "id": "hard_clash_sax_1_with_random_vox",
+      "status": "unchanged_existing"
+    },
+    {
+      "sourceTag": "beeps",
+      "targetTag": "bagoo",
+      "id": "hard_clash_beeps_with_bagoo",
+      "status": "unchanged_existing"
+    },
+    {
+      "sourceTag": "bagoo",
+      "targetTag": "beeps",
+      "id": "hard_clash_bagoo_with_beeps",
+      "status": "unchanged_existing"
+    },
+    {
+      "sourceTag": "beepipes_ghosts",
+      "targetTag": "rim",
+      "id": "hard_clash_beepipes_ghosts_with_rim",
+      "status": "unchanged_existing"
+    },
+    {
+      "sourceTag": "rim",
+      "targetTag": "beepipes_ghosts",
+      "id": "hard_clash_rim_with_beepipes_ghosts",
+      "status": "unchanged_existing"
+    },
+    {
+      "sourceTag": "rims_xtra_1",
+      "targetTag": "beepipes",
+      "id": "hard_clash_rims_xtra_1_with_beepipes",
+      "status": "unchanged_existing"
+    },
+    {
+      "sourceTag": "beepipes",
+      "targetTag": "rims_xtra_1",
+      "id": "hard_clash_beepipes_with_rims_xtra_1",
+      "status": "unchanged_existing"
+    },
+    {
+      "sourceTag": "rims_xtra_2",
+      "targetTag": "beepipes",
+      "id": "hard_clash_rims_xtra_2_with_beepipes",
+      "status": "unchanged_existing"
+    },
+    {
+      "sourceTag": "beepipes",
+      "targetTag": "rims_xtra_2",
+      "id": "hard_clash_beepipes_with_rims_xtra_2",
+      "status": "unchanged_existing"
+    },
+    {
+      "sourceTag": "rims_xtra_3",
+      "targetTag": "beepipes",
+      "id": "hard_clash_rims_xtra_3_with_beepipes",
+      "status": "unchanged_existing"
+    },
+    {
+      "sourceTag": "beepipes",
+      "targetTag": "rims_xtra_3",
+      "id": "hard_clash_beepipes_with_rims_xtra_3",
+      "status": "unchanged_existing"
+    },
+    {
+      "sourceTag": "beepipes",
+      "targetTag": "snare_pattern",
+      "id": "hard_clash_beepipes_with_snare_pattern",
+      "status": "unchanged_existing"
+    },
+    {
+      "sourceTag": "snare_pattern",
+      "targetTag": "beepipes",
+      "id": "hard_clash_snare_pattern_with_beepipes",
+      "status": "unchanged_existing"
+    },
+    {
+      "sourceTag": "hippy_synth_wiv_bass",
+      "targetTag": "pad_wiv_bass",
+      "id": "hard_clash_hippy_synth_wiv_bass_with_pad_wiv_bass",
+      "status": "unchanged_existing"
+    },
+    {
+      "sourceTag": "pad_wiv_bass",
+      "targetTag": "hippy_synth_wiv_bass",
+      "id": "hard_clash_pad_wiv_bass_with_hippy_synth_wiv_bass",
+      "status": "unchanged_existing"
+    },
+    {
+      "sourceTag": "hippy_synth_wiv_bass",
+      "targetTag": "cello_wiv_bass",
+      "id": "hard_clash_hippy_synth_wiv_bass_with_cello_wiv_bass",
+      "status": "unchanged_existing"
+    },
+    {
+      "sourceTag": "cello_wiv_bass",
+      "targetTag": "hippy_synth_wiv_bass",
+      "id": "hard_clash_cello_wiv_bass_with_hippy_synth_wiv_bass",
+      "status": "unchanged_existing"
+    },
+    {
+      "sourceTag": "pad_wiv_bass",
+      "targetTag": "cello_wiv_bass",
+      "id": "hard_clash_pad_wiv_bass_with_cello_wiv_bass",
+      "status": "unchanged_existing"
+    },
+    {
+      "sourceTag": "cello_wiv_bass",
+      "targetTag": "pad_wiv_bass",
+      "id": "hard_clash_cello_wiv_bass_with_pad_wiv_bass",
+      "status": "unchanged_existing"
+    },
+    {
+      "sourceTag": "hippy_synth_wiv_bass",
+      "targetTag": "nuva_bass",
+      "id": "hard_clash_hippy_synth_wiv_bass_with_nuva_bass",
+      "status": "unchanged_existing"
+    },
+    {
+      "sourceTag": "nuva_bass",
+      "targetTag": "hippy_synth_wiv_bass",
+      "id": "hard_clash_nuva_bass_with_hippy_synth_wiv_bass",
+      "status": "unchanged_existing"
+    },
+    {
+      "sourceTag": "pad_wiv_bass",
+      "targetTag": "nuva_bass",
+      "id": "hard_clash_pad_wiv_bass_with_nuva_bass",
+      "status": "unchanged_existing"
+    },
+    {
+      "sourceTag": "nuva_bass",
+      "targetTag": "pad_wiv_bass",
+      "id": "hard_clash_nuva_bass_with_pad_wiv_bass",
+      "status": "unchanged_existing"
+    },
+    {
+      "sourceTag": "cello_wiv_bass",
+      "targetTag": "nuva_bass",
+      "id": "hard_clash_cello_wiv_bass_with_nuva_bass",
+      "status": "unchanged_existing"
+    },
+    {
+      "sourceTag": "nuva_bass",
+      "targetTag": "cello_wiv_bass",
+      "id": "hard_clash_nuva_bass_with_cello_wiv_bass",
+      "status": "unchanged_existing"
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+TEST PROJECT 2 — HARD CLASH BATCH 1 REPORT
+
+Generated: 2026-06-09T20:27:57.283Z
+Scope: high-confidence hard clashes from definitions doc
+Renderer/system change: none
+Catalog field used: ruleProfiles.byTag.*.hardClashRules
+
+Added rules: 0
+Already existed: 38
+
+ADDED
+- none
+
+UNCHANGED
+- breathe_vox_small hard-clashes with breathe_vox_big (hard_clash_breathe_vox_small_with_breathe_vox_big)
+- breathe_vox_big hard-clashes with breathe_vox_small (hard_clash_breathe_vox_big_with_breathe_vox_small)
+- pad_1 hard-clashes with pad_2 (hard_clash_pad_1_with_pad_2)
+- pad_2 hard-clashes with pad_1 (hard_clash_pad_2_with_pad_1)
+- pad hard-clashes with nuva_bass (hard_clash_pad_with_nuva_bass)
+- nuva_bass hard-clashes with pad (hard_clash_nuva_bass_with_pad)
+- bagoo_low hard-clashes with bagoo (hard_clash_bagoo_low_with_bagoo)
+- bagoo hard-clashes with bagoo_low (hard_clash_bagoo_with_bagoo_low)
+- bagoo hard-clashes with tbone (hard_clash_bagoo_with_tbone)
+- tbone hard-clashes with bagoo (hard_clash_tbone_with_bagoo)
+- bagoo_ext hard-clashes with clarinet (hard_clash_bagoo_ext_with_clarinet)
+- clarinet hard-clashes with bagoo_ext (hard_clash_clarinet_with_bagoo_ext)
+- random_vox hard-clashes with sax_1 (hard_clash_random_vox_with_sax_1)
+- sax_1 hard-clashes with random_vox (hard_clash_sax_1_with_random_vox)
+- beeps hard-clashes with bagoo (hard_clash_beeps_with_bagoo)
+- bagoo hard-clashes with beeps (hard_clash_bagoo_with_beeps)
+- beepipes_ghosts hard-clashes with rim (hard_clash_beepipes_ghosts_with_rim)
+- rim hard-clashes with beepipes_ghosts (hard_clash_rim_with_beepipes_ghosts)
+- rims_xtra_1 hard-clashes with beepipes (hard_clash_rims_xtra_1_with_beepipes)
+- beepipes hard-clashes with rims_xtra_1 (hard_clash_beepipes_with_rims_xtra_1)
+- rims_xtra_2 hard-clashes with beepipes (hard_clash_rims_xtra_2_with_beepipes)
+- beepipes hard-clashes with rims_xtra_2 (hard_clash_beepipes_with_rims_xtra_2)
+- rims_xtra_3 hard-clashes with beepipes (hard_clash_rims_xtra_3_with_beepipes)
+- beepipes hard-clashes with rims_xtra_3 (hard_clash_beepipes_with_rims_xtra_3)
+- beepipes hard-clashes with snare_pattern (hard_clash_beepipes_with_snare_pattern)
+- snare_pattern hard-clashes with beepipes (hard_clash_snare_pattern_with_beepipes)
+- hippy_synth_wiv_bass hard-clashes with pad_wiv_bass (hard_clash_hippy_synth_wiv_bass_with_pad_wiv_bass)
+- pad_wiv_bass hard-clashes with hippy_synth_wiv_bass (hard_clash_pad_wiv_bass_with_hippy_synth_wiv_bass)
+- hippy_synth_wiv_bass hard-clashes with cello_wiv_bass (hard_clash_hippy_synth_wiv_bass_with_cello_wiv_bass)
+- cello_wiv_bass hard-clashes with hippy_synth_wiv_bass (hard_clash_cello_wiv_bass_with_hippy_synth_wiv_bass)
+- pad_wiv_bass hard-clashes with cello_wiv_bass (hard_clash_pad_wiv_bass_with_cello_wiv_bass)
+- cello_wiv_bass hard-clashes with pad_wiv_bass (hard_clash_cello_wiv_bass_with_pad_wiv_bass)
+- hippy_synth_wiv_bass hard-clashes with nuva_bass (hard_clash_hippy_synth_wiv_bass_with_nuva_bass)
+- nuva_bass hard-clashes with hippy_synth_wiv_bass (hard_clash_nuva_bass_with_hippy_synth_wiv_bass)
+- pad_wiv_bass hard-clashes with nuva_bass (hard_clash_pad_wiv_bass_with_nuva_bass)
+- nuva_bass hard-clashes with pad_wiv_bass (hard_clash_nuva_bass_with_pad_wiv_bass)
+- cello_wiv_bass hard-clashes with nuva_bass (hard_clash_cello_wiv_bass_with_nuva_bass)
+- nuva_bass hard-clashes with cello_wiv_bass (hard_clash_nuva_bass_with_cello_wiv_bass)

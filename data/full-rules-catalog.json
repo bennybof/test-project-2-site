@@ -267,6 +267,17 @@
               "fadeSeconds": 0.01,
               "includeFutureScheduled": false
             }
+          ],
+          "hardClashRules": [
+            {
+              "id": "hard_clash_rim_with_beepipes_ghosts",
+              "targets": [
+                {
+                  "tag": "beepipes_ghosts"
+                }
+              ],
+              "sourceNote": "Definitions doc: beepipes_ghosts hard clashes with all rims."
+            }
           ]
         },
         "arp": {
@@ -294,6 +305,431 @@
               ],
               "fadeSeconds": 0.01,
               "includeFutureScheduled": false
+            }
+          ]
+        },
+        "breathe_vox_small": {
+          "hardClashRules": [
+            {
+              "id": "hard_clash_breathe_vox_small_with_breathe_vox_big",
+              "targets": [
+                {
+                  "tag": "breathe_vox_big"
+                }
+              ],
+              "sourceNote": "Definitions doc: breathe_vox_small and breathe_vox_big cannot activate at the same time."
+            }
+          ]
+        },
+        "breathe_vox_big": {
+          "hardClashRules": [
+            {
+              "id": "hard_clash_breathe_vox_big_with_breathe_vox_small",
+              "targets": [
+                {
+                  "tag": "breathe_vox_small"
+                }
+              ],
+              "sourceNote": "Definitions doc: breathe_vox_small and breathe_vox_big cannot activate at the same time."
+            }
+          ]
+        },
+        "pad_1": {
+          "hardClashRules": [
+            {
+              "id": "hard_clash_pad_1_with_pad_2",
+              "targets": [
+                {
+                  "tag": "pad_2"
+                }
+              ],
+              "sourceNote": "Definitions doc: pad_1 and pad_2 cannot play at the same time."
+            }
+          ]
+        },
+        "pad_2": {
+          "hardClashRules": [
+            {
+              "id": "hard_clash_pad_2_with_pad_1",
+              "targets": [
+                {
+                  "tag": "pad_1"
+                }
+              ],
+              "sourceNote": "Definitions doc: pad_1 and pad_2 cannot play at the same time."
+            }
+          ]
+        },
+        "pad": {
+          "hardClashRules": [
+            {
+              "id": "hard_clash_pad_with_nuva_bass",
+              "targets": [
+                {
+                  "tag": "nuva_bass"
+                }
+              ],
+              "sourceNote": "Definitions doc: nuva_bass clashes with all pad stems."
+            }
+          ]
+        },
+        "nuva_bass": {
+          "hardClashRules": [
+            {
+              "id": "hard_clash_nuva_bass_with_pad",
+              "targets": [
+                {
+                  "tag": "pad"
+                }
+              ],
+              "sourceNote": "Definitions doc: nuva_bass clashes with all pad stems."
+            },
+            {
+              "id": "hard_clash_nuva_bass_with_hippy_synth_wiv_bass",
+              "targets": [
+                {
+                  "tag": "hippy_synth_wiv_bass"
+                }
+              ],
+              "sourceNote": "Definitions doc: hippy_synth_wiv-bass cannot play with nuva_bass."
+            },
+            {
+              "id": "hard_clash_nuva_bass_with_pad_wiv_bass",
+              "targets": [
+                {
+                  "tag": "pad_wiv_bass"
+                }
+              ],
+              "sourceNote": "Definitions doc: pad_wiv-bass cannot play with nuva_bass."
+            },
+            {
+              "id": "hard_clash_nuva_bass_with_cello_wiv_bass",
+              "targets": [
+                {
+                  "tag": "cello_wiv_bass"
+                }
+              ],
+              "sourceNote": "Definitions doc: cello_wiv-bass cannot play with nuva_bass."
+            }
+          ]
+        },
+        "bagoo_low": {
+          "hardClashRules": [
+            {
+              "id": "hard_clash_bagoo_low_with_bagoo",
+              "targets": [
+                {
+                  "tag": "bagoo"
+                }
+              ],
+              "sourceNote": "Definitions doc: bagoo_low cannot activate at the same time as bagoo."
+            }
+          ]
+        },
+        "bagoo": {
+          "hardClashRules": [
+            {
+              "id": "hard_clash_bagoo_with_bagoo_low",
+              "targets": [
+                {
+                  "tag": "bagoo_low"
+                }
+              ],
+              "sourceNote": "Definitions doc: bagoo_low cannot activate at the same time as bagoo."
+            },
+            {
+              "id": "hard_clash_bagoo_with_tbone",
+              "targets": [
+                {
+                  "tag": "tbone"
+                }
+              ],
+              "sourceNote": "Definitions doc: bagoo hard clashes with tbone."
+            },
+            {
+              "id": "hard_clash_bagoo_with_beeps",
+              "targets": [
+                {
+                  "tag": "beeps"
+                }
+              ],
+              "sourceNote": "Definitions doc: beeps hard clash with bagoo."
+            }
+          ]
+        },
+        "tbone": {
+          "hardClashRules": [
+            {
+              "id": "hard_clash_tbone_with_bagoo",
+              "targets": [
+                {
+                  "tag": "bagoo"
+                }
+              ],
+              "sourceNote": "Definitions doc: bagoo hard clashes with tbone."
+            }
+          ]
+        },
+        "bagoo_ext": {
+          "hardClashRules": [
+            {
+              "id": "hard_clash_bagoo_ext_with_clarinet",
+              "targets": [
+                {
+                  "tag": "clarinet"
+                }
+              ],
+              "sourceNote": "Definitions doc: bagoo_ext hard clashes with clarinet."
+            }
+          ]
+        },
+        "clarinet": {
+          "hardClashRules": [
+            {
+              "id": "hard_clash_clarinet_with_bagoo_ext",
+              "targets": [
+                {
+                  "tag": "bagoo_ext"
+                }
+              ],
+              "sourceNote": "Definitions doc: bagoo_ext hard clashes with clarinet."
+            }
+          ]
+        },
+        "random_vox": {
+          "hardClashRules": [
+            {
+              "id": "hard_clash_random_vox_with_sax_1",
+              "targets": [
+                {
+                  "tag": "sax_1"
+                }
+              ],
+              "sourceNote": "Definitions doc: sax_1 hard clashes with random_vox."
+            }
+          ]
+        },
+        "sax_1": {
+          "hardClashRules": [
+            {
+              "id": "hard_clash_sax_1_with_random_vox",
+              "targets": [
+                {
+                  "tag": "random_vox"
+                }
+              ],
+              "sourceNote": "Definitions doc: sax_1 hard clashes with random_vox."
+            }
+          ]
+        },
+        "beeps": {
+          "hardClashRules": [
+            {
+              "id": "hard_clash_beeps_with_bagoo",
+              "targets": [
+                {
+                  "tag": "bagoo"
+                }
+              ],
+              "sourceNote": "Definitions doc: beeps hard clash with bagoo."
+            }
+          ]
+        },
+        "beepipes_ghosts": {
+          "hardClashRules": [
+            {
+              "id": "hard_clash_beepipes_ghosts_with_rim",
+              "targets": [
+                {
+                  "tag": "rim"
+                }
+              ],
+              "sourceNote": "Definitions doc: beepipes_ghosts hard clashes with all rims."
+            }
+          ]
+        },
+        "rims_xtra_1": {
+          "hardClashRules": [
+            {
+              "id": "hard_clash_rims_xtra_1_with_beepipes",
+              "targets": [
+                {
+                  "tag": "beepipes"
+                }
+              ],
+              "sourceNote": "Definitions doc: rims_xtra hard clashes with beepipes."
+            }
+          ]
+        },
+        "beepipes": {
+          "hardClashRules": [
+            {
+              "id": "hard_clash_beepipes_with_rims_xtra_1",
+              "targets": [
+                {
+                  "tag": "rims_xtra_1"
+                }
+              ],
+              "sourceNote": "Definitions doc: rims_xtra hard clashes with beepipes."
+            },
+            {
+              "id": "hard_clash_beepipes_with_rims_xtra_2",
+              "targets": [
+                {
+                  "tag": "rims_xtra_2"
+                }
+              ],
+              "sourceNote": "Definitions doc: rims_xtra hard clashes with beepipes."
+            },
+            {
+              "id": "hard_clash_beepipes_with_rims_xtra_3",
+              "targets": [
+                {
+                  "tag": "rims_xtra_3"
+                }
+              ],
+              "sourceNote": "Definitions doc: rims_xtra hard clashes with beepipes."
+            },
+            {
+              "id": "hard_clash_beepipes_with_snare_pattern",
+              "targets": [
+                {
+                  "tag": "snare_pattern"
+                }
+              ],
+              "sourceNote": "Definitions doc: beepipes clash with snare_pattern, but can work with snare_xtra."
+            }
+          ]
+        },
+        "rims_xtra_2": {
+          "hardClashRules": [
+            {
+              "id": "hard_clash_rims_xtra_2_with_beepipes",
+              "targets": [
+                {
+                  "tag": "beepipes"
+                }
+              ],
+              "sourceNote": "Definitions doc: rims_xtra hard clashes with beepipes."
+            }
+          ]
+        },
+        "rims_xtra_3": {
+          "hardClashRules": [
+            {
+              "id": "hard_clash_rims_xtra_3_with_beepipes",
+              "targets": [
+                {
+                  "tag": "beepipes"
+                }
+              ],
+              "sourceNote": "Definitions doc: rims_xtra hard clashes with beepipes."
+            }
+          ]
+        },
+        "snare_pattern": {
+          "hardClashRules": [
+            {
+              "id": "hard_clash_snare_pattern_with_beepipes",
+              "targets": [
+                {
+                  "tag": "beepipes"
+                }
+              ],
+              "sourceNote": "Definitions doc: beepipes clash with snare_pattern, but can work with snare_xtra."
+            }
+          ]
+        },
+        "hippy_synth_wiv_bass": {
+          "hardClashRules": [
+            {
+              "id": "hard_clash_hippy_synth_wiv_bass_with_pad_wiv_bass",
+              "targets": [
+                {
+                  "tag": "pad_wiv_bass"
+                }
+              ],
+              "sourceNote": "Definitions doc: hippy_synth_wiv-bass, pad_wiv-bass, and cello_wiv-bass cannot play at the same time as each other."
+            },
+            {
+              "id": "hard_clash_hippy_synth_wiv_bass_with_cello_wiv_bass",
+              "targets": [
+                {
+                  "tag": "cello_wiv_bass"
+                }
+              ],
+              "sourceNote": "Definitions doc: hippy_synth_wiv-bass, pad_wiv-bass, and cello_wiv-bass cannot play at the same time as each other."
+            },
+            {
+              "id": "hard_clash_hippy_synth_wiv_bass_with_nuva_bass",
+              "targets": [
+                {
+                  "tag": "nuva_bass"
+                }
+              ],
+              "sourceNote": "Definitions doc: hippy_synth_wiv-bass cannot play with nuva_bass."
+            }
+          ]
+        },
+        "pad_wiv_bass": {
+          "hardClashRules": [
+            {
+              "id": "hard_clash_pad_wiv_bass_with_hippy_synth_wiv_bass",
+              "targets": [
+                {
+                  "tag": "hippy_synth_wiv_bass"
+                }
+              ],
+              "sourceNote": "Definitions doc: hippy_synth_wiv-bass, pad_wiv-bass, and cello_wiv-bass cannot play at the same time as each other."
+            },
+            {
+              "id": "hard_clash_pad_wiv_bass_with_cello_wiv_bass",
+              "targets": [
+                {
+                  "tag": "cello_wiv_bass"
+                }
+              ],
+              "sourceNote": "Definitions doc: hippy_synth_wiv-bass, pad_wiv-bass, and cello_wiv-bass cannot play at the same time as each other."
+            },
+            {
+              "id": "hard_clash_pad_wiv_bass_with_nuva_bass",
+              "targets": [
+                {
+                  "tag": "nuva_bass"
+                }
+              ],
+              "sourceNote": "Definitions doc: pad_wiv-bass cannot play with nuva_bass."
+            }
+          ]
+        },
+        "cello_wiv_bass": {
+          "hardClashRules": [
+            {
+              "id": "hard_clash_cello_wiv_bass_with_hippy_synth_wiv_bass",
+              "targets": [
+                {
+                  "tag": "hippy_synth_wiv_bass"
+                }
+              ],
+              "sourceNote": "Definitions doc: hippy_synth_wiv-bass, pad_wiv-bass, and cello_wiv-bass cannot play at the same time as each other."
+            },
+            {
+              "id": "hard_clash_cello_wiv_bass_with_pad_wiv_bass",
+              "targets": [
+                {
+                  "tag": "pad_wiv_bass"
+                }
+              ],
+              "sourceNote": "Definitions doc: hippy_synth_wiv-bass, pad_wiv-bass, and cello_wiv-bass cannot play at the same time as each other."
+            },
+            {
+              "id": "hard_clash_cello_wiv_bass_with_nuva_bass",
+              "targets": [
+                {
+                  "tag": "nuva_bass"
+                }
+              ],
+              "sourceNote": "Definitions doc: cello_wiv-bass cannot play with nuva_bass."
             }
           ]
         }
