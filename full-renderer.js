@@ -3742,7 +3742,11 @@ function scheduleMidiPattern({
     const entry = getMidiPatternRuleEntry(pattern);
     let scheduledCount = 0;
 
-    for (const note of pattern.notes) {
+    for (const [noteIndex, note] of pattern.notes.entries()) {
+      if (shouldSkipMidiPatternNote(pattern, noteIndex, section)) {
+        continue;
+      }
+
       const start = barStart + note.beats * beatSeconds;
       const velocityGain = Math.max(0.05, note.velocity01 ?? 0.7);
       const scheduled = scheduleBuffer(offlineContext, destination, sampleBuffer, start, gainValue * velocityGain);
