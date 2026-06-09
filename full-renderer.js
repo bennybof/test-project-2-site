@@ -4635,6 +4635,69 @@ function scheduleMidiPattern({
       return totalScheduledCount;
     }
 
+
+    function scheduleHookJazzHatsPairInSectionWithRules(patternPair, section) {
+      if (!Array.isArray(patternPair) || patternPair.length !== 2) return 0;
+
+      const [driverPattern, companionPattern] = patternPair;
+      const driverLifecycleId = getMidiLifecycleId(driverPattern.file);
+      const companionLifecycleId = getMidiLifecycleId(companionPattern.file);
+
+      if (!isLifecycleIdEligible(lifecycleStates, driverLifecycleId)) return 0;
+      if (!isLifecycleIdEligible(lifecycleStates, companionLifecycleId)) return 0;
+
+      const repeatEveryBars = getMidiRepeatEveryBars(driverPattern);
+      const repeatEverySeconds = section.barSeconds * repeatEveryBars;
+      const midiProfile = getRuleProfileForMidiPattern(driverPattern);
+      const midiBaseChance = getActivationChance(midiProfile, 0.7);
+      let totalScheduledCount = 0;
+
+      for (
+        let t = section.startSeconds, localBarIndex = 0;
+        t < section.startSeconds + section.duration - 0.001;
+        t += repeatEverySeconds, localBarIndex += repeatEveryBars
+      ) {
+        const midiDecisionResult = resolveRuleProfileDecision({
+          random,
+          plan,
+          playbackState,
+          kind: "midi",
+          pattern: driverPattern,
+          section,
+          lifecycleStates,
+          localBarIndex,
+          baseChance: midiBaseChance,
+          profile: midiProfile
+        });
+
+        if (!midiDecisionResult.allowed) continue;
+
+        applyCutoffRulesForAllowedDecision(playbackState, midiDecisionResult.context, midiProfile);
+
+        for (const pattern of patternPair) {
+          const scheduledCount = scheduleMidiPattern({
+            offlineContext,
+            destination,
+            pattern,
+            buffers,
+            barStart: t,
+            beatSeconds: section.barSeconds / 4,
+            gainValue: 0.62,
+            playbackState,
+            section,
+            metadata: {
+              sectionType: section.type,
+              sectionIndex: section.index,
+              reason: "hook_jazz_hats_group"
+            }
+          });
+
+          totalScheduledCount += scheduledCount;
+        }
+      }
+
+      return totalScheduledCount;
+    }
     for (const section of sections) {
       expirePlaybackItemsAtTime(playbackState, section.startSeconds);
       const sectionMidiKeys = Array.isArray(section.selectedMidi) ? section.selectedMidi : plan.selectedMidi;
@@ -4657,11 +4720,18 @@ function scheduleMidiPattern({
         .filter(Boolean)
         .filter(pattern => midiMatchesSection(pattern, section));
       const sectionHasJazzRideWithHatsVariant = sectionMidi.some(isJazzRideWithHatsVariantPattern);
-      const sectionMidiBeforeAudio = sectionMidi.filter(pattern => !isJazzRideWithHatsVariantPattern(pattern));
+      const hookJazzHatsPair = getHookJazzHatsPairFromSectionMidi(sectionMidi);
+      const sectionMidiBeforeAudio = sectionMidi
+        .filter(pattern => !isJazzRideWithHatsVariantPattern(pattern))
+        .filter(pattern => !isHookJazzHatsPattern(pattern));
 
 
       for (const pattern of sectionMidiBeforeAudio) {
         scheduleMidiPatternInSectionWithRules(pattern, section);
+      }
+
+      if (hookJazzHatsPair.length) {
+        scheduleHookJazzHatsPairInSectionWithRules(hookJazzHatsPair, section);
       }
 
       if (section.lyrixSectionId) {
