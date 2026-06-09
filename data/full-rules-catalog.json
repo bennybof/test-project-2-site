@@ -1345,21 +1345,49 @@
         },
         "samples/big_crash_layer_odd_metal (consolidated).wav": {
           "globalInclusionChance": 1,
-          "activationChance": 0.02
+          "activationChance": 0.02,
+          "dependentActivationRules": [
+            {
+              "id": "dependent_big_crash_layer_delay_after_normal",
+              "chance": 0.5,
+              "targets": [
+                {
+                  "key": "samples/big_crash_layer_odd_dlay_metal (consolidated).wav"
+                }
+              ],
+              "sourceNote": "Definitions doc: big_crash_layer_odd_dlay_metal has 50% chance if big_crash_layer_odd_metal activates."
+            }
+          ]
         },
         "samples/big_crash_layer_odd_dlay_metal (consolidated).wav": {
           "globalInclusionChance": 1,
-          "activationChance": 0.02
+          "activationChance": 0,
+          "dependentActivationOnly": true,
+          "sourceNote": "Dependent activation target only: should not roll independently from its normal big crash layer source."
         },
         "samples/crash_washes_metal_even (consolidated).wav": {
           "globalInclusionChance": 0.2,
           "activationChance": 0.2,
-          "dropoutChance": 0.5
+          "dropoutChance": 0.5,
+          "dependentActivationRules": [
+            {
+              "id": "dependent_crash_washes_delay_after_normal",
+              "chance": 0.2,
+              "targets": [
+                {
+                  "key": "samples/crash_washes_metal_dlay_even (consolidated).wav"
+                }
+              ],
+              "sourceNote": "Definitions doc: crash_washes_metal_dlay_even has 20% chance if crash_washes_metal_even activates."
+            }
+          ]
         },
         "samples/crash_washes_metal_dlay_even (consolidated).wav": {
           "globalInclusionChance": 0.2,
-          "activationChance": 0.2,
-          "dropoutChance": 0.5
+          "activationChance": 0,
+          "dropoutChance": 0.5,
+          "dependentActivationOnly": true,
+          "sourceNote": "Dependent activation target only: should not roll independently from its normal crash wash source."
         },
         "samples/crash_wash_hook_xtra_metal.wav": {
           "globalInclusionChance": 0.5,

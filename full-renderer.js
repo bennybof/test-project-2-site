@@ -1351,6 +1351,16 @@
     ]);
   }
 
+  function getDependentActivationRules(profile) {
+    return getRuleArray(profile, [
+      "dependentActivationRules",
+      "dependentActivations",
+      "activationFollowers",
+      "followerActivations",
+      "activatesTargets"
+    ]);
+  }
+
   function getDensityRules(profile) {
     return getRuleArray(profile, [
       "densityRules",
@@ -2313,6 +2323,64 @@
       "crescendo_multiplier"
     );
   }
+  function expandDependentActivationTargets({
+    random,
+    selectedAudio = null,
+    globalInclusionState = null,
+    requiredActivationState = null
+  } = {}) {
+    if (!selectedAudio) return 0;
+
+    let addedCount = 0;
+    let changed = true;
+    let guard = 0;
+
+    while (changed && guard < 20) {
+      changed = false;
+      guard += 1;
+
+      const sourceKeys = [...selectedAudio];
+
+      for (const sourceKey of sourceKeys) {
+        const sourceEntry = getCatalogEntry(sourceKey);
+        if (!sourceEntry) continue;
+
+        const sourceProfile = getRuleProfileForEntry(sourceEntry);
+        const dependentRules = getDependentActivationRules(sourceProfile);
+
+        for (const rule of dependentRules) {
+          const targets = getRuleTargets(rule);
+
+          for (const target of targets) {
+            if (!target?.key) continue;
+            if (target.kind && target.kind !== "audio") continue;
+
+            const targetEntry = getCatalogEntry(target.key);
+            if (!targetEntry || isLyrix(targetEntry)) continue;
+
+            const hadTarget = selectedAudio.has(targetEntry.key);
+
+            forceIncludeAudioSelection({
+              random,
+              globalInclusionState,
+              requiredActivationState,
+              selectedAudio,
+              key: targetEntry.key,
+              reason: `dependent_activation_target:${sourceEntry.key}`
+            });
+
+            if (!hadTarget && selectedAudio.has(targetEntry.key)) {
+              addedCount += 1;
+              changed = true;
+            }
+          }
+        }
+      }
+    }
+
+    return addedCount;
+  }
+
   function includeAudioByGlobalDecision({
     random,
     globalInclusionState = null,
@@ -3895,6 +3963,13 @@ function getNormalMidiHatChoiceGroupId(pattern) {
 
     expandSelectedWetDryPairs(selectedAudio, random, globalInclusionState, requiredActivationState);
 
+    expandDependentActivationTargets({
+      random,
+      selectedAudio,
+      globalInclusionState,
+      requiredActivationState
+    });
+
     for (const key of selectedAudio) {
       const lifecycleId = getAudioLifecycleId(key);
       setLifecycleEligible(lifecycleStates, lifecycleId);
@@ -4511,6 +4586,142 @@ function scheduleMidiPattern({
 
     return true;
   }
+  function scheduleDependentActivationFollowersForAudio({
+    offlineContext,
+    destination,
+    buffers = null,
+    random,
+    plan = null,
+    playbackState = null,
+    section = null,
+    lifecycleStates = null,
+    sourceContext = null,
+    sourceProfile = null,
+    sourceKey = "",
+    startSeconds = 0
+  } = {}) {
+    const rules = getDependentActivationRules(sourceProfile);
+    if (!rules.length) return 0;
+
+    const activeBuffers = buffers || currentRenderBuffers;
+    let scheduledCount = 0;
+
+    for (const rule of rules) {
+      const targets = getRuleTargets(rule);
+
+      for (const target of targets) {
+        if (!target?.key) continue;
+        if (target.kind && target.kind !== "audio") continue;
+
+        const targetEntry = getCatalogEntry(target.key);
+        if (!targetEntry || isLyrix(targetEntry)) continue;
+        if (!audioMatchesSection(targetEntry, section)) continue;
+
+        const targetBuffer = activeBuffers?.get(targetEntry.key);
+        if (!targetBuffer) continue;
+
+        const offsetBars = Number(rule.offsetBars ?? rule.delayBars ?? 0);
+        const offsetSeconds = Number(rule.offsetSeconds ?? rule.delaySeconds ?? 0);
+        const targetStartSeconds =
+          Number(startSeconds || 0) +
+          (Number.isFinite(offsetBars) ? offsetBars * Number(section?.barSeconds || 0) : 0) +
+          (Number.isFinite(offsetSeconds) ? offsetSeconds : 0);
+
+        const targetLifecycleId = getAudioLifecycleId(targetEntry.key);
+
+        if (
+          lifecycleStates &&
+          targetLifecycleId &&
+          !isLifecycleIdEligible(lifecycleStates, targetLifecycleId)
+        ) {
+          continue;
+        }
+
+        const targetProfile = getRuleProfileForEntry(targetEntry);
+        const ruleChance = clampProbability(
+          rule.chance ?? rule.activationChance ?? rule.targetChance ?? rule.probability ?? 1,
+          1
+        );
+        const localBarIndex = section?.barSeconds
+          ? Math.max(0, Math.round((targetStartSeconds - section.startSeconds) / section.barSeconds))
+          : null;
+
+        const targetDecisionResult = resolveRuleProfileDecision({
+          random,
+          plan,
+          playbackState,
+          kind: "audio",
+          key: targetEntry.key,
+          entry: targetEntry,
+          section,
+          lifecycleStates,
+          localBarIndex,
+          startSeconds: targetStartSeconds,
+          baseChance: ruleChance,
+          profile: targetProfile
+        });
+
+        if (!targetDecisionResult.allowed) continue;
+
+        applyCutoffRulesForAllowedDecision(playbackState, targetDecisionResult.context, targetProfile);
+
+        const gainMultiplier = Number(rule.gainMultiplier ?? 1);
+        const targetGain =
+          sectionGainForAudio(targetEntry, section) *
+          (Number.isFinite(gainMultiplier) ? gainMultiplier : 1);
+
+        const scheduled = scheduleAudioBufferWithPlaybackState({
+          offlineContext,
+          destination,
+          buffer: targetBuffer,
+          startTime: targetStartSeconds,
+          gainValue: targetGain,
+          playbackState,
+          key: targetEntry.key,
+          entry: targetEntry,
+          section
+        });
+
+        if (scheduled) {
+          scheduledCount += 1;
+
+          if (lifecycleStates && targetLifecycleId) {
+            activateLifecycleItem(
+              lifecycleStates,
+              targetLifecycleId,
+              `${section?.id || "section"}:${targetEntry.key}:dependent:${sourceKey}`
+            );
+          }
+
+          if (section) {
+            if (!Array.isArray(section.dependentActivationDebug)) {
+              section.dependentActivationDebug = [];
+            }
+
+            section.dependentActivationDebug.push({
+              ruleId: rule.id || "",
+              sourceKey,
+              targetKey: targetEntry.key,
+              sourceStartSeconds: startSeconds,
+              targetStartSeconds,
+              chance: ruleChance,
+              sourceContext: sourceContext
+                ? {
+                    kind: sourceContext.kind,
+                    itemKey: sourceContext.itemKey,
+                    sectionId: sourceContext.sectionId,
+                    localBarIndex: sourceContext.localBarIndex
+                  }
+                : null
+            });
+          }
+        }
+      }
+    }
+
+    return scheduledCount;
+  }
+
   function scheduleAudioStemInSection({ offlineContext, destination, key, buffer, random, plan = null, lifecycleStates = null, playbackState = null, section }) {
     const entry = getCatalogEntry(key);
     if (!entry || !buffer) return 0;
@@ -4518,10 +4729,32 @@ function scheduleMidiPattern({
 
     const keyLower = key.toLowerCase();
     const gain = sectionGainForAudio(entry, section);
+    const audioProfile = getRuleProfileForEntry(entry);
+
+    if (audioProfile.dependentActivationOnly || audioProfile.dependentOnly || audioProfile.activationMode === "dependent") {
+      return 0;
+    }
+
+    function scheduleDependents(startSeconds, sourceContext = null) {
+      return scheduleDependentActivationFollowersForAudio({
+        offlineContext,
+        destination,
+        buffers: currentRenderBuffers,
+        random,
+        plan,
+        playbackState,
+        section,
+        lifecycleStates,
+        sourceContext,
+        sourceProfile: audioProfile,
+        sourceKey: key,
+        startSeconds
+      });
+    }
 
     if (entry.folder === "alternate downloads") {
       if (chance(random, 0.005)) {
-        return scheduleAudioBufferWithPlaybackState({
+        const scheduled = scheduleAudioBufferWithPlaybackState({
           offlineContext,
           destination,
           buffer,
@@ -4531,13 +4764,15 @@ function scheduleMidiPattern({
           key,
           entry,
           section
-        }) ? 1 : 0;
+        });
+
+        return scheduled ? 1 + scheduleDependents(section.startSeconds) : 0;
       }
       return 0;
     }
 
     if (keyLower.includes("everything_intro")) {
-      return scheduleAudioBufferWithPlaybackState({
+      const scheduled = scheduleAudioBufferWithPlaybackState({
         offlineContext,
         destination,
         buffer,
@@ -4547,26 +4782,31 @@ function scheduleMidiPattern({
         key,
         entry,
         section
-      }) ? 1 : 0;
+      });
+
+      return scheduled ? 1 + scheduleDependents(section.startSeconds) : 0;
     }
 
     if (keyLower.includes("drop_") || keyLower.includes("dropped_")) {
       const localBar = Math.floor(random() * Math.max(1, section.bars));
-      return scheduleAudioBufferWithPlaybackState({
+      const startSeconds = section.startSeconds + localBar * section.barSeconds;
+      const scheduled = scheduleAudioBufferWithPlaybackState({
         offlineContext,
         destination,
         buffer,
-        startTime: section.startSeconds + localBar * section.barSeconds,
+        startTime: startSeconds,
         gainValue: gain,
         playbackState,
         key,
         entry,
         section
-      }) ? 1 : 0;
+      });
+
+      return scheduled ? 1 + scheduleDependents(startSeconds) : 0;
     }
 
     if (keyLower.includes("outburst")) {
-      return scheduleAudioBufferWithPlaybackState({
+      const scheduled = scheduleAudioBufferWithPlaybackState({
         offlineContext,
         destination,
         buffer,
@@ -4576,22 +4816,27 @@ function scheduleMidiPattern({
         key,
         entry,
         section
-      }) ? 1 : 0;
+      });
+
+      return scheduled ? 1 + scheduleDependents(section.startSeconds) : 0;
     }
 
     if (keyLower.includes("grm_") || keyLower.includes("rewind_sfx")) {
       const localBar = Math.floor(random() * Math.max(1, section.bars));
-      return scheduleAudioBufferWithPlaybackState({
+      const startSeconds = section.startSeconds + localBar * section.barSeconds;
+      const scheduled = scheduleAudioBufferWithPlaybackState({
         offlineContext,
         destination,
         buffer,
-        startTime: section.startSeconds + localBar * section.barSeconds,
+        startTime: startSeconds,
         gainValue: gain,
         playbackState,
         key,
         entry,
         section
-      }) ? 1 : 0;
+      });
+
+      return scheduled ? 1 + scheduleDependents(startSeconds) : 0;
     }
 
     if (isLyrix(entry)) {
@@ -4605,8 +4850,6 @@ function scheduleMidiPattern({
         buffers: currentRenderBuffers
       }) ? 1 : 0;
     }
-
-    const audioProfile = getRuleProfileForEntry(entry);
 
     if (isLikelyOneShot(entry)) {
       const allowedBars = getAllowedLocalBarIndexesForKey(key, section);
@@ -4646,6 +4889,7 @@ function scheduleMidiPattern({
 
           if (scheduled) {
             scheduledCount += 1;
+            scheduledCount += scheduleDependents(startSeconds, audioDecisionResult.context);
           }
         }
       }
@@ -4695,6 +4939,7 @@ function scheduleMidiPattern({
 
         if (scheduled) {
           scheduledCount += 1;
+          scheduledCount += scheduleDependents(startSeconds, audioDecisionResult.context);
         }
       }
     }

@@ -1,0 +1,26 @@
+TEST PROJECT 2 - DEPENDENT ACTIVATION BATCH 1A REPORT
+
+Generated: 2026-06-09T21:22:01.674Z
+Renderer change: reusable dependent activation system
+Catalog change: two confirmed normal/delay pairs
+
+Renderer changes:
+- getDependentActivationRules: inserted
+- expandDependentActivationTargets: inserted
+- dependent target expansion call: inserted
+- scheduleDependentActivationFollowersForAudio: inserted
+- scheduleAudioStemInSection: full function replaced to call dependent activation after successful audio scheduling
+
+Dependent source rules:
+- samples/crash_washes_metal_even (consolidated).wav -> samples/crash_washes_metal_dlay_even (consolidated).wav @ 0.2: added
+- samples/big_crash_layer_odd_metal (consolidated).wav -> samples/big_crash_layer_odd_dlay_metal (consolidated).wav @ 0.5: added
+
+Dependent-only targets:
+- samples/crash_washes_metal_dlay_even (consolidated).wav: set_dependent_only
+- samples/big_crash_layer_odd_dlay_metal (consolidated).wav: set_dependent_only
+
+Behaviour:
+- Source file rolls/schedules using its normal existing rules.
+- If source schedules, target rolls its dependent chance.
+- Target still passes through rule-profile decision checks.
+- If source does not schedule, target has no independent direct activation.
