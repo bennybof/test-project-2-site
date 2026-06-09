@@ -1967,6 +1967,9 @@
 
     applySoftMultiplierRulesToDecision(playbackState, context, decision, getSoftMultiplierRules(profile));
 
+
+    applyEnergyBaseChanceRulesToDecision(context, decision, getEnergyBaseChanceRules(profile));
+
     applyGroupedActivationRulesToDecision(
       playbackState,
       context,
@@ -2399,6 +2402,69 @@
     return section;
   }
 
+  function getEnergyBaseChanceRules(profile) {
+    return getRuleArray(profile, [
+      "energyBaseChanceRules",
+      "energyActivationChanceRules",
+      "baseActivationChanceRules",
+      "activationChanceRules"
+    ]);
+  }
+
+  function doesEnergyBaseChanceRuleMatch(rule, energyContext) {
+    if (!rule || !energyContext) return false;
+
+    if (rule.densityBand && String(rule.densityBand) !== energyContext.densityBand) return false;
+    if (rule.tensionBand && String(rule.tensionBand) !== energyContext.tensionBand) return false;
+
+    if (Number.isFinite(Number(rule.minDensity)) && energyContext.densityScore < Number(rule.minDensity)) return false;
+    if (Number.isFinite(Number(rule.maxDensity)) && energyContext.densityScore > Number(rule.maxDensity)) return false;
+    if (Number.isFinite(Number(rule.exclusiveMinDensity ?? rule.minDensityExclusive)) && energyContext.densityScore <= Number(rule.exclusiveMinDensity ?? rule.minDensityExclusive)) return false;
+    if (Number.isFinite(Number(rule.exclusiveMaxDensity ?? rule.maxDensityExclusive)) && energyContext.densityScore >= Number(rule.exclusiveMaxDensity ?? rule.maxDensityExclusive)) return false;
+
+    if (Number.isFinite(Number(rule.minTension)) && energyContext.tensionValue < Number(rule.minTension)) return false;
+    if (Number.isFinite(Number(rule.maxTension)) && energyContext.tensionValue > Number(rule.maxTension)) return false;
+    if (Number.isFinite(Number(rule.exclusiveMinTension ?? rule.minTensionExclusive)) && energyContext.tensionValue <= Number(rule.exclusiveMinTension ?? rule.minTensionExclusive)) return false;
+    if (Number.isFinite(Number(rule.exclusiveMaxTension ?? rule.maxTensionExclusive)) && energyContext.tensionValue >= Number(rule.exclusiveMaxTension ?? rule.maxTensionExclusive)) return false;
+
+    if (rule.requiresCrescendo && !energyContext.isCrescendo) return false;
+    if (rule.requiresEmphasis && !energyContext.isEmphasis) return false;
+
+    return true;
+  }
+
+  function setRuleDecisionBaseChance(decision, baseChance, code, details = {}) {
+    if (!decision) return decision;
+
+    decision.baseChance = clampProbability(baseChance, 1);
+    decision.finalChance = clampProbability(decision.baseChance * decision.chanceMultiplier);
+
+    return addRuleDecisionReason(decision, code, {
+      baseChance: decision.baseChance,
+      ...details
+    });
+  }
+
+  function applyEnergyBaseChanceRulesToDecision(context, decision, rules = [], reasonCode = "energy_base_chance") {
+    if (!context || !decision || !Array.isArray(rules)) return decision;
+
+    const energyContext = getSectionEnergyContext(context.section);
+
+    for (const rule of rules) {
+      if (!doesEnergyBaseChanceRuleMatch(rule, energyContext)) continue;
+
+      const rawChance = rule.baseChance ?? rule.activationChance ?? rule.chance ?? rule.finalChance;
+
+      if (!Number.isFinite(Number(rawChance))) continue;
+
+      setRuleDecisionBaseChance(decision, rawChance, reasonCode, {
+        ruleId: rule.id || "",
+        energyContext
+      });
+    }
+
+    return decision;
+  }
   function getEnergyRuleMultiplier(rule, energyContext) {
     if (!rule || !energyContext) return 1;
 
