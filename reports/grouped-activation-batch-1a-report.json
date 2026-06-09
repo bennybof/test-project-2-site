@@ -1,0 +1,28 @@
+{
+  "generatedAt": "2026-06-09T20:56:52.153Z",
+  "catalogPath": "data/full-rules-catalog.json",
+  "registryPath": "data/stem-registry.json",
+  "batch": "grouped activation batch 1A",
+  "note": "Adds groupedActivationRules only for the confirmed hook jazz hats ride04/ridehard pair. Does not implement delay-pair rules, because the existing grouped activation system does not create dependent extra activations.",
+  "addedCount": 2,
+  "unchangedCount": 0,
+  "skippedCount": 0,
+  "rule": {
+    "id": "group_hook_jazz_hats_ride04_ridehard",
+    "groupId": "hook_jazz_hats_ride04_ridehard",
+    "scope": "bar",
+    "sourceNote": "User-confirmed: hook jazz hats ride04 and ridehard MIDI files activate together as one hook jazz hats pattern using two ride samples. No explicit chance is set; the first candidate uses its normal decision chance and the second reuses that grouped decision."
+  },
+  "results": [
+    {
+      "key": "midi files/jazz_hats_metal_hook_even_~_ride04.mid",
+      "id": "group_hook_jazz_hats_ride04_ridehard",
+      "status": "added"
+    },
+    {
+      "key": "midi files/jazz_hats_metal_hook_even_~_ridehard.mid",
+      "id": "group_hook_jazz_hats_ride04_ridehard",
+      "status": "added"
+    }
+  ]
+}

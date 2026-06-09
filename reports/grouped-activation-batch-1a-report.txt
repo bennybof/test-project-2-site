@@ -1,0 +1,21 @@
+TEST PROJECT 2 — GROUPED ACTIVATION BATCH 1A REPORT
+
+Generated: 2026-06-09T20:56:52.153Z
+Renderer/system change: none
+Catalog field used: ruleProfiles.byKey.*.groupedActivationRules
+Rule: hook jazz hats ride04 + ridehard share one grouped activation decision per bar.
+
+Added rules: 2
+Already existed: 0
+Skipped: 0
+
+RESULTS
+- midi files/jazz_hats_metal_hook_even_~_ride04.mid: added
+- midi files/jazz_hats_metal_hook_even_~_ridehard.mid: added
+
+NOT IMPLEMENTED IN THIS BATCH
+- crash_washes normal/delay pair
+- big_crash_layer normal/delay pair
+- any delay-follows-main behaviour
+
+Reason: existing grouped activation shares a decision only; it does not create extra dependent activations.

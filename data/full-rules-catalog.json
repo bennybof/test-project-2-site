@@ -1129,11 +1129,27 @@
         },
         "midi files/jazz_hats_metal_hook_even_~_ride04.mid": {
           "activationChance": 0.2,
-          "dropoutChance": 0.08
+          "dropoutChance": 0.08,
+          "groupedActivationRules": [
+            {
+              "id": "group_hook_jazz_hats_ride04_ridehard",
+              "groupId": "hook_jazz_hats_ride04_ridehard",
+              "scope": "bar",
+              "sourceNote": "User-confirmed: hook jazz hats ride04 and ridehard MIDI files activate together as one hook jazz hats pattern using two ride samples. No explicit chance is set; the first candidate uses its normal decision chance and the second reuses that grouped decision."
+            }
+          ]
         },
         "midi files/jazz_hats_metal_hook_even_~_ridehard.mid": {
           "activationChance": 0.2,
-          "dropoutChance": 0.08
+          "dropoutChance": 0.08,
+          "groupedActivationRules": [
+            {
+              "id": "group_hook_jazz_hats_ride04_ridehard",
+              "groupId": "hook_jazz_hats_ride04_ridehard",
+              "scope": "bar",
+              "sourceNote": "User-confirmed: hook jazz hats ride04 and ridehard MIDI files activate together as one hook jazz hats pattern using two ride samples. No explicit chance is set; the first candidate uses its normal decision chance and the second reuses that grouped decision."
+            }
+          ]
         },
         "midi files/jazz_rides_metal_ridehard.mid": {
           "activationChance": 1
