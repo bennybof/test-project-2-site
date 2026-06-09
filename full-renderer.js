@@ -2577,6 +2577,20 @@ function midiPatternClashesWithSelectedSection(pattern, selectedMidiFiles, midiP
 
   for (const selectedPattern of selectedPatterns) {
     if (
+      isBeepipesGhostsMidiPattern(pattern) &&
+      isRimMidiPattern(selectedPattern)
+    ) {
+      return true;
+    }
+
+    if (
+      isBeepipesGhostsMidiPattern(selectedPattern) &&
+      isRimMidiPattern(pattern)
+    ) {
+      return true;
+    }
+
+    if (
       isBeepipes2MidiPattern(pattern) &&
       isBeepipesMidiPattern(selectedPattern) &&
       !isBeepipes2MidiPattern(selectedPattern)
