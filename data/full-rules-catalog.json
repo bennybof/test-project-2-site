@@ -1522,11 +1522,9 @@
           "dropoutChance": 0.05
         },
         "samples/bassish_glitchy_hook_odd_x4 (consolidated).wav": {
-          "globalInclusionChance": 0.5,
           "activationChance": 0.7
         },
         "samples/bassish_glitchy_hook_odd_x4 #2 (consolidated).wav": {
-          "globalInclusionChance": 0.5,
           "activationChance": 0.7
         },
         "samples/high_bassish_hook_odd_x2 (consolidated) #2.wav": {
@@ -1584,7 +1582,6 @@
           "activationChance": 0.4
         },
         "samples/floot_1_even_x4 (consolidated).wav": {
-          "globalInclusionChance": 0.4,
           "activationChance": 0.1,
           "dropoutChance": 0.2,
           "softMultiplierRules": [
@@ -1601,7 +1598,6 @@
           ]
         },
         "samples/floot_2_even_x4 (consolidated).wav": {
-          "globalInclusionChance": 0.4,
           "activationChance": 0.1,
           "dropoutChance": 0.2,
           "softMultiplierRules": [
@@ -1618,7 +1614,6 @@
           ]
         },
         "samples/floot_hook_even_x2 (consolidated).wav": {
-          "globalInclusionChance": 0.4,
           "dropoutChance": 0.2
         },
         "samples/trumpet_even_x4.wav": {
@@ -1637,12 +1632,10 @@
           "dropoutChance": 0.5
         },
         "samples/clarinet_even_x2 (consolidated).wav": {
-          "globalInclusionChance": 0.5,
           "activationChance": 0.2,
           "dropoutChance": 0.5
         },
         "samples/clarinet_hook_x4_even (consolidated).wav": {
-          "globalInclusionChance": 0.5,
           "activationChance": 0.2,
           "dropoutChance": 0.5
         },
@@ -1665,7 +1658,6 @@
           "dropoutChance": 0.7
         },
         "samples/vlins_1_even_x2 (consolidated).wav": {
-          "globalInclusionChance": 0.5,
           "activationChance": 0.005,
           "dropoutChance": 0.3,
           "softMultiplierRules": [
@@ -1682,7 +1674,6 @@
           ]
         },
         "samples/vlins_long_suspense_odd_x2 (consolidated).wav": {
-          "globalInclusionChance": 0.5,
           "activationChance": 0.005,
           "dropoutChance": 0.3
         },
@@ -1727,16 +1718,13 @@
           "dropoutChance": 0.1
         },
         "samples/beeps_intro_odd (consolidated).wav": {
-          "globalInclusionChance": 0.5,
           "activationChance": 0.2
         },
         "samples/beeps_odd_x2_xtra (consolidated).wav": {
-          "globalInclusionChance": 0.5,
           "activationChance": 0.2,
           "dropoutChance": 0.5
         },
         "samples/beeps_xtra_odd (consolidated).wav": {
-          "globalInclusionChance": 0.5,
           "activationChance": 0.2,
           "dropoutChance": 0.5
         },
@@ -1776,45 +1764,36 @@
           "dropoutChance": 0.01
         },
         "samples/bagoo_odd (consolidated).wav": {
-          "globalInclusionChance": 0.9,
           "activationChance": 0.5,
           "dropoutChance": 0.2
         },
         "samples/bagoo_ext_even (consolidated).wav": {
-          "globalInclusionChance": 0.9,
           "activationChance": 0.5,
           "dropoutChance": 0.2
         },
         "samples/bagoo_low_odd (consolidated).wav": {
-          "globalInclusionChance": 0.9,
           "activationChance": 0.5,
           "dropoutChance": 0.2
         },
         "samples/random_vox_dry_x4_even_~.wav": {
-          "globalInclusionChance": 0.2,
           "activationChance": 0.05
         },
         "samples/random_vox_wet_x4_even_~.wav": {
-          "globalInclusionChance": 0.2,
           "activationChance": 0.05
         },
         "samples/other_vox_dry_even_x2.wav": {
-          "globalInclusionChance": 0.5,
           "activationChance": 0.1,
           "dropoutChance": 0.3
         },
         "samples/other_vox_wet_even_x2.wav": {
-          "globalInclusionChance": 0.5,
           "activationChance": 0.1,
           "dropoutChance": 0.3
         },
         "samples/wierd_vox_dry_odd_x2 (consolidated).wav": {
-          "globalInclusionChance": 0.5,
           "activationChance": 0.1,
           "dropoutChance": 0.3
         },
         "samples/wierd_vox_wet_odd_x2.wav": {
-          "globalInclusionChance": 0.5,
           "activationChance": 0.1,
           "dropoutChance": 0.3
         },
@@ -1867,12 +1846,10 @@
           "activationChance": 0.05
         },
         "samples/window_wipe_xtra_even_hook_x4.wav": {
-          "globalInclusionChance": 0.5,
           "activationChance": 0.01,
           "dropoutChance": 0.4
         },
         "samples/window_wipe_2_xtra_even_hook_x4.wav": {
-          "globalInclusionChance": 0.5,
           "activationChance": 0.01,
           "dropoutChance": 0.4
         },
@@ -1897,12 +1874,10 @@
           "dropoutChance": 0.05
         },
         "samples/shaker_small_xtra (consolidated).wav": {
-          "globalInclusionChance": 0.2,
           "activationChance": 0.005,
           "dropoutChance": 0.01
         },
         "samples/shaker_big_xtra (consolidated).wav": {
-          "globalInclusionChance": 0.2,
           "activationChance": 0.005,
           "dropoutChance": 0.01
         },
@@ -1971,15 +1946,6 @@
         },
         "samples/everything_intro.wav": {
           "activationChance": 1
-        },
-        "samples/typewriter_intro_odd_xtra.wav": {
-          "globalInclusionChance": 0.1
-        },
-        "samples/typewriter_odd_xtra.wav": {
-          "globalInclusionChance": 0.1
-        },
-        "samples/typewriter_even_xtra.wav": {
-          "globalInclusionChance": 0.1
         },
         "samples/intrusive_bleep.wav": {
           "globalInclusionChance": 0.15
@@ -2228,6 +2194,56 @@
               "sourceNote": "Saved definitions absolute final 2: glock_odd_dlay has a 20% chance to activate when glock_odd activates."
             }
           ]
+        }
+      },
+      "byFamily": {
+        "bagoo": {
+          "globalInclusionChance": 0.9,
+          "sourceNote": "Migrated from identical byKey globalInclusionChance values for the complete bagoo family."
+        },
+        "bassish": {
+          "globalInclusionChance": 0.5,
+          "sourceNote": "Migrated from identical byKey globalInclusionChance values for the complete bassish family."
+        },
+        "beeps": {
+          "globalInclusionChance": 0.5,
+          "sourceNote": "Migrated from identical byKey globalInclusionChance values for the complete beeps family."
+        },
+        "clarinet": {
+          "globalInclusionChance": 0.5,
+          "sourceNote": "Migrated from identical byKey globalInclusionChance values for the complete clarinet family."
+        },
+        "floot": {
+          "globalInclusionChance": 0.4,
+          "sourceNote": "Migrated from identical byKey globalInclusionChance values for the complete floot family."
+        },
+        "other": {
+          "globalInclusionChance": 0.5,
+          "sourceNote": "Migrated from identical byKey globalInclusionChance values for the complete other family."
+        },
+        "random": {
+          "globalInclusionChance": 0.2,
+          "sourceNote": "Migrated from identical byKey globalInclusionChance values for the complete random family."
+        },
+        "shaker": {
+          "globalInclusionChance": 0.2,
+          "sourceNote": "Migrated from identical byKey globalInclusionChance values for the complete shaker family."
+        },
+        "typewriter": {
+          "globalInclusionChance": 0.1,
+          "sourceNote": "Migrated from identical byKey globalInclusionChance values for the complete typewriter family."
+        },
+        "vlins": {
+          "globalInclusionChance": 0.5,
+          "sourceNote": "Migrated from identical byKey globalInclusionChance values for the complete vlins family."
+        },
+        "wierd": {
+          "globalInclusionChance": 0.5,
+          "sourceNote": "Migrated from identical byKey globalInclusionChance values for the complete wierd family."
+        },
+        "window": {
+          "globalInclusionChance": 0.5,
+          "sourceNote": "Migrated from identical byKey globalInclusionChance values for the complete window family."
         }
       }
     },
