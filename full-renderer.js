@@ -3389,7 +3389,14 @@ function getNormalMidiHatChoiceGroupId(pattern) {
         suppressLyrixLeadIn: Boolean(options.suppressLyrixLeadIn)
       };
 
-      attachSectionEnergyContext(section);
+      attachSectionEnergyContext(section, {
+        densityScore: options.densityScore,
+        densityBand: options.densityBand,
+        tensionValue: options.tensionValue,
+        tensionBand: options.tensionBand,
+        isCrescendo: options.isCrescendo,
+        isEmphasis: options.isEmphasis
+      });
 
       sectionTimeline.push(section);
 
