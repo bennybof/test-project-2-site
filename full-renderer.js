@@ -3928,6 +3928,7 @@ function scheduleMidiPattern({
         if (isLyrix(entry)) return false;
 
     return (
+      key.includes("crash") ||
       key.includes("synth") ||
       key.includes("bass") ||
       key.includes("pad") ||
