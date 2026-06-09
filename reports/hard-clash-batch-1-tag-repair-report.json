@@ -1,0 +1,304 @@
+{
+  "generatedAt": "2026-06-09T20:36:45.287Z",
+  "registryPath": "data/stem-registry.json",
+  "note": "Adds exact registry tags needed by hard clash batch 1. No renderer/system change.",
+  "results": [
+    {
+      "tag": "bagoo_ext",
+      "reason": "Hard clash batch 1 uses bagoo_ext; registry had filename match but no exact tag.",
+      "matchedCount": 1,
+      "addedCount": 1,
+      "unchangedCount": 0,
+      "matched": [
+        {
+          "key": "samples/bagoo_ext_even (consolidated).wav",
+          "added": true
+        }
+      ]
+    },
+    {
+      "tag": "beepipes",
+      "reason": "Hard clash batch 1 uses beepipes; registry had family/filename matches but no exact tag.",
+      "matchedCount": 8,
+      "addedCount": 8,
+      "unchangedCount": 0,
+      "matched": [
+        {
+          "key": "midi files/beepipes_1_drums.mid",
+          "added": true
+        },
+        {
+          "key": "midi files/beepipes_1_drums_hook_~.mid",
+          "added": true
+        },
+        {
+          "key": "midi files/beepipes_2_drums_odd_beepipe.mid",
+          "added": true
+        },
+        {
+          "key": "midi files/beepipes_dying_drums_beepipe.mid",
+          "added": true
+        },
+        {
+          "key": "midi files/beepipes_ghosts_drums_beepipe.mid",
+          "added": true
+        },
+        {
+          "key": "midi files/beepipes_xtra_drums_beepipe.mid",
+          "added": true
+        },
+        {
+          "key": "midi files/hats_wiv-beepipes_2_metal_odd_ch.mid",
+          "added": true
+        },
+        {
+          "key": "midi files/hats_wiv-beepipes_2_metal_odd_oh.mid",
+          "added": true
+        }
+      ]
+    },
+    {
+      "tag": "beepipes_ghosts",
+      "reason": "Hard clash batch 1 uses beepipes_ghosts; registry had filename match but no exact tag.",
+      "matchedCount": 1,
+      "addedCount": 1,
+      "unchangedCount": 0,
+      "matched": [
+        {
+          "key": "midi files/beepipes_ghosts_drums_beepipe.mid",
+          "added": true
+        }
+      ]
+    },
+    {
+      "tag": "breathe_vox_big",
+      "reason": "Hard clash batch 1 uses breathe_vox_big; registry had filename matches but no exact tag.",
+      "matchedCount": 3,
+      "addedCount": 3,
+      "unchangedCount": 0,
+      "matched": [
+        {
+          "key": "samples/breathe_vox_big_dry_even_x2.wav",
+          "added": true
+        },
+        {
+          "key": "samples/breathe_vox_big_hook_even_x2.wav",
+          "added": true
+        },
+        {
+          "key": "samples/breathe_vox_big_outburst_~.wav",
+          "added": true
+        }
+      ]
+    },
+    {
+      "tag": "breathe_vox_small",
+      "reason": "Hard clash batch 1 uses breathe_vox_small; registry had filename matches but no exact tag.",
+      "matchedCount": 5,
+      "addedCount": 5,
+      "unchangedCount": 0,
+      "matched": [
+        {
+          "key": "samples/breathe_vox_small_choppy_even_x2.wav",
+          "added": true
+        },
+        {
+          "key": "samples/breathe_vox_small_different_choppy_even_x2 (consolidated).wav",
+          "added": true
+        },
+        {
+          "key": "samples/breathe_vox_small_different_dry_2_even_x4.wav",
+          "added": true
+        },
+        {
+          "key": "samples/breathe_vox_small_different_dry_even_x2 (consolidated).wav",
+          "added": true
+        },
+        {
+          "key": "samples/breathe_vox_small_dry_even_x2.wav",
+          "added": true
+        }
+      ]
+    },
+    {
+      "tag": "cello_wiv_bass",
+      "reason": "Hard clash batch 1 uses cello_wiv_bass; registry filename uses wiv-bass but had no exact normalized tag.",
+      "matchedCount": 1,
+      "addedCount": 1,
+      "unchangedCount": 0,
+      "matched": [
+        {
+          "key": "samples/cello_wiv-bass_even (consolidated).wav",
+          "added": true
+        }
+      ]
+    },
+    {
+      "tag": "hippy_synth_wiv_bass",
+      "reason": "Hard clash batch 1 uses hippy_synth_wiv_bass; registry filename uses wiv-bass but had no exact normalized tag.",
+      "matchedCount": 1,
+      "addedCount": 1,
+      "unchangedCount": 0,
+      "matched": [
+        {
+          "key": "samples/hippy_synth_wiv-bass_odd (consolidated).wav",
+          "added": true
+        }
+      ]
+    },
+    {
+      "tag": "pad_1",
+      "reason": "Hard clash batch 1 uses pad_1; registry had filename match but no exact tag.",
+      "matchedCount": 1,
+      "addedCount": 1,
+      "unchangedCount": 0,
+      "matched": [
+        {
+          "key": "samples/pad_1_xtra (consolidated).wav",
+          "added": true
+        }
+      ]
+    },
+    {
+      "tag": "pad_2",
+      "reason": "Hard clash batch 1 uses pad_2; registry had filename match but no exact tag.",
+      "matchedCount": 1,
+      "addedCount": 1,
+      "unchangedCount": 0,
+      "matched": [
+        {
+          "key": "samples/pad_2_odd_xtra (consolidated).wav",
+          "added": true
+        }
+      ]
+    },
+    {
+      "tag": "pad_wiv_bass",
+      "reason": "Hard clash batch 1 uses pad_wiv_bass; registry filename uses wiv-bass but had no exact normalized tag.",
+      "matchedCount": 1,
+      "addedCount": 1,
+      "unchangedCount": 0,
+      "matched": [
+        {
+          "key": "samples/pad_wiv-bass (consolidated).wav",
+          "added": true
+        }
+      ]
+    },
+    {
+      "tag": "random_vox",
+      "reason": "Hard clash batch 1 uses random_vox; registry had filename matches but no exact tag.",
+      "matchedCount": 2,
+      "addedCount": 2,
+      "unchangedCount": 0,
+      "matched": [
+        {
+          "key": "samples/random_vox_dry_x4_even_~.wav",
+          "added": true
+        },
+        {
+          "key": "samples/random_vox_wet_x4_even_~.wav",
+          "added": true
+        }
+      ]
+    },
+    {
+      "tag": "rim",
+      "reason": "Hard clash batch 1 uses rim; registry had rim family/filename matches but no exact tag.",
+      "matchedCount": 5,
+      "addedCount": 5,
+      "unchangedCount": 0,
+      "matched": [
+        {
+          "key": "midi files/rims_drums_rim.mid",
+          "added": true
+        },
+        {
+          "key": "midi files/rims_xtra_1_drums_rim.mid",
+          "added": true
+        },
+        {
+          "key": "midi files/rims_xtra_2_drums_rim.mid",
+          "added": true
+        },
+        {
+          "key": "midi files/rims_xtra_3_drums_rim.mid",
+          "added": true
+        },
+        {
+          "key": "midi files/samples/rim.wav",
+          "added": true
+        }
+      ]
+    },
+    {
+      "tag": "rims_xtra_1",
+      "reason": "Hard clash batch 1 uses rims_xtra_1; registry had filename match but no exact tag.",
+      "matchedCount": 1,
+      "addedCount": 1,
+      "unchangedCount": 0,
+      "matched": [
+        {
+          "key": "midi files/rims_xtra_1_drums_rim.mid",
+          "added": true
+        }
+      ]
+    },
+    {
+      "tag": "rims_xtra_2",
+      "reason": "Hard clash batch 1 uses rims_xtra_2; registry had filename match but no exact tag.",
+      "matchedCount": 1,
+      "addedCount": 1,
+      "unchangedCount": 0,
+      "matched": [
+        {
+          "key": "midi files/rims_xtra_2_drums_rim.mid",
+          "added": true
+        }
+      ]
+    },
+    {
+      "tag": "rims_xtra_3",
+      "reason": "Hard clash batch 1 uses rims_xtra_3; registry had filename match but no exact tag.",
+      "matchedCount": 1,
+      "addedCount": 1,
+      "unchangedCount": 0,
+      "matched": [
+        {
+          "key": "midi files/rims_xtra_3_drums_rim.mid",
+          "added": true
+        }
+      ]
+    },
+    {
+      "tag": "sax_1",
+      "reason": "Hard clash batch 1 uses sax_1; registry had filename matches but no exact tag.",
+      "matchedCount": 2,
+      "addedCount": 2,
+      "unchangedCount": 0,
+      "matched": [
+        {
+          "key": "samples/sax_1_hook_odd_x2 (consolidated).wav",
+          "added": true
+        },
+        {
+          "key": "samples/sax_1_odd_x2 (consolidated).wav",
+          "added": true
+        }
+      ]
+    },
+    {
+      "tag": "snare_pattern",
+      "reason": "Hard clash batch 1 uses snare_pattern; registry had filename match but no exact tag.",
+      "matchedCount": 1,
+      "addedCount": 1,
+      "unchangedCount": 0,
+      "matched": [
+        {
+          "key": "midi files/snare_pattern_drums_snare.mid",
+          "added": true
+        }
+      ]
+    }
+  ]
+}

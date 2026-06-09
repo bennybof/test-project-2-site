@@ -14587,7 +14587,8 @@
       "tags": [
         "drums",
         "midi",
-        "midi_area"
+        "midi_area",
+        "beepipes"
       ],
       "partNumber": null,
       "opportunity": null,
@@ -14616,7 +14617,8 @@
         "hook",
         "midi",
         "midi_area",
-        "tilde_align"
+        "tilde_align",
+        "beepipes"
       ],
       "partNumber": null,
       "opportunity": null,
@@ -14644,7 +14646,8 @@
         "drums",
         "midi",
         "midi_area",
-        "odd"
+        "odd",
+        "beepipes"
       ],
       "partNumber": null,
       "opportunity": null,
@@ -14671,7 +14674,8 @@
       "tags": [
         "drums",
         "midi",
-        "midi_area"
+        "midi_area",
+        "beepipes"
       ],
       "partNumber": null,
       "opportunity": null,
@@ -14698,7 +14702,9 @@
       "tags": [
         "drums",
         "midi",
-        "midi_area"
+        "midi_area",
+        "beepipes",
+        "beepipes_ghosts"
       ],
       "partNumber": null,
       "opportunity": null,
@@ -14726,7 +14732,8 @@
         "drums",
         "midi",
         "midi_area",
-        "xtra"
+        "xtra",
+        "beepipes"
       ],
       "partNumber": null,
       "opportunity": null,
@@ -14936,7 +14943,8 @@
         "metal",
         "midi",
         "midi_area",
-        "odd"
+        "odd",
+        "beepipes"
       ],
       "partNumber": null,
       "opportunity": null,
@@ -14965,7 +14973,8 @@
         "metal",
         "midi",
         "midi_area",
-        "odd"
+        "odd",
+        "beepipes"
       ],
       "partNumber": null,
       "opportunity": null,
@@ -15681,7 +15690,8 @@
       "tags": [
         "drums",
         "midi",
-        "midi_area"
+        "midi_area",
+        "rim"
       ],
       "partNumber": null,
       "opportunity": null,
@@ -15709,7 +15719,9 @@
         "drums",
         "midi",
         "midi_area",
-        "xtra"
+        "xtra",
+        "rim",
+        "rims_xtra_1"
       ],
       "partNumber": null,
       "opportunity": null,
@@ -15737,7 +15749,9 @@
         "drums",
         "midi",
         "midi_area",
-        "xtra"
+        "xtra",
+        "rim",
+        "rims_xtra_2"
       ],
       "partNumber": null,
       "opportunity": null,
@@ -15765,7 +15779,9 @@
         "drums",
         "midi",
         "midi_area",
-        "xtra"
+        "xtra",
+        "rim",
+        "rims_xtra_3"
       ],
       "partNumber": null,
       "opportunity": null,
@@ -16056,7 +16072,8 @@
       "family": "rim",
       "tags": [
         "audio",
-        "midi_area"
+        "midi_area",
+        "rim"
       ],
       "partNumber": null,
       "opportunity": null,
@@ -16101,7 +16118,8 @@
       "tags": [
         "drums",
         "midi",
-        "midi_area"
+        "midi_area",
+        "snare_pattern"
       ],
       "partNumber": null,
       "opportunity": null,
@@ -17254,7 +17272,8 @@
         "audio",
         "bagoo",
         "even",
-        "sample"
+        "sample",
+        "bagoo_ext"
       ],
       "partNumber": null,
       "opportunity": null,
@@ -17658,7 +17677,8 @@
         "dry",
         "even",
         "sample",
-        "vox"
+        "vox",
+        "breathe_vox_big"
       ],
       "partNumber": null,
       "opportunity": null,
@@ -17683,7 +17703,8 @@
         "even",
         "hook",
         "sample",
-        "vox"
+        "vox",
+        "breathe_vox_big"
       ],
       "partNumber": null,
       "opportunity": null,
@@ -17708,7 +17729,8 @@
         "outburst",
         "sample",
         "tilde_align",
-        "vox"
+        "vox",
+        "breathe_vox_big"
       ],
       "partNumber": null,
       "opportunity": null,
@@ -17732,7 +17754,8 @@
         "audio",
         "even",
         "sample",
-        "vox"
+        "vox",
+        "breathe_vox_small"
       ],
       "partNumber": null,
       "opportunity": null,
@@ -17757,7 +17780,8 @@
         "even",
         "sample",
         "vox",
-        "x2"
+        "x2",
+        "breathe_vox_small"
       ],
       "partNumber": null,
       "opportunity": "x2",
@@ -17782,7 +17806,8 @@
         "dry",
         "even",
         "sample",
-        "vox"
+        "vox",
+        "breathe_vox_small"
       ],
       "partNumber": null,
       "opportunity": null,
@@ -17808,7 +17833,8 @@
         "even",
         "sample",
         "vox",
-        "x2"
+        "x2",
+        "breathe_vox_small"
       ],
       "partNumber": null,
       "opportunity": "x2",
@@ -17833,7 +17859,8 @@
         "dry",
         "even",
         "sample",
-        "vox"
+        "vox",
+        "breathe_vox_small"
       ],
       "partNumber": null,
       "opportunity": null,
@@ -18261,7 +18288,8 @@
         "bass",
         "cello",
         "even",
-        "sample"
+        "sample",
+        "cello_wiv_bass"
       ],
       "partNumber": null,
       "opportunity": null,
@@ -20998,7 +21026,8 @@
         "bass",
         "hippy_synth",
         "odd",
-        "sample"
+        "sample",
+        "hippy_synth_wiv_bass"
       ],
       "partNumber": null,
       "opportunity": null,
@@ -21472,7 +21501,8 @@
         "audio",
         "pad",
         "sample",
-        "xtra"
+        "xtra",
+        "pad_1"
       ],
       "partNumber": null,
       "opportunity": null,
@@ -21497,7 +21527,8 @@
         "odd",
         "pad",
         "sample",
-        "xtra"
+        "xtra",
+        "pad_2"
       ],
       "partNumber": null,
       "opportunity": null,
@@ -21521,7 +21552,8 @@
         "audio",
         "bass",
         "pad",
-        "sample"
+        "sample",
+        "pad_wiv_bass"
       ],
       "partNumber": null,
       "opportunity": null,
@@ -21643,7 +21675,8 @@
         "sample",
         "tilde_align",
         "vox",
-        "x4"
+        "x4",
+        "random_vox"
       ],
       "partNumber": null,
       "opportunity": "x4",
@@ -21670,7 +21703,8 @@
         "tilde_align",
         "vox",
         "wet",
-        "x4"
+        "x4",
+        "random_vox"
       ],
       "partNumber": null,
       "opportunity": "x4",
@@ -22147,7 +22181,8 @@
         "odd",
         "sample",
         "sax",
-        "x2"
+        "x2",
+        "sax_1"
       ],
       "partNumber": null,
       "opportunity": "x2",
@@ -22172,7 +22207,8 @@
         "odd",
         "sample",
         "sax",
-        "x2"
+        "x2",
+        "sax_1"
       ],
       "partNumber": null,
       "opportunity": "x2",

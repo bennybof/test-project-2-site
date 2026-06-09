@@ -1,0 +1,143 @@
+TEST PROJECT 2 — HARD CLASH BATCH 1 TAG REPAIR REPORT
+
+Generated: 2026-06-09T20:36:45.287Z
+Renderer/system change: none
+Purpose: make hard clash batch 1 byTag rules match real registry entries.
+
+TAG: bagoo_ext
+- matched entries: 1
+- tags added: 1
+- already had tag: 0
+- reason: Hard clash batch 1 uses bagoo_ext; registry had filename match but no exact tag.
+  ADDED: samples/bagoo_ext_even (consolidated).wav
+
+TAG: beepipes
+- matched entries: 8
+- tags added: 8
+- already had tag: 0
+- reason: Hard clash batch 1 uses beepipes; registry had family/filename matches but no exact tag.
+  ADDED: midi files/beepipes_1_drums.mid
+  ADDED: midi files/beepipes_1_drums_hook_~.mid
+  ADDED: midi files/beepipes_2_drums_odd_beepipe.mid
+  ADDED: midi files/beepipes_dying_drums_beepipe.mid
+  ADDED: midi files/beepipes_ghosts_drums_beepipe.mid
+  ADDED: midi files/beepipes_xtra_drums_beepipe.mid
+  ADDED: midi files/hats_wiv-beepipes_2_metal_odd_ch.mid
+  ADDED: midi files/hats_wiv-beepipes_2_metal_odd_oh.mid
+
+TAG: beepipes_ghosts
+- matched entries: 1
+- tags added: 1
+- already had tag: 0
+- reason: Hard clash batch 1 uses beepipes_ghosts; registry had filename match but no exact tag.
+  ADDED: midi files/beepipes_ghosts_drums_beepipe.mid
+
+TAG: breathe_vox_big
+- matched entries: 3
+- tags added: 3
+- already had tag: 0
+- reason: Hard clash batch 1 uses breathe_vox_big; registry had filename matches but no exact tag.
+  ADDED: samples/breathe_vox_big_dry_even_x2.wav
+  ADDED: samples/breathe_vox_big_hook_even_x2.wav
+  ADDED: samples/breathe_vox_big_outburst_~.wav
+
+TAG: breathe_vox_small
+- matched entries: 5
+- tags added: 5
+- already had tag: 0
+- reason: Hard clash batch 1 uses breathe_vox_small; registry had filename matches but no exact tag.
+  ADDED: samples/breathe_vox_small_choppy_even_x2.wav
+  ADDED: samples/breathe_vox_small_different_choppy_even_x2 (consolidated).wav
+  ADDED: samples/breathe_vox_small_different_dry_2_even_x4.wav
+  ADDED: samples/breathe_vox_small_different_dry_even_x2 (consolidated).wav
+  ADDED: samples/breathe_vox_small_dry_even_x2.wav
+
+TAG: cello_wiv_bass
+- matched entries: 1
+- tags added: 1
+- already had tag: 0
+- reason: Hard clash batch 1 uses cello_wiv_bass; registry filename uses wiv-bass but had no exact normalized tag.
+  ADDED: samples/cello_wiv-bass_even (consolidated).wav
+
+TAG: hippy_synth_wiv_bass
+- matched entries: 1
+- tags added: 1
+- already had tag: 0
+- reason: Hard clash batch 1 uses hippy_synth_wiv_bass; registry filename uses wiv-bass but had no exact normalized tag.
+  ADDED: samples/hippy_synth_wiv-bass_odd (consolidated).wav
+
+TAG: pad_1
+- matched entries: 1
+- tags added: 1
+- already had tag: 0
+- reason: Hard clash batch 1 uses pad_1; registry had filename match but no exact tag.
+  ADDED: samples/pad_1_xtra (consolidated).wav
+
+TAG: pad_2
+- matched entries: 1
+- tags added: 1
+- already had tag: 0
+- reason: Hard clash batch 1 uses pad_2; registry had filename match but no exact tag.
+  ADDED: samples/pad_2_odd_xtra (consolidated).wav
+
+TAG: pad_wiv_bass
+- matched entries: 1
+- tags added: 1
+- already had tag: 0
+- reason: Hard clash batch 1 uses pad_wiv_bass; registry filename uses wiv-bass but had no exact normalized tag.
+  ADDED: samples/pad_wiv-bass (consolidated).wav
+
+TAG: random_vox
+- matched entries: 2
+- tags added: 2
+- already had tag: 0
+- reason: Hard clash batch 1 uses random_vox; registry had filename matches but no exact tag.
+  ADDED: samples/random_vox_dry_x4_even_~.wav
+  ADDED: samples/random_vox_wet_x4_even_~.wav
+
+TAG: rim
+- matched entries: 5
+- tags added: 5
+- already had tag: 0
+- reason: Hard clash batch 1 uses rim; registry had rim family/filename matches but no exact tag.
+  ADDED: midi files/rims_drums_rim.mid
+  ADDED: midi files/rims_xtra_1_drums_rim.mid
+  ADDED: midi files/rims_xtra_2_drums_rim.mid
+  ADDED: midi files/rims_xtra_3_drums_rim.mid
+  ADDED: midi files/samples/rim.wav
+
+TAG: rims_xtra_1
+- matched entries: 1
+- tags added: 1
+- already had tag: 0
+- reason: Hard clash batch 1 uses rims_xtra_1; registry had filename match but no exact tag.
+  ADDED: midi files/rims_xtra_1_drums_rim.mid
+
+TAG: rims_xtra_2
+- matched entries: 1
+- tags added: 1
+- already had tag: 0
+- reason: Hard clash batch 1 uses rims_xtra_2; registry had filename match but no exact tag.
+  ADDED: midi files/rims_xtra_2_drums_rim.mid
+
+TAG: rims_xtra_3
+- matched entries: 1
+- tags added: 1
+- already had tag: 0
+- reason: Hard clash batch 1 uses rims_xtra_3; registry had filename match but no exact tag.
+  ADDED: midi files/rims_xtra_3_drums_rim.mid
+
+TAG: sax_1
+- matched entries: 2
+- tags added: 2
+- already had tag: 0
+- reason: Hard clash batch 1 uses sax_1; registry had filename matches but no exact tag.
+  ADDED: samples/sax_1_hook_odd_x2 (consolidated).wav
+  ADDED: samples/sax_1_odd_x2 (consolidated).wav
+
+TAG: snare_pattern
+- matched entries: 1
+- tags added: 1
+- already had tag: 0
+- reason: Hard clash batch 1 uses snare_pattern; registry had filename match but no exact tag.
+  ADDED: midi files/snare_pattern_drums_snare.mid
