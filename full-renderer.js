@@ -3300,6 +3300,8 @@ function getNormalMidiHatChoiceGroupId(pattern) {
     let messyHatsAddinStarted = false;
     let messyHatsAddinNoteCount = 0;
     let normalHatsSystemWasActive = false;
+    let jazzHatsActive = false;
+    let jazzHatsBarsActive = 0;
 
     // MIDI pattern selection by section.
     for (const section of sectionTimeline) {
@@ -3359,12 +3361,57 @@ function getNormalMidiHatChoiceGroupId(pattern) {
         companionGroups.get(companionGroupId).push(pattern);
       }
 
-      const availableHatChoices = [...normalHatGroupsByChoice.keys()]
+      const jazzHatsPattern = sectionMidi.find(pattern =>
+        pattern.file === "midi files/jazz_hats_metal_ride03.mid"
+      );
+      const jazzRideWithHatsPattern = midiPatternPool.find(pattern =>
+        pattern.file === "midi files/jazz_rides_wiv-jazz-hats_metal_ridehard.mid"
+      );
+      const sectionTensionForJazz = Number(section.tensionValue ?? section.tension ?? 0);
+      const sectionBarsForJazz = Math.max(1, Number(section.lengthBars ?? section.bars ?? 1));
+      let jazzHatsActiveForSection = false;
+
+      if (sectionTensionForJazz > 0.2 || !jazzHatsPattern) {
+        jazzHatsActive = false;
+        jazzHatsBarsActive = 0;
+      } else {
+        const jazzHatsCanContinue = jazzHatsActive && (jazzHatsBarsActive < 4 || random() >= 0.05);
+        const jazzHatsCanStart = !jazzHatsActive && random() < 0.25;
+
+        jazzHatsActiveForSection = jazzHatsCanContinue || jazzHatsCanStart;
+        jazzHatsActive = jazzHatsActiveForSection;
+        jazzHatsBarsActive = jazzHatsActiveForSection ? jazzHatsBarsActive + sectionBarsForJazz : 0;
+      }
+
+      if (jazzHatsActiveForSection) {
+        for (const jazzPattern of [jazzHatsPattern, jazzRideWithHatsPattern].filter(Boolean)) {
+          const jazzIncluded = includeMidiByGlobalDecision({
+            random,
+            globalInclusionState,
+            requiredActivationState,
+            selectedMidi,
+            pattern: jazzPattern,
+            fallbackChance: 1,
+            force: true,
+            reason: "jazz_hats_takeover"
+          });
+
+          if (jazzIncluded) {
+            sectionSelectedMidi.add(jazzPattern.file);
+          }
+        }
+      }
+
+      let availableHatChoices = [...normalHatGroupsByChoice.keys()]
         .map(choiceGroupId => ({
           choiceGroupId,
           weight: getNormalHatChoiceWeight(choiceGroupId, section)
         }))
         .filter(item => item.weight > 0);
+
+      if (jazzHatsActiveForSection) {
+        availableHatChoices = [];
+      }
 
       const normalHatsSystemDropsOut = normalHatsSystemWasActive && random() < 0.01;
       const availableHatChoiceIds = new Set(availableHatChoices.map(item => item.choiceGroupId));
