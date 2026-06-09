@@ -303,6 +303,27 @@
           "activationChance": 0.4,
           "dropoutChance": 0.3
         },
+        "midi files/jazz_hats_metal_ride03.mid": {
+          "activationChance": 0.25,
+          "dropoutChance": 0.15
+        },
+        "midi files/jazz_hats_metal_hook_even_~_ride04.mid": {
+          "activationChance": 0.2,
+          "dropoutChance": 0.08
+        },
+        "midi files/jazz_hats_metal_hook_even_~_ridehard.mid": {
+          "activationChance": 0.2,
+          "dropoutChance": 0.08
+        },
+        "midi files/jazz_rides_metal_ridehard.mid": {
+          "activationChance": 1
+        },
+        "midi files/jazz_rides_wiv-jazz-hats_metal_ridehard.mid": {
+          "activationChance": 1
+        },
+        "midi files/jazz_ride_wiv-jazz_hats_wiv-jazz_crash_metal_odd_ridehard.mid": {
+          "activationChance": 1
+        },
         "samples/crash_metal_odd_metal (consolidated).wav": {
           "globalInclusionChance": 1,
           "activationChance": 1,
