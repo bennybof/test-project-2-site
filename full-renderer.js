@@ -2623,6 +2623,18 @@ function midiPatternClashesWithSelectedSection(pattern, selectedMidiFiles, midiP
 
   return false;
 }
+function isBeepipesGhostsMidiPattern(pattern) {
+  const entry = getMidiPatternRuleEntry(pattern);
+  const tags = getMidiPatternRuleTagList(pattern);
+  const baseId = normalizeRuleDecisionToken(getMidiPatternBaseId(pattern));
+  const key = normalizeRuleDecisionToken(entry?.key || pattern?.file || "");
+  const hasGhostTag = tags.some(tag => {
+    const normalisedTag = normalizeRuleDecisionToken(tag);
+    return normalisedTag.includes("beepipes_ghosts") || normalisedTag === "ghosts";
+  });
+
+  return hasGhostTag || baseId.includes("beepipes_ghosts") || key.includes("beepipes_ghosts");
+}
 function isBeepipes2MidiPattern(pattern) {
   const entry = getMidiPatternRuleEntry(pattern);
   const tags = getMidiPatternRuleTagList(pattern);
