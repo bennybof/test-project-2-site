@@ -1116,6 +1116,10 @@
               "sourceNote": "Definitions doc: if vlins_long_suspense is active, sax activation chance is multiplied by x0.1."
             }
           ]
+        },
+        "metal": {
+          "globalInclusionChance": 0.8,
+          "sourceNote": "#metal material follows the accepted 80% global selection rule unless a more specific rule overrides it."
         }
       },
       "byKey": {
@@ -1161,8 +1165,6 @@
           "activationChance": 1
         },
         "samples/crash_metal_odd_metal (consolidated).wav": {
-          "globalInclusionChance": 1,
-          "activationChance": 1,
           "cutoffRules": [
             {
               "id": "proof_crash_cuts_previous_crash_audio",
@@ -1186,7 +1188,43 @@
               "chance": 0.1,
               "sourceNote": "Saved definitions absolute final 2: crash_dlay_odd has a 10% activation chance if crash activates on the same bar."
             }
-          ]
+          ],
+          "energyBaseChanceRules": [
+            {
+              "id": "normal_crash_tension_below_zero_base_0",
+              "exclusiveMaxTension": 0,
+              "baseChance": 0,
+              "sourceNote": "User-confirmed normal crash rule: tension below 0 = 0%."
+            },
+            {
+              "id": "normal_crash_tension_zero_to_below_half_base_5",
+              "minTension": 0,
+              "exclusiveMaxTension": 0.5,
+              "baseChance": 0.05,
+              "sourceNote": "User-confirmed normal crash rule: tension from 0 to below 0.5 = 5%."
+            },
+            {
+              "id": "normal_crash_tension_half_or_above_base_20",
+              "minTension": 0.5,
+              "baseChance": 0.2,
+              "sourceNote": "User-confirmed normal crash rule: tension 0.5 or above = 20%."
+            },
+            {
+              "id": "normal_crash_crescendo_always",
+              "requiresCrescendo": true,
+              "baseChance": 1,
+              "sourceNote": "User-confirmed normal crash rule: at crescendos, always play if easy to implement."
+            }
+          ],
+          "crescendoRules": [
+            {
+              "id": "normal_crash_emphasis_multiplier_x4",
+              "requiresEmphasis": true,
+              "multiplier": 4,
+              "sourceNote": "User-confirmed normal crash rule: emphasis point = x4, capped at 100%."
+            }
+          ],
+          "sourceNote": "Normal crash now follows #metal global selection and user-confirmed tension/emphasis/crescendo activation rules."
         },
         "midi files/hats_hook_metal_#2_ch.mid": {
           "activationChance": 0.2,
