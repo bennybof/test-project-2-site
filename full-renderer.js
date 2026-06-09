@@ -3319,7 +3319,7 @@ function getNormalMidiHatChoiceGroupId(pattern) {
         if (section.type.includes("grimey")) return key.includes("hats") || key.includes("snare") || key.includes("rims");
         if (section.type.includes("drop")) return key.includes("crash") || key.includes("snare");
         if (section.type.includes("outburst")) return key.includes("crash") || key.includes("hats");
-        return key.includes("main_hats") || key.includes("snare") || key.includes("rims") || key.includes("hats") || key.includes("beepipes_2");
+        return key.includes("main_hats") || key.includes("snare") || key.includes("rims") || key.includes("hats") || isBeepipesMidiPattern(pattern);
       });
 
       const normalHatGroupsByChoice = new Map();
