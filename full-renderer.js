@@ -2449,6 +2449,37 @@
     return base;
   }
 
+  const JAZZ_RIDE_WITH_HATS_FILE = "midi files/jazz_rides_wiv-jazz-hats_metal_ridehard.mid";
+  const JAZZ_RIDE_WITH_HATS_AND_CRASH_FILE = "midi files/jazz_ride_wiv-jazz_hats_wiv-jazz_crash_metal_odd_ridehard.mid";
+
+  function isJazzRideWithHatsVariantPattern(pattern) {
+    const file = String(pattern?.file || "");
+    return file === JAZZ_RIDE_WITH_HATS_FILE || file === JAZZ_RIDE_WITH_HATS_AND_CRASH_FILE;
+  }
+
+  function sectionHasScheduledJazzCrash(section) {
+    const scheduledAudioKeys = Array.isArray(section?.scheduledAudioKeys) ? section.scheduledAudioKeys : [];
+    const scheduledAudio = Array.isArray(section?.scheduledAudio) ? section.scheduledAudio : [];
+
+    if (scheduledAudioKeys.some(key => String(key).toLowerCase().includes("jazz_crash"))) {
+      return true;
+    }
+
+    return scheduledAudio.some(item => {
+      const key = String(item?.key || "").toLowerCase();
+      const tags = Array.isArray(item?.tags) ? item.tags.map(tag => normalizeRuleDecisionToken(tag)) : [];
+
+      return key.includes("jazz_crash") || tags.includes("jazz_crash");
+    });
+  }
+
+  function chooseJazzRideWithHatsVariantForSection(section, sectionMidi) {
+    const defaultRide = sectionMidi.find(pattern => pattern.file === JAZZ_RIDE_WITH_HATS_FILE);
+    const crashRide = sectionMidi.find(pattern => pattern.file === JAZZ_RIDE_WITH_HATS_AND_CRASH_FILE);
+
+    return sectionHasScheduledJazzCrash(section) && crashRide ? crashRide : defaultRide;
+  }
+
   function isJazzMidiHatPattern(pattern) {
     const family = getMidiPatternRuleFamily(pattern);
     const tags = getMidiPatternRuleTagList(pattern).map(tag => normalizeRuleDecisionToken(tag));
@@ -3388,6 +3419,9 @@ function getNormalMidiHatChoiceGroupId(pattern) {
       const jazzRideWithHatsPattern = midiPatternPool.find(pattern =>
         pattern.file === "midi files/jazz_rides_wiv-jazz-hats_metal_ridehard.mid"
       );
+      const jazzRideWithHatsAndCrashPattern = midiPatternPool.find(pattern =>
+        pattern.file === JAZZ_RIDE_WITH_HATS_AND_CRASH_FILE
+      );
       const sectionTensionForJazz = Number(section.tensionValue ?? section.tension ?? 0);
       const sectionBarsForJazz = Math.max(1, Number(section.lengthBars ?? section.bars ?? 1));
       let jazzHatsActiveForSection = false;
@@ -3405,7 +3439,7 @@ function getNormalMidiHatChoiceGroupId(pattern) {
       }
 
       if (jazzHatsActiveForSection) {
-        for (const jazzPattern of [jazzHatsPattern, jazzRideWithHatsPattern].filter(Boolean)) {
+        for (const jazzPattern of [jazzHatsPattern, jazzRideWithHatsPattern, jazzRideWithHatsAndCrashPattern].filter(Boolean)) {
           const jazzIncluded = includeMidiByGlobalDecision({
             random,
             globalInclusionState,
@@ -4517,6 +4551,67 @@ function scheduleMidiPattern({
     const lifecycleStates = createLifecycleMapFromPlan(plan);
     const playbackState = createPlaybackRuleState();
 
+    function scheduleMidiPatternInSectionWithRules(pattern, section) {
+      const midiLifecycleId = getMidiLifecycleId(pattern.file);
+
+      if (!isLifecycleIdEligible(lifecycleStates, midiLifecycleId)) return 0;
+
+      const repeatEveryBars = getMidiRepeatEveryBars(pattern);
+      const repeatEverySeconds = section.barSeconds * repeatEveryBars;
+      let totalScheduledCount = 0;
+
+      for (let t = section.startSeconds; t < section.endSeconds; t += repeatEverySeconds) {
+        const localBarIndex = Math.round((t - section.startSeconds) / section.barSeconds);
+
+        if (!isBarOpportunityAllowedForKey(pattern.file, section, localBarIndex)) {
+          continue;
+        }
+
+        const midiProfile = getRuleProfileForMidiPattern(pattern);
+        const midiBaseChance = getActivationChance(midiProfile, 0.7);
+
+        const midiDecisionResult = resolveRuleProfileDecision({
+          random,
+          plan,
+          playbackState,
+          kind: "midi",
+          pattern,
+          section,
+          lifecycleStates,
+          localBarIndex,
+          startSeconds: t,
+          baseChance: midiBaseChance,
+          profile: midiProfile
+        });
+
+        if (midiDecisionResult.allowed) {
+          applyCutoffRulesForAllowedDecision(playbackState, midiDecisionResult.context, midiProfile);
+          const scheduledCount = scheduleMidiPattern({
+            offlineContext,
+            destination,
+            pattern,
+            buffers,
+            barStart: t,
+            beatSeconds: section.barSeconds / 4,
+            gainValue: 0.62,
+            playbackState,
+            section
+          });
+
+          if (scheduledCount > 0) {
+            totalScheduledCount += scheduledCount;
+            activateLifecycleItem(
+              lifecycleStates,
+              midiLifecycleId,
+              `${section.id}:${t}`
+            );
+          }
+        }
+      }
+
+      return totalScheduledCount;
+    }
+
     for (const section of sections) {
       expirePlaybackItemsAtTime(playbackState, section.startSeconds);
       const sectionMidiKeys = Array.isArray(section.selectedMidi) ? section.selectedMidi : plan.selectedMidi;
@@ -4538,62 +4633,12 @@ function scheduleMidiPattern({
         })
         .filter(Boolean)
         .filter(pattern => midiMatchesSection(pattern, section));
+      const sectionHasJazzRideWithHatsVariant = sectionMidi.some(isJazzRideWithHatsVariantPattern);
+      const sectionMidiBeforeAudio = sectionMidi.filter(pattern => !isJazzRideWithHatsVariantPattern(pattern));
 
-      for (const pattern of sectionMidi) {
-        const midiLifecycleId = getMidiLifecycleId(pattern.file);
 
-        if (!isLifecycleIdEligible(lifecycleStates, midiLifecycleId)) continue;
-
-        const repeatEveryBars = getMidiRepeatEveryBars(pattern);
-        const repeatEverySeconds = section.barSeconds * repeatEveryBars;
-
-        for (let t = section.startSeconds; t < section.endSeconds; t += repeatEverySeconds) {
-          const localBarIndex = Math.round((t - section.startSeconds) / section.barSeconds);
-
-          if (!isBarOpportunityAllowedForKey(pattern.file, section, localBarIndex)) {
-            continue;
-          }
-
-          const midiProfile = getRuleProfileForMidiPattern(pattern);
-          const midiBaseChance = getActivationChance(midiProfile, 0.7);
-
-          const midiDecisionResult = resolveRuleProfileDecision({
-            random,
-            plan,
-            playbackState,
-            kind: "midi",
-            pattern,
-            section,
-            lifecycleStates,
-            localBarIndex,
-            startSeconds: t,
-            baseChance: midiBaseChance,
-            profile: midiProfile
-          });
-
-          if (midiDecisionResult.allowed) {
-            applyCutoffRulesForAllowedDecision(playbackState, midiDecisionResult.context, midiProfile);
-            const scheduledCount = scheduleMidiPattern({
-              offlineContext,
-              destination,
-              pattern,
-              buffers,
-              barStart: t,
-              beatSeconds: section.barSeconds / 4,
-              gainValue: 0.62,
-              playbackState,
-              section
-            });
-
-            if (scheduledCount > 0) {
-              activateLifecycleItem(
-                lifecycleStates,
-                midiLifecycleId,
-                `${section.id}:${t}`
-              );
-            }
-          }
-        }
+      for (const pattern of sectionMidiBeforeAudio) {
+        scheduleMidiPatternInSectionWithRules(pattern, section);
       }
 
       if (section.lyrixSectionId) {
@@ -4677,6 +4722,14 @@ function scheduleMidiPattern({
           );
         }
       }
+      if (sectionHasJazzRideWithHatsVariant) {
+        const jazzRidePatternForSection = chooseJazzRideWithHatsVariantForSection(section, sectionMidi);
+
+        if (jazzRidePatternForSection) {
+          scheduleMidiPatternInSectionWithRules(jazzRidePatternForSection, section);
+        }
+      }
+
     }
 
     expirePlaybackItemsAtTime(playbackState, duration);
