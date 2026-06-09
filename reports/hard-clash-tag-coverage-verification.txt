@@ -1,0 +1,87 @@
+TEST PROJECT 2 — HARD CLASH TAG COVERAGE VERIFICATION
+
+Generated: 2026-06-09T20:41:57.054Z
+Checked tags: 24
+Missing exact tags: 0
+
+RESULTS
+- bagoo: 8 exact hits
+  samples/bagoo_ext_even (consolidated).wav
+  samples/bagoo_low_odd (consolidated).wav
+  samples/bagoo_odd (consolidated).wav
+  samples/drop_bagoo.wav
+  samples/grm_bagoo_1_odd.wav
+  ... 3 more
+- bagoo_ext: 1 exact hits
+  samples/bagoo_ext_even (consolidated).wav
+- bagoo_low: 2 exact hits
+  samples/bagoo_low_odd (consolidated).wav
+  samples/synth_wiv-bagoo_low_odd_~ (consolidated).wav
+- beepipes: 6 exact hits
+  midi files/beepipes_1_drums.mid
+  midi files/beepipes_1_drums_hook_~.mid
+  midi files/beepipes_2_drums_odd_beepipe.mid
+  midi files/beepipes_dying_drums_beepipe.mid
+  midi files/beepipes_ghosts_drums_beepipe.mid
+  ... 1 more
+- beepipes_ghosts: 1 exact hits
+  midi files/beepipes_ghosts_drums_beepipe.mid
+- beeps: 3 exact hits
+  samples/beeps_intro_odd (consolidated).wav
+  samples/beeps_odd_x2_xtra (consolidated).wav
+  samples/beeps_xtra_odd (consolidated).wav
+- breathe_vox_big: 3 exact hits
+  samples/breathe_vox_big_dry_even_x2.wav
+  samples/breathe_vox_big_hook_even_x2.wav
+  samples/breathe_vox_big_outburst_~.wav
+- breathe_vox_small: 5 exact hits
+  samples/breathe_vox_small_choppy_even_x2.wav
+  samples/breathe_vox_small_different_choppy_even_x2 (consolidated).wav
+  samples/breathe_vox_small_different_dry_2_even_x4.wav
+  samples/breathe_vox_small_different_dry_even_x2 (consolidated).wav
+  samples/breathe_vox_small_dry_even_x2.wav
+- cello_wiv_bass: 1 exact hits
+  samples/cello_wiv-bass_even (consolidated).wav
+- clarinet: 2 exact hits
+  samples/clarinet_even_x2 (consolidated).wav
+  samples/clarinet_hook_x4_even (consolidated).wav
+- hippy_synth_wiv_bass: 1 exact hits
+  samples/hippy_synth_wiv-bass_odd (consolidated).wav
+- nuva_bass: 4 exact hits
+  samples/dropped_nuva_bass.wav
+  samples/grm_nuva_bass_odd.wav
+  samples/grm_nuva_bass_odd_altstart.wav
+  samples/nuva_bass_odd (consolidated).wav
+- pad: 3 exact hits
+  samples/pad_1_xtra (consolidated).wav
+  samples/pad_2_odd_xtra (consolidated).wav
+  samples/pad_wiv-bass (consolidated).wav
+- pad_1: 1 exact hits
+  samples/pad_1_xtra (consolidated).wav
+- pad_2: 1 exact hits
+  samples/pad_2_odd_xtra (consolidated).wav
+- pad_wiv_bass: 1 exact hits
+  samples/pad_wiv-bass (consolidated).wav
+- random_vox: 2 exact hits
+  samples/random_vox_dry_x4_even_~.wav
+  samples/random_vox_wet_x4_even_~.wav
+- rim: 5 exact hits
+  midi files/rims_drums_rim.mid
+  midi files/rims_xtra_1_drums_rim.mid
+  midi files/rims_xtra_2_drums_rim.mid
+  midi files/rims_xtra_3_drums_rim.mid
+  midi files/samples/rim.wav
+- rims_xtra_1: 1 exact hits
+  midi files/rims_xtra_1_drums_rim.mid
+- rims_xtra_2: 1 exact hits
+  midi files/rims_xtra_2_drums_rim.mid
+- rims_xtra_3: 1 exact hits
+  midi files/rims_xtra_3_drums_rim.mid
+- sax_1: 2 exact hits
+  samples/sax_1_hook_odd_x2 (consolidated).wav
+  samples/sax_1_odd_x2 (consolidated).wav
+- snare_pattern: 1 exact hits
+  midi files/snare_pattern_drums_snare.mid
+- tbone: 2 exact hits
+  samples/tbone_1_even_x2 (consolidated).wav
+  samples/tbone_2_even_x2 (consolidated).wav

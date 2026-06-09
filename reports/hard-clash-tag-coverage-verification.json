@@ -1,0 +1,212 @@
+{
+  "generatedAt": "2026-06-09T20:41:57.054Z",
+  "catalogPath": "data/full-rules-catalog.json",
+  "registryPath": "data/stem-registry.json",
+  "scope": "All hard_clash_* ruleProfiles.byTag source and target tags",
+  "checkedTagCount": 24,
+  "missingExactTagCount": 0,
+  "results": [
+    {
+      "tag": "bagoo",
+      "exactHitCount": 8,
+      "exactHits": [
+        "samples/bagoo_ext_even (consolidated).wav",
+        "samples/bagoo_low_odd (consolidated).wav",
+        "samples/bagoo_odd (consolidated).wav",
+        "samples/drop_bagoo.wav",
+        "samples/grm_bagoo_1_odd.wav",
+        "samples/grm_bagoo_2_even.wav",
+        "samples/grm_bagoo_3_even.wav",
+        "samples/synth_wiv-bagoo_low_odd_~ (consolidated).wav"
+      ]
+    },
+    {
+      "tag": "bagoo_ext",
+      "exactHitCount": 1,
+      "exactHits": [
+        "samples/bagoo_ext_even (consolidated).wav"
+      ]
+    },
+    {
+      "tag": "bagoo_low",
+      "exactHitCount": 2,
+      "exactHits": [
+        "samples/bagoo_low_odd (consolidated).wav",
+        "samples/synth_wiv-bagoo_low_odd_~ (consolidated).wav"
+      ]
+    },
+    {
+      "tag": "beepipes",
+      "exactHitCount": 6,
+      "exactHits": [
+        "midi files/beepipes_1_drums.mid",
+        "midi files/beepipes_1_drums_hook_~.mid",
+        "midi files/beepipes_2_drums_odd_beepipe.mid",
+        "midi files/beepipes_dying_drums_beepipe.mid",
+        "midi files/beepipes_ghosts_drums_beepipe.mid",
+        "midi files/beepipes_xtra_drums_beepipe.mid"
+      ]
+    },
+    {
+      "tag": "beepipes_ghosts",
+      "exactHitCount": 1,
+      "exactHits": [
+        "midi files/beepipes_ghosts_drums_beepipe.mid"
+      ]
+    },
+    {
+      "tag": "beeps",
+      "exactHitCount": 3,
+      "exactHits": [
+        "samples/beeps_intro_odd (consolidated).wav",
+        "samples/beeps_odd_x2_xtra (consolidated).wav",
+        "samples/beeps_xtra_odd (consolidated).wav"
+      ]
+    },
+    {
+      "tag": "breathe_vox_big",
+      "exactHitCount": 3,
+      "exactHits": [
+        "samples/breathe_vox_big_dry_even_x2.wav",
+        "samples/breathe_vox_big_hook_even_x2.wav",
+        "samples/breathe_vox_big_outburst_~.wav"
+      ]
+    },
+    {
+      "tag": "breathe_vox_small",
+      "exactHitCount": 5,
+      "exactHits": [
+        "samples/breathe_vox_small_choppy_even_x2.wav",
+        "samples/breathe_vox_small_different_choppy_even_x2 (consolidated).wav",
+        "samples/breathe_vox_small_different_dry_2_even_x4.wav",
+        "samples/breathe_vox_small_different_dry_even_x2 (consolidated).wav",
+        "samples/breathe_vox_small_dry_even_x2.wav"
+      ]
+    },
+    {
+      "tag": "cello_wiv_bass",
+      "exactHitCount": 1,
+      "exactHits": [
+        "samples/cello_wiv-bass_even (consolidated).wav"
+      ]
+    },
+    {
+      "tag": "clarinet",
+      "exactHitCount": 2,
+      "exactHits": [
+        "samples/clarinet_even_x2 (consolidated).wav",
+        "samples/clarinet_hook_x4_even (consolidated).wav"
+      ]
+    },
+    {
+      "tag": "hippy_synth_wiv_bass",
+      "exactHitCount": 1,
+      "exactHits": [
+        "samples/hippy_synth_wiv-bass_odd (consolidated).wav"
+      ]
+    },
+    {
+      "tag": "nuva_bass",
+      "exactHitCount": 4,
+      "exactHits": [
+        "samples/dropped_nuva_bass.wav",
+        "samples/grm_nuva_bass_odd.wav",
+        "samples/grm_nuva_bass_odd_altstart.wav",
+        "samples/nuva_bass_odd (consolidated).wav"
+      ]
+    },
+    {
+      "tag": "pad",
+      "exactHitCount": 3,
+      "exactHits": [
+        "samples/pad_1_xtra (consolidated).wav",
+        "samples/pad_2_odd_xtra (consolidated).wav",
+        "samples/pad_wiv-bass (consolidated).wav"
+      ]
+    },
+    {
+      "tag": "pad_1",
+      "exactHitCount": 1,
+      "exactHits": [
+        "samples/pad_1_xtra (consolidated).wav"
+      ]
+    },
+    {
+      "tag": "pad_2",
+      "exactHitCount": 1,
+      "exactHits": [
+        "samples/pad_2_odd_xtra (consolidated).wav"
+      ]
+    },
+    {
+      "tag": "pad_wiv_bass",
+      "exactHitCount": 1,
+      "exactHits": [
+        "samples/pad_wiv-bass (consolidated).wav"
+      ]
+    },
+    {
+      "tag": "random_vox",
+      "exactHitCount": 2,
+      "exactHits": [
+        "samples/random_vox_dry_x4_even_~.wav",
+        "samples/random_vox_wet_x4_even_~.wav"
+      ]
+    },
+    {
+      "tag": "rim",
+      "exactHitCount": 5,
+      "exactHits": [
+        "midi files/rims_drums_rim.mid",
+        "midi files/rims_xtra_1_drums_rim.mid",
+        "midi files/rims_xtra_2_drums_rim.mid",
+        "midi files/rims_xtra_3_drums_rim.mid",
+        "midi files/samples/rim.wav"
+      ]
+    },
+    {
+      "tag": "rims_xtra_1",
+      "exactHitCount": 1,
+      "exactHits": [
+        "midi files/rims_xtra_1_drums_rim.mid"
+      ]
+    },
+    {
+      "tag": "rims_xtra_2",
+      "exactHitCount": 1,
+      "exactHits": [
+        "midi files/rims_xtra_2_drums_rim.mid"
+      ]
+    },
+    {
+      "tag": "rims_xtra_3",
+      "exactHitCount": 1,
+      "exactHits": [
+        "midi files/rims_xtra_3_drums_rim.mid"
+      ]
+    },
+    {
+      "tag": "sax_1",
+      "exactHitCount": 2,
+      "exactHits": [
+        "samples/sax_1_hook_odd_x2 (consolidated).wav",
+        "samples/sax_1_odd_x2 (consolidated).wav"
+      ]
+    },
+    {
+      "tag": "snare_pattern",
+      "exactHitCount": 1,
+      "exactHits": [
+        "midi files/snare_pattern_drums_snare.mid"
+      ]
+    },
+    {
+      "tag": "tbone",
+      "exactHitCount": 2,
+      "exactHits": [
+        "samples/tbone_1_even_x2 (consolidated).wav",
+        "samples/tbone_2_even_x2 (consolidated).wav"
+      ]
+    }
+  ]
+}
