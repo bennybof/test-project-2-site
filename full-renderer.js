@@ -2449,6 +2449,7 @@
     return base;
   }
 
+  const JAZZ_GHOST_RIDES_FILE = "midi files/jazz_ghost_rides_metal_ride04.mid";
   const JAZZ_RIDE_WITH_HATS_FILE = "midi files/jazz_rides_wiv-jazz-hats_metal_ridehard.mid";
   const JAZZ_RIDE_WITH_HATS_AND_CRASH_FILE = "midi files/jazz_ride_wiv-jazz_hats_wiv-jazz_crash_metal_odd_ridehard.mid";
 
@@ -3422,6 +3423,9 @@ function getNormalMidiHatChoiceGroupId(pattern) {
       const jazzRideWithHatsAndCrashPattern = midiPatternPool.find(pattern =>
         pattern.file === JAZZ_RIDE_WITH_HATS_AND_CRASH_FILE
       );
+      const jazzGhostRidePattern = midiPatternPool.find(pattern =>
+        pattern.file === JAZZ_GHOST_RIDES_FILE
+      );
       const sectionTensionForJazz = Number(section.tensionValue ?? section.tension ?? 0);
       const sectionBarsForJazz = Math.max(1, Number(section.lengthBars ?? section.bars ?? 1));
       let jazzHatsActiveForSection = false;
@@ -3439,7 +3443,7 @@ function getNormalMidiHatChoiceGroupId(pattern) {
       }
 
       if (jazzHatsActiveForSection) {
-        for (const jazzPattern of [jazzHatsPattern, jazzRideWithHatsPattern, jazzRideWithHatsAndCrashPattern].filter(Boolean)) {
+        for (const jazzPattern of [jazzHatsPattern, jazzRideWithHatsPattern, jazzRideWithHatsAndCrashPattern, jazzGhostRidePattern].filter(Boolean)) {
           const jazzIncluded = includeMidiByGlobalDecision({
             random,
             globalInclusionState,
