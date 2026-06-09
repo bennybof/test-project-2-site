@@ -2519,11 +2519,12 @@ function getNormalHatChoiceWeight(choiceGroupId, section) {
 }
 function isRimMidiPattern(pattern) {
   const entry = getMidiPatternRuleEntry(pattern);
-  const tags = getMidiPatternRuleTags(pattern);
+  const tags = getMidiPatternRuleTagList(pattern);
   const baseId = normalizeRuleDecisionToken(getMidiPatternBaseId(pattern));
   const key = normalizeRuleDecisionToken(entry?.key || pattern?.file || "");
+  const hasRimTag = tags.some(tag => normalizeRuleDecisionToken(tag) === "rim");
 
-  return tags.includes("rim") || baseId.includes("rim") || key.includes("rim");
+  return hasRimTag || baseId.includes("rim") || key.includes("rim");
 }
 
 function isExtraRimMidiPattern(pattern) {
@@ -2533,16 +2534,26 @@ function isExtraRimMidiPattern(pattern) {
   return baseId.startsWith("rims_xtra") || key.includes("rims_xtra");
 }
 
+function getMidiPatternRuleTagList(pattern) {
+  const rawTags = getMidiPatternRuleTags(pattern);
+
+  if (Array.isArray(rawTags)) {
+    return rawTags;
+  }
+
+  if (rawTags instanceof Set) {
+    return [...rawTags];
+  }
+
+  if (typeof rawTags === "string") {
+    return [rawTags];
+  }
+
+  return [];
+}
 function isBeepipes2MidiPattern(pattern) {
   const entry = getMidiPatternRuleEntry(pattern);
-  const rawTags = getMidiPatternRuleTags(pattern);
-  const tags = Array.isArray(rawTags)
-    ? rawTags
-    : rawTags instanceof Set
-      ? [...rawTags]
-      : typeof rawTags === "string"
-        ? [rawTags]
-        : [];
+  const tags = getMidiPatternRuleTagList(pattern);
   const baseId = normalizeRuleDecisionToken(getMidiPatternBaseId(pattern));
   const key = normalizeRuleDecisionToken(entry?.key || pattern?.file || "");
   const hasBeepipes2Tag = tags.some(tag =>
