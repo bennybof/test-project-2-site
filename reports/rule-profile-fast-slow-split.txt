@@ -1,0 +1,112 @@
+TEST PROJECT 2 — FAST / SLOW RULE SPLIT
+
+Generated: 2026-06-09T14:07:10.154Z
+Source: reports/rule-profile-batch-candidates.json
+
+SUMMARY
+- fast chance-only candidates: 247
+- mixed/unclassified candidates needing review: 79
+- slow generic-system candidate blocks: 542
+
+SLOW GENERIC SYSTEM COUNTS
+- variantChooser_or_replacement: 262
+- hardClash: 135
+- delayFollowsMain: 22
+- groupedActivation: 97
+- softMultiplier: 46
+- requiredActive_or_onlyAfterActive: 53
+- noDropoutBeforeBars: 1
+
+FAST CHANCE-ONLY CANDIDATES — FIRST 80
+- midi files/hats_hook_metal_#2_ch.mid: {"activationChance":0.2,"dropoutChance":0.08}
+- samples/breathe_vox_big_dry_even_x2.wav: {"activationChance":0.4,"dropoutChance":0.2}
+- samples/breathe_vox_wet_big_even_x2.wav: {"activationChance":0.4,"dropoutChance":0.2}
+- samples/breathe_vox_wet_small_different_even_x2 (consolidated).wav: {"activationChance":0.2,"dropoutChance":0.5}
+- samples/breathe_vox_stutter_dlay_odd_x2 (consolidated).wav: {"activationChance":0.05,"dropoutChance":0.2}
+- samples/breathe_vox_stutter_xtra #2 (consolidated).wav: {"activationChance":0.5}
+- samples/breathe_vox_stutter_xtra #3 (consolidated).wav: {"activationChance":0.5,"dropoutChance":0.5}
+- midi files/hats_hook_metal_odd_ch.mid: {"activationChance":0.2,"dropoutChance":0.05}
+- midi files/hats_hook_metal_odd_oh.mid: {"activationChance":0.2,"dropoutChance":0.08}
+- midi files/hats_hook_metal_#2_oh.mid: {"activationChance":0.2,"dropoutChance":0.08}
+- midi files/jazz_hats_metal_ride03.mid: {"activationChance":0.25,"dropoutChance":0.15}
+- midi files/samples/ride03.wav: {"activationChance":0.25,"dropoutChance":0.15}
+- midi files/samples/ridehard.wav: {"activationChance":0.4,"dropoutChance":0.3}
+- midi files/jazz_ghost_rides_metal_ride04.mid: {"activationChance":0.9,"dropoutChance":0.3}
+- midi files/samples/ride04.wav: {"activationChance":0.9,"dropoutChance":0.3}
+- midi files/jazz_hats_metal_hook_even_~_ride04.mid: {"activationChance":0.2,"dropoutChance":0.08}
+- midi files/jazz_hats_metal_hook_even_~_ridehard.mid: {"activationChance":0.2,"dropoutChance":0.08}
+- midi files/beepipes_2_drums_odd_beepipe.mid: {"globalInclusionChance":0.5,"activationChance":0.005}
+- midi files/beepipes_ghosts_drums_beepipe.mid: {"globalInclusionChance":0.5,"activationChance":0.005}
+- midi files/snare_pattern_drums_snare.mid: {"globalInclusionChance":0.5,"activationChance":0.15,"dropoutChance":0.4}
+- midi files/samples/snare.wav: {"globalInclusionChance":0.5,"activationChance":0.15,"dropoutChance":0.4}
+- midi files/snare_xtra_drums_even_snare.mid: {"globalInclusionChance":0.5,"activationChance":0.15,"dropoutChance":0.4}
+- midi files/samples/crash.wav: {"activationChance":0.8,"dropoutChance":0.05}
+- midi files/samples/rim.wav: {"globalInclusionChance":0.5,"activationChance":0.5,"dropoutChance":0.05}
+- midi files/rims_xtra_2_drums_rim.mid: {"globalInclusionChance":0.5,"activationChance":0.02,"dropoutChance":0.2}
+- midi files/rims_xtra_3_drums_rim.mid: {"globalInclusionChance":0.5,"activationChance":0.5,"dropoutChance":0.05}
+- midi files/crash_small_hook_intro_metal_odd_crash.mid: {"activationChance":0.8,"dropoutChance":0.05}
+- samples/crash_dlay_odd (consolidated).wav: {"activationChance":0.5,"globalInclusionChance":0.5}
+- samples/big_crash_layer_odd_metal (consolidated).wav: {"globalInclusionChance":1,"activationChance":0.02}
+- samples/big_crash_layer_odd_dlay_metal (consolidated).wav: {"globalInclusionChance":1,"activationChance":0.02}
+- samples/crash_washes_metal_even (consolidated).wav: {"globalInclusionChance":0.2,"activationChance":0.2,"dropoutChance":0.5}
+- samples/crash_washes_metal_dlay_even (consolidated).wav: {"globalInclusionChance":0.2,"activationChance":0.2,"dropoutChance":0.5}
+- samples/crash_wash_hook_xtra_metal.wav: {"globalInclusionChance":0.5,"activationChance":0.5}
+- samples/crash_wash_hook_xtra_metal_2.wav: {"globalInclusionChance":0.2,"activationChance":0.5}
+- samples/jazz_crash_metal_odd (consolidated).wav: {"activationChance":0.4}
+- samples/jazz_crash_metal_dlay_odd_xtra (consolidated).wav: {"activationChance":0.4}
+- samples/jazz_crash_metal_hook_odd.wav: {"activationChance":0.4}
+- samples/real_bass_hook_cont (consolidated).wav: {"globalInclusionChance":0.6,"activationChance":0.2,"dropoutChance":0.1}
+- samples/synth_bass_1_hook_odd_x4 (consolidated).wav: {"activationChance":0.4}
+- samples/synth_bass_1_hook #2 (consolidated).wav: {"activationChance":0.5,"globalInclusionChance":1}
+- samples/cello_even_x2 (consolidated).wav: {"globalInclusionChance":0.5,"activationChance":0.8,"dropoutChance":0.05}
+- samples/cello_high_even_x2 (consolidated).wav: {"globalInclusionChance":0.5,"activationChance":0.8,"dropoutChance":0.05}
+- samples/cello_wiv-bass_even (consolidated).wav: {"activationChance":0.005,"globalInclusionChance":1,"dropoutChance":0.05}
+- samples/bassish_glitchy_hook_odd_x4 (consolidated).wav: {"globalInclusionChance":0.5,"activationChance":0.7}
+- samples/bassish_glitchy_hook_odd_x4 #2 (consolidated).wav: {"globalInclusionChance":0.5,"activationChance":0.7}
+- samples/high_bassish_hook_odd_x2 (consolidated) #2.wav: {"globalInclusionChance":0.8,"activationChance":0.5,"dropoutChance":0.1}
+- samples/high_bassish_2_hook_odd_x2 (consolidated).wav: {"globalInclusionChance":0.8,"activationChance":0.5,"dropoutChance":0.1}
+- samples/high_bassish_2_hook #2 (consolidated).wav: {"globalInclusionChance":0.8,"activationChance":0.5,"dropoutChance":0.1}
+- samples/pad_wiv-bass (consolidated).wav: {"activationChance":0.005,"globalInclusionChance":1,"dropoutChance":0.05}
+- samples/hippy_synth_wiv-bass_odd (consolidated).wav: {"activationChance":0.005,"globalInclusionChance":1,"dropoutChance":0.05}
+- samples/synth_main_odd (consolidated).wav: {"activationChance":0.02,"dropoutChance":0.2}
+- samples/synth_high_odd (consolidated).wav: {"activationChance":0.02,"dropoutChance":0.03}
+- samples/synth_frozen_verb_odd_~ #3 (consolidated).wav: {"activationChance":0.6}
+- samples/synth_frozen_verb_odd_~ #4 (consolidated).wav: {"activationChance":0.6}
+- samples/synth_downsampled_odd_xtra #3 (consolidated).wav: {"activationChance":0.01,"dropoutChance":0.3}
+- samples/synth_downsampled_odd_xtra #4 (consolidated).wav: {"activationChance":0.005,"dropoutChance":0.3}
+- samples/synth_elephant_odd_~_xtra.wav: {"activationChance":0.005}
+- samples/sax_1_hook_odd_x2 (consolidated).wav: {"activationChance":0.4,"globalInclusionChance":0.6}
+- samples/floot_1_even_x4 (consolidated).wav: {"globalInclusionChance":0.4,"activationChance":0.1,"dropoutChance":0.2}
+- samples/floot_2_even_x4 (consolidated).wav: {"globalInclusionChance":0.4,"activationChance":0.1,"dropoutChance":0.2}
+- samples/floot_hook_even_x2 (consolidated).wav: {"globalInclusionChance":0.4,"dropoutChance":0.2}
+- samples/trumpet_even_x4.wav: {"globalInclusionChance":0.1,"activationChance":0.01,"dropoutChance":0.5}
+- samples/trumpet_hook_odd_x4 (consolidated).wav: {"globalInclusionChance":0.5,"activationChance":0.2,"dropoutChance":0.5}
+- samples/trumpet_hook_odd_x4 (consolidated) #2.wav: {"globalInclusionChance":0.5,"activationChance":0.2,"dropoutChance":0.5}
+- samples/clarinet_even_x2 (consolidated).wav: {"globalInclusionChance":0.5,"activationChance":0.2,"dropoutChance":0.5}
+- samples/clarinet_hook_x4_even (consolidated).wav: {"globalInclusionChance":0.5,"activationChance":0.2,"dropoutChance":0.5}
+- samples/accordian_odd_x4 (consolidated).wav: {"globalInclusionChance":0.2,"activationChance":0.7}
+- samples/accordian_1_hook #2 (consolidated).wav: {"globalInclusionChance":0.5,"activationChance":0.5}
+- samples/accordian_1_hook #3 (consolidated).wav: {"globalInclusionChance":0.5,"activationChance":0.7,"dropoutChance":0.7}
+- samples/accordian_2_hook_odd_x4 (consolidated).wav: {"globalInclusionChance":0.1,"activationChance":0.7,"dropoutChance":0.7}
+- samples/vlins_1_even_x2 (consolidated).wav: {"globalInclusionChance":0.5,"activationChance":0.005,"dropoutChance":0.3}
+- samples/vlins_long_suspense_odd_x2 (consolidated).wav: {"globalInclusionChance":0.5,"activationChance":0.005,"dropoutChance":0.3}
+- samples/rhodes_low_hook_odd_x4 (consolidated).wav: {"globalInclusionChance":0.7,"activationChance":0.3,"dropoutChance":0.3}
+- samples/rhodes_low_2_hook_odd_x4 (consolidated).wav: {"globalInclusionChance":0.7,"activationChance":0.3,"dropoutChance":0.3}
+- samples/glock_odd_dlay (consolidated).wav: {"activationChance":0.01,"globalInclusionChance":0.5,"dropoutChance":0.01}
+- samples/glock_ext_even (consolidated).wav: {"activationChance":0.2}
+- samples/glock_ext_even_dlay (consolidated).wav: {"activationChance":0.005,"globalInclusionChance":0.5,"dropoutChance":0.01}
+- samples/chimes_odd (consolidated).wav: {"globalInclusionChance":0.5,"activationChance":0.1,"dropoutChance":0.1}
+- samples/beeps_intro_odd (consolidated).wav: {"globalInclusionChance":0.5,"activationChance":0.2}
+- samples/beeps_odd_x2_xtra (consolidated).wav: {"globalInclusionChance":0.5,"activationChance":0.2,"dropoutChance":0.5}
+- ... 167 more in JSON
+
+NEXT IMPLEMENTATION PRIORITY
+1. Build safe batch apply script for reviewed fast chance-only byKey profiles.
+2. Build groupedActivation generic system.
+3. Build delayFollowsMain generic system.
+4. Build generic variantChooser/replacement system.
+5. Add noDropoutBeforeBars/minimum-active support.
+
+FILES WRITTEN
+- reports/rule-profile-fast-slow-split.json
+- reports/rule-profile-fast-slow-split.txt
