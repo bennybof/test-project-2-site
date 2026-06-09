@@ -1174,6 +1174,18 @@
               "fadeSeconds": 0.01,
               "includeFutureScheduled": false
             }
+          ],
+          "dependentActivationRules": [
+            {
+              "id": "dependent_crash_dlay_after_normal_crash",
+              "targets": [
+                {
+                  "key": "samples/crash_dlay_odd (consolidated).wav"
+                }
+              ],
+              "chance": 0.1,
+              "sourceNote": "Saved definitions absolute final 2: crash_dlay_odd has a 10% activation chance if crash activates on the same bar."
+            }
           ]
         },
         "midi files/hats_hook_metal_#2_ch.mid": {
@@ -1341,7 +1353,9 @@
         },
         "samples/crash_dlay_odd (consolidated).wav": {
           "globalInclusionChance": 0.5,
-          "activationChance": 0.5
+          "activationChance": 0,
+          "dependentActivationOnly": true,
+          "sourceNote": "Dependent activation target only: crash_dlay_odd should only roll after normal crash activates on the same bar."
         },
         "samples/big_crash_layer_odd_metal (consolidated).wav": {
           "globalInclusionChance": 1,

@@ -1,0 +1,15 @@
+TEST PROJECT 2 - CRASH DLAY DEPENDENT ACTIVATION REPORT
+
+Generated: 2026-06-09T21:37:24.970Z
+Renderer change: none
+Catalog change: crash_dlay_odd dependent activation
+
+Rule:
+- crash_dlay_odd has 10% chance if crash_metal_odd_metal activates on the same bar.
+- crash_dlay_odd is marked dependentActivationOnly so it does not roll independently.
+
+Dependent rule result:
+- samples/crash_metal_odd_metal (consolidated).wav -> samples/crash_dlay_odd (consolidated).wav: added, chance=0.1
+
+Dependent-only target result:
+- samples/crash_dlay_odd (consolidated).wav: set_dependent_only, previousActivationChance=0.5, newActivationChance=0

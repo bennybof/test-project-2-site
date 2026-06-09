@@ -1,0 +1,20 @@
+{
+  "generatedAt": "2026-06-09T21:37:24.970Z",
+  "batch": "crash dlay dependent activation",
+  "catalogPath": "data/full-rules-catalog.json",
+  "note": "Adds crash_dlay_odd as a dependent activation target of normal crash at 10%, and prevents independent direct activation.",
+  "dependentRuleResult": {
+    "sourceKey": "samples/crash_metal_odd_metal (consolidated).wav",
+    "targetKey": "samples/crash_dlay_odd (consolidated).wav",
+    "id": "dependent_crash_dlay_after_normal_crash",
+    "chance": 0.1,
+    "previousChance": null,
+    "status": "added"
+  },
+  "dependentOnlyResult": {
+    "targetKey": "samples/crash_dlay_odd (consolidated).wav",
+    "previousActivationChance": 0.5,
+    "previousDependentActivationOnly": null,
+    "status": "set_dependent_only"
+  }
+}
