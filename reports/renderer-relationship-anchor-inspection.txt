@@ -1,0 +1,1119 @@
+﻿TEST PROJECT 2 — RENDERER RELATIONSHIP ANCHOR INSPECTION
+
+Generated: 2026-06-09T20:50:59.1876611+01:00
+
+----- BRANCH -----
+full-rules-build
+
+----- GIT STATUS -----
+?? "reusable chat files/"
+
+----- LATEST COMMITS -----
+9d9ba2d Add generic relationship rule review template
+4611c96 Add safe reviewed rule profile apply script
+203edc6 Add rule profile fast slow split report
+8a05cfb Add rule profile batch candidate generator
+f3ed97f Add supported rule fields audit
+bd9133b Group hook jazz hats scheduling
+d4b4636 Use hook jazz hats pair in takeover selection
+09ce6f1 Add hook jazz hats helper functions
+
+----- RULE PROFILE / RELATIONSHIP TERMS IN full-renderer.js -----
+
+LINE 51: Number(section.globalInclusionChance) > 0 &&
+----- CONTEXT -----
+  }
+
+  function chooseFirstPassLyrixSection(random, lyrixSectionUsage = new Map()) {
+    const candidates = getFirstPassLyrixSections().filter(section =>
+      Number(section.globalInclusionChance) > 0 &&
+      (!section.maxSeparateOccasions || (lyrixSectionUsage.get(section.id) || 0) < Number(section.maxSeparateOccasions)) &&
+      getLyrixSectionLengthBars(section) > 0 &&
+      Array.isArray(section.parts) &&
+      section.parts.length > 0
+    );
+
+
+LINE 59: chance(random, Number(section.globalInclusionChance) || 0)
+----- CONTEXT -----
+      section.parts.length > 0
+    );
+
+    const included = candidates.filter(section =>
+      chance(random, Number(section.globalInclusionChance) || 0)
+    );
+
+    if (!included.length) return null;
+    return chooseOne(random, included);
+  }
+
+
+LINE 83: function getBridgeLyrixDropoutChance(section) {
+----- CONTEXT -----
+      (Array.isArray(section.tags) && section.tags.includes("bridge"))
+    );
+  }
+
+  function getBridgeLyrixDropoutChance(section) {
+    const bridgeRules = getBridgeLyrixGlobalRules();
+    return clampProbability(section?.dropoutChance ?? bridgeRules?.dropoutChance ?? 0);
+  }
+  function getBridgeLyrixActivationChance(section) {
+    const bridgeRules = getBridgeLyrixGlobalRules();
+    return clampProbability(section?.activationChance ?? bridgeRules?.activationChanceEach ?? 0.02);
+
+LINE 85: return clampProbability(section?.dropoutChance ?? bridgeRules?.dropoutChance ?? 0);
+----- CONTEXT -----
+  }
+
+  function getBridgeLyrixDropoutChance(section) {
+    const bridgeRules = getBridgeLyrixGlobalRules();
+    return clampProbability(section?.dropoutChance ?? bridgeRules?.dropoutChance ?? 0);
+  }
+  function getBridgeLyrixActivationChance(section) {
+    const bridgeRules = getBridgeLyrixGlobalRules();
+    return clampProbability(section?.activationChance ?? bridgeRules?.activationChanceEach ?? 0.02);
+  }
+
+
+LINE 87: function getBridgeLyrixActivationChance(section) {
+----- CONTEXT -----
+  function getBridgeLyrixDropoutChance(section) {
+    const bridgeRules = getBridgeLyrixGlobalRules();
+    return clampProbability(section?.dropoutChance ?? bridgeRules?.dropoutChance ?? 0);
+  }
+  function getBridgeLyrixActivationChance(section) {
+    const bridgeRules = getBridgeLyrixGlobalRules();
+    return clampProbability(section?.activationChance ?? bridgeRules?.activationChanceEach ?? 0.02);
+  }
+
+  function canBridgePlayBeforeLyrixSection(section) {
+    if (!section) return false;
+
+LINE 89: return clampProbability(section?.activationChance ?? bridgeRules?.activationChanceEach ?? 0.02);
+----- CONTEXT -----
+    return clampProbability(section?.dropoutChance ?? bridgeRules?.dropoutChance ?? 0);
+  }
+  function getBridgeLyrixActivationChance(section) {
+    const bridgeRules = getBridgeLyrixGlobalRules();
+    return clampProbability(section?.activationChance ?? bridgeRules?.activationChanceEach ?? 0.02);
+  }
+
+  function canBridgePlayBeforeLyrixSection(section) {
+    if (!section) return false;
+
+    const id = String(section.id || "").toLowerCase();
+
+LINE 142: const globalInclusionChance = clampProbability(
+----- CONTEXT -----
+  function selectIncludedBridgeLyrixSections(random) {
+    const bridgeRules = getBridgeLyrixGlobalRules();
+
+    return getBridgeLyrixSections().filter(section => {
+      const globalInclusionChance = clampProbability(
+        section.globalInclusionChance ?? bridgeRules?.globalInclusionChanceEach ?? 0
+      );
+
+      return chance(random, globalInclusionChance);
+    });
+  }
+
+LINE 143: section.globalInclusionChance ?? bridgeRules?.globalInclusionChanceEach ?? 0
+----- CONTEXT -----
+    const bridgeRules = getBridgeLyrixGlobalRules();
+
+    return getBridgeLyrixSections().filter(section => {
+      const globalInclusionChance = clampProbability(
+        section.globalInclusionChance ?? bridgeRules?.globalInclusionChanceEach ?? 0
+      );
+
+      return chance(random, globalInclusionChance);
+    });
+  }
+
+
+LINE 146: return chance(random, globalInclusionChance);
+----- CONTEXT -----
+      const globalInclusionChance = clampProbability(
+        section.globalInclusionChance ?? bridgeRules?.globalInclusionChanceEach ?? 0
+      );
+
+      return chance(random, globalInclusionChance);
+    });
+  }
+
+  function chooseBridgeLyrixSection(random, includedBridgeLyrixSections, lyrixSectionUsage = new Map()) {
+    const bridgeRules = getBridgeLyrixGlobalRules();
+
+
+LINE 166: chance(random, getBridgeLyrixActivationChance(section))
+----- CONTEXT -----
+      );
+    });
+
+    const activated = candidates.filter(section =>
+      chance(random, getBridgeLyrixActivationChance(section))
+    );
+
+    if (!activated.length) return null;
+    return chooseOne(random, activated);
+  }
+  function getLyrixSectionAudioFiles(section) {
+
+LINE 397: function calculateLifecycleDropoutChance(state, options = {}) {
+----- CONTEXT -----
+
+    return number;
+  }
+
+  function calculateLifecycleDropoutChance(state, options = {}) {
+    const baseChance = clampProbability(options.baseChance ?? 0);
+    const increasePerActivation = clampProbability(options.increasePerActivation ?? 0);
+    const maxChance = clampProbability(options.maxChance ?? 1, 1);
+    const activationCount = Math.max(0, Number(state?.activationCount || 0));
+
+    return Math.min(maxChance, baseChance + activationCount * increasePerActivation);
+
+LINE 411: const dropoutChance = calculateLifecycleDropoutChance(state, options);
+----- CONTEXT -----
+    const state = getLifecycleState(lifecycleStates, id);
+
+    if (!state.activated) return false;
+
+    const dropoutChance = calculateLifecycleDropoutChance(state, options);
+
+    if (chance(random, dropoutChance)) {
+      dropoutLifecycleItem(lifecycleStates, id);
+      return true;
+    }
+
+
+LINE 413: if (chance(random, dropoutChance)) {
+----- CONTEXT -----
+    if (!state.activated) return false;
+
+    const dropoutChance = calculateLifecycleDropoutChance(state, options);
+
+    if (chance(random, dropoutChance)) {
+      dropoutLifecycleItem(lifecycleStates, id);
+      return true;
+    }
+
+    return false;
+  }
+
+LINE 650: familyLocks: new Map(),
+----- CONTEXT -----
+    return {
+      activeItems: new Map(),
+      blockedWindows: [],
+      cutoffEvents: [],
+      familyLocks: new Map(),
+      nextItemId: 1
+    };
+  }
+
+  function getPlaybackItemId(kind, key) {
+    return `${normalizeRuleDecisionToken(kind)}:${String(key || "")}`;
+
+LINE 694: playbackState.familyLocks.set(item.family, id);
+----- CONTEXT -----
+
+    playbackState.activeItems.set(id, item);
+
+    if (item.family) {
+      playbackState.familyLocks.set(item.family, id);
+    }
+
+    return item;
+  }
+
+  function unregisterActivePlaybackItem(playbackState, idOrItem) {
+
+LINE 706: if (item?.family && playbackState.familyLocks.get(item.family) === id) {
+----- CONTEXT -----
+
+    const id = typeof idOrItem === "string" ? idOrItem : idOrItem.id;
+    const item = playbackState.activeItems.get(id);
+
+    if (item?.family && playbackState.familyLocks.get(item.family) === id) {
+      playbackState.familyLocks.delete(item.family);
+    }
+
+    playbackState.activeItems.delete(id);
+  }
+
+
+LINE 707: playbackState.familyLocks.delete(item.family);
+----- CONTEXT -----
+    const id = typeof idOrItem === "string" ? idOrItem : idOrItem.id;
+    const item = playbackState.activeItems.get(id);
+
+    if (item?.family && playbackState.familyLocks.get(item.family) === id) {
+      playbackState.familyLocks.delete(item.family);
+    }
+
+    playbackState.activeItems.delete(id);
+  }
+
+  function expirePlaybackItemsAtTime(playbackState, timeSeconds) {
+
+LINE 1006: const lockedItemId = playbackState.familyLocks.get(normalizedFamily);
+----- CONTEXT -----
+  function isFamilyLockedByOtherItem(playbackState, family, itemId) {
+    if (!playbackState || !family) return false;
+
+    const normalizedFamily = normalizeRuleDecisionToken(family);
+    const lockedItemId = playbackState.familyLocks.get(normalizedFamily);
+
+    return Boolean(lockedItemId && lockedItemId !== itemId);
+  }
+
+  function applyFamilyLock(playbackState, context, decision, family) {
+    if (!playbackState || !context || !family) return decision;
+
+LINE 1017: lockedBy: playbackState.familyLocks.get(normalizeRuleDecisionToken(family))
+----- CONTEXT -----
+
+    if (isFamilyLockedByOtherItem(playbackState, family, context.lifecycleId || context.itemKey)) {
+      return blockRuleDecision(decision, "family_locked", {
+        family: normalizeRuleDecisionToken(family),
+        lockedBy: playbackState.familyLocks.get(normalizeRuleDecisionToken(family))
+      });
+    }
+
+    return decision;
+  }
+  function getRuleProfilePool() {
+
+LINE 1027: pools.ruleProfiles ||
+----- CONTEXT -----
+  function getRuleProfilePool() {
+    const pools = catalog?.rulePools || {};
+
+    return (
+      pools.ruleProfiles ||
+      pools.stemRules ||
+      pools.activationRules ||
+      {}
+    );
+  }
+
+
+LINE 1071: function mergeRuleProfiles(...profiles) {
+----- CONTEXT -----
+
+    return null;
+  }
+
+  function mergeRuleProfiles(...profiles) {
+    const merged = {};
+
+    for (const profile of profiles) {
+      if (!profile || typeof profile !== "object" || Array.isArray(profile)) continue;
+
+      for (const [key, value] of Object.entries(profile)) {
+
+LINE 1137: return mergeRuleProfiles(
+----- CONTEXT -----
+      const tagRule = getRuleObjectFromMap(byTag, tag);
+      if (tagRule) tagRules.push(tagRule);
+    }
+
+    return mergeRuleProfiles(
+      defaultRules,
+      ...tagRules,
+      familyRules,
+      keyRules
+    );
+  }
+
+LINE 1206: function getGlobalInclusionChance(profile, fallback = 0) {
+----- CONTEXT -----
+
+    return clampProbability(fallback);
+  }
+
+  function getGlobalInclusionChance(profile, fallback = 0) {
+    return getRuleChance(profile, [
+      "globalInclusionChance",
+      "globalChance",
+      "inclusionChance",
+      "globalSelectionChance"
+    ], fallback);
+
+LINE 1208: "globalInclusionChance",
+----- CONTEXT -----
+  }
+
+  function getGlobalInclusionChance(profile, fallback = 0) {
+    return getRuleChance(profile, [
+      "globalInclusionChance",
+      "globalChance",
+      "inclusionChance",
+      "globalSelectionChance"
+    ], fallback);
+  }
+
+
+LINE 1215: function getActivationChance(profile, fallback = 0) {
+----- CONTEXT -----
+      "globalSelectionChance"
+    ], fallback);
+  }
+
+  function getActivationChance(profile, fallback = 0) {
+    return getRuleChance(profile, [
+      "activationChance",
+      "activationChanceEach",
+      "chance",
+      "opportunityChance"
+    ], fallback);
+
+LINE 1217: "activationChance",
+----- CONTEXT -----
+  }
+
+  function getActivationChance(profile, fallback = 0) {
+    return getRuleChance(profile, [
+      "activationChance",
+      "activationChanceEach",
+      "chance",
+      "opportunityChance"
+    ], fallback);
+  }
+
+
+LINE 1218: "activationChanceEach",
+----- CONTEXT -----
+
+  function getActivationChance(profile, fallback = 0) {
+    return getRuleChance(profile, [
+      "activationChance",
+      "activationChanceEach",
+      "chance",
+      "opportunityChance"
+    ], fallback);
+  }
+
+  function getDropoutChance(profile, fallback = 0) {
+
+LINE 1224: function getDropoutChance(profile, fallback = 0) {
+----- CONTEXT -----
+      "opportunityChance"
+    ], fallback);
+  }
+
+  function getDropoutChance(profile, fallback = 0) {
+    return getRuleChance(profile, [
+      "dropoutChance",
+      "dropOutChance",
+      "dropoutBaseChance"
+    ], fallback);
+  }
+
+LINE 1226: "dropoutChance",
+----- CONTEXT -----
+  }
+
+  function getDropoutChance(profile, fallback = 0) {
+    return getRuleChance(profile, [
+      "dropoutChance",
+      "dropOutChance",
+      "dropoutBaseChance"
+    ], fallback);
+  }
+  function getRuleValue(profile, names, fallback = null) {
+    if (!profile) return fallback;
+
+LINE 1227: "dropOutChance",
+----- CONTEXT -----
+
+  function getDropoutChance(profile, fallback = 0) {
+    return getRuleChance(profile, [
+      "dropoutChance",
+      "dropOutChance",
+      "dropoutBaseChance"
+    ], fallback);
+  }
+  function getRuleValue(profile, names, fallback = null) {
+    if (!profile) return fallback;
+
+
+LINE 1271: baseChance: getDropoutChance(profile, dropout.baseChance ?? dropout.chance ?? 0),
+----- CONTEXT -----
+      "dropoutRule"
+    ], {});
+
+    return {
+      baseChance: getDropoutChance(profile, dropout.baseChance ?? dropout.chance ?? 0),
+      increasePerActivation: clampProbability(
+        dropout.increasePerActivation ??
+        profile?.dropoutIncreasePerActivation ??
+        profile?.dropoutChanceIncrease ??
+        0
+      ),
+
+LINE 1275: profile?.dropoutChanceIncrease ??
+----- CONTEXT -----
+      baseChance: getDropoutChance(profile, dropout.baseChance ?? dropout.chance ?? 0),
+      increasePerActivation: clampProbability(
+        dropout.increasePerActivation ??
+        profile?.dropoutIncreasePerActivation ??
+        profile?.dropoutChanceIncrease ??
+        0
+      ),
+      maxChance: clampProbability(
+        dropout.maxChance ??
+        profile?.dropoutMaxChance ??
+        1,
+
+LINE 1287: function getCutoffRules(profile) {
+----- CONTEXT -----
+      )
+    };
+  }
+
+  function getCutoffRules(profile) {
+    return getRuleArray(profile, [
+      "cutoffRules",
+      "cutoffs",
+      "cutoff",
+      "cuts"
+    ]);
+
+LINE 1289: "cutoffRules",
+----- CONTEXT -----
+  }
+
+  function getCutoffRules(profile) {
+    return getRuleArray(profile, [
+      "cutoffRules",
+      "cutoffs",
+      "cutoff",
+      "cuts"
+    ]);
+  }
+
+
+LINE 1296: function getHardClashRules(profile) {
+----- CONTEXT -----
+      "cuts"
+    ]);
+  }
+
+  function getHardClashRules(profile) {
+    return getRuleArray(profile, [
+      "hardClashes",
+      "hardClashRules",
+      "clashes",
+      "cannotPlayWith"
+    ]);
+
+LINE 1298: "hardClashes",
+----- CONTEXT -----
+  }
+
+  function getHardClashRules(profile) {
+    return getRuleArray(profile, [
+      "hardClashes",
+      "hardClashRules",
+      "clashes",
+      "cannotPlayWith"
+    ]);
+  }
+
+
+LINE 1299: "hardClashRules",
+----- CONTEXT -----
+
+  function getHardClashRules(profile) {
+    return getRuleArray(profile, [
+      "hardClashes",
+      "hardClashRules",
+      "clashes",
+      "cannotPlayWith"
+    ]);
+  }
+
+  function getSoftMultiplierRules(profile) {
+
+LINE 1305: function getSoftMultiplierRules(profile) {
+----- CONTEXT -----
+      "cannotPlayWith"
+    ]);
+  }
+
+  function getSoftMultiplierRules(profile) {
+    return getRuleArray(profile, [
+      "softMultipliers",
+      "softMultiplierRules",
+      "activationMultipliers",
+      "chanceMultipliers"
+    ]);
+
+LINE 1307: "softMultipliers",
+----- CONTEXT -----
+  }
+
+  function getSoftMultiplierRules(profile) {
+    return getRuleArray(profile, [
+      "softMultipliers",
+      "softMultiplierRules",
+      "activationMultipliers",
+      "chanceMultipliers"
+    ]);
+  }
+
+
+LINE 1308: "softMultiplierRules",
+----- CONTEXT -----
+
+  function getSoftMultiplierRules(profile) {
+    return getRuleArray(profile, [
+      "softMultipliers",
+      "softMultiplierRules",
+      "activationMultipliers",
+      "chanceMultipliers"
+    ]);
+  }
+
+  function getTimedBlockRules(profile) {
+
+LINE 1316: "timedBlocks",
+----- CONTEXT -----
+  }
+
+  function getTimedBlockRules(profile) {
+    return getRuleArray(profile, [
+      "timedBlocks",
+      "timedBlockRules",
+      "shutoffWindows",
+      "blockedWindows",
+      "blockActivationWindows"
+    ]);
+  }
+
+LINE 1326: "familyLocks",
+----- CONTEXT -----
+  }
+
+  function getFamilyLockRules(profile) {
+    return getRuleArray(profile, [
+      "familyLocks",
+      "oneOfGroups",
+      "mutualExclusionGroups",
+      "exclusiveFamilies"
+    ]);
+  }
+
+
+LINE 1335: "dependencies",
+----- CONTEXT -----
+  }
+
+  function getDependencyRules(profile) {
+    return getRuleArray(profile, [
+      "dependencies",
+      "requires",
+      "requiresActive",
+      "requiresIncluded"
+    ]);
+  }
+
+
+LINE 1336: "requires",
+----- CONTEXT -----
+
+  function getDependencyRules(profile) {
+    return getRuleArray(profile, [
+      "dependencies",
+      "requires",
+      "requiresActive",
+      "requiresIncluded"
+    ]);
+  }
+
+  function getDensityRules(profile) {
+
+LINE 1337: "requiresActive",
+----- CONTEXT -----
+  function getDependencyRules(profile) {
+    return getRuleArray(profile, [
+      "dependencies",
+      "requires",
+      "requiresActive",
+      "requiresIncluded"
+    ]);
+  }
+
+  function getDensityRules(profile) {
+    return getRuleArray(profile, [
+
+LINE 1338: "requiresIncluded"
+----- CONTEXT -----
+    return getRuleArray(profile, [
+      "dependencies",
+      "requires",
+      "requiresActive",
+      "requiresIncluded"
+    ]);
+  }
+
+  function getDensityRules(profile) {
+    return getRuleArray(profile, [
+      "densityRules",
+
+LINE 1496: function applyHardClashRulesToDecision(playbackState, context, decision, rules = []) {
+----- CONTEXT -----
+    }
+
+    return matches;
+  }
+  function applyHardClashRulesToDecision(playbackState, context, decision, rules = []) {
+    if (!playbackState || !context || !decision || !Array.isArray(rules)) return decision;
+
+    for (const rule of rules) {
+      const targets = getRuleTargets(rule);
+      if (!targets.length) continue;
+
+
+LINE 1525: function applySoftMultiplierRulesToDecision(playbackState, context, decision, rules = []) {
+----- CONTEXT -----
+
+    return decision;
+  }
+
+  function applySoftMultiplierRulesToDecision(playbackState, context, decision, rules = []) {
+    if (!playbackState || !context || !decision || !Array.isArray(rules)) return decision;
+
+    for (const rule of rules) {
+      const targets = getRuleTargets(rule);
+      const multiplier = Number(rule.multiplier ?? rule.chanceMultiplier ?? rule.activationMultiplier ?? 1);
+
+
+LINE 1643: function applyCutoffRulesForAllowedDecision(playbackState, context, profile = {}) {
+----- CONTEXT -----
+
+    return decision;
+  }
+
+  function applyCutoffRulesForAllowedDecision(playbackState, context, profile = {}) {
+    if (!playbackState || !context || !profile) return [];
+
+    const events = [];
+
+    for (const rule of getCutoffRules(profile)) {
+      const targets = getRuleTargets(rule);
+
+LINE 1648: for (const rule of getCutoffRules(profile)) {
+----- CONTEXT -----
+    if (!playbackState || !context || !profile) return [];
+
+    const events = [];
+
+    for (const rule of getCutoffRules(profile)) {
+      const targets = getRuleTargets(rule);
+      if (!targets.length) continue;
+
+      const fadeSeconds = Math.max(0, Number(rule.fadeSeconds ?? rule.fade ?? 0.01));
+      const includeFutureScheduled = Boolean(rule.includeFutureScheduled ?? rule.includeFuture ?? false);
+
+
+LINE 1692: applyHardClashRulesToDecision(playbackState, context, decision, getHardClashRules(profile));
+----- CONTEXT -----
+
+    applyDependencyRulesToDecision(playbackState, context, decision, getDependencyRules(profile));
+    if (decision.blocked) return decision;
+
+    applyHardClashRulesToDecision(playbackState, context, decision, getHardClashRules(profile));
+    if (decision.blocked) return decision;
+
+    applySoftMultiplierRulesToDecision(playbackState, context, decision, getSoftMultiplierRules(profile));
+
+    applyDensityRulesToDecision(context, decision, profile);
+    applyTensionRulesToDecision(context, decision, profile);
+
+LINE 1695: applySoftMultiplierRulesToDecision(playbackState, context, decision, getSoftMultiplierRules(profile));
+----- CONTEXT -----
+
+    applyHardClashRulesToDecision(playbackState, context, decision, getHardClashRules(profile));
+    if (decision.blocked) return decision;
+
+    applySoftMultiplierRulesToDecision(playbackState, context, decision, getSoftMultiplierRules(profile));
+
+    applyDensityRulesToDecision(context, decision, profile);
+    applyTensionRulesToDecision(context, decision, profile);
+    applyCrescendoRulesToDecision(context, decision, profile);
+
+    return decision;
+
+LINE 1826: const globalChance = getGlobalInclusionChance(activeProfile, fallbackChance);
+----- CONTEXT -----
+        ? getRuleProfileForMidiPattern(pattern)
+        : getRuleProfileForEntry(entry)
+    );
+
+    const globalChance = getGlobalInclusionChance(activeProfile, fallbackChance);
+    const roll = safeRandom();
+    const included = roll < globalChance;
+
+    return setGlobalInclusionDecision(globalInclusionState, {
+      id,
+      kind,
+
+LINE 2059: const dropoutChance = calculateLifecycleDropoutChance(state, dropoutConfig);
+----- CONTEXT -----
+    if (!state.activated) {
+      return decision;
+    }
+
+    const dropoutChance = calculateLifecycleDropoutChance(state, dropoutConfig);
+
+    if (chance(random, dropoutChance)) {
+      dropoutLifecycleItem(lifecycleStates, context.lifecycleId);
+
+      return markRuleDecisionDropout(decision, "lifecycle_dropout", {
+        lifecycleId: context.lifecycleId,
+
+LINE 2061: if (chance(random, dropoutChance)) {
+----- CONTEXT -----
+    }
+
+    const dropoutChance = calculateLifecycleDropoutChance(state, dropoutConfig);
+
+    if (chance(random, dropoutChance)) {
+      dropoutLifecycleItem(lifecycleStates, context.lifecycleId);
+
+      return markRuleDecisionDropout(decision, "lifecycle_dropout", {
+        lifecycleId: context.lifecycleId,
+        dropoutChance,
+        activationCount: state.activationCount,
+
+LINE 2066: dropoutChance,
+----- CONTEXT -----
+      dropoutLifecycleItem(lifecycleStates, context.lifecycleId);
+
+      return markRuleDecisionDropout(decision, "lifecycle_dropout", {
+        lifecycleId: context.lifecycleId,
+        dropoutChance,
+        activationCount: state.activationCount,
+        dropoutCount: state.dropoutCount
+      });
+    }
+
+    addRuleDecisionReason(decision, "lifecycle_dropout_survived", {
+
+LINE 2074: dropoutChance,
+----- CONTEXT -----
+    }
+
+    addRuleDecisionReason(decision, "lifecycle_dropout_survived", {
+      lifecycleId: context.lifecycleId,
+      dropoutChance,
+      activationCount: state.activationCount,
+      dropoutCount: state.dropoutCount
+    });
+
+    return decision;
+  }
+
+LINE 2131: if (rule.requiresCrescendo && !energyContext.isCrescendo) return 1;
+----- CONTEXT -----
+    if (Number.isFinite(Number(rule.maxDensity)) && energyContext.densityScore > Number(rule.maxDensity)) return 1;
+    if (Number.isFinite(Number(rule.minTension)) && energyContext.tensionValue < Number(rule.minTension)) return 1;
+    if (Number.isFinite(Number(rule.maxTension)) && energyContext.tensionValue > Number(rule.maxTension)) return 1;
+
+    if (rule.requiresCrescendo && !energyContext.isCrescendo) return 1;
+    if (rule.requiresEmphasis && !energyContext.isEmphasis) return 1;
+
+    const multiplier = Number(rule.multiplier ?? rule.chanceMultiplier ?? rule.activationMultiplier ?? 1);
+
+    return Number.isFinite(multiplier) ? Math.max(0, multiplier) : 1;
+  }
+
+LINE 2132: if (rule.requiresEmphasis && !energyContext.isEmphasis) return 1;
+----- CONTEXT -----
+    if (Number.isFinite(Number(rule.minTension)) && energyContext.tensionValue < Number(rule.minTension)) return 1;
+    if (Number.isFinite(Number(rule.maxTension)) && energyContext.tensionValue > Number(rule.maxTension)) return 1;
+
+    if (rule.requiresCrescendo && !energyContext.isCrescendo) return 1;
+    if (rule.requiresEmphasis && !energyContext.isEmphasis) return 1;
+
+    const multiplier = Number(rule.multiplier ?? rule.chanceMultiplier ?? rule.activationMultiplier ?? 1);
+
+    return Number.isFinite(multiplier) ? Math.max(0, multiplier) : 1;
+  }
+  function applyEnergyRulesToDecision(context, decision, rules = [], reasonCode = "energy_multiplier") {
+
+LINE 2525: function getNormalHatPatternDropoutChance(choiceGroupId) {
+----- CONTEXT -----
+    if (!isNormalMidiHatPattern(pattern)) return "";
+    return normalizeRuleDecisionToken(getMidiPatternBaseId(pattern));
+  }
+
+  function getNormalHatPatternDropoutChance(choiceGroupId) {
+  if (
+    choiceGroupId === "trap_hats" ||
+    choiceGroupId === "holdit_hats" ||
+    choiceGroupId === "messy_hats_fast" ||
+    choiceGroupId === "messy_hats_fast_ends_in_main_hats"
+  ) {
+
+LINE 2849: function getBaseActivationChance(entry) {
+----- CONTEXT -----
+
+    return base;
+  }
+
+  function getBaseActivationChance(entry) {
+    const key = entry.key.toLowerCase();
+
+    if (isMidiSample(entry)) return 0;
+    if (entry.folder === "alternate downloads") return 0.005;
+
+    if (key.includes("everything_intro")) return 0.01;
+
+LINE 3030: if (chance(random, catalog.rulePools.everythingIntro.globalInclusionChance ?? 0.01)) {
+----- CONTEXT -----
+
+    // Intro / opening normal section.
+    addSection("normal", 8, { reset: true, tags: ["opening"] });
+    // everything_intro is rare but explicit.
+    if (chance(random, catalog.rulePools.everythingIntro.globalInclusionChance ?? 0.01)) {
+      const everythingIntroCandidates = catalog.rulePools.everythingIntro.candidates || [];
+      const everythingIntro = chooseOne(random, everythingIntroCandidates);
+
+      if (everythingIntro) {
+        forceIncludeAudioSelection({
+          random,
+
+LINE 3198: if (roll < 0.23 && chance(random, catalog.rulePools.drop.globalInclusionChance ?? 0.1)) {
+----- CONTEXT -----
+        });
+        continue;
+      }
+
+      if (roll < 0.23 && chance(random, catalog.rulePools.drop.globalInclusionChance ?? 0.1)) {
+        addSection("drop", 4, {
+          reset: true,
+          tags: ["drop", "major_reset"]
+        });
+
+        for (const key of catalog.rulePools.drop.files) {
+
+LINE 3344: const p = Math.min(0.9, getBaseActivationChance(entry) * chanceMultiplier);
+----- CONTEXT -----
+      const shuffled = shuffle(random, matchingEntries);
+
+      for (const entry of shuffled.slice(0, 12)) {
+        const chanceMultiplier = section.type === "normal" ? 0.65 : 1.0;
+        const p = Math.min(0.9, getBaseActivationChance(entry) * chanceMultiplier);
+
+        const included = includeAudioByGlobalDecision({
+          random,
+          globalInclusionState,
+          requiredActivationState,
+          selectedAudio,
+
+LINE 3509: const activeNormalHatDropsOut = activeNormalHatCanContinue && random() < getNormalHatPatternDropoutChance(activeNormalHatChoice);
+----- CONTEXT -----
+      }
+
+      const forcedNormalHatCanRun = Boolean(forcedNextNormalHatChoice && availableHatChoiceIds.has(forcedNextNormalHatChoice));
+      const activeNormalHatCanContinue = Boolean(activeNormalHatChoice && availableHatChoiceIds.has(activeNormalHatChoice));
+      const activeNormalHatDropsOut = activeNormalHatCanContinue && random() < getNormalHatPatternDropoutChance(activeNormalHatChoice);
+      let selectedNormalHatChoice = null;
+
+      if (availableHatChoices.length && !normalHatsSystemDropsOut) {
+        let chosenChoice = null;
+
+        if (forcedNormalHatCanRun) {
+
+LINE 4136: applyCutoffRulesForAllowedDecision(playbackState, {
+----- CONTEXT -----
+    };
+
+    const lyrixProfile = getRuleProfileForEntry(entry);
+
+    applyCutoffRulesForAllowedDecision(playbackState, {
+      entry,
+      section,
+      startSeconds: startTime
+    }, lyrixProfile);
+
+    return scheduleAudioBufferWithPlaybackState({
+
+LINE 4295: const activationChance = adlib.activationChance === undefined ? 1 : Number(adlib.activationChance);
+----- CONTEXT -----
+
+
+      if (typeof adlibStart !== "number") continue;
+
+      const activationChance = adlib.activationChance === undefined ? 1 : Number(adlib.activationChance);
+      if (!chance(random, activationChance)) continue;
+
+      if (adlib.file) {
+        const adlibBuffer = buffers.get(adlib.file);
+        scheduleLyrixPathWithPlaybackState({
+          offlineContext,
+
+LINE 4296: if (!chance(random, activationChance)) continue;
+----- CONTEXT -----
+
+      if (typeof adlibStart !== "number") continue;
+
+      const activationChance = adlib.activationChance === undefined ? 1 : Number(adlib.activationChance);
+      if (!chance(random, activationChance)) continue;
+
+      if (adlib.file) {
+        const adlibBuffer = buffers.get(adlib.file);
+        scheduleLyrixPathWithPlaybackState({
+          offlineContext,
+          destination,
+
+LINE 4480: const oneShotBaseChance = getActivationChance(audioProfile, 0.12);
+----- CONTEXT -----
+    const audioProfile = getRuleProfileForEntry(entry);
+
+    if (isLikelyOneShot(entry)) {
+      const allowedBars = getAllowedLocalBarIndexesForKey(key, section);
+      const oneShotBaseChance = getActivationChance(audioProfile, 0.12);
+      let scheduledCount = 0;
+
+      for (const localBarIndex of allowedBars) {
+        const startSeconds = section.startSeconds + localBarIndex * section.barSeconds;
+        const audioDecisionResult = resolveRuleProfileDecision({
+          random,
+
+LINE 4501: applyCutoffRulesForAllowedDecision(playbackState, audioDecisionResult.context, audioProfile);
+----- CONTEXT -----
+          profile: audioProfile
+        });
+
+        if (audioDecisionResult.allowed) {
+          applyCutoffRulesForAllowedDecision(playbackState, audioDecisionResult.context, audioProfile);
+          const scheduled = scheduleAudioBufferWithPlaybackState({
+            offlineContext,
+            destination,
+            buffer,
+            startTime: startSeconds,
+            gainValue: gain,
+
+LINE 4528: const phraseBaseChance = getActivationChance(audioProfile, 0.45);
+----- CONTEXT -----
+    const allowedPhraseBars = getAllowedLocalBarIndexesForKey(key, section);
+
+    if (!allowedPhraseBars.length) return 0;
+
+    const phraseBaseChance = getActivationChance(audioProfile, 0.45);
+    let scheduledCount = 0;
+
+    for (let i = 0; i < phraseRepeats; i++) {
+      const localBar = chooseOne(random, allowedPhraseBars);
+      const startSeconds = section.startSeconds + localBar * section.barSeconds;
+      const audioDecisionResult = resolveRuleProfileDecision({
+
+LINE 4550: applyCutoffRulesForAllowedDecision(playbackState, audioDecisionResult.context, audioProfile);
+----- CONTEXT -----
+        profile: audioProfile
+      });
+
+      if (audioDecisionResult.allowed) {
+        applyCutoffRulesForAllowedDecision(playbackState, audioDecisionResult.context, audioProfile);
+        const scheduled = scheduleAudioBufferWithPlaybackState({
+          offlineContext,
+          destination,
+          buffer,
+          startTime: startSeconds,
+          gainValue: gain,
+
+LINE 4594: const midiBaseChance = getActivationChance(midiProfile, 0.7);
+----- CONTEXT -----
+          continue;
+        }
+
+        const midiProfile = getRuleProfileForMidiPattern(pattern);
+        const midiBaseChance = getActivationChance(midiProfile, 0.7);
+
+        const midiDecisionResult = resolveRuleProfileDecision({
+          random,
+          plan,
+          playbackState,
+          kind: "midi",
+
+LINE 4611: applyCutoffRulesForAllowedDecision(playbackState, midiDecisionResult.context, midiProfile);
+----- CONTEXT -----
+          profile: midiProfile
+        });
+
+        if (midiDecisionResult.allowed) {
+          applyCutoffRulesForAllowedDecision(playbackState, midiDecisionResult.context, midiProfile);
+          const scheduledCount = scheduleMidiPattern({
+            offlineContext,
+            destination,
+            pattern,
+            buffers,
+            barStart: t,
+
+LINE 4652: const midiBaseChance = getActivationChance(midiProfile, 0.7);
+----- CONTEXT -----
+
+      const repeatEveryBars = getMidiRepeatEveryBars(driverPattern);
+      const repeatEverySeconds = section.barSeconds * repeatEveryBars;
+      const midiProfile = getRuleProfileForMidiPattern(driverPattern);
+      const midiBaseChance = getActivationChance(midiProfile, 0.7);
+      let totalScheduledCount = 0;
+
+      for (
+        let t = section.startSeconds, localBarIndex = 0;
+        t < section.startSeconds + section.duration - 0.001;
+        t += repeatEverySeconds, localBarIndex += repeatEveryBars
+
+LINE 4675: applyCutoffRulesForAllowedDecision(playbackState, midiDecisionResult.context, midiProfile);
+----- CONTEXT -----
+        });
+
+        if (!midiDecisionResult.allowed) continue;
+
+        applyCutoffRulesForAllowedDecision(playbackState, midiDecisionResult.context, midiProfile);
+
+        for (const pattern of patternPair) {
+          const scheduledCount = scheduleMidiPattern({
+            offlineContext,
+            destination,
+            pattern,
+
+LINE 4834: familyLocks: [...playbackState.familyLocks.entries()].map(([family, itemId]) => ({
+----- CONTEXT -----
+    plan.playbackRuleDebug = {
+      activeItemsRemaining: playbackState.activeItems.size,
+      blockedWindows: playbackState.blockedWindows.map(window => ({ ...window })),
+      cutoffEvents: playbackState.cutoffEvents.map(event => ({ ...event })),
+      familyLocks: [...playbackState.familyLocks.entries()].map(([family, itemId]) => ({
+        family,
+        itemId
+      }))
+    };
+
+    writeLifecycleMapToPlan(plan, lifecycleStates);
+
+----- MAIN FUNCTION ANCHORS -----
+LINE 2537: function getNormalHatChoiceWeight(choiceGroupId, section) {
+LINE 2565: function isRimMidiPattern(pattern) {
+LINE 2575: function isExtraRimMidiPattern(pattern) {
+LINE 2582: function isRimsDrumsRimMidiPattern(pattern) {
+LINE 2589: function midiFileTriggersRimsDrumsRimFirstNoteMute(file) {
+LINE 2603: function shouldSkipMidiPatternNote(pattern, noteIndex, section) {
+LINE 2619: function getMidiPatternRuleTagList(pattern) {
+LINE 2636: function isBeepipes1MidiPattern(pattern) {
+LINE 2648: function getBeepipes1DensityChanceMultiplier(section = {}) {
+LINE 2661: function isBeepipesMidiPattern(pattern) {
+LINE 2673: function isSnarePatternMidiPattern(pattern) {
+LINE 2680: function midiPatternClashesWithSelectedSection(pattern, selectedMidiFiles, midiPatternPool) {
+LINE 2747: function isBeepipesGhostsMidiPattern(pattern) {
+LINE 2759: function isBeepipes2MidiPattern(pattern) {
+LINE 2770: function normalHatChoiceClashesWithMidiPattern(choiceGroupId, pattern) {
+LINE 2803: function shouldExcludeNormalMidiHatFromGenericPicker(pattern, choiceGroupId = null) {
+LINE 2829: function getNormalMidiHatChoiceGroupId(pattern) {
+LINE 3919: function scheduleMidiPattern({
