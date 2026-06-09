@@ -299,6 +299,10 @@
         }
       },
       "byKey": {
+        "midi files/jazz_ghost_rides_metal_ride04.mid": {
+          "activationChance": 0.4,
+          "dropoutChance": 0.3
+        },
         "samples/crash_metal_odd_metal (consolidated).wav": {
           "globalInclusionChance": 1,
           "activationChance": 1,
