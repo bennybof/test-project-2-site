@@ -3435,7 +3435,7 @@ function getNormalMidiHatChoiceGroupId(pattern) {
         jazzHatsBarsActive = 0;
       } else {
         const jazzHatsCanContinue = jazzHatsActive && (jazzHatsBarsActive < 4 || random() >= 0.05);
-        const jazzHatsCanStart = !jazzHatsActive && random() < 0.25;
+        const jazzHatsCanStart = !jazzHatsActive && random() < 0.015;
 
         jazzHatsActiveForSection = jazzHatsCanContinue || jazzHatsCanStart;
         jazzHatsActive = jazzHatsActiveForSection;
