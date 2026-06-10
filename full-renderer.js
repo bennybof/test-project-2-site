@@ -3289,7 +3289,41 @@ function shouldSkipMidiPatternAtSectionBar(pattern, section, localBarIndex = nul
   return isNormalHookCrashMidiPattern(pattern);
 }
 
+function getSectionMidiAllowedNoteIndexes(section, file) {
+  const rules = section?.midiAllowedNoteIndexes || {};
+  const indexes = rules[file];
+
+  if (!Array.isArray(indexes)) return null;
+
+  return new Set(indexes.map(Number));
+}
+
+function isSectionForcedMidiPattern(section, file) {
+  return Array.isArray(section?.forcedMidi) && section.forcedMidi.includes(file);
+}
+
+function getSectionMidiForcedLocalBars(section, file) {
+  const rules = section?.midiForcedLocalBars || {};
+  const bars = rules[file];
+
+  if (!Array.isArray(bars)) return null;
+
+  return new Set(bars.map(Number));
+}
+
+function isForcedMidiLocalBarAllowed(section, file, localBarIndex) {
+  const allowedBars = getSectionMidiForcedLocalBars(section, file);
+
+  return !allowedBars || allowedBars.has(Number(localBarIndex));
+}
+
 function shouldSkipMidiPatternNote(pattern, noteIndex, section, localBarIndex = null) {
+  const allowedNoteIndexes = getSectionMidiAllowedNoteIndexes(section, pattern?.file);
+
+  if (allowedNoteIndexes && !allowedNoteIndexes.has(Number(noteIndex))) {
+    return true;
+  }
+
   if (
     noteIndex === 0 &&
     isFirstActiveHookBar(section, localBarIndex) &&
@@ -3672,6 +3706,7 @@ function getNormalMidiHatChoiceGroupId(pattern) {
       startsInHook: true,
       method,
       forceGlobalFadeIn: method === "normal_hook_start",
+      disableGlobalFadeIn: method === "hook_drums_skip_intro",
       source: forceHookStart ? "forced_url" : "random_10_percent"
     };
   }
@@ -4180,6 +4215,27 @@ function getNormalMidiHatChoiceGroupId(pattern) {
         }
       }
 
+      if (String(section.type || "") === "hook_drums_skip_intro") {
+        const hookBeepipesIntroFile = "midi files/beepipes_1_drums_hook_~.mid";
+        const hookBeepipesIntroPattern = midiPatternPool.find(pattern => pattern.file === hookBeepipesIntroFile);
+
+        if (hookBeepipesIntroPattern) {
+          sectionSelectedMidi.add(hookBeepipesIntroFile);
+          selectedMidi.add(hookBeepipesIntroFile);
+
+          section.forcedMidi = Array.isArray(section.forcedMidi) ? section.forcedMidi : [];
+          if (!section.forcedMidi.includes(hookBeepipesIntroFile)) {
+            section.forcedMidi.push(hookBeepipesIntroFile);
+          }
+
+          section.midiForcedLocalBars = section.midiForcedLocalBars || {};
+          section.midiForcedLocalBars[hookBeepipesIntroFile] = [1];
+
+          section.midiAllowedNoteIndexes = section.midiAllowedNoteIndexes || {};
+          section.midiAllowedNoteIndexes[hookBeepipesIntroFile] = [3];
+        }
+      }
+
       const sectionMidi = midiPatternPool.filter(pattern => {
         const key = pattern.file.toLowerCase();
 
@@ -4601,6 +4657,7 @@ function getNormalMidiHatChoiceGroupId(pattern) {
       resetPoints,
       hookStartDecision,
       forceGlobalFadeIn: Boolean(hookStartDecision?.forceGlobalFadeIn),
+      disableGlobalFadeIn: Boolean(hookStartDecision?.disableGlobalFadeIn),
       plannedDurationSeconds: cursorSeconds
     };
   }
@@ -5595,6 +5652,38 @@ function scheduleMidiPattern({
       for (let t = section.startSeconds; t < section.endSeconds; t += repeatEverySeconds) {
         const localBarIndex = Math.round((t - section.startSeconds) / section.barSeconds);
 
+        const forcedInSection = isSectionForcedMidiPattern(section, pattern.file);
+
+        if (forcedInSection) {
+          if (!isForcedMidiLocalBarAllowed(section, pattern.file, localBarIndex)) {
+            continue;
+          }
+
+          const scheduledCount = scheduleMidiPattern({
+            offlineContext,
+            destination,
+            pattern,
+            buffers,
+            barStart: t,
+            beatSeconds: section.barSeconds / 4,
+            gainValue: 0.62,
+            playbackState,
+            section,
+            localBarIndex
+          });
+
+          if (scheduledCount > 0) {
+            totalScheduledCount += scheduledCount;
+            activateLifecycleItem(
+              lifecycleStates,
+              midiLifecycleId,
+              `${section.id}:${t}:forced`
+            );
+          }
+
+          continue;
+        }
+
         if (!isBarOpportunityAllowedForKey(pattern.file, section, localBarIndex)) {
           continue;
         }
@@ -6072,7 +6161,10 @@ function scheduleMidiPattern({
     const duration = getPlanRenderDuration(plan, fallbackDuration);
     const globalFadeOptions = chooseGlobalFadeOptions(mulberry32((currentSeed ^ 0xFADE30) >>> 0));
 
-    if (plan.forceGlobalFadeIn) {
+    if (plan.disableGlobalFadeIn) {
+      globalFadeOptions.fadeIn = false;
+      globalFadeOptions.disabledByHookDrumsSkipIntro = true;
+    } else if (plan.forceGlobalFadeIn) {
       globalFadeOptions.fadeIn = true;
       globalFadeOptions.forcedByHookStart = true;
     }
