@@ -300,12 +300,135 @@
     const interval = getOpportunityIntervalFromKey(key);
     return interval <= 1 || opportunityIndex % interval === 0;
   }
-  function getAllowedLocalBarIndexesForKey(key, section) {
+  function normalizeOpportunityRuleValues(value) {
+    if (value === undefined || value === null) return [];
+    return (Array.isArray(value) ? value : [value])
+      .map(item => normalizeRuleDecisionToken(item))
+      .filter(Boolean);
+  }
+
+  function opportunityRuleHasAnyMatch(ruleValues, actualValues) {
+    const wanted = normalizeOpportunityRuleValues(ruleValues);
+    if (!wanted.length) return true;
+
+    const actual = new Set(normalizeOpportunityRuleValues(actualValues));
+    return wanted.some(value => actual.has(value));
+  }
+
+  function opportunityRuleHasAllMatches(ruleValues, actualValues) {
+    const wanted = normalizeOpportunityRuleValues(ruleValues);
+    if (!wanted.length) return true;
+
+    const actual = new Set(normalizeOpportunityRuleValues(actualValues));
+    return wanted.every(value => actual.has(value));
+  }
+
+  function isActivationOpportunityRuleAllowedForBar(rule, section, localBarIndex) {
+    if (!rule || rule.enabled === false) return false;
+
+    const sectionType = normalizeRuleDecisionToken(section?.type || "");
+    const sectionTags = getSectionRuleDecisionTags(section);
+    const trackBarNumber = getTrackBarNumber(section, localBarIndex);
+    const bars = Math.max(0, Number(section?.bars || 0));
+    const barsFromSectionEnd = Math.max(0, bars - localBarIndex - 1);
+
+    const allowedSectionTypes =
+      rule.sectionTypes ??
+      rule.allowedSectionTypes ??
+      rule.types ??
+      null;
+
+    if (allowedSectionTypes !== null && !opportunityRuleHasAnyMatch(allowedSectionTypes, [sectionType])) {
+      return false;
+    }
+
+    const allowedSectionTags =
+      rule.sectionTags ??
+      rule.allowedSectionTags ??
+      null;
+
+    if (allowedSectionTags !== null && !opportunityRuleHasAnyMatch(allowedSectionTags, sectionTags)) {
+      return false;
+    }
+
+    const requiredSectionTags =
+      rule.requiredSectionTags ??
+      rule.requiresSectionTags ??
+      null;
+
+    if (requiredSectionTags !== null && !opportunityRuleHasAllMatches(requiredSectionTags, sectionTags)) {
+      return false;
+    }
+
+    const blockedSectionTags =
+      rule.blockedSectionTags ??
+      rule.excludedSectionTags ??
+      rule.unlessSectionTags ??
+      null;
+
+    if (blockedSectionTags !== null && opportunityRuleHasAnyMatch(blockedSectionTags, sectionTags)) {
+      return false;
+    }
+
+    const allowedLocalBars =
+      rule.localBarIndexes ??
+      rule.allowedLocalBarIndexes ??
+      rule.localBars ??
+      null;
+
+    if (allowedLocalBars !== null) {
+      const allowed = new Set((Array.isArray(allowedLocalBars) ? allowedLocalBars : [allowedLocalBars]).map(Number));
+      if (!allowed.has(localBarIndex)) return false;
+    }
+
+    const allowedTrackBars =
+      rule.trackBarNumbers ??
+      rule.allowedTrackBarNumbers ??
+      null;
+
+    if (allowedTrackBars !== null) {
+      const allowed = new Set((Array.isArray(allowedTrackBars) ? allowedTrackBars : [allowedTrackBars]).map(Number));
+      if (!allowed.has(trackBarNumber)) return false;
+    }
+
+    if (Number.isFinite(Number(rule.minLocalBarIndex)) && localBarIndex < Number(rule.minLocalBarIndex)) {
+      return false;
+    }
+
+    if (Number.isFinite(Number(rule.maxLocalBarIndex)) && localBarIndex > Number(rule.maxLocalBarIndex)) {
+      return false;
+    }
+
+    if (Number.isFinite(Number(rule.minBarsFromSectionEnd)) && barsFromSectionEnd < Number(rule.minBarsFromSectionEnd)) {
+      return false;
+    }
+
+    if (Number.isFinite(Number(rule.maxBarsFromSectionEnd)) && barsFromSectionEnd > Number(rule.maxBarsFromSectionEnd)) {
+      return false;
+    }
+
+    return true;
+  }
+
+  function isActivationOpportunityAllowedForProfile(profile, section, localBarIndex) {
+    const rules = getActivationOpportunityRules(profile);
+    if (!Array.isArray(rules) || !rules.length) return true;
+
+    const activeRules = rules.filter(rule => rule && rule.enabled !== false);
+    if (!activeRules.length) return true;
+
+    return activeRules.some(rule => isActivationOpportunityRuleAllowedForBar(rule, section, localBarIndex));
+  }
+
+  function getAllowedLocalBarIndexesForKey(key, section, profile = null) {
     const bars = Math.max(0, Number(section?.bars || 0));
     const indexes = [];
 
     for (let localBarIndex = 0; localBarIndex < bars; localBarIndex++) {
-      if (isBarOpportunityAllowedForKey(key, section, localBarIndex)) {
+      if (
+        isBarOpportunityAllowedForKey(key, section, localBarIndex) &&
+        isActivationOpportunityAllowedForProfile(profile, section, localBarIndex)
+      ) {
         indexes.push(localBarIndex);
       }
     }
@@ -313,8 +436,8 @@
     return indexes;
   }
 
-  function chooseAllowedLocalBarIndexForKey(random, key, section) {
-    const allowedIndexes = getAllowedLocalBarIndexesForKey(key, section);
+  function chooseAllowedLocalBarIndexForKey(random, key, section, profile = null) {
+    const allowedIndexes = getAllowedLocalBarIndexesForKey(key, section, profile);
     if (!allowedIndexes.length) return null;
     return chooseOne(random, allowedIndexes);
   }
@@ -1116,7 +1239,8 @@
       "dependentActivationRules",
       "groupedActivationRules",
       "energyBaseChanceRules",
-      "crescendoRules"
+      "crescendoRules",
+      "activationOpportunityRules"
     ]);
 
     for (const profile of profiles) {
@@ -1502,6 +1626,16 @@
       "crescendo"
     ]);
   }
+
+  function getActivationOpportunityRules(profile) {
+    return getRuleArray(profile, [
+      "activationOpportunityRules",
+      "opportunityRules",
+      "allowedOpportunityRules",
+      "allowedActivationOpportunityRules"
+    ]);
+  }
+
   function normalizeRuleTargetFilter(target = {}) {
     if (typeof target === "string") {
       return {
@@ -5215,7 +5349,7 @@ function scheduleMidiPattern({
     }
 
     if (isLikelyOneShot(entry)) {
-      const allowedBars = getAllowedLocalBarIndexesForKey(key, section);
+      const allowedBars = getAllowedLocalBarIndexesForKey(key, section, audioProfile);
       const oneShotBaseChance = getActivationChance(audioProfile, 0.12);
       let scheduledCount = 0;
 
