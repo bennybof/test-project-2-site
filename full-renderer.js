@@ -3318,6 +3318,20 @@ function isHookDrumsSkipIntroSection(section) {
   return String(section?.type || "").toLowerCase() === "hook_drums_skip_intro";
 }
 
+function isHookStartedAfterDrumsSkipIntro(section) {
+  return Array.isArray(section?.tags) && section.tags.some(tag =>
+    String(tag || "").toLowerCase() === "hook_drums_skip_intro"
+  );
+}
+
+function shouldUseHookIntroCrash(section) {
+  return isMainHookSection(section) && !isHookStartedAfterDrumsSkipIntro(section);
+}
+
+function isSectionForcedAudioStartKey(section, key) {
+  return Array.isArray(section?.forcedAudioStartKeys) && section.forcedAudioStartKeys.includes(key);
+}
+
 function isFirstActiveHookBar(section, localBarIndex = null) {
   return isMainHookSection(section) && Number(localBarIndex) === 0;
 }
@@ -3339,6 +3353,10 @@ function isHookHatsMidiPattern(pattern) {
 function shouldSkipMidiPatternAtSectionBar(pattern, section, localBarIndex = null) {
   if (!isFirstActiveHookBar(section, localBarIndex)) {
     return false;
+  }
+
+  if (isHookStartedAfterDrumsSkipIntro(section) && isHookCrashIntroMidiPattern(pattern)) {
+    return true;
   }
 
   // First active hook bar uses crash_small_hook_intro instead of the normal hook crash.
@@ -3898,10 +3916,14 @@ function getNormalMidiHatChoiceGroupId(pattern) {
         });
       }
 
-      addSection("hook", 8, {
+      const songStartHookSection = addSection("hook", 8, {
         reset: true,
         tags: ["hook", "song_start_hook", hookStartDecision.method]
       });
+
+      songStartHookSection.forcedAudioStartKeys = [
+        "samples/synth_bass_1_hook_odd_x4 (consolidated).wav"
+      ];
 
       forceIncludeAudioSelection({
         random,
@@ -4266,7 +4288,7 @@ function getNormalMidiHatChoiceGroupId(pattern) {
     for (const section of sectionTimeline) {
       const sectionSelectedMidi = new Set();
 
-      if (isMainHookSection(section)) {
+      if (shouldUseHookIntroCrash(section)) {
         const hookIntroCrashPattern = midiPatternPool.find(pattern => isHookCrashIntroMidiPattern(pattern));
 
         if (hookIntroCrashPattern) {
@@ -5548,6 +5570,22 @@ function scheduleMidiPattern({
     }
 
     if (keyLower.includes("hook_drums_skip_intro")) {
+      const scheduled = scheduleAudioBufferWithPlaybackState({
+        offlineContext,
+        destination,
+        buffer,
+        startTime: section.startSeconds,
+        gainValue: gain,
+        playbackState,
+        key,
+        entry,
+        section
+      });
+
+      return scheduled ? 1 + scheduleDependents(section.startSeconds) : 0;
+    }
+
+    if (isSectionForcedAudioStartKey(section, key)) {
       const scheduled = scheduleAudioBufferWithPlaybackState({
         offlineContext,
         destination,
