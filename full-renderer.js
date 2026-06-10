@@ -2237,6 +2237,71 @@
 
     return decision;
   }
+
+  function isRepeatableLifecycleContinuationContext(context = {}, profile = {}) {
+    if (!context?.lifecycleState?.activated) return false;
+
+    const kind = String(context.kind || "");
+    const key = String(context.itemKey || "").toLowerCase();
+    const tags = context.itemTags instanceof Set
+      ? context.itemTags
+      : new Set(Array.isArray(context.itemTags) ? context.itemTags : []);
+
+    const hasTag = (tag) => tags.has(String(tag || "").toLowerCase());
+
+    if (!key) return false;
+
+    if (hasTag("oneshot") || hasTag("one_shot") || hasTag("one-shot")) return false;
+
+    if (
+      hasTag("lyrix") ||
+      key.startsWith("lyrix/") ||
+      key.includes("_lyrix")
+    ) {
+      return false;
+    }
+
+    if (
+      key.includes("advert") ||
+      key.includes("song_blown_up") ||
+      key.includes("secret_message") ||
+      key.includes("pimp_triplets") ||
+      key.includes("harmonia")
+    ) {
+      return false;
+    }
+
+    if (
+      key.includes("rewind") ||
+      key.includes("airhorn") ||
+      key.includes("typewriter") ||
+      key.includes("slackjaw") ||
+      key.includes("ui_") ||
+      key.includes("button")
+    ) {
+      return false;
+    }
+
+    if (
+      key.includes("crash") ||
+      key.includes("rev_crash") ||
+      key.includes("crash_layer")
+    ) {
+      return false;
+    }
+
+    if (kind === "midi") {
+      return true;
+    }
+
+    if (kind === "audio") {
+      const entryType = String(context.entry?.type || "");
+      return !entryType || entryType === "audio";
+    }
+
+    return false;
+  }
+
   function resolveRuleProfileDecision({
     random,
     plan = null,
@@ -2291,14 +2356,32 @@
 
     applyRuleProfileToDecision(playbackState, context, decision, activeProfile, safeRandom);
 
-    if (allowLifecycleContinuation && !decision.blocked && context.lifecycleState?.activated) {
+    if (decision.blocked) {
+      recordRuleDecisionDebug(plan, decision);
+
+      return {
+        allowed: false,
+        context,
+        decision,
+        profile: activeProfile
+      };
+    }
+
+    const shouldContinueActiveLifecycle =
+      context.lifecycleState?.activated &&
+      (
+        allowLifecycleContinuation ||
+        isRepeatableLifecycleContinuationContext(context, activeProfile)
+      );
+
+    if (shouldContinueActiveLifecycle) {
       decision.allowed = true;
       decision.roll = null;
       decision.baseChance = 1;
       decision.chanceMultiplier = 1;
       decision.finalChance = 1;
 
-      addRuleDecisionReason(decision, "lifecycle_continuation_survived_dropout", {
+      addRuleDecisionReason(decision, "active_repeatable_lifecycle_continues_without_activation_reroll", {
         lifecycleId: context.lifecycleId,
         itemKey: context.itemKey
       });
