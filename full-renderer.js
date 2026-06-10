@@ -2250,7 +2250,8 @@
     localBarIndex = null,
     startSeconds = null,
     baseChance = 1,
-    profile = null
+    profile = null,
+    allowLifecycleContinuation = false
   } = {}) {
     const safeRandom = typeof random === "function" ? random : (() => 1);
 
@@ -2289,6 +2290,28 @@
     }
 
     applyRuleProfileToDecision(playbackState, context, decision, activeProfile, safeRandom);
+
+    if (allowLifecycleContinuation && !decision.blocked && context.lifecycleState?.activated) {
+      decision.allowed = true;
+      decision.roll = null;
+      decision.baseChance = 1;
+      decision.chanceMultiplier = 1;
+      decision.finalChance = 1;
+
+      addRuleDecisionReason(decision, "lifecycle_continuation_survived_dropout", {
+        lifecycleId: context.lifecycleId,
+        itemKey: context.itemKey
+      });
+
+      recordRuleDecisionDebug(plan, decision);
+
+      return {
+        allowed: true,
+        context,
+        decision,
+        profile: activeProfile
+      };
+    }
 
     const allowed = finalizeRuleDecision(safeRandom, decision);
     recordRuleDecisionDebug(plan, decision);
@@ -3188,6 +3211,80 @@
     if (sequence.length <= 1) return true;
 
     return sequence[0]?.key === entry?.key;
+  }
+
+  function isIndependentNumberedAudioPartsEntry(entry) {
+    const key = String(entry?.key || "").toLowerCase();
+    const tags = Array.isArray(entry?.tags) ? entry.tags.map(tag => String(tag).toLowerCase()) : [];
+
+    return (
+      tags.includes("independent_parts") ||
+      key.includes("breathe_vox_stutter") ||
+      key.includes("synth_glitch")
+    );
+  }
+
+  function getNormalNumberedAudioSequenceForEntry(entry) {
+    if (!entry || !isAudio(entry) || isLyrix(entry)) return [];
+    if (isIndependentNumberedAudioPartsEntry(entry)) return [];
+
+    const sequence = getAudioSequenceForEntry(entry);
+
+    if (sequence.length <= 1) return [];
+    if (sequence[0]?.partNumber !== 1) return [];
+    if (!sequence.some(item => item.partNumber > 1)) return [];
+
+    return sequence;
+  }
+
+  function shouldScheduleNormalAudioSequenceAsGroup(entry) {
+    const sequence = getNormalNumberedAudioSequenceForEntry(entry);
+
+    return Boolean(sequence.length && sequence[0]?.key === entry?.key);
+  }
+
+  function shouldSkipIndividualNormalAudioSequencePart(entry) {
+    const sequence = getNormalNumberedAudioSequenceForEntry(entry);
+
+    return Boolean(sequence.length && sequence[0]?.key !== entry?.key);
+  }
+
+  function expandSelectedAudioSequences({
+    random,
+    selectedAudio = null,
+    globalInclusionState = null,
+    requiredActivationState = null
+  } = {}) {
+    if (!selectedAudio) return 0;
+
+    let addedCount = 0;
+    const selectedKeys = [...selectedAudio];
+
+    for (const selectedKey of selectedKeys) {
+      const selectedEntry = getCatalogEntry(selectedKey);
+      const sequence = getNormalNumberedAudioSequenceForEntry(selectedEntry);
+
+      if (!sequence.length) continue;
+
+      for (const item of sequence) {
+        const hadKey = selectedAudio.has(item.key);
+
+        forceIncludeAudioSelection({
+          random,
+          globalInclusionState,
+          requiredActivationState,
+          selectedAudio,
+          key: item.key,
+          reason: `forced_audio_sequence:${getAudioSequenceRootKey(selectedEntry.key)}`
+        });
+
+        if (!hadKey && selectedAudio.has(item.key)) {
+          addedCount += 1;
+        }
+      }
+    }
+
+    return addedCount;
   }
 
   function entryHas(entry, text) {
@@ -4920,6 +5017,13 @@ function getNormalMidiHatChoiceGroupId(pattern) {
 
     expandSelectedWetDryPairs(selectedAudio, random, globalInclusionState, requiredActivationState);
 
+    expandSelectedAudioSequences({
+      random,
+      selectedAudio,
+      globalInclusionState,
+      requiredActivationState
+    });
+
     expandDependentActivationTargets({
       random,
       selectedAudio,
@@ -5725,6 +5829,110 @@ function scheduleMidiPattern({
     return scheduledCount;
   }
 
+  function scheduleNormalNumberedAudioSequence({
+    offlineContext,
+    destination,
+    section,
+    key,
+    entry,
+    random,
+    plan = null,
+    playbackState = null,
+    lifecycleStates = null
+  } = {}) {
+    const sequence = getNormalNumberedAudioSequenceForEntry(entry);
+
+    if (!sequence.length || sequence[0]?.key !== entry?.key) return 0;
+
+    const profile = getRuleProfileForEntry(entry);
+    const allowedBars = getAllowedLocalBarIndexesForKey(entry.key, section)
+      .filter(localBarIndex => !shouldBlockHookAfterSkipFirstBarAudioKey(entry.key, section, localBarIndex));
+
+    if (!allowedBars.length) return 0;
+
+    const lifecycleId = getAudioLifecycleId(entry.key);
+    const lifecycleState = lifecycleStates ? getLifecycleState(lifecycleStates, lifecycleId) : null;
+    const isContinuing = Boolean(lifecycleState?.activated);
+    const localBar = isContinuing ? allowedBars[0] : chooseOne(random, allowedBars);
+    const startSeconds = section.startSeconds + localBar * section.barSeconds;
+    const baseChance = getActivationChance(profile, 0.45);
+
+    const sequenceDecisionResult = resolveRuleProfileDecision({
+      random,
+      plan,
+      playbackState,
+      kind: "audio",
+      key: entry.key,
+      entry,
+      section,
+      lifecycleStates,
+      localBarIndex: localBar,
+      startSeconds,
+      baseChance,
+      profile,
+      allowLifecycleContinuation: true
+    });
+
+    if (!sequenceDecisionResult.allowed) return 0;
+
+    applyCutoffRulesForAllowedDecision(playbackState, sequenceDecisionResult.context, profile);
+
+    let scheduledCount = 0;
+    let partStartSeconds = startSeconds;
+
+    for (const sequenceItem of sequence) {
+      const partEntry = sequenceItem.entry || getCatalogEntry(sequenceItem.key);
+      const partBuffer = currentRenderBuffers?.get(sequenceItem.key);
+
+      if (!partEntry || !partBuffer) {
+        continue;
+      }
+
+      const scheduled = scheduleAudioBufferWithPlaybackState({
+        offlineContext,
+        destination,
+        buffer: partBuffer,
+        startTime: partStartSeconds,
+        gainValue: sectionGainForAudio(partEntry, section),
+        playbackState,
+        key: sequenceItem.key,
+        entry: partEntry,
+        section
+      });
+
+      if (scheduled) {
+        scheduledCount += 1;
+
+        scheduledCount += scheduleDependentActivationFollowersForAudio({
+          offlineContext,
+          destination,
+          buffers: currentRenderBuffers,
+          random,
+          plan,
+          playbackState,
+          section,
+          lifecycleStates,
+          sourceContext: sequenceDecisionResult.context,
+          sourceProfile: getRuleProfileForEntry(partEntry),
+          sourceKey: sequenceItem.key,
+          startSeconds: partStartSeconds
+        });
+      }
+
+      partStartSeconds += partBuffer.duration;
+    }
+
+    if (scheduledCount > 0 && lifecycleStates) {
+      activateLifecycleItem(
+        lifecycleStates,
+        lifecycleId,
+        `${section.id}:${entry.key}:normal_numbered_sequence`
+      );
+    }
+
+    return scheduledCount;
+  }
+
   function scheduleHookSynthBassSequence({
     offlineContext,
     destination,
@@ -5833,6 +6041,24 @@ function scheduleMidiPattern({
         destination,
         section,
         random,
+        playbackState,
+        lifecycleStates
+      });
+    }
+
+    if (shouldSkipIndividualNormalAudioSequencePart(entry)) {
+      return 0;
+    }
+
+    if (shouldScheduleNormalAudioSequenceAsGroup(entry)) {
+      return scheduleNormalNumberedAudioSequence({
+        offlineContext,
+        destination,
+        section,
+        key,
+        entry,
+        random,
+        plan,
         playbackState,
         lifecycleStates
       });
@@ -6354,7 +6580,7 @@ function scheduleMidiPattern({
           section
         });
 
-        if (scheduledCount > 0) {
+        if (scheduledCount > 0 && !getLifecycleState(lifecycleStates, audioLifecycleId).activated) {
           activateLifecycleItem(
             lifecycleStates,
             audioLifecycleId,
