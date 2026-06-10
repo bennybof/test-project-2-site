@@ -1523,7 +1523,16 @@
               "sourceNote": "Saved definitions: rev_crash_metal_even_dlay_xtra has a 50% chance to play if there is a rev crash but no crash."
             }
           ],
-          "sourceNote": "Saved definitions: rev_crash_metal_even_hook is #rev_crash #metal #hook #even and is hook-only. Activation is held at 0 until the suspense/emphasis lead-in opportunity system is added."
+          "sourceNote": "Saved definitions: rev_crash_metal_even_hook is #rev_crash #metal #hook #even and is hook-only. Activation is held at 0 until the suspense/emphasis lead-in opportunity system is added.",
+          "activationOpportunityRules": [
+            {
+              "id": "hook_rev_crash_hook_sections_only",
+              "sectionTags": [
+                "hook"
+              ],
+              "sourceNote": "Saved definitions: rev_crash_metal_even_hook is hook-only and can only activate during hook sections unless specifically stated otherwise."
+            }
+          ]
         },
         "samples/rev_crash_metal_even_dlay_xtra.wav": {
           "activationChance": 0,
