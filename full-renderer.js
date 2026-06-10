@@ -5819,6 +5819,37 @@ function scheduleMidiPattern({
     applyRandomColourScheme();
   }
 
+  function chooseGlobalFadeOptions(random) {
+    return {
+      fadeIn: chance(random, 0.1),
+      fadeOut: chance(random, 0.1),
+      fadeSeconds: 30,
+      shape: "exponential"
+    };
+  }
+
+  function applyGlobalFadeEnvelope(masterGain, duration, options = {}) {
+    const baseGain = Math.max(0.0001, Number(rules.masterGain ?? 0.72));
+    const fadeSeconds = Math.min(
+      Math.max(0, Number(options.fadeSeconds) || 0),
+      Math.max(0, Number(duration) || 0)
+    );
+
+    masterGain.gain.setValueAtTime(baseGain, 0);
+
+    if (options.fadeIn && fadeSeconds > 0) {
+      masterGain.gain.setValueAtTime(0.0001, 0);
+      masterGain.gain.exponentialRampToValueAtTime(baseGain, fadeSeconds);
+    }
+
+    if (options.fadeOut && fadeSeconds > 0) {
+      const fadeOutStart = Math.max(0, Number(duration) - fadeSeconds);
+
+      masterGain.gain.setValueAtTime(baseGain, fadeOutStart);
+      masterGain.gain.exponentialRampToValueAtTime(0.0001, Math.max(fadeOutStart, Number(duration)));
+    }
+  }
+
   function getPlanRenderDuration(plan, fallbackDuration) {
     const plannedDuration = Number(plan?.plannedDurationSeconds);
 
@@ -5848,6 +5879,9 @@ function scheduleMidiPattern({
 
     const plan = buildFullPlan(random);
     const duration = getPlanRenderDuration(plan, fallbackDuration);
+    const globalFadeOptions = chooseGlobalFadeOptions(mulberry32((currentSeed ^ 0xFADE30) >>> 0));
+
+    console.log("[global fade options]", globalFadeOptions);
 
     const neededPaths = new Set();
 
@@ -5869,7 +5903,7 @@ function scheduleMidiPattern({
     );
 
     const masterGain = offlineContext.createGain();
-    masterGain.gain.value = rules.masterGain ?? 0.72;
+    applyGlobalFadeEnvelope(masterGain, duration, globalFadeOptions);
     masterGain.connect(offlineContext.destination);
 
     const buffers = new Map();
