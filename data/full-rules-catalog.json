@@ -1326,16 +1326,6 @@
         "samples/cello_high_even_x2 (consolidated).wav": {
           "softMultiplierRules": [
             {
-              "id": "soft_byKey_samples_cello_high_even_x2_consolidated_wav_with_key_samples_vlins_long_suspense_odd_x2_consolidated_wav_x0_1",
-              "multiplier": 0.1,
-              "targets": [
-                {
-                  "key": "samples/vlins_long_suspense_odd_x2 (consolidated).wav"
-                }
-              ],
-              "sourceNote": "Definitions doc: if vlins_long_suspense is active, cello_high activation chance is multiplied by x0.1."
-            },
-            {
               "id": "soft_byKey_samples_cello_high_even_x2_consolidated_wav_with_key_samples_tbone_1_even_x2_consolidated_wav_x0_1",
               "multiplier": 0.1,
               "targets": [
@@ -1378,20 +1368,6 @@
         "samples/sax_1_hook_odd_x2 (consolidated).wav": {
           "globalInclusionChance": 0.6,
           "activationChance": 0.4
-        },
-        "samples/floot_1_even_x4 (consolidated).wav": {
-          "softMultiplierRules": [
-            {
-              "id": "soft_byKey_samples_floot_1_even_x4_consolidated_wav_with_key_samples_vlins_long_suspense_odd_x2_consolidated_wav_x0_1",
-              "multiplier": 0.1,
-              "targets": [
-                {
-                  "key": "samples/vlins_long_suspense_odd_x2 (consolidated).wav"
-                }
-              ],
-              "sourceNote": "Definitions doc: if vlins_long_suspense is active, floot_1 activation chance is multiplied by x0.1."
-            }
-          ]
         },
         "samples/trumpet_even_x4.wav": {
           "globalInclusionChance": 0.1,
@@ -1499,16 +1475,6 @@
         },
         "samples/tbone_1_even_x2 (consolidated).wav": {
           "softMultiplierRules": [
-            {
-              "id": "soft_byKey_samples_tbone_1_even_x2_consolidated_wav_with_key_samples_vlins_long_suspense_odd_x2_consolidated_wav_x0_1",
-              "multiplier": 0.1,
-              "targets": [
-                {
-                  "key": "samples/vlins_long_suspense_odd_x2 (consolidated).wav"
-                }
-              ],
-              "sourceNote": "Definitions doc: if vlins_long_suspense is active, tbone_1 activation chance is multiplied by x0.1."
-            },
             {
               "id": "soft_byKey_samples_tbone_1_even_x2_consolidated_wav_with_tag_clarinet_x0_1",
               "multiplier": 0.1,
@@ -1878,6 +1844,21 @@
             }
           ],
           "sourceNote": "Migrated repeated trumpet soft multiplier rules from exact byKey profiles."
+        },
+        "regex:^(?:samples/cello_high_even_x2 \\(consolidated\\)\\.wav|samples/floot_1_even_x4 \\(consolidated\\)\\.wav|samples/tbone_1_even_x2 \\(consolidated\\)\\.wav)$": {
+          "softMultiplierRules": [
+            {
+              "id": "soft_cello_floot_tbone_with_vlins_long_suspense_x0_1",
+              "multiplier": 0.1,
+              "targets": [
+                {
+                  "key": "samples/vlins_long_suspense_odd_x2 (consolidated).wav"
+                }
+              ],
+              "sourceNote": "Definitions doc: if vlins_long_suspense is active, these instrument phrases are multiplied by x0.1."
+            }
+          ],
+          "sourceNote": "Migrated repeated vlins_long_suspense soft multiplier rules from exact byKey profiles."
         }
       }
     },
