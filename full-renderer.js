@@ -6313,18 +6313,11 @@ function scheduleMidiPattern({
 
     if (!allowedPhraseBars.length) return 0;
 
-    const audioLifecycleState = lifecycleStates
-      ? getLifecycleState(lifecycleStates, getAudioLifecycleId(key))
-      : null;
-    const isLifecycleContinuing = Boolean(audioLifecycleState?.activated);
     const phraseBaseChance = getActivationChance(audioProfile, 0.45);
-    const phraseOpportunities = isLifecycleContinuing ? 1 : phraseRepeats;
     let scheduledCount = 0;
 
-    for (let i = 0; i < phraseOpportunities; i++) {
-      const localBar = isLifecycleContinuing
-        ? allowedPhraseBars[0]
-        : chooseOne(random, allowedPhraseBars);
+    for (let i = 0; i < phraseRepeats; i++) {
+      const localBar = chooseOne(random, allowedPhraseBars);
       const startSeconds = section.startSeconds + localBar * section.barSeconds;
       const audioDecisionResult = resolveRuleProfileDecision({
         random,
@@ -6338,8 +6331,7 @@ function scheduleMidiPattern({
         localBarIndex: localBar,
         startSeconds,
         baseChance: phraseBaseChance,
-        profile: audioProfile,
-        allowLifecycleContinuation: true
+        profile: audioProfile
       });
 
       if (audioDecisionResult.allowed) {
