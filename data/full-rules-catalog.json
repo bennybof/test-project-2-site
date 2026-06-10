@@ -1393,20 +1393,6 @@
             }
           ]
         },
-        "samples/floot_2_even_x4 (consolidated).wav": {
-          "softMultiplierRules": [
-            {
-              "id": "soft_byKey_samples_floot_2_even_x4_consolidated_wav_with_tag_trumpet_x0_1",
-              "multiplier": 0.1,
-              "targets": [
-                {
-                  "tag": "trumpet"
-                }
-              ],
-              "sourceNote": "Definitions doc: floot_2 is x0.1 as likely with trumpet."
-            }
-          ]
-        },
         "samples/trumpet_even_x4.wav": {
           "globalInclusionChance": 0.1,
           "activationChance": 0.01
@@ -1419,20 +1405,6 @@
         },
         "samples/accordian_2_hook_odd_x4 (consolidated).wav": {
           "globalInclusionChance": 0.1
-        },
-        "samples/vlins_1_even_x2 (consolidated).wav": {
-          "softMultiplierRules": [
-            {
-              "id": "soft_byKey_samples_vlins_1_even_x2_consolidated_wav_with_tag_trumpet_x0_1",
-              "multiplier": 0.1,
-              "targets": [
-                {
-                  "tag": "trumpet"
-                }
-              ],
-              "sourceNote": "Definitions doc: vlins_1 is x0.1 as likely with trumpet."
-            }
-          ]
         },
         "samples/glock_odd_dlay (consolidated).wav": {
           "activationChance": 0.01
@@ -1556,20 +1528,6 @@
                 }
               ],
               "sourceNote": "Definitions doc: tbone_1 is x0.1 as likely with cello_high."
-            }
-          ]
-        },
-        "samples/tbone_2_even_x2 (consolidated).wav": {
-          "softMultiplierRules": [
-            {
-              "id": "soft_byKey_samples_tbone_2_even_x2_consolidated_wav_with_tag_trumpet_x0_1",
-              "multiplier": 0.1,
-              "targets": [
-                {
-                  "tag": "trumpet"
-                }
-              ],
-              "sourceNote": "Definitions doc: tbone_2 is x0.1 as likely with trumpet."
             }
           ]
         },
@@ -1905,6 +1863,21 @@
             }
           ],
           "sourceNote": "Migrated repeated breathe_vox stutter soft multiplier rules from exact byKey profiles."
+        },
+        "regex:^(?:samples/floot_2_even_x4 \\(consolidated\\)\\.wav|samples/vlins_1_even_x2 \\(consolidated\\)\\.wav|samples/tbone_2_even_x2 \\(consolidated\\)\\.wav)$": {
+          "softMultiplierRules": [
+            {
+              "id": "soft_floot_vlins_tbone_with_trumpet_x0_1",
+              "multiplier": 0.1,
+              "targets": [
+                {
+                  "tag": "trumpet"
+                }
+              ],
+              "sourceNote": "Definitions doc: these instrument phrases are x0.1 as likely with trumpet."
+            }
+          ],
+          "sourceNote": "Migrated repeated trumpet soft multiplier rules from exact byKey profiles."
         }
       }
     },
