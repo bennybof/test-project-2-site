@@ -2290,6 +2290,29 @@
 
     applyRuleProfileToDecision(playbackState, context, decision, activeProfile, safeRandom);
 
+    if (decision.blocked) {
+      recordRuleDecisionDebug(plan, decision);
+
+      return {
+        allowed: false,
+        context,
+        decision,
+        profile: activeProfile
+      };
+    }
+
+    if (shouldContinueActiveLifecycleWithoutActivationRoll(context, activeProfile)) {
+      markDecisionAsLifecycleContinuation(decision, context);
+      recordRuleDecisionDebug(plan, decision);
+
+      return {
+        allowed: true,
+        context,
+        decision,
+        profile: activeProfile
+      };
+    }
+
     const allowed = finalizeRuleDecision(safeRandom, decision);
     recordRuleDecisionDebug(plan, decision);
 
@@ -2615,6 +2638,62 @@
 
     return decision;
   }
+  function hasLifecycleDropoutConfig(profile = {}) {
+    const dropoutConfig = getDropoutRuleConfig(profile);
+
+    return (
+      dropoutConfig.baseChance > 0 ||
+      dropoutConfig.increasePerActivation > 0
+    );
+  }
+
+  function isOneShotLikeDecisionContext(context = {}) {
+    const key = String(context.itemKey || "").toLowerCase();
+
+    if (context.kind !== "audio") {
+      return true;
+    }
+
+    if (context.entry && isLikelyOneShot(context.entry)) {
+      return true;
+    }
+
+    return (
+      key.includes("hook_drums_skip_intro") ||
+      key.includes("everything_intro") ||
+      key.includes("song_blown_up") ||
+      key.includes("advert") ||
+      key.includes("slackjaw_scratch")
+    );
+  }
+
+  function shouldContinueActiveLifecycleWithoutActivationRoll(context, profile = {}) {
+    if (!context?.lifecycleState?.activated) {
+      return false;
+    }
+
+    if (isOneShotLikeDecisionContext(context)) {
+      return false;
+    }
+
+    return hasLifecycleDropoutConfig(profile);
+  }
+
+  function markDecisionAsLifecycleContinuation(decision, context) {
+    decision.allowed = true;
+    decision.blocked = false;
+    decision.droppedOut = false;
+    decision.roll = null;
+    decision.baseChance = 1;
+    decision.chanceMultiplier = 1;
+    decision.finalChance = 1;
+
+    return addRuleDecisionReason(decision, "lifecycle_continuation_survived_dropout", {
+      lifecycleId: context.lifecycleId,
+      itemKey: context.itemKey
+    });
+  }
+
   function getSectionEnergyContext(section = {}) {
     const densityScore = Number(section.densityScore ?? section.density ?? 0);
 
