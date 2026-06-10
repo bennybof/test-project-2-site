@@ -3508,7 +3508,8 @@ function getNormalMidiHatChoiceGroupId(pattern) {
     const key = entry.key.toLowerCase();
 
     if (isMidiSample(entry)) return 0;
-    if (entry.folder === "alternate downloads") return 0.005;
+    // Alternate downloads are secret/rare full-file systems, not normal stem candidates.
+    if (entry.folder === "alternate downloads") return 0;
 
     if (key.includes("everything_intro")) return 0.01;
     if (key.includes("drop_")) return 0.1;
@@ -4457,7 +4458,8 @@ function getNormalMidiHatChoiceGroupId(pattern) {
         unfulfilled: getUnfulfilledRequiredActivations(requiredActivationState).map(item => ({ ...item }))
       },
       sectionTimeline,
-      resetPoints
+      resetPoints,
+      plannedDurationSeconds: cursorSeconds
     };
   }
 
@@ -4644,7 +4646,8 @@ function scheduleMidiPattern({
     if (hookKey && !hookSection) return false;
     if (hookSection && !hookKey && !allowNonHookInHook) return false;
 
-    if (entry.folder === "alternate downloads") return type === "normal";
+    // Alternate downloads must not be scheduled as ordinary section audio.
+    if (entry.folder === "alternate downloads") return false;
 
     if (key.includes("everything_intro")) return type === "everything_intro";
     if (hookSection) {
@@ -5250,21 +5253,8 @@ function scheduleMidiPattern({
     }
 
     if (entry.folder === "alternate downloads") {
-      if (chance(random, 0.005)) {
-        const scheduled = scheduleAudioBufferWithPlaybackState({
-          offlineContext,
-          destination,
-          buffer,
-          startTime: section.startSeconds,
-          gainValue: 0.8,
-          playbackState,
-          key,
-          entry,
-          section
-        });
-
-        return scheduled ? 1 + scheduleDependents(section.startSeconds) : 0;
-      }
+      // Secret versions/events are handled by their own top-level systems.
+      // Do not let alternate-download files appear as ordinary section audio.
       return 0;
     }
 
@@ -5715,14 +5705,25 @@ function scheduleMidiPattern({
     writeLifecycleMapToPlan(plan, lifecycleStates);
   }
 
+  function getPlanRenderDuration(plan, fallbackDuration) {
+    const plannedDuration = Number(plan?.plannedDurationSeconds);
+
+    if (Number.isFinite(plannedDuration) && plannedDuration > 0) {
+      return Math.max(plannedDuration, 1);
+    }
+
+    return Math.max(180, Number(fallbackDuration) || 180);
+  }
+
   async function renderTrack(format) {
     const random = mulberry32(currentSeed);
     const sampleRate = rules.sampleRate || 44100;
-    const duration = Math.max(180, rules.songLengthSeconds || 180);
+    const fallbackDuration = Math.max(180, rules.songLengthSeconds || 180);
 
     setStatus(`BUILDING FULL PLAN / SEED ${currentSeed}`);
 
     const plan = buildFullPlan(random);
+    const duration = getPlanRenderDuration(plan, fallbackDuration);
 
     const neededPaths = new Set();
 
