@@ -6968,6 +6968,20 @@ currentRenderBuffers = buffers;
       duration
     });
 
+    if (shouldDownloadDebugPlan()) {
+      downloadJsonDebugFile(
+        createDebugPlanSnapshot(plan, {
+          format,
+          duration,
+          sampleRate,
+          selectedAudioCount: plan.selectedAudio.length,
+          selectedMidiCount: plan.selectedMidi.length,
+          sectionCount: Array.isArray(plan.sectionTimeline) ? plan.sectionTimeline.length : 0
+        }),
+        `test-project-2-debug-plan-seed-${currentSeed}.json`
+      );
+    }
+
     const renderedBuffer = await offlineContext.startRendering();
 
     applyGlobalFadeToRenderedBuffer(renderedBuffer, globalFadeOptions);
@@ -6985,6 +6999,25 @@ currentRenderBuffers = buffers;
 
     currentSeed = makeSeed();
     applyRandomColourScheme();
+  }
+
+  function createDebugPlanSnapshot(plan, extra = {}) {
+    return {
+      createdAt: new Date().toISOString(),
+      seed: currentSeed,
+      ...extra,
+      plan
+    };
+  }
+
+  function downloadJsonDebugFile(data, filename) {
+    const json = JSON.stringify(data, null, 2);
+    const blob = new Blob([json], { type: "application/json" });
+    downloadBlob(blob, filename);
+  }
+
+  function shouldDownloadDebugPlan() {
+    return getUrlBooleanFlag("debugPlan", "downloadDebugPlan", "debugJson");
   }
 
   function audioBufferToWavBlob(buffer) {
