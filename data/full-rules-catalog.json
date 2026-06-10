@@ -1130,26 +1130,6 @@
           "activationChance": 0.25,
           "dropoutChance": 0.15
         },
-        "midi files/jazz_hats_metal_hook_even_~_ride04.mid": {
-          "groupedActivationRules": [
-            {
-              "id": "group_hook_jazz_hats_ride04_ridehard",
-              "groupId": "hook_jazz_hats_ride04_ridehard",
-              "scope": "bar",
-              "sourceNote": "User-confirmed: hook jazz hats ride04 and ridehard MIDI files activate together as one hook jazz hats pattern using two ride samples. No explicit chance is set; the first candidate uses its normal decision chance and the second reuses that grouped decision."
-            }
-          ]
-        },
-        "midi files/jazz_hats_metal_hook_even_~_ridehard.mid": {
-          "groupedActivationRules": [
-            {
-              "id": "group_hook_jazz_hats_ride04_ridehard",
-              "groupId": "hook_jazz_hats_ride04_ridehard",
-              "scope": "bar",
-              "sourceNote": "User-confirmed: hook jazz hats ride04 and ridehard MIDI files activate together as one hook jazz hats pattern using two ride samples. No explicit chance is set; the first candidate uses its normal decision chance and the second reuses that grouped decision."
-            }
-          ]
-        },
         "midi files/jazz_ride_wiv-jazz_hats_wiv-jazz_crash_metal_odd_ridehard.mid": {
           "activationChance": 1
         },
@@ -1729,8 +1709,16 @@
         },
         "regex:^(?:midi files/jazz_hats_metal_hook_even_~_ride04\\.mid|midi files/jazz_hats_metal_hook_even_~_ridehard\\.mid)$": {
           "activationChance": 0.2,
-          "sourceNote": "Migrated from repeated exact byKey activation/dropout values for a verified filename subset.",
-          "dropoutChance": 0.08
+          "sourceNote": "Migrated shared hook jazz hats pattern rules: activationChance=0.2, dropoutChance=0.08, and ride04/ridehard activate together as one grouped hook jazz hats pattern.",
+          "dropoutChance": 0.08,
+          "groupedActivationRules": [
+            {
+              "id": "group_hook_jazz_hats_ride04_ridehard",
+              "groupId": "hook_jazz_hats_ride04_ridehard",
+              "scope": "bar",
+              "sourceNote": "User-confirmed: hook jazz hats ride04 and ridehard MIDI files activate together as one hook jazz hats pattern using two ride samples. No explicit chance is set; the first candidate uses its normal decision chance and the second reuses that grouped decision."
+            }
+          ]
         },
         "regex:^(?:lyrix/nosound_lyrix_scenes_dry \\(consolidated\\)\\.wav|lyrix/nosound_lyrix_scenes_wet \\(consolidated\\)\\.wav)$": {
           "activationChance": 0.5,
