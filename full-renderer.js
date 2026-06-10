@@ -5475,6 +5475,22 @@ function scheduleMidiPattern({
       return scheduled ? 1 + scheduleDependents(section.startSeconds) : 0;
     }
 
+    if (keyLower.includes("hook_drums_skip_intro")) {
+      const scheduled = scheduleAudioBufferWithPlaybackState({
+        offlineContext,
+        destination,
+        buffer,
+        startTime: section.startSeconds,
+        gainValue: gain,
+        playbackState,
+        key,
+        entry,
+        section
+      });
+
+      return scheduled ? 1 + scheduleDependents(section.startSeconds) : 0;
+    }
+
     if (keyLower.includes("drop_") || keyLower.includes("dropped_")) {
       const localBar = Math.floor(random() * Math.max(1, section.bars));
       const startSeconds = section.startSeconds + localBar * section.barSeconds;
