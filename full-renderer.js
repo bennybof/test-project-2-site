@@ -3006,8 +3006,60 @@
     setStatus(`READY / SEED ${currentSeed} / ${scheme.name} / FULL BUILD`);
   }
 
+  function createFallbackCatalogEntryFromKey(key) {
+    const activeKey = String(key || "");
+
+    if (!activeKey) return null;
+    if (!Array.isArray(catalog?.allKeys) || !catalog.allKeys.includes(activeKey)) return null;
+
+    const fileName = activeKey.split("/").pop() || activeKey;
+    const cleanName = fileName.replace(/\.[^.]+$/, "");
+    const folder = activeKey.includes("/") ? activeKey.split("/")[0] : "";
+    const extension = (fileName.match(/\.([^.]+)$/) || [])[1] || "";
+    const type = extension.toLowerCase() === "mid"
+      ? "midi"
+      : ["wav", "mp3", "ogg", "flac", "aif", "aiff"].includes(extension.toLowerCase())
+        ? "audio"
+        : "unknown";
+
+    const filenameTags = cleanName
+      .toLowerCase()
+      .replace(/\s*\(consolidated\)\s*/g, "")
+      .replace(/#/g, " part_")
+      .split(/[^a-z0-9~]+/i)
+      .map(tag => tag.trim())
+      .filter(Boolean);
+
+    const tags = [...new Set([
+      type,
+      folder,
+      ...filenameTags
+    ].filter(Boolean))];
+
+    return {
+      key: activeKey,
+      type,
+      folder,
+      family: cleanName,
+      tags,
+      fallbackFromAllKeys: true
+    };
+  }
+
   function getCatalogEntry(key) {
-    return catalog.entriesByKey.get(key);
+    const activeKey = String(key || "");
+    const directEntry = catalog.entriesByKey.get(activeKey);
+
+    if (directEntry) return directEntry;
+
+    const fallbackEntry = createFallbackCatalogEntryFromKey(activeKey);
+
+    if (fallbackEntry) {
+      catalog.entriesByKey.set(activeKey, fallbackEntry);
+      return fallbackEntry;
+    }
+
+    return null;
   }
 
   function entryHas(entry, text) {
