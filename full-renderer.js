@@ -3076,6 +3076,115 @@
       .filter(Boolean);
   }
 
+  function getFileStemWithoutExtension(key) {
+    return String(key || "")
+      .split("/")
+      .pop()
+      .replace(/\.[^.]+$/, "")
+      .replace(/\s*\(consolidated\)\s*/gi, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+
+  function getExplicitPartNumberFromKey(key) {
+    const match = String(key || "").match(/(?:^|[\s_#-])#?(\d+)(?=\s*(?:\(|\.|$))/);
+    const hashMatch = String(key || "").match(/#\s*(\d+)/);
+
+    if (hashMatch) return Number(hashMatch[1]);
+    if (match && /#/.test(match[0])) return Number(match[1]);
+
+    return null;
+  }
+
+  function getAudioSequenceRootKey(key) {
+    const activeKey = String(key || "");
+    const folder = activeKey.includes("/") ? activeKey.split("/")[0] : "";
+    const stem = getFileStemWithoutExtension(activeKey)
+      .replace(/\s*#\s*\d+\s*$/i, "")
+      .replace(/\s+/g, " ")
+      .trim()
+      .toLowerCase();
+
+    return `${folder}/${stem}`;
+  }
+
+  function getAudioSequencePartNumber(entry) {
+    const explicitPart = Number(entry?.partNumber || getExplicitPartNumberFromKey(entry?.key));
+
+    if (Number.isFinite(explicitPart) && explicitPart > 0) {
+      return explicitPart;
+    }
+
+    return 1;
+  }
+
+  function buildAudioSequenceGroups() {
+    const groups = new Map();
+
+    for (const entry of getAllCatalogEntries()) {
+      if (!entry || !isAudio(entry) || isLyrix(entry)) continue;
+
+      const key = entry.key;
+      const partNumber = getAudioSequencePartNumber(entry);
+      const rootKey = getAudioSequenceRootKey(key);
+
+      if (!rootKey) continue;
+
+      if (!groups.has(rootKey)) {
+        groups.set(rootKey, []);
+      }
+
+      groups.get(rootKey).push({
+        key,
+        entry,
+        partNumber
+      });
+    }
+
+    for (const [rootKey, items] of groups.entries()) {
+      const uniqueByPart = new Map();
+
+      for (const item of items) {
+        if (!uniqueByPart.has(item.partNumber)) {
+          uniqueByPart.set(item.partNumber, item);
+        }
+      }
+
+      const sorted = [...uniqueByPart.values()]
+        .sort((a, b) => a.partNumber - b.partNumber);
+
+      groups.set(rootKey, sorted);
+    }
+
+    return groups;
+  }
+
+  function getAudioSequenceGroups() {
+    if (!catalog.audioSequenceGroups) {
+      catalog.audioSequenceGroups = buildAudioSequenceGroups();
+    }
+
+    return catalog.audioSequenceGroups;
+  }
+
+  function getAudioSequenceForEntry(entry) {
+    if (!entry?.key || isLyrix(entry)) return [];
+
+    const groups = getAudioSequenceGroups();
+    const rootKey = getAudioSequenceRootKey(entry.key);
+    const group = groups.get(rootKey) || [];
+
+    return group;
+  }
+
+  function isFirstAudioSequencePart(entry) {
+    const sequence = getAudioSequenceForEntry(entry);
+
+    if (sequence.length <= 1) return true;
+
+    return sequence[0]?.key === entry?.key;
+  }
+
   function entryHas(entry, text) {
     return entry.key.toLowerCase().includes(text.toLowerCase());
   }
