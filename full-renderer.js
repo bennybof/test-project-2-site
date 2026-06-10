@@ -6358,6 +6358,37 @@ function scheduleMidiPattern({
     return scheduledCount;
   }
 
+  function buildAudioLifecycleDebugSummary(plan) {
+    const selectedAudio = Array.isArray(plan?.selectedAudio) ? plan.selectedAudio : [];
+    const sections = Array.isArray(plan?.sectionTimeline) ? plan.sectionTimeline : [];
+
+    return selectedAudio.map(key => {
+      const entry = getCatalogEntry(key);
+      const plannedSections = sections
+        .filter(section => audioMatchesSection(entry, section))
+        .map(section => section.id);
+
+      const scheduledSections = sections
+        .filter(section => Array.isArray(section.scheduledAudioKeys) && section.scheduledAudioKeys.includes(key))
+        .map(section => section.id);
+
+      return {
+        key,
+        family: entry?.family || "",
+        tags: entry?.tags || [],
+        isAudio: Boolean(entry && isAudio(entry)),
+        isLyrix: Boolean(entry && isLyrix(entry)),
+        isOneShot: Boolean(entry && isLikelyOneShot(entry)),
+        isNormalNumberedSequenceStart: Boolean(entry && shouldScheduleNormalAudioSequenceAsGroup(entry)),
+        isNormalNumberedSequenceLaterPart: Boolean(entry && shouldSkipIndividualNormalAudioSequencePart(entry)),
+        plannedSectionCount: plannedSections.length,
+        scheduledSectionCount: scheduledSections.length,
+        plannedSections,
+        scheduledSections
+      };
+    });
+  }
+
   function schedulePlan({ offlineContext, destination, buffers, plan, random, duration }) {
     const sections = plan.sectionTimeline || [];
     const lifecycleStates = createLifecycleMapFromPlan(plan);
@@ -6665,6 +6696,7 @@ function scheduleMidiPattern({
     };
 
     writeLifecycleMapToPlan(plan, lifecycleStates);
+    plan.audioLifecycleDebugSummary = buildAudioLifecycleDebugSummary(plan);
   }
 
   function getSecretBypassVersions() {
