@@ -3249,6 +3249,28 @@
     return Boolean(sequence.length && sequence[0]?.key !== entry?.key);
   }
 
+  function getForcedNumberedSequenceTestKey() {
+    const rawValue = getRuleUrlParam("forceNumberedSequence") || getRuleUrlParam("forceSequence");
+
+    if (!rawValue) return "";
+
+    const value = String(rawValue).trim();
+    const normalized = value.toLowerCase().replace(/\s+/g, "_");
+
+    const aliases = {
+      "synth_downsampled": "samples/synth_downsampled_odd_xtra (consolidated).wav",
+      "downsampled": "samples/synth_downsampled_odd_xtra (consolidated).wav",
+      "gtar_1": "samples/gtar_1 #2 (consolidated).wav",
+      "ah_highest": "samples/ah_highest_main (consolidated).wav",
+      "trumpet_hook": "samples/trumpet_hook_odd_x4 (consolidated).wav"
+    };
+
+    if (aliases[normalized]) return aliases[normalized];
+    if (getCatalogEntry(value)) return value;
+
+    return "";
+  }
+
   function expandSelectedAudioSequences({
     random,
     selectedAudio = null,
@@ -5015,6 +5037,36 @@ function getNormalMidiHatChoiceGroupId(pattern) {
       }
     }
 
+    const forcedNumberedSequenceTestKey = getForcedNumberedSequenceTestKey();
+
+    if (forcedNumberedSequenceTestKey) {
+      const forcedSequenceEntry = getCatalogEntry(forcedNumberedSequenceTestKey);
+      const forcedSequenceSection =
+        sectionTimeline.find(section => section.type === "normal" && audioMatchesSection(forcedSequenceEntry, section)) ||
+        sectionTimeline.find(section => audioMatchesSection(forcedSequenceEntry, section));
+
+      if (forcedSequenceEntry && forcedSequenceSection) {
+        if (!Array.isArray(forcedSequenceSection.forcedNumberedSequenceTestKeys)) {
+          forcedSequenceSection.forcedNumberedSequenceTestKeys = [];
+        }
+
+        if (!forcedSequenceSection.forcedNumberedSequenceTestKeys.includes(forcedSequenceEntry.key)) {
+          forcedSequenceSection.forcedNumberedSequenceTestKeys.push(forcedSequenceEntry.key);
+        }
+
+        forceIncludeAudioSelection({
+          random,
+          globalInclusionState,
+          requiredActivationState,
+          selectedAudio,
+          key: forcedSequenceEntry.key,
+          reason: "forced_numbered_sequence_test_url"
+        });
+
+        recordSectionPlannedAudio(forcedSequenceSection, forcedSequenceEntry);
+      }
+    }
+
     expandSelectedWetDryPairs(selectedAudio, random, globalInclusionState, requiredActivationState);
 
     expandSelectedAudioSequences({
@@ -5853,9 +5905,11 @@ function scheduleMidiPattern({
     const lifecycleId = getAudioLifecycleId(entry.key);
     const lifecycleState = lifecycleStates ? getLifecycleState(lifecycleStates, lifecycleId) : null;
     const isContinuing = Boolean(lifecycleState?.activated);
-    const localBar = isContinuing ? allowedBars[0] : chooseOne(random, allowedBars);
+    const forceSequenceStart = Array.isArray(section?.forcedNumberedSequenceTestKeys) &&
+      section.forcedNumberedSequenceTestKeys.includes(entry.key);
+    const localBar = forceSequenceStart || isContinuing ? allowedBars[0] : chooseOne(random, allowedBars);
     const startSeconds = section.startSeconds + localBar * section.barSeconds;
-    const baseChance = getActivationChance(profile, 0.45);
+    const baseChance = forceSequenceStart ? 1 : getActivationChance(profile, 0.45);
 
     const sequenceDecisionResult = resolveRuleProfileDecision({
       random,
