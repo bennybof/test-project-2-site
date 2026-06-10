@@ -5774,21 +5774,6 @@ function scheduleMidiPattern({
     const gain = sectionGainForAudio(entry, section);
     const audioProfile = getRuleProfileForEntry(entry);
 
-    function markAudioLifecycleActivatedIfNeeded(opportunityId) {
-      if (!lifecycleStates) return;
-
-      const audioLifecycleId = getAudioLifecycleId(key);
-      const state = getLifecycleState(lifecycleStates, audioLifecycleId);
-
-      if (!state.activated) {
-        activateLifecycleItem(
-          lifecycleStates,
-          audioLifecycleId,
-          opportunityId
-        );
-      }
-    }
-
     if (isHookSynthBassSequenceKey(section, key)) {
       if (!isHookSynthBassSequenceTriggerKey(section, key)) {
         return 0;
@@ -5993,6 +5978,7 @@ function scheduleMidiPattern({
       return scheduledCount;
     }
 
+    const phraseRepeats = section.type === "normal" ? 1 : 2;
     const allowedPhraseBars = getAllowedLocalBarIndexesForKey(key, section)
       .filter(localBarIndex => !shouldBlockHookAfterSkipFirstBarAudioKey(key, section, localBarIndex));
 
@@ -6001,7 +5987,8 @@ function scheduleMidiPattern({
     const phraseBaseChance = getActivationChance(audioProfile, 0.45);
     let scheduledCount = 0;
 
-    for (const localBar of allowedPhraseBars) {
+    for (let i = 0; i < phraseRepeats; i++) {
+      const localBar = chooseOne(random, allowedPhraseBars);
       const startSeconds = section.startSeconds + localBar * section.barSeconds;
       const audioDecisionResult = resolveRuleProfileDecision({
         random,
@@ -6034,7 +6021,6 @@ function scheduleMidiPattern({
 
         if (scheduled) {
           scheduledCount += 1;
-          markAudioLifecycleActivatedIfNeeded(`${section.id}:${key}:${localBar}`);
           scheduledCount += scheduleDependents(startSeconds, audioDecisionResult.context);
         }
       }
@@ -6319,7 +6305,7 @@ function scheduleMidiPattern({
           section
         });
 
-        if (scheduledCount > 0 && !getLifecycleState(lifecycleStates, audioLifecycleId).activated) {
+        if (scheduledCount > 0) {
           activateLifecycleItem(
             lifecycleStates,
             audioLifecycleId,
