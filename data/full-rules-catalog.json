@@ -1219,77 +1219,7 @@
           "activationChance": 0.2
         },
         "samples/breathe_vox_stutter_dlay_odd_x2 (consolidated).wav": {
-          "activationChance": 0.05,
-          "softMultiplierRules": [
-            {
-              "id": "soft_byKey_samples_breathe_vox_stutter_dlay_odd_x2_consolidated_wav_with_tag_breathe_vox_big_x0_2",
-              "multiplier": 0.2,
-              "targets": [
-                {
-                  "tag": "breathe_vox_big"
-                }
-              ],
-              "sourceNote": "Definitions doc: breathe stutter and non-stutter breathe_vox are much less likely together; exact-key safe version."
-            },
-            {
-              "id": "soft_byKey_samples_breathe_vox_stutter_dlay_odd_x2_consolidated_wav_with_tag_breathe_vox_small_x0_2",
-              "multiplier": 0.2,
-              "targets": [
-                {
-                  "tag": "breathe_vox_small"
-                }
-              ],
-              "sourceNote": "Definitions doc: breathe stutter and non-stutter breathe_vox are much less likely together; exact-key safe version."
-            }
-          ]
-        },
-        "samples/breathe_vox_stutter_xtra #2 (consolidated).wav": {
-          "softMultiplierRules": [
-            {
-              "id": "soft_byKey_samples_breathe_vox_stutter_xtra_2_consolidated_wav_with_tag_breathe_vox_big_x0_2",
-              "multiplier": 0.2,
-              "targets": [
-                {
-                  "tag": "breathe_vox_big"
-                }
-              ],
-              "sourceNote": "Definitions doc: breathe stutter and non-stutter breathe_vox are much less likely together; exact-key safe version."
-            },
-            {
-              "id": "soft_byKey_samples_breathe_vox_stutter_xtra_2_consolidated_wav_with_tag_breathe_vox_small_x0_2",
-              "multiplier": 0.2,
-              "targets": [
-                {
-                  "tag": "breathe_vox_small"
-                }
-              ],
-              "sourceNote": "Definitions doc: breathe stutter and non-stutter breathe_vox are much less likely together; exact-key safe version."
-            }
-          ]
-        },
-        "samples/breathe_vox_stutter_xtra #3 (consolidated).wav": {
-          "softMultiplierRules": [
-            {
-              "id": "soft_byKey_samples_breathe_vox_stutter_xtra_3_consolidated_wav_with_tag_breathe_vox_big_x0_2",
-              "multiplier": 0.2,
-              "targets": [
-                {
-                  "tag": "breathe_vox_big"
-                }
-              ],
-              "sourceNote": "Definitions doc: breathe stutter and non-stutter breathe_vox are much less likely together; exact-key safe version."
-            },
-            {
-              "id": "soft_byKey_samples_breathe_vox_stutter_xtra_3_consolidated_wav_with_tag_breathe_vox_small_x0_2",
-              "multiplier": 0.2,
-              "targets": [
-                {
-                  "tag": "breathe_vox_small"
-                }
-              ],
-              "sourceNote": "Definitions doc: breathe stutter and non-stutter breathe_vox are much less likely together; exact-key safe version."
-            }
-          ]
+          "activationChance": 0.05
         },
         "midi files/hats_hook_metal_odd_ch.mid": {
           "dropoutChance": 0.05
@@ -1582,28 +1512,6 @@
           "activationChance": 1
         },
         "samples/breathe_vox_stutter_odd_x2_xtra (consolidated).wav": {
-          "softMultiplierRules": [
-            {
-              "id": "soft_byKey_samples_breathe_vox_stutter_odd_x2_xtra_consolidated_wav_with_tag_breathe_vox_big_x0_2",
-              "multiplier": 0.2,
-              "targets": [
-                {
-                  "tag": "breathe_vox_big"
-                }
-              ],
-              "sourceNote": "Definitions doc: breathe stutter and non-stutter breathe_vox are much less likely together; exact-key safe version."
-            },
-            {
-              "id": "soft_byKey_samples_breathe_vox_stutter_odd_x2_xtra_consolidated_wav_with_tag_breathe_vox_small_x0_2",
-              "multiplier": 0.2,
-              "targets": [
-                {
-                  "tag": "breathe_vox_small"
-                }
-              ],
-              "sourceNote": "Definitions doc: breathe stutter and non-stutter breathe_vox are much less likely together; exact-key safe version."
-            }
-          ],
           "dependentActivationRules": [
             {
               "id": "dependent_breathe_stutter_delay_after_first_stutter",
@@ -1614,150 +1522,6 @@
                 }
               ],
               "sourceNote": "Definitions: breathe_vox_stutter_dlay has 20% chance with first stutter part, while still keeping its independent 5% activation chance."
-            }
-          ]
-        },
-        "samples/breathe_vox_stutter_xtra #4 (consolidated).wav": {
-          "softMultiplierRules": [
-            {
-              "id": "soft_byKey_samples_breathe_vox_stutter_xtra_4_consolidated_wav_with_tag_breathe_vox_big_x0_2",
-              "multiplier": 0.2,
-              "targets": [
-                {
-                  "tag": "breathe_vox_big"
-                }
-              ],
-              "sourceNote": "Definitions doc: breathe stutter and non-stutter breathe_vox are much less likely together; exact-key safe version."
-            },
-            {
-              "id": "soft_byKey_samples_breathe_vox_stutter_xtra_4_consolidated_wav_with_tag_breathe_vox_small_x0_2",
-              "multiplier": 0.2,
-              "targets": [
-                {
-                  "tag": "breathe_vox_small"
-                }
-              ],
-              "sourceNote": "Definitions doc: breathe stutter and non-stutter breathe_vox are much less likely together; exact-key safe version."
-            }
-          ]
-        },
-        "samples/breathe_vox_stutter_xtra #5 (consolidated).wav": {
-          "softMultiplierRules": [
-            {
-              "id": "soft_byKey_samples_breathe_vox_stutter_xtra_5_consolidated_wav_with_tag_breathe_vox_big_x0_2",
-              "multiplier": 0.2,
-              "targets": [
-                {
-                  "tag": "breathe_vox_big"
-                }
-              ],
-              "sourceNote": "Definitions doc: breathe stutter and non-stutter breathe_vox are much less likely together; exact-key safe version."
-            },
-            {
-              "id": "soft_byKey_samples_breathe_vox_stutter_xtra_5_consolidated_wav_with_tag_breathe_vox_small_x0_2",
-              "multiplier": 0.2,
-              "targets": [
-                {
-                  "tag": "breathe_vox_small"
-                }
-              ],
-              "sourceNote": "Definitions doc: breathe stutter and non-stutter breathe_vox are much less likely together; exact-key safe version."
-            }
-          ]
-        },
-        "samples/breathe_vox_stutter_xtra #6 (consolidated).wav": {
-          "softMultiplierRules": [
-            {
-              "id": "soft_byKey_samples_breathe_vox_stutter_xtra_6_consolidated_wav_with_tag_breathe_vox_big_x0_2",
-              "multiplier": 0.2,
-              "targets": [
-                {
-                  "tag": "breathe_vox_big"
-                }
-              ],
-              "sourceNote": "Definitions doc: breathe stutter and non-stutter breathe_vox are much less likely together; exact-key safe version."
-            },
-            {
-              "id": "soft_byKey_samples_breathe_vox_stutter_xtra_6_consolidated_wav_with_tag_breathe_vox_small_x0_2",
-              "multiplier": 0.2,
-              "targets": [
-                {
-                  "tag": "breathe_vox_small"
-                }
-              ],
-              "sourceNote": "Definitions doc: breathe stutter and non-stutter breathe_vox are much less likely together; exact-key safe version."
-            }
-          ]
-        },
-        "samples/breathe_vox_stutter_xtra #7 (consolidated).wav": {
-          "softMultiplierRules": [
-            {
-              "id": "soft_byKey_samples_breathe_vox_stutter_xtra_7_consolidated_wav_with_tag_breathe_vox_big_x0_2",
-              "multiplier": 0.2,
-              "targets": [
-                {
-                  "tag": "breathe_vox_big"
-                }
-              ],
-              "sourceNote": "Definitions doc: breathe stutter and non-stutter breathe_vox are much less likely together; exact-key safe version."
-            },
-            {
-              "id": "soft_byKey_samples_breathe_vox_stutter_xtra_7_consolidated_wav_with_tag_breathe_vox_small_x0_2",
-              "multiplier": 0.2,
-              "targets": [
-                {
-                  "tag": "breathe_vox_small"
-                }
-              ],
-              "sourceNote": "Definitions doc: breathe stutter and non-stutter breathe_vox are much less likely together; exact-key safe version."
-            }
-          ]
-        },
-        "samples/breathe_vox_stutter_xtra #8 (consolidated).wav": {
-          "softMultiplierRules": [
-            {
-              "id": "soft_byKey_samples_breathe_vox_stutter_xtra_8_consolidated_wav_with_tag_breathe_vox_big_x0_2",
-              "multiplier": 0.2,
-              "targets": [
-                {
-                  "tag": "breathe_vox_big"
-                }
-              ],
-              "sourceNote": "Definitions doc: breathe stutter and non-stutter breathe_vox are much less likely together; exact-key safe version."
-            },
-            {
-              "id": "soft_byKey_samples_breathe_vox_stutter_xtra_8_consolidated_wav_with_tag_breathe_vox_small_x0_2",
-              "multiplier": 0.2,
-              "targets": [
-                {
-                  "tag": "breathe_vox_small"
-                }
-              ],
-              "sourceNote": "Definitions doc: breathe stutter and non-stutter breathe_vox are much less likely together; exact-key safe version."
-            }
-          ]
-        },
-        "samples/breathe_vox_stutter_xtra #9 (consolidated).wav": {
-          "softMultiplierRules": [
-            {
-              "id": "soft_byKey_samples_breathe_vox_stutter_xtra_9_consolidated_wav_with_tag_breathe_vox_big_x0_2",
-              "multiplier": 0.2,
-              "targets": [
-                {
-                  "tag": "breathe_vox_big"
-                }
-              ],
-              "sourceNote": "Definitions doc: breathe stutter and non-stutter breathe_vox are much less likely together; exact-key safe version."
-            },
-            {
-              "id": "soft_byKey_samples_breathe_vox_stutter_xtra_9_consolidated_wav_with_tag_breathe_vox_small_x0_2",
-              "multiplier": 0.2,
-              "targets": [
-                {
-                  "tag": "breathe_vox_small"
-                }
-              ],
-              "sourceNote": "Definitions doc: breathe stutter and non-stutter breathe_vox are much less likely together; exact-key safe version."
             }
           ]
         },
@@ -2116,6 +1880,31 @@
         "regex:^(?:samples/synth_downsampled_odd_xtra #3 \\(consolidated\\)\\.wav|samples/synth_downsampled_odd_xtra #4 \\(consolidated\\)\\.wav)$": {
           "dropoutChance": 0.3,
           "sourceNote": "Migrated from repeated exact byKey activation/dropout values for a verified filename subset."
+        },
+        "regex:^(?:samples/breathe_vox_stutter_dlay_odd_x2 \\(consolidated\\)\\.wav|samples/breathe_vox_stutter_xtra #2 \\(consolidated\\)\\.wav|samples/breathe_vox_stutter_xtra #3 \\(consolidated\\)\\.wav|samples/breathe_vox_stutter_odd_x2_xtra \\(consolidated\\)\\.wav|samples/breathe_vox_stutter_xtra #4 \\(consolidated\\)\\.wav|samples/breathe_vox_stutter_xtra #5 \\(consolidated\\)\\.wav|samples/breathe_vox_stutter_xtra #6 \\(consolidated\\)\\.wav|samples/breathe_vox_stutter_xtra #7 \\(consolidated\\)\\.wav|samples/breathe_vox_stutter_xtra #8 \\(consolidated\\)\\.wav|samples/breathe_vox_stutter_xtra #9 \\(consolidated\\)\\.wav)$": {
+          "softMultiplierRules": [
+            {
+              "id": "soft_breathe_vox_stutters_with_breathe_vox_big_x0_2",
+              "multiplier": 0.2,
+              "targets": [
+                {
+                  "tag": "breathe_vox_big"
+                }
+              ],
+              "sourceNote": "Definitions doc: breathe stutter and non-stutter breathe_vox are much less likely together."
+            },
+            {
+              "id": "soft_breathe_vox_stutters_with_breathe_vox_small_x0_2",
+              "multiplier": 0.2,
+              "targets": [
+                {
+                  "tag": "breathe_vox_small"
+                }
+              ],
+              "sourceNote": "Definitions doc: breathe stutter and non-stutter breathe_vox are much less likely together."
+            }
+          ],
+          "sourceNote": "Migrated repeated breathe_vox stutter soft multiplier rules from exact byKey profiles."
         }
       }
     },
