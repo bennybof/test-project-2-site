@@ -3062,6 +3062,20 @@
     return null;
   }
 
+  function getAllCatalogEntries() {
+    const entryKeys = Array.isArray(catalog?.entries)
+      ? catalog.entries.map(entry => entry?.key).filter(Boolean)
+      : [];
+
+    const keys = entryKeys.length
+      ? entryKeys
+      : (Array.isArray(catalog?.allKeys) ? catalog.allKeys : []);
+
+    return keys
+      .map(key => getCatalogEntry(key))
+      .filter(Boolean);
+  }
+
   function entryHas(entry, text) {
     return entry.key.toLowerCase().includes(text.toLowerCase());
   }
@@ -4261,7 +4275,7 @@ function getNormalMidiHatChoiceGroupId(pattern) {
       tags: ["ending"]
     });
 
-    const audioEntries = catalog.entries.filter(entry => isAudio(entry) && !isMidiSample(entry));
+    const audioEntries = getAllCatalogEntries().filter(entry => isAudio(entry) && !isMidiSample(entry));
     const midiPatternPool = midiPatterns.patterns.filter(isDrumMidiPattern);
 
     // Keep important foundations available.
@@ -6172,7 +6186,7 @@ function scheduleMidiPattern({
         });
 
         if (!hasAnySelectedLyrix) {
-          const lyrixCandidates = catalog.entries.filter(entry =>
+          const lyrixCandidates = getAllCatalogEntries().filter(entry =>
             isLyrix(entry) &&
             !entry.key.toLowerCase().includes("outburst") &&
             !entry.key.toLowerCase().includes("grm_")
