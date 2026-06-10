@@ -6707,9 +6707,25 @@
         "samples/rev_crash_metal_even_hook.wav"
       ],
       "metal": [
-        "samples/rev_crash_metal_even_xtra.wav",
+        "samples/big_crash_layer_odd_dlay_metal (consolidated).wav",
+        "samples/big_crash_layer_odd_metal (consolidated).wav",
+        "samples/big_wash_build_metal_suspense (consolidated).wav",
+        "samples/crash_metal_odd_metal (consolidated).wav",
+        "samples/crash_wash_hook_xtra_metal.wav",
+        "samples/crash_wash_hook_xtra_metal_2.wav",
+        "samples/crash_washes_metal_dlay_even (consolidated).wav",
+        "samples/crash_washes_metal_even (consolidated).wav",
+        "samples/drop_metal.wav",
+        "samples/jazz_crash_metal_dlay_odd_xtra (consolidated).wav",
+        "samples/jazz_crash_metal_hook_odd.wav",
+        "samples/jazz_crash_metal_odd (consolidated).wav",
+        "samples/oh_rev_metal_2_odd_xtra.wav",
+        "samples/oh_rev_metal_hook_odd.wav",
+        "samples/oh_rev_metal_odd_~_xtra.wav",
         "samples/rev_crash_metal_even_dlay_xtra.wav",
-        "samples/rev_crash_metal_even_hook.wav"
+        "samples/rev_crash_metal_even_hook.wav",
+        "samples/rev_crash_metal_even_xtra.wav",
+        "samples/small_wash_build_metal_odd_xtra (consolidated).wav"
       ],
       "even": [
         "samples/rev_crash_metal_even_xtra.wav",
