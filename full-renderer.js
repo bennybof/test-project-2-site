@@ -2289,16 +2289,14 @@
       };
     }
 
-    applyRuleProfileToDecision(playbackState, context, decision, activeProfile, safeRandom);
-
-    if (allowLifecycleContinuation && !decision.blocked && context.lifecycleState?.activated) {
+    if (allowLifecycleContinuation && context.lifecycleState?.activated) {
       decision.allowed = true;
       decision.roll = null;
       decision.baseChance = 1;
       decision.chanceMultiplier = 1;
       decision.finalChance = 1;
 
-      addRuleDecisionReason(decision, "lifecycle_continuation_survived_dropout", {
+      addRuleDecisionReason(decision, "active_lifecycle_continues_after_dropout_check", {
         lifecycleId: context.lifecycleId,
         itemKey: context.itemKey
       });
@@ -2312,6 +2310,8 @@
         profile: activeProfile
       };
     }
+
+    applyRuleProfileToDecision(playbackState, context, decision, activeProfile, safeRandom);
 
     const allowed = finalizeRuleDecision(safeRandom, decision);
     recordRuleDecisionDebug(plan, decision);
@@ -6331,7 +6331,8 @@ function scheduleMidiPattern({
         localBarIndex: localBar,
         startSeconds,
         baseChance: phraseBaseChance,
-        profile: audioProfile
+        profile: audioProfile,
+        allowLifecycleContinuation: true
       });
 
       if (audioDecisionResult.allowed) {
@@ -6460,7 +6461,8 @@ function scheduleMidiPattern({
           localBarIndex,
           startSeconds: t,
           baseChance: midiBaseChance,
-          profile: midiProfile
+          profile: midiProfile,
+          allowLifecycleContinuation: !String(pattern.file || "").toLowerCase().includes("crash")
         });
 
         if (midiDecisionResult.allowed) {
@@ -6523,8 +6525,10 @@ function scheduleMidiPattern({
           section,
           lifecycleStates,
           localBarIndex,
+          startSeconds: t,
           baseChance: midiBaseChance,
-          profile: midiProfile
+          profile: midiProfile,
+          allowLifecycleContinuation: true
         });
 
         if (!midiDecisionResult.allowed) continue;
