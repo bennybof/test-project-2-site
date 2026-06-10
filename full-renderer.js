@@ -5819,35 +5819,76 @@ function scheduleMidiPattern({
     applyRandomColourScheme();
   }
 
+  function getUrlBooleanFlag(...names) {
+    const params = new URLSearchParams(window.location.search);
+
+    return names.some(name => {
+      const rawValue = params.get(name);
+
+      if (rawValue === null) return false;
+
+      const value = String(rawValue).trim().toLowerCase();
+
+      return value === "" || value === "1" || value === "true" || value === "yes";
+    });
+  }
+
   function chooseGlobalFadeOptions(random) {
+    const forcedFadeIn = getUrlBooleanFlag("forceFadeIn", "forceGlobalFadeIn");
+    const forcedFadeOut = getUrlBooleanFlag("forceFadeOut", "forceGlobalFadeOut");
+    const disabledFadeIn = getUrlBooleanFlag("noFadeIn", "disableFadeIn");
+    const disabledFadeOut = getUrlBooleanFlag("noFadeOut", "disableFadeOut");
+
     return {
-      fadeIn: chance(random, 0.1),
-      fadeOut: chance(random, 0.1),
+      fadeIn: disabledFadeIn ? false : (forcedFadeIn || chance(random, 0.1)),
+      fadeOut: disabledFadeOut ? false : (forcedFadeOut || chance(random, 0.1)),
       fadeSeconds: 30,
-      shape: "exponential"
+      shape: "exponential",
+      forcedFadeIn,
+      forcedFadeOut
     };
   }
 
-  function applyGlobalFadeEnvelope(masterGain, duration, options = {}) {
-    const baseGain = Math.max(0.0001, Number(rules.masterGain ?? 0.72));
-    const fadeSeconds = Math.min(
-      Math.max(0, Number(options.fadeSeconds) || 0),
-      Math.max(0, Number(duration) || 0)
-    );
+  function getExponentialFadeMultiplier(progress, fadeOut = false) {
+    const minGain = 0.0001;
+    const safeProgress = Math.max(0, Math.min(1, Number(progress) || 0));
 
-    masterGain.gain.setValueAtTime(baseGain, 0);
+    return fadeOut
+      ? Math.exp(Math.log(minGain) * safeProgress)
+      : Math.exp(Math.log(minGain) * (1 - safeProgress));
+  }
 
-    if (options.fadeIn && fadeSeconds > 0) {
-      masterGain.gain.setValueAtTime(0.0001, 0);
-      masterGain.gain.exponentialRampToValueAtTime(baseGain, fadeSeconds);
+  function applyGlobalFadeToRenderedBuffer(renderedBuffer, options = {}) {
+    if (!renderedBuffer) return renderedBuffer;
+
+    const fadeSeconds = Math.max(0, Number(options.fadeSeconds) || 0);
+    const sampleRate = renderedBuffer.sampleRate || 44100;
+    const totalSamples = renderedBuffer.length || 0;
+    const fadeSamples = Math.min(totalSamples, Math.floor(fadeSeconds * sampleRate));
+
+    if (fadeSamples <= 0) return renderedBuffer;
+
+    for (let channel = 0; channel < renderedBuffer.numberOfChannels; channel++) {
+      const data = renderedBuffer.getChannelData(channel);
+
+      if (options.fadeIn) {
+        for (let i = 0; i < fadeSamples; i++) {
+          const progress = fadeSamples <= 1 ? 1 : i / (fadeSamples - 1);
+          data[i] *= getExponentialFadeMultiplier(progress, false);
+        }
+      }
+
+      if (options.fadeOut) {
+        const fadeStart = totalSamples - fadeSamples;
+
+        for (let i = 0; i < fadeSamples; i++) {
+          const progress = fadeSamples <= 1 ? 1 : i / (fadeSamples - 1);
+          data[fadeStart + i] *= getExponentialFadeMultiplier(progress, true);
+        }
+      }
     }
 
-    if (options.fadeOut && fadeSeconds > 0) {
-      const fadeOutStart = Math.max(0, Number(duration) - fadeSeconds);
-
-      masterGain.gain.setValueAtTime(baseGain, fadeOutStart);
-      masterGain.gain.exponentialRampToValueAtTime(0.0001, Math.max(fadeOutStart, Number(duration)));
-    }
+    return renderedBuffer;
   }
 
   function getPlanRenderDuration(plan, fallbackDuration) {
@@ -5903,7 +5944,7 @@ function scheduleMidiPattern({
     );
 
     const masterGain = offlineContext.createGain();
-    applyGlobalFadeEnvelope(masterGain, duration, globalFadeOptions);
+    masterGain.gain.value = rules.masterGain ?? 0.72;
     masterGain.connect(offlineContext.destination);
 
     const buffers = new Map();
@@ -5926,6 +5967,8 @@ currentRenderBuffers = buffers;
     });
 
     const renderedBuffer = await offlineContext.startRendering();
+
+    applyGlobalFadeToRenderedBuffer(renderedBuffer, globalFadeOptions);
 
     if (format === "wav") {
       const wavBlob = audioBufferToWavBlob(renderedBuffer);
