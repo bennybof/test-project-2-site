@@ -1155,12 +1155,6 @@
             }
           ]
         },
-        "midi files/jazz_rides_metal_ridehard.mid": {
-          "activationChance": 1
-        },
-        "midi files/jazz_rides_wiv-jazz-hats_metal_ridehard.mid": {
-          "activationChance": 1
-        },
         "midi files/jazz_ride_wiv-jazz_hats_wiv-jazz_crash_metal_odd_ridehard.mid": {
           "activationChance": 1
         },
@@ -1227,7 +1221,6 @@
           "sourceNote": "Normal crash now follows #metal global selection and user-confirmed tension/emphasis/crescendo activation rules."
         },
         "midi files/hats_hook_metal_#2_ch.mid": {
-          "activationChance": 0.2,
           "dropoutChance": 0.08
         },
         "samples/breathe_vox_big_dry_even_x2.wav": {
@@ -1320,15 +1313,12 @@
           ]
         },
         "midi files/hats_hook_metal_odd_ch.mid": {
-          "activationChance": 0.2,
           "dropoutChance": 0.05
         },
         "midi files/hats_hook_metal_odd_oh.mid": {
-          "activationChance": 0.2,
           "dropoutChance": 0.08
         },
         "midi files/hats_hook_metal_#2_oh.mid": {
-          "activationChance": 0.2,
           "dropoutChance": 0.08
         },
         "midi files/samples/ride03.wav": {
@@ -1348,18 +1338,6 @@
         },
         "midi files/beepipes_ghosts_drums_beepipe.mid": {
           "activationChance": 0.005
-        },
-        "midi files/snare_pattern_drums_snare.mid": {
-          "activationChance": 0.15,
-          "dropoutChance": 0.4
-        },
-        "midi files/samples/snare.wav": {
-          "activationChance": 0.15,
-          "dropoutChance": 0.4
-        },
-        "midi files/snare_xtra_drums_even_snare.mid": {
-          "activationChance": 0.15,
-          "dropoutChance": 0.4
         },
         "midi files/samples/crash.wav": {
           "activationChance": 0.8,
@@ -1471,12 +1449,10 @@
           "activationChance": 0.5
         },
         "samples/cello_even_x2 (consolidated).wav": {
-          "activationChance": 0.8,
-          "dropoutChance": 0.05
+          "activationChance": 0.8
         },
         "samples/cello_high_even_x2 (consolidated).wav": {
           "activationChance": 0.8,
-          "dropoutChance": 0.05,
           "softMultiplierRules": [
             {
               "id": "soft_byKey_samples_cello_high_even_x2_consolidated_wav_with_key_samples_vlins_long_suspense_odd_x2_consolidated_wav_x0_1",
@@ -1502,14 +1478,7 @@
         },
         "samples/cello_wiv-bass_even (consolidated).wav": {
           "globalInclusionChance": 1,
-          "activationChance": 0.005,
-          "dropoutChance": 0.05
-        },
-        "samples/bassish_glitchy_hook_odd_x4 (consolidated).wav": {
-          "activationChance": 0.7
-        },
-        "samples/bassish_glitchy_hook_odd_x4 #2 (consolidated).wav": {
-          "activationChance": 0.7
+          "activationChance": 0.005
         },
         "samples/high_bassish_hook_odd_x2 (consolidated) #2.wav": {
           "activationChance": 0.5,
@@ -1530,8 +1499,7 @@
         },
         "samples/hippy_synth_wiv-bass_odd (consolidated).wav": {
           "globalInclusionChance": 1,
-          "activationChance": 0.005,
-          "dropoutChance": 0.05
+          "activationChance": 0.005
         },
         "samples/synth_main_odd (consolidated).wav": {
           "activationChance": 0.02,
@@ -1564,7 +1532,6 @@
         },
         "samples/floot_1_even_x4 (consolidated).wav": {
           "activationChance": 0.1,
-          "dropoutChance": 0.2,
           "softMultiplierRules": [
             {
               "id": "soft_byKey_samples_floot_1_even_x4_consolidated_wav_with_key_samples_vlins_long_suspense_odd_x2_consolidated_wav_x0_1",
@@ -1580,7 +1547,6 @@
         },
         "samples/floot_2_even_x4 (consolidated).wav": {
           "activationChance": 0.1,
-          "dropoutChance": 0.2,
           "softMultiplierRules": [
             {
               "id": "soft_byKey_samples_floot_2_even_x4_consolidated_wav_with_tag_trumpet_x0_1",
@@ -1594,29 +1560,15 @@
             }
           ]
         },
-        "samples/floot_hook_even_x2 (consolidated).wav": {
-          "dropoutChance": 0.2
-        },
         "samples/trumpet_even_x4.wav": {
           "globalInclusionChance": 0.1,
-          "activationChance": 0.01,
-          "dropoutChance": 0.5
+          "activationChance": 0.01
         },
         "samples/trumpet_hook_odd_x4 (consolidated).wav": {
-          "activationChance": 0.2,
-          "dropoutChance": 0.5
+          "activationChance": 0.2
         },
         "samples/trumpet_hook_odd_x4 (consolidated) #2.wav": {
-          "activationChance": 0.2,
-          "dropoutChance": 0.5
-        },
-        "samples/clarinet_even_x2 (consolidated).wav": {
-          "activationChance": 0.2,
-          "dropoutChance": 0.5
-        },
-        "samples/clarinet_hook_x4_even (consolidated).wav": {
-          "activationChance": 0.2,
-          "dropoutChance": 0.5
+          "activationChance": 0.2
         },
         "samples/accordian_odd_x4 (consolidated).wav": {
           "globalInclusionChance": 0.2,
@@ -1635,8 +1587,6 @@
           "dropoutChance": 0.7
         },
         "samples/vlins_1_even_x2 (consolidated).wav": {
-          "activationChance": 0.005,
-          "dropoutChance": 0.3,
           "softMultiplierRules": [
             {
               "id": "soft_byKey_samples_vlins_1_even_x2_consolidated_wav_with_tag_trumpet_x0_1",
@@ -1649,10 +1599,6 @@
               "sourceNote": "Definitions doc: vlins_1 is x0.1 as likely with trumpet."
             }
           ]
-        },
-        "samples/vlins_long_suspense_odd_x2 (consolidated).wav": {
-          "activationChance": 0.005,
-          "dropoutChance": 0.3
         },
         "samples/rhodes_low_hook_odd_x4 (consolidated).wav": {
           "activationChance": 0.3,
@@ -1690,15 +1636,10 @@
           "activationChance": 0.1,
           "dropoutChance": 0.1
         },
-        "samples/beeps_intro_odd (consolidated).wav": {
-          "activationChance": 0.2
-        },
         "samples/beeps_odd_x2_xtra (consolidated).wav": {
-          "activationChance": 0.2,
           "dropoutChance": 0.5
         },
         "samples/beeps_xtra_odd (consolidated).wav": {
-          "activationChance": 0.2,
           "dropoutChance": 0.5
         },
         "midi files/samples/coin.wav": {
@@ -1728,40 +1669,6 @@
         "samples/pad_2_odd_xtra (consolidated).wav": {
           "activationChance": 0.2,
           "dropoutChance": 0.01
-        },
-        "samples/bagoo_odd (consolidated).wav": {
-          "activationChance": 0.5,
-          "dropoutChance": 0.2
-        },
-        "samples/bagoo_ext_even (consolidated).wav": {
-          "activationChance": 0.5,
-          "dropoutChance": 0.2
-        },
-        "samples/bagoo_low_odd (consolidated).wav": {
-          "activationChance": 0.5,
-          "dropoutChance": 0.2
-        },
-        "samples/random_vox_dry_x4_even_~.wav": {
-          "activationChance": 0.05
-        },
-        "samples/random_vox_wet_x4_even_~.wav": {
-          "activationChance": 0.05
-        },
-        "samples/other_vox_dry_even_x2.wav": {
-          "activationChance": 0.1,
-          "dropoutChance": 0.3
-        },
-        "samples/other_vox_wet_even_x2.wav": {
-          "activationChance": 0.1,
-          "dropoutChance": 0.3
-        },
-        "samples/wierd_vox_dry_odd_x2 (consolidated).wav": {
-          "activationChance": 0.1,
-          "dropoutChance": 0.3
-        },
-        "samples/wierd_vox_wet_odd_x2.wav": {
-          "activationChance": 0.1,
-          "dropoutChance": 0.3
         },
         "samples/accbreath_1_~_even.wav": {
           "activationChance": 0.8
@@ -1807,14 +1714,6 @@
           "globalInclusionChance": 0.1,
           "activationChance": 0.05
         },
-        "samples/window_wipe_xtra_even_hook_x4.wav": {
-          "activationChance": 0.01,
-          "dropoutChance": 0.4
-        },
-        "samples/window_wipe_2_xtra_even_hook_x4.wav": {
-          "activationChance": 0.01,
-          "dropoutChance": 0.4
-        },
         "samples/oh_rev_metal_odd_~_xtra.wav": {
           "activationChance": 0.05,
           "dropoutChance": 0.5
@@ -1828,16 +1727,7 @@
           "dropoutChance": 0.5
         },
         "samples/hippy_synth_odd (consolidated).wav": {
-          "activationChance": 0.01,
-          "dropoutChance": 0.05
-        },
-        "samples/shaker_small_xtra (consolidated).wav": {
-          "activationChance": 0.005,
-          "dropoutChance": 0.01
-        },
-        "samples/shaker_big_xtra (consolidated).wav": {
-          "activationChance": 0.005,
-          "dropoutChance": 0.01
+          "activationChance": 0.01
         },
         "lyrix/buf_cardtalk_lyrix_odd_dry (consolidated) #2.wav": {
           "activationChance": 0.1
@@ -2151,35 +2041,47 @@
       "byFamily": {
         "bagoo": {
           "globalInclusionChance": 0.9,
-          "sourceNote": "Migrated from identical byKey globalInclusionChance values for the complete bagoo family."
+          "sourceNote": "Migrated from identical byKey globalInclusionChance values for the complete bagoo family. Migrated shared activationChance from repeated byKey values. Migrated shared dropoutChance from repeated byKey values.",
+          "activationChance": 0.5,
+          "dropoutChance": 0.2
         },
         "bassish": {
           "globalInclusionChance": 0.5,
-          "sourceNote": "Migrated from identical byKey globalInclusionChance values for the complete bassish family."
+          "sourceNote": "Migrated from identical byKey globalInclusionChance values for the complete bassish family. Migrated shared activationChance from repeated byKey values.",
+          "activationChance": 0.7
         },
         "beeps": {
           "globalInclusionChance": 0.5,
-          "sourceNote": "Migrated from identical byKey globalInclusionChance values for the complete beeps family."
+          "sourceNote": "Migrated from identical byKey globalInclusionChance values for the complete beeps family. Migrated shared activationChance from repeated byKey values.",
+          "activationChance": 0.2
         },
         "clarinet": {
           "globalInclusionChance": 0.5,
-          "sourceNote": "Migrated from identical byKey globalInclusionChance values for the complete clarinet family."
+          "sourceNote": "Migrated from identical byKey globalInclusionChance values for the complete clarinet family. Migrated shared activationChance from repeated byKey values. Migrated shared dropoutChance from repeated byKey values.",
+          "activationChance": 0.2,
+          "dropoutChance": 0.5
         },
         "floot": {
           "globalInclusionChance": 0.4,
-          "sourceNote": "Migrated from identical byKey globalInclusionChance values for the complete floot family."
+          "sourceNote": "Migrated from identical byKey globalInclusionChance values for the complete floot family. Migrated shared dropoutChance from repeated byKey values.",
+          "dropoutChance": 0.2
         },
         "other": {
           "globalInclusionChance": 0.5,
-          "sourceNote": "Migrated from identical byKey globalInclusionChance values for the complete other family."
+          "sourceNote": "Migrated from identical byKey globalInclusionChance values for the complete other family. Migrated shared activationChance from repeated byKey values. Migrated shared dropoutChance from repeated byKey values.",
+          "activationChance": 0.1,
+          "dropoutChance": 0.3
         },
         "random": {
           "globalInclusionChance": 0.2,
-          "sourceNote": "Migrated from identical byKey globalInclusionChance values for the complete random family."
+          "sourceNote": "Migrated from identical byKey globalInclusionChance values for the complete random family. Migrated shared activationChance from repeated byKey values.",
+          "activationChance": 0.05
         },
         "shaker": {
           "globalInclusionChance": 0.2,
-          "sourceNote": "Migrated from identical byKey globalInclusionChance values for the complete shaker family."
+          "sourceNote": "Migrated from identical byKey globalInclusionChance values for the complete shaker family. Migrated shared activationChance from repeated byKey values. Migrated shared dropoutChance from repeated byKey values.",
+          "activationChance": 0.005,
+          "dropoutChance": 0.01
         },
         "typewriter": {
           "globalInclusionChance": 0.1,
@@ -2187,19 +2089,27 @@
         },
         "vlins": {
           "globalInclusionChance": 0.5,
-          "sourceNote": "Migrated from identical byKey globalInclusionChance values for the complete vlins family."
+          "sourceNote": "Migrated from identical byKey globalInclusionChance values for the complete vlins family. Migrated shared activationChance from repeated byKey values. Migrated shared dropoutChance from repeated byKey values.",
+          "activationChance": 0.005,
+          "dropoutChance": 0.3
         },
         "wierd": {
           "globalInclusionChance": 0.5,
-          "sourceNote": "Migrated from identical byKey globalInclusionChance values for the complete wierd family."
+          "sourceNote": "Migrated from identical byKey globalInclusionChance values for the complete wierd family. Migrated shared activationChance from repeated byKey values. Migrated shared dropoutChance from repeated byKey values.",
+          "activationChance": 0.1,
+          "dropoutChance": 0.3
         },
         "window": {
           "globalInclusionChance": 0.5,
-          "sourceNote": "Migrated from identical byKey globalInclusionChance values for the complete window family."
+          "sourceNote": "Migrated from identical byKey globalInclusionChance values for the complete window family. Migrated shared activationChance from repeated byKey values. Migrated shared dropoutChance from repeated byKey values.",
+          "activationChance": 0.01,
+          "dropoutChance": 0.4
         },
         "snare": {
           "globalInclusionChance": 0.5,
-          "sourceNote": "Migrated shared snare family globalInclusionChance; any different byKey values are preserved as explicit overrides."
+          "sourceNote": "Migrated shared snare family globalInclusionChance; any different byKey values are preserved as explicit overrides. Migrated shared activationChance from repeated byKey values. Migrated shared dropoutChance from repeated byKey values.",
+          "activationChance": 0.15,
+          "dropoutChance": 0.4
         },
         "big": {
           "globalInclusionChance": 1,
@@ -2207,11 +2117,13 @@
         },
         "cello": {
           "globalInclusionChance": 0.5,
-          "sourceNote": "Migrated shared cello family globalInclusionChance; any different byKey values are preserved as explicit overrides."
+          "sourceNote": "Migrated shared cello family globalInclusionChance; any different byKey values are preserved as explicit overrides. Migrated shared dropoutChance from repeated byKey values.",
+          "dropoutChance": 0.05
         },
         "hippy": {
           "globalInclusionChance": 0.1,
-          "sourceNote": "Migrated shared hippy family globalInclusionChance; any different byKey values are preserved as explicit overrides."
+          "sourceNote": "Migrated shared hippy family globalInclusionChance; any different byKey values are preserved as explicit overrides. Migrated shared dropoutChance from repeated byKey values.",
+          "dropoutChance": 0.05
         },
         "pad": {
           "globalInclusionChance": 0.1,
@@ -2219,7 +2131,16 @@
         },
         "trumpet": {
           "globalInclusionChance": 0.5,
-          "sourceNote": "Migrated shared trumpet family globalInclusionChance; any different byKey values are preserved as explicit overrides."
+          "sourceNote": "Migrated shared trumpet family globalInclusionChance; any different byKey values are preserved as explicit overrides. Migrated shared dropoutChance from repeated byKey values.",
+          "dropoutChance": 0.5
+        },
+        "hats": {
+          "activationChance": 0.2,
+          "sourceNote": "Migrated shared activationChance from repeated byKey values."
+        },
+        "jazz_rides": {
+          "activationChance": 1,
+          "sourceNote": "Migrated shared activationChance from repeated byKey values."
         }
       },
       "byKeyPattern": {
