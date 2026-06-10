@@ -3581,7 +3581,63 @@ function getNormalMidiHatChoiceGroupId(pattern) {
     }
   }
 
-    function buildFullPlan(random) {
+    function getRuleUrlParam(name) {
+    const params = new URLSearchParams(window.location.search);
+    return String(params.get(name) || "").trim();
+  }
+
+  function getRuleUrlBooleanFlag(...names) {
+    return names.some(name => {
+      const rawValue = getRuleUrlParam(name);
+
+      if (!rawValue && !new URLSearchParams(window.location.search).has(name)) {
+        return false;
+      }
+
+      const value = rawValue.toLowerCase();
+
+      return value === "" || value === "1" || value === "true" || value === "yes";
+    });
+  }
+
+  function chooseHookStartDecision(random) {
+    const forceHookStart = getRuleUrlBooleanFlag("forceHookStart", "forceSongStartHook");
+    const disableHookStart = getRuleUrlBooleanFlag("noHookStart", "disableHookStart");
+    const forcedMethod = getRuleUrlParam("forceHookStartMethod").toLowerCase();
+
+    if (disableHookStart) {
+      return {
+        startsInHook: false,
+        method: "disabled"
+      };
+    }
+
+    const startsInHook = forceHookStart || chance(random, 0.1);
+
+    if (!startsInHook) {
+      return {
+        startsInHook: false,
+        method: "normal_song_start"
+      };
+    }
+
+    const method = forcedMethod === "skip" || forcedMethod === "hook_drums_skip_intro"
+      ? "hook_drums_skip_intro"
+      : forcedMethod === "normal" || forcedMethod === "normal_hook_start"
+        ? "normal_hook_start"
+        : chance(random, 0.5)
+          ? "normal_hook_start"
+          : "hook_drums_skip_intro";
+
+    return {
+      startsInHook: true,
+      method,
+      forceGlobalFadeIn: method === "normal_hook_start",
+      source: forceHookStart ? "forced_url" : "random_10_percent"
+    };
+  }
+
+  function buildFullPlan(random) {
     const duration = Math.max(180, rules.songLengthSeconds || 180);
 
     const mainBpm = catalog.rulePools.timing.mainBpm;
@@ -3605,6 +3661,7 @@ function getNormalMidiHatChoiceGroupId(pattern) {
     const resetPoints = [];
     const lyrixSectionUsage = new Map();
     const includedBridgeLyrixSections = selectIncludedBridgeLyrixSections(random);
+    const hookStartDecision = chooseHookStartDecision(random);
 
     let cursorSeconds = 0;
     let cursorBars = 0;
@@ -3692,50 +3749,84 @@ function getNormalMidiHatChoiceGroupId(pattern) {
       });
     }
 
-    // Intro / opening normal section.
-    addSection("normal", 8, { reset: true, tags: ["opening"] });
-    // everything_intro is rare but explicit.
-    if (chance(random, catalog.rulePools.everythingIntro.globalInclusionChance ?? 0.01)) {
-      const everythingIntroCandidates = catalog.rulePools.everythingIntro.candidates || [];
-      const everythingIntro = chooseOne(random, everythingIntroCandidates);
+    if (hookStartDecision.startsInHook) {
+      console.log("[hook start decision]", hookStartDecision);
 
-      if (everythingIntro) {
+      if (hookStartDecision.method === "hook_drums_skip_intro") {
+        addSection("hook_drums_skip_intro", 2, {
+          reset: true,
+          tags: ["hook", "hook_intro", "hook_drums_skip_intro", "section_intro"]
+        });
+
         forceIncludeAudioSelection({
           random,
           globalInclusionState,
           requiredActivationState,
           selectedAudio,
-          key: everythingIntro,
-          reason: "forced_everything_intro_candidate"
+          key: "samples/hook_drums_skip_intro.wav",
+          reason: "forced_hook_drums_skip_intro_song_start"
         });
       }
 
-      for (const ah of catalog.rulePools.everythingIntro.ahMains) {
-        forceIncludeAudioSelection({
-          random,
-          globalInclusionState,
-          requiredActivationState,
-          selectedAudio,
-          key: ah,
-          reason: "forced_everything_intro_ah_main"
-        });
-      }
-
-      if (catalog.rulePools.everythingIntro.crash) {
-        forceIncludeAudioSelection({
-          random,
-          globalInclusionState,
-          requiredActivationState,
-          selectedAudio,
-          key: catalog.rulePools.everythingIntro.crash,
-          reason: "forced_everything_intro_crash"
-        });
-      }
-
-      addSection("everything_intro", 8, {
+      addSection("hook", 8, {
         reset: true,
-        tags: ["intro", "rare"]
+        tags: ["hook", "song_start_hook", hookStartDecision.method]
       });
+
+      forceIncludeAudioSelection({
+        random,
+        globalInclusionState,
+        requiredActivationState,
+        selectedAudio,
+        key: "samples/synth_bass_1_hook_odd_x4 (consolidated).wav",
+        reason: "forced_song_start_hook_synth_bass_anchor"
+      });
+    } else {
+      addSection("normal", 8, { reset: true, tags: ["normal"] });
+
+      // everything_intro is rare but explicit.
+      if (chance(random, catalog.rulePools.everythingIntro.globalInclusionChance ?? 0.01)) {
+        const everythingIntroCandidates = catalog.rulePools.everythingIntro.candidates || [];
+        const everythingIntro = chooseOne(random, everythingIntroCandidates);
+
+        if (everythingIntro) {
+          forceIncludeAudioSelection({
+            random,
+            globalInclusionState,
+            requiredActivationState,
+            selectedAudio,
+            key: everythingIntro,
+            reason: "forced_everything_intro_candidate"
+          });
+        }
+
+        for (const ah of catalog.rulePools.everythingIntro.ahMains) {
+          forceIncludeAudioSelection({
+            random,
+            globalInclusionState,
+            requiredActivationState,
+            selectedAudio,
+            key: ah,
+            reason: "forced_everything_intro_ah_main"
+          });
+        }
+
+        if (catalog.rulePools.everythingIntro.crash) {
+          forceIncludeAudioSelection({
+            random,
+            globalInclusionState,
+            requiredActivationState,
+            selectedAudio,
+            key: catalog.rulePools.everythingIntro.crash,
+            reason: "forced_everything_intro_crash"
+          });
+        }
+
+        addSection("everything_intro", 8, {
+          reset: true,
+          tags: ["intro", "rare"]
+        });
+      }
     }
 
     // Main body: build a section timeline instead of dumping everything randomly.
@@ -4459,6 +4550,8 @@ function getNormalMidiHatChoiceGroupId(pattern) {
       },
       sectionTimeline,
       resetPoints,
+      hookStartDecision,
+      forceGlobalFadeIn: Boolean(hookStartDecision?.forceGlobalFadeIn),
       plannedDurationSeconds: cursorSeconds
     };
   }
@@ -4650,6 +4743,7 @@ function scheduleMidiPattern({
     if (entry.folder === "alternate downloads") return false;
 
     if (key.includes("everything_intro")) return type === "everything_intro";
+    if (key.includes("hook_drums_skip_intro")) return type === "hook_drums_skip_intro";
     if (hookSection) {
       return true;
     }
@@ -5921,6 +6015,11 @@ function scheduleMidiPattern({
     const plan = buildFullPlan(random);
     const duration = getPlanRenderDuration(plan, fallbackDuration);
     const globalFadeOptions = chooseGlobalFadeOptions(mulberry32((currentSeed ^ 0xFADE30) >>> 0));
+
+    if (plan.forceGlobalFadeIn) {
+      globalFadeOptions.fadeIn = true;
+      globalFadeOptions.forcedByHookStart = true;
+    }
 
     console.log("[global fade options]", globalFadeOptions);
 
