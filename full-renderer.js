@@ -6976,10 +6976,16 @@ currentRenderBuffers = buffers;
           sampleRate,
           selectedAudioCount: plan.selectedAudio.length,
           selectedMidiCount: plan.selectedMidi.length,
-          sectionCount: Array.isArray(plan.sectionTimeline) ? plan.sectionTimeline.length : 0
+          sectionCount: Array.isArray(plan.sectionTimeline) ? plan.sectionTimeline.length : 0,
+          debugMode: "json_only_no_audio_render"
         }),
         `test-project-2-debug-plan-seed-${currentSeed}.json`
       );
+
+      setStatus(`DEBUG PLAN JSON DOWNLOADED / SEED ${currentSeed}`);
+      currentSeed = makeSeed();
+      applyRandomColourScheme();
+      return;
     }
 
     const renderedBuffer = await offlineContext.startRendering();
