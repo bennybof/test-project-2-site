@@ -1109,12 +1109,26 @@
 
   function mergeRuleProfiles(...profiles) {
     const merged = {};
+    const concatArrayFields = new Set([
+      "hardClashRules",
+      "softMultiplierRules",
+      "cutoffRules",
+      "dependentActivationRules",
+      "groupedActivationRules",
+      "energyBaseChanceRules",
+      "crescendoRules"
+    ]);
 
     for (const profile of profiles) {
       if (!profile || typeof profile !== "object" || Array.isArray(profile)) continue;
 
       for (const [key, value] of Object.entries(profile)) {
-        if (
+        if (concatArrayFields.has(key) && Array.isArray(value) && Array.isArray(merged[key])) {
+          merged[key] = [
+            ...merged[key],
+            ...value
+          ];
+        } else if (
           value &&
           typeof value === "object" &&
           !Array.isArray(value) &&
