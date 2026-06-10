@@ -5705,6 +5705,92 @@ function scheduleMidiPattern({
     writeLifecycleMapToPlan(plan, lifecycleStates);
   }
 
+  function getSecretBypassVersions() {
+    const configured = catalog?.rulePools?.secretBypassVersions;
+
+    if (Array.isArray(configured) && configured.length) {
+      return configured;
+    }
+
+    return [
+      {
+        id: "harmonia",
+        file: "alternate downloads/harmonia.wav",
+        probability: 0.001
+      },
+      {
+        id: "pimp_triplets",
+        file: "alternate downloads/pimp_triplets.wav",
+        probability: 0.001
+      },
+      {
+        id: "secret_message_1",
+        file: "alternate downloads/secret_message_1.wav",
+        probability: 0.001
+      },
+      {
+        id: "secret_message_2",
+        file: "alternate downloads/secret_message_2.wav",
+        probability: 0.001
+      }
+    ];
+  }
+
+  function chooseSecretBypassVersion(random) {
+    let roll = random();
+
+    for (const secretBypass of getSecretBypassVersions()) {
+      const probability = clampProbability(secretBypass.probability);
+
+      if (roll < probability) {
+        return secretBypass;
+      }
+
+      roll -= probability;
+    }
+
+    return null;
+  }
+
+  async function renderSecretBypassVersion({ format, sampleRate, secretBypass }) {
+    const file = secretBypass.file;
+    const id = secretBypass.id || "secret_bypass";
+
+    setStatus(`SECRET BYPASS / ${id} / SEED ${currentSeed}`);
+
+    const decodeContext = new OfflineAudioContext(2, sampleRate, sampleRate);
+    const buffer = await fetchAndDecode(decodeContext, file);
+    const duration = Math.max(buffer.duration, 1 / sampleRate);
+
+    const offlineContext = new OfflineAudioContext(
+      2,
+      Math.ceil(duration * sampleRate),
+      sampleRate
+    );
+
+    currentRenderBuffers = new Map([[file, buffer]]);
+
+    scheduleBuffer(offlineContext, offlineContext.destination, buffer, 0, 1);
+
+    setStatus(`RENDERING ${format.toUpperCase()} / SECRET BYPASS ${id}`);
+
+    const renderedBuffer = await offlineContext.startRendering();
+
+    if (format === "wav") {
+      const wavBlob = audioBufferToWavBlob(renderedBuffer);
+      downloadBlob(wavBlob, `test-project-2-secret-${id}-seed-${currentSeed}.wav`);
+    }
+
+    if (format === "mp3") {
+      await ensureLameJs();
+      const mp3Blob = audioBufferToMp3Blob(renderedBuffer);
+      downloadBlob(mp3Blob, `test-project-2-secret-${id}-seed-${currentSeed}.mp3`);
+    }
+
+    currentSeed = makeSeed();
+    applyRandomColourScheme();
+  }
+
   function getPlanRenderDuration(plan, fallbackDuration) {
     const plannedDuration = Number(plan?.plannedDurationSeconds);
 
@@ -5719,6 +5805,16 @@ function scheduleMidiPattern({
     const random = mulberry32(currentSeed);
     const sampleRate = rules.sampleRate || 44100;
     const fallbackDuration = Math.max(180, rules.songLengthSeconds || 180);
+    const secretBypass = chooseSecretBypassVersion(mulberry32((currentSeed ^ 0x9E3779B9) >>> 0));
+
+    if (secretBypass) {
+      await renderSecretBypassVersion({
+        format,
+        sampleRate,
+        secretBypass
+      });
+      return;
+    }
 
     setStatus(`BUILDING FULL PLAN / SEED ${currentSeed}`);
 
