@@ -3314,6 +3314,10 @@ function isMainHookSection(section) {
   return String(section?.type || "").toLowerCase() === "hook";
 }
 
+function isHookDrumsSkipIntroSection(section) {
+  return String(section?.type || "").toLowerCase() === "hook_drums_skip_intro";
+}
+
 function isFirstActiveHookBar(section, localBarIndex = null) {
   return isMainHookSection(section) && Number(localBarIndex) === 0;
 }
@@ -4192,6 +4196,10 @@ function getNormalMidiHatChoiceGroupId(pattern) {
       const matchingEntries = audioEntries.filter(entry => {
         const key = entry.key.toLowerCase();
 
+        if (isHookDrumsSkipIntroSection(section)) {
+          return entry.key === "samples/hook_drums_skip_intro.wav";
+        }
+
         const hookSection = isHookSection(section);
         const hookKey = isHookKey(entry.key);
         const allowNonHookInHook = key.includes("window_wipe");
@@ -4290,6 +4298,10 @@ function getNormalMidiHatChoiceGroupId(pattern) {
 
       const sectionMidi = midiPatternPool.filter(pattern => {
         const key = pattern.file.toLowerCase();
+
+        if (isHookDrumsSkipIntroSection(section)) {
+          return pattern.file === "midi files/beepipes_1_drums_hook_~.mid";
+        }
 
         const hookSection = isHookSection(section);
         const hookKey = isHookKey(pattern.file);
@@ -4891,6 +4903,10 @@ function scheduleMidiPattern({
     const key = entry.key.toLowerCase();
     const type = section.type;
 
+    if (isHookDrumsSkipIntroSection(section)) {
+      return entry.key === "samples/hook_drums_skip_intro.wav";
+    }
+
     const hookSection = isHookSection(section);
     const hookKey = isHookKey(entry.key);
     const allowNonHookInHook = key.includes("window_wipe");
@@ -4960,6 +4976,10 @@ function scheduleMidiPattern({
   function midiMatchesSection(pattern, section) {
     const key = pattern.file.toLowerCase();
     const type = section.type;
+
+    if (isHookDrumsSkipIntroSection(section)) {
+      return pattern.file === "midi files/beepipes_1_drums_hook_~.mid";
+    }
 
     const hookSection = isHookSection(section);
     const hookKey = isHookKey(pattern.file);
