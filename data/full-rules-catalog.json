@@ -1249,9 +1249,6 @@
           "activationChance": 0.5,
           "dropoutChance": 0.05
         },
-        "samples/crash_dlay_odd (consolidated).wav": {
-          "sourceNote": "Dependent activation target only: crash_dlay_odd should only roll after normal crash activates on the same bar."
-        },
         "samples/big_crash_layer_odd_metal (consolidated).wav": {
           "activationChance": 0.02,
           "dependentActivationRules": [
@@ -1286,9 +1283,6 @@
               "sourceNote": "Definitions doc: crash_washes_metal_dlay_even has 20% chance if crash_washes_metal_even activates."
             }
           ]
-        },
-        "samples/crash_washes_metal_dlay_even (consolidated).wav": {
-          "sourceNote": "Dependent activation target only: should not roll independently from its normal crash wash source."
         },
         "samples/jazz_crash_metal_odd (consolidated).wav": {
           "dependentActivationRules": [
