@@ -6721,6 +6721,13 @@
         "samples/rev_crash_metal_even_dlay_xtra.wav"
       ],
       "dlay": [
+        "samples/big_crash_layer_odd_dlay_metal (consolidated).wav",
+        "samples/breathe_vox_stutter_dlay_odd_x2 (consolidated).wav",
+        "samples/crash_dlay_odd (consolidated).wav",
+        "samples/crash_washes_metal_dlay_even (consolidated).wav",
+        "samples/glock_ext_even_dlay (consolidated).wav",
+        "samples/glock_odd_dlay (consolidated).wav",
+        "samples/jazz_crash_metal_dlay_odd_xtra (consolidated).wav",
         "samples/rev_crash_metal_even_dlay_xtra.wav"
       ],
       "hook": [
