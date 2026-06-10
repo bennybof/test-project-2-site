@@ -3099,9 +3099,14 @@
   function getAudioSequenceRootKey(key) {
     const activeKey = String(key || "");
     const folder = activeKey.includes("/") ? activeKey.split("/")[0] : "";
+
     const stem = getFileStemWithoutExtension(activeKey)
       .replace(/\s*#\s*\d+\s*$/i, "")
+      .replace(/[_\s-]+(?:odd|even|x\d+(?:\.\d+)?)+$/gi, "")
+      .replace(/[_\s-]+(?:odd|even|x\d+(?:\.\d+)?)+$/gi, "")
+      .replace(/[_\s-]+(?:odd|even|x\d+(?:\.\d+)?)+$/gi, "")
       .replace(/\s+/g, " ")
+      .replace(/[_\s-]+$/g, "")
       .trim()
       .toLowerCase();
 
