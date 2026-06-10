@@ -3258,7 +3258,46 @@ function midiFileTriggersRimsDrumsRimFirstNoteMute(file) {
   );
 }
 
-function shouldSkipMidiPatternNote(pattern, noteIndex, section) {
+function isMainHookSection(section) {
+  return String(section?.type || "").toLowerCase() === "hook";
+}
+
+function isFirstActiveHookBar(section, localBarIndex = null) {
+  return isMainHookSection(section) && Number(localBarIndex) === 0;
+}
+
+function isHookCrashIntroMidiPattern(pattern) {
+  return pattern?.file === "midi files/crash_small_hook_intro_metal_odd_crash.mid";
+}
+
+function isNormalHookCrashMidiPattern(pattern) {
+  return pattern?.file === "midi files/crash_hook_metal_odd_crash.mid";
+}
+
+function isHookHatsMidiPattern(pattern) {
+  const file = String(pattern?.file || "").toLowerCase();
+
+  return file.startsWith("midi files/hats_hook_metal_");
+}
+
+function shouldSkipMidiPatternAtSectionBar(pattern, section, localBarIndex = null) {
+  if (!isFirstActiveHookBar(section, localBarIndex)) {
+    return false;
+  }
+
+  // First active hook bar uses crash_small_hook_intro instead of the normal hook crash.
+  return isNormalHookCrashMidiPattern(pattern);
+}
+
+function shouldSkipMidiPatternNote(pattern, noteIndex, section, localBarIndex = null) {
+  if (
+    noteIndex === 0 &&
+    isFirstActiveHookBar(section, localBarIndex) &&
+    isHookHatsMidiPattern(pattern)
+  ) {
+    return true;
+  }
+
   if (noteIndex !== 0) {
     return false;
   }
@@ -4131,6 +4170,16 @@ function getNormalMidiHatChoiceGroupId(pattern) {
     // MIDI pattern selection by section.
     for (const section of sectionTimeline) {
       const sectionSelectedMidi = new Set();
+
+      if (isMainHookSection(section)) {
+        const hookIntroCrashPattern = midiPatternPool.find(pattern => isHookCrashIntroMidiPattern(pattern));
+
+        if (hookIntroCrashPattern) {
+          sectionSelectedMidi.add(hookIntroCrashPattern.file);
+          selectedMidi.add(hookIntroCrashPattern.file);
+        }
+      }
+
       const sectionMidi = midiPatternPool.filter(pattern => {
         const key = pattern.file.toLowerCase();
 
@@ -4694,7 +4743,8 @@ function scheduleMidiPattern({
     beatSeconds,
     gainValue,
     playbackState = null,
-    section = null
+    section = null,
+    localBarIndex = null
   }) {
     const sampleBuffer = buffers.get(pattern.samplePath);
     if (!sampleBuffer) return 0;
@@ -4703,7 +4753,7 @@ function scheduleMidiPattern({
     let scheduledCount = 0;
 
     for (const [noteIndex, note] of pattern.notes.entries()) {
-      if (shouldSkipMidiPatternNote(pattern, noteIndex, section)) {
+      if (shouldSkipMidiPatternNote(pattern, noteIndex, section, localBarIndex)) {
         continue;
       }
 
@@ -5549,6 +5599,10 @@ function scheduleMidiPattern({
           continue;
         }
 
+        if (shouldSkipMidiPatternAtSectionBar(pattern, section, localBarIndex)) {
+          continue;
+        }
+
         const midiProfile = getRuleProfileForMidiPattern(pattern);
         const midiBaseChance = getActivationChance(midiProfile, 0.7);
 
@@ -5577,7 +5631,8 @@ function scheduleMidiPattern({
             beatSeconds: section.barSeconds / 4,
             gainValue: 0.62,
             playbackState,
-            section
+            section,
+            localBarIndex
           });
 
           if (scheduledCount > 0) {
@@ -5644,6 +5699,7 @@ function scheduleMidiPattern({
             gainValue: 0.62,
             playbackState,
             section,
+            localBarIndex,
             metadata: {
               sectionType: section.type,
               sectionIndex: section.index,
