@@ -3332,6 +3332,27 @@ function isSectionForcedAudioStartKey(section, key) {
   return Array.isArray(section?.forcedAudioStartKeys) && section.forcedAudioStartKeys.includes(key);
 }
 
+function getHookSynthBassSequenceKeys(section = null) {
+  const keys = Array.isArray(section?.forcedHookSynthBassSequenceKeys)
+    ? section.forcedHookSynthBassSequenceKeys
+    : [
+        "samples/synth_bass_1_hook_odd_x4 (consolidated).wav",
+        "samples/synth_bass_1_hook #2 (consolidated).wav",
+        "samples/synth_bass_1_hook #3 (consolidated).wav",
+        "samples/synth_bass_2_hook_x4_even (consolidated).wav"
+      ];
+
+  return keys.filter(Boolean);
+}
+
+function isHookSynthBassSequenceKey(section, key) {
+  return getHookSynthBassSequenceKeys(section).includes(key);
+}
+
+function isHookSynthBassSequenceTriggerKey(section, key) {
+  return getHookSynthBassSequenceKeys(section)[0] === key;
+}
+
 function isCrashKey(key) {
   return String(key || "").toLowerCase().includes("crash");
 }
@@ -3963,18 +3984,28 @@ function getNormalMidiHatChoiceGroupId(pattern) {
         tags: ["hook", "song_start_hook", hookStartDecision.method]
       });
 
-      songStartHookSection.forcedAudioStartKeys = [
-        "samples/synth_bass_1_hook_odd_x4 (consolidated).wav"
+      const hookSynthBassSequenceKeys = [
+        "samples/synth_bass_1_hook_odd_x4 (consolidated).wav",
+        "samples/synth_bass_1_hook #2 (consolidated).wav",
+        "samples/synth_bass_1_hook #3 (consolidated).wav",
+        "samples/synth_bass_2_hook_x4_even (consolidated).wav"
       ];
 
-      forceIncludeAudioSelection({
-        random,
-        globalInclusionState,
-        requiredActivationState,
-        selectedAudio,
-        key: "samples/synth_bass_1_hook_odd_x4 (consolidated).wav",
-        reason: "forced_song_start_hook_synth_bass_anchor"
-      });
+      songStartHookSection.forcedHookSynthBassSequenceKeys = hookSynthBassSequenceKeys;
+      songStartHookSection.forcedAudioStartKeys = [
+        hookSynthBassSequenceKeys[0]
+      ];
+
+      for (const key of hookSynthBassSequenceKeys) {
+        forceIncludeAudioSelection({
+          random,
+          globalInclusionState,
+          requiredActivationState,
+          selectedAudio,
+          key,
+          reason: "forced_song_start_hook_synth_bass_sequence"
+        });
+      }
     } else {
       addSection("normal", 8, { reset: true, tags: ["normal"] });
 
@@ -5566,6 +5597,95 @@ function scheduleMidiPattern({
     return scheduledCount;
   }
 
+  function scheduleHookSynthBassSequence({
+    offlineContext,
+    destination,
+    section,
+    random,
+    playbackState = null,
+    lifecycleStates = null
+  } = {}) {
+    const keys = getHookSynthBassSequenceKeys(section);
+    const partKeys = keys.slice(0, 3);
+    const secondHookBassKey = keys[3];
+    let startSeconds = section.startSeconds;
+    let scheduledCount = 0;
+
+    for (const key of partKeys) {
+      const entry = getCatalogEntry(key);
+      const buffer = currentRenderBuffers?.get(key);
+      const partStartSeconds = startSeconds;
+
+      if (buffer) {
+        startSeconds += buffer.duration;
+      }
+
+      if (!entry || !buffer) continue;
+
+      // Definition: each hook synth_bass stem/part has a 10% skip chance.
+      // This is not dropout.
+      if (chance(random, 0.1)) continue;
+
+      const scheduled = scheduleAudioBufferWithPlaybackState({
+        offlineContext,
+        destination,
+        buffer,
+        startTime: partStartSeconds,
+        gainValue: sectionGainForAudio(entry, section),
+        playbackState,
+        key,
+        entry,
+        section
+      });
+
+      if (scheduled) {
+        scheduledCount += 1;
+
+        if (lifecycleStates) {
+          activateLifecycleItem(
+            lifecycleStates,
+            getAudioLifecycleId(key),
+            `${section.id}:${key}:hook_synth_bass_sequence`
+          );
+        }
+      }
+    }
+
+    if (secondHookBassKey) {
+      const entry = getCatalogEntry(secondHookBassKey);
+      const buffer = currentRenderBuffers?.get(secondHookBassKey);
+      const startTime = section.startSeconds + section.barSeconds * 5;
+
+      if (entry && buffer && startTime < section.endSeconds && !chance(random, 0.1)) {
+        const scheduled = scheduleAudioBufferWithPlaybackState({
+          offlineContext,
+          destination,
+          buffer,
+          startTime,
+          gainValue: sectionGainForAudio(entry, section),
+          playbackState,
+          key: secondHookBassKey,
+          entry,
+          section
+        });
+
+        if (scheduled) {
+          scheduledCount += 1;
+
+          if (lifecycleStates) {
+            activateLifecycleItem(
+              lifecycleStates,
+              getAudioLifecycleId(secondHookBassKey),
+              `${section.id}:${secondHookBassKey}:hook_synth_bass_sequence`
+            );
+          }
+        }
+      }
+    }
+
+    return scheduledCount;
+  }
+
   function scheduleAudioStemInSection({ offlineContext, destination, key, buffer, random, plan = null, lifecycleStates = null, playbackState = null, section }) {
     const entry = getCatalogEntry(key);
     if (!entry || !buffer) return 0;
@@ -5574,6 +5694,21 @@ function scheduleMidiPattern({
     const keyLower = key.toLowerCase();
     const gain = sectionGainForAudio(entry, section);
     const audioProfile = getRuleProfileForEntry(entry);
+
+    if (isHookSynthBassSequenceKey(section, key)) {
+      if (!isHookSynthBassSequenceTriggerKey(section, key)) {
+        return 0;
+      }
+
+      return scheduleHookSynthBassSequence({
+        offlineContext,
+        destination,
+        section,
+        random,
+        playbackState,
+        lifecycleStates
+      });
+    }
 
     if (isSectionForcedAudioStartKey(section, key)) {
       const scheduled = scheduleAudioBufferWithPlaybackState({
