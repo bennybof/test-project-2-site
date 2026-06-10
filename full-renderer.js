@@ -3332,6 +3332,22 @@ function isSectionForcedAudioStartKey(section, key) {
   return Array.isArray(section?.forcedAudioStartKeys) && section.forcedAudioStartKeys.includes(key);
 }
 
+function isCrashKey(key) {
+  return String(key || "").toLowerCase().includes("crash");
+}
+
+function isFirstBarAfterHookDrumsSkipIntro(section, localBarIndex = null) {
+  return isHookStartedAfterDrumsSkipIntro(section) && Number(localBarIndex) === 0;
+}
+
+function shouldBlockHookAfterSkipFirstBarAudioKey(key, section, localBarIndex = null) {
+  return isFirstBarAfterHookDrumsSkipIntro(section, localBarIndex) && isCrashKey(key);
+}
+
+function shouldBlockHookAfterSkipFirstBarMidiPattern(pattern, section, localBarIndex = null) {
+  return isFirstBarAfterHookDrumsSkipIntro(section, localBarIndex) && isCrashKey(pattern?.file);
+}
+
 function isFirstActiveHookBar(section, localBarIndex = null) {
   return isMainHookSection(section) && Number(localBarIndex) === 0;
 }
@@ -3355,7 +3371,7 @@ function shouldSkipMidiPatternAtSectionBar(pattern, section, localBarIndex = nul
     return false;
   }
 
-  if (isHookStartedAfterDrumsSkipIntro(section) && isHookCrashIntroMidiPattern(pattern)) {
+  if (shouldBlockHookAfterSkipFirstBarMidiPattern(pattern, section, localBarIndex)) {
     return true;
   }
 
@@ -3389,6 +3405,32 @@ function isForcedMidiLocalBarAllowed(section, file, localBarIndex) {
   const allowedBars = getSectionMidiForcedLocalBars(section, file);
 
   return !allowedBars || allowedBars.has(Number(localBarIndex));
+}
+
+function addForcedMidiToSection(section, sectionSelectedMidi, selectedMidi, midiPatternPool, file, options = {}) {
+  const pattern = midiPatternPool.find(item => item.file === file);
+
+  if (!pattern) return false;
+
+  sectionSelectedMidi.add(file);
+  selectedMidi.add(file);
+
+  section.forcedMidi = Array.isArray(section.forcedMidi) ? section.forcedMidi : [];
+  if (!section.forcedMidi.includes(file)) {
+    section.forcedMidi.push(file);
+  }
+
+  if (Array.isArray(options.localBars)) {
+    section.midiForcedLocalBars = section.midiForcedLocalBars || {};
+    section.midiForcedLocalBars[file] = options.localBars.map(Number);
+  }
+
+  if (Array.isArray(options.allowedNoteIndexes)) {
+    section.midiAllowedNoteIndexes = section.midiAllowedNoteIndexes || {};
+    section.midiAllowedNoteIndexes[file] = options.allowedNoteIndexes.map(Number);
+  }
+
+  return true;
 }
 
 function shouldSkipMidiPatternNote(pattern, noteIndex, section, localBarIndex = null) {
@@ -4298,24 +4340,31 @@ function getNormalMidiHatChoiceGroupId(pattern) {
       }
 
       if (String(section.type || "") === "hook_drums_skip_intro") {
-        const hookBeepipesIntroFile = "midi files/beepipes_1_drums_hook_~.mid";
-        const hookBeepipesIntroPattern = midiPatternPool.find(pattern => pattern.file === hookBeepipesIntroFile);
-
-        if (hookBeepipesIntroPattern) {
-          sectionSelectedMidi.add(hookBeepipesIntroFile);
-          selectedMidi.add(hookBeepipesIntroFile);
-
-          section.forcedMidi = Array.isArray(section.forcedMidi) ? section.forcedMidi : [];
-          if (!section.forcedMidi.includes(hookBeepipesIntroFile)) {
-            section.forcedMidi.push(hookBeepipesIntroFile);
+        addForcedMidiToSection(
+          section,
+          sectionSelectedMidi,
+          selectedMidi,
+          midiPatternPool,
+          "midi files/beepipes_1_drums_hook_~.mid",
+          {
+            localBars: [0],
+            allowedNoteIndexes: [3]
           }
+        );
+      }
 
-          section.midiForcedLocalBars = section.midiForcedLocalBars || {};
-          section.midiForcedLocalBars[hookBeepipesIntroFile] = [1];
-
-          section.midiAllowedNoteIndexes = section.midiAllowedNoteIndexes || {};
-          section.midiAllowedNoteIndexes[hookBeepipesIntroFile] = [3];
-        }
+      if (isHookStartedAfterDrumsSkipIntro(section)) {
+        addForcedMidiToSection(
+          section,
+          sectionSelectedMidi,
+          selectedMidi,
+          midiPatternPool,
+          "midi files/beepipes_1_drums_hook_~.mid",
+          {
+            localBars: [0],
+            allowedNoteIndexes: [0, 2]
+          }
+        );
       }
 
       const sectionMidi = midiPatternPool.filter(pattern => {
@@ -5526,6 +5575,22 @@ function scheduleMidiPattern({
     const gain = sectionGainForAudio(entry, section);
     const audioProfile = getRuleProfileForEntry(entry);
 
+    if (isSectionForcedAudioStartKey(section, key)) {
+      const scheduled = scheduleAudioBufferWithPlaybackState({
+        offlineContext,
+        destination,
+        buffer,
+        startTime: section.startSeconds,
+        gainValue: gain,
+        playbackState,
+        key,
+        entry,
+        section
+      });
+
+      return scheduled ? 1 : 0;
+    }
+
     if (audioProfile.dependentActivationOnly || audioProfile.dependentOnly || audioProfile.activationMode === "dependent") {
       return 0;
     }
@@ -5570,22 +5635,6 @@ function scheduleMidiPattern({
     }
 
     if (keyLower.includes("hook_drums_skip_intro")) {
-      const scheduled = scheduleAudioBufferWithPlaybackState({
-        offlineContext,
-        destination,
-        buffer,
-        startTime: section.startSeconds,
-        gainValue: gain,
-        playbackState,
-        key,
-        entry,
-        section
-      });
-
-      return scheduled ? 1 + scheduleDependents(section.startSeconds) : 0;
-    }
-
-    if (isSectionForcedAudioStartKey(section, key)) {
       const scheduled = scheduleAudioBufferWithPlaybackState({
         offlineContext,
         destination,
@@ -5671,6 +5720,10 @@ function scheduleMidiPattern({
       let scheduledCount = 0;
 
       for (const localBarIndex of allowedBars) {
+        if (shouldBlockHookAfterSkipFirstBarAudioKey(key, section, localBarIndex)) {
+          continue;
+        }
+
         const startSeconds = section.startSeconds + localBarIndex * section.barSeconds;
         const audioDecisionResult = resolveRuleProfileDecision({
           random,
@@ -5712,7 +5765,8 @@ function scheduleMidiPattern({
     }
 
     const phraseRepeats = section.type === "normal" ? 1 : 2;
-    const allowedPhraseBars = getAllowedLocalBarIndexesForKey(key, section);
+    const allowedPhraseBars = getAllowedLocalBarIndexesForKey(key, section)
+      .filter(localBarIndex => !shouldBlockHookAfterSkipFirstBarAudioKey(key, section, localBarIndex));
 
     if (!allowedPhraseBars.length) return 0;
 
