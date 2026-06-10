@@ -5736,7 +5736,35 @@ function scheduleMidiPattern({
     ];
   }
 
+  function getForcedSecretBypassVersion() {
+    const params = new URLSearchParams(window.location.search);
+    const forcedId = String(params.get("forceSecret") || params.get("forceSecretBypass") || "")
+      .trim()
+      .toLowerCase();
+
+    if (!forcedId) return null;
+
+    return getSecretBypassVersions().find(secretBypass => {
+      const id = String(secretBypass.id || "").toLowerCase();
+      const file = String(secretBypass.file || "").toLowerCase();
+      const filename = file.split("/").pop() || "";
+      const filenameNoExtension = filename.replace(/\.[^.]+$/, "");
+
+      return (
+        forcedId === id ||
+        forcedId === filename ||
+        forcedId === filenameNoExtension
+      );
+    }) || null;
+  }
+
   function chooseSecretBypassVersion(random) {
+    const forcedSecretBypass = getForcedSecretBypassVersion();
+
+    if (forcedSecretBypass) {
+      return forcedSecretBypass;
+    }
+
     let roll = random();
 
     for (const secretBypass of getSecretBypassVersions()) {
