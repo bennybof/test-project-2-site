@@ -1482,6 +1482,53 @@
               "sourceNote": "Saved definitions absolute final 2: glock_odd_dlay has a 20% chance to activate when glock_odd activates."
             }
           ]
+        },
+        "samples/rev_crash_metal_even_xtra.wav": {
+          "activationChance": 0,
+          "dependentActivationRules": [
+            {
+              "id": "dependent_rev_crash_dlay_after_rev_crash_no_crash",
+              "chance": 0.5,
+              "targets": [
+                {
+                  "key": "samples/rev_crash_metal_even_dlay_xtra.wav"
+                }
+              ],
+              "blockedActive": [
+                {
+                  "tag": "crash"
+                }
+              ],
+              "sourceNote": "Saved definitions: rev_crash_metal_even_dlay_xtra has a 50% chance to play if there is a rev crash but no crash."
+            }
+          ],
+          "sourceNote": "Saved definitions: rev_crash_metal_even_xtra is #rev_crash #metal #even #xtra and is not #oh_rev. Activation is held at 0 until the suspense/emphasis lead-in opportunity system is added."
+        },
+        "samples/rev_crash_metal_even_hook.wav": {
+          "activationChance": 0,
+          "dependentActivationRules": [
+            {
+              "id": "dependent_rev_crash_dlay_after_hook_rev_crash_no_crash",
+              "chance": 0.5,
+              "targets": [
+                {
+                  "key": "samples/rev_crash_metal_even_dlay_xtra.wav"
+                }
+              ],
+              "blockedActive": [
+                {
+                  "tag": "crash"
+                }
+              ],
+              "sourceNote": "Saved definitions: rev_crash_metal_even_dlay_xtra has a 50% chance to play if there is a rev crash but no crash."
+            }
+          ],
+          "sourceNote": "Saved definitions: rev_crash_metal_even_hook is #rev_crash #metal #hook #even and is hook-only. Activation is held at 0 until the suspense/emphasis lead-in opportunity system is added."
+        },
+        "samples/rev_crash_metal_even_dlay_xtra.wav": {
+          "activationChance": 0,
+          "dependentActivationOnly": true,
+          "sourceNote": "Saved definitions: rev_crash_metal_even_dlay_xtra is #rev_crash #metal #even #dlay #xtra, does not trigger the crash-delay hats rule, and only activates from rev crash when no crash is active."
         }
       },
       "byFamily": {
@@ -6644,6 +6691,33 @@
           "key": "lyrix/yapa_lyrix_xtra_even_wet (consolidated) #7.wav",
           "partNumber": 7
         }
+      ]
+    },
+    "byTag": {
+      "rev_crash": [
+        "samples/rev_crash_metal_even_xtra.wav",
+        "samples/rev_crash_metal_even_dlay_xtra.wav",
+        "samples/rev_crash_metal_even_hook.wav"
+      ],
+      "metal": [
+        "samples/rev_crash_metal_even_xtra.wav",
+        "samples/rev_crash_metal_even_dlay_xtra.wav",
+        "samples/rev_crash_metal_even_hook.wav"
+      ],
+      "even": [
+        "samples/rev_crash_metal_even_xtra.wav",
+        "samples/rev_crash_metal_even_dlay_xtra.wav",
+        "samples/rev_crash_metal_even_hook.wav"
+      ],
+      "xtra": [
+        "samples/rev_crash_metal_even_xtra.wav",
+        "samples/rev_crash_metal_even_dlay_xtra.wav"
+      ],
+      "dlay": [
+        "samples/rev_crash_metal_even_dlay_xtra.wav"
+      ],
+      "hook": [
+        "samples/rev_crash_metal_even_hook.wav"
       ]
     }
   },
