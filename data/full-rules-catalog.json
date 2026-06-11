@@ -1307,7 +1307,11 @@
               ],
               "sourceNote": "Definitions doc: cello_high is x0.1 as likely with tbone_1."
             }
-          ]
+          ],
+          "globalInclusionChance": 0.5,
+          "activationChance": 0.05,
+          "dropoutChance": 0.05,
+          "sourceNote": "Definitions: normal cello has 50% global selection, 5% activation, 5% dropout. Low/high 80% pairing is separate."
         },
         "samples/cello_wiv-bass_even (consolidated).wav": {
           "globalInclusionChance": 1,
@@ -1355,25 +1359,38 @@
           "globalInclusionChance": 0.1
         },
         "samples/glock_odd_dlay (consolidated).wav": {
-          "activationChance": 0.01
+          "activationChance": 0.005,
+          "globalInclusionChance": 0.5,
+          "dropoutChance": 0.01,
+          "dropoutIncreasePerActivation": 0.01,
+          "sourceNote": "Definitions: glock delays have their own independent 0.5% activation chance and 50% chance when matching glock activates."
         },
         "samples/glock_ext_even (consolidated).wav": {
-          "activationChance": 0.2,
+          "activationChance": 0.01,
           "dependentActivationRules": [
             {
               "id": "dependent_glock_ext_delay_after_glock_ext",
-              "chance": 0.2,
+              "chance": 0.5,
               "targets": [
                 {
                   "key": "samples/glock_ext_even_dlay (consolidated).wav"
                 }
               ],
-              "sourceNote": "Saved definitions absolute final 2: glock_ext_even_dlay has a 20% chance to activate when glock_ext_even activates."
+              "sourceNote": "Definitions: glock_ext_even_dlay has a 50% chance to activate when glock_ext_even activates."
             }
-          ]
+          ],
+          "dependentActivationOnly": true,
+          "activationMode": "dependent",
+          "dropoutChance": 0.01,
+          "dropoutIncreasePerActivation": 0.01,
+          "sourceNote": "Definitions: glock_ext_even is dependent-only; it can only activate the bar after glock_odd activates."
         },
         "samples/glock_ext_even_dlay (consolidated).wav": {
-          "activationChance": 0.005
+          "activationChance": 0.005,
+          "globalInclusionChance": 0.5,
+          "dropoutChance": 0.01,
+          "dropoutIncreasePerActivation": 0.01,
+          "sourceNote": "Definitions: glock delays have their own independent 0.5% activation chance and 50% chance when matching glock activates."
         },
         "samples/chimes_odd (consolidated).wav": {
           "globalInclusionChance": 0.5,
@@ -1393,8 +1410,12 @@
           "dropoutChance": 0.01
         },
         "samples/accbreath_long_x4.wav": {
-          "globalInclusionChance": 0.2,
-          "activationChance": 0.2
+          "globalInclusionChance": 0.5,
+          "activationChance": 0.01,
+          "dropoutChance": 0.01,
+          "dropoutIncreasePerActivation": 0.04,
+          "dropoutMaxChance": 0.2,
+          "sourceNote": "Definitions: accbreaths have 50% global selection, 1% activation, dropout starts 1%, +4 percentage points per activation, capped at 20%."
         },
         "samples/big_wash_build_metal_suspense (consolidated).wav": {
           "globalInclusionChance": 0.5,
@@ -1473,15 +1494,31 @@
           "dependentActivationRules": [
             {
               "id": "dependent_glock_odd_delay_after_glock_odd",
+              "chance": 0.5,
               "targets": [
                 {
                   "key": "samples/glock_odd_dlay (consolidated).wav"
                 }
               ],
-              "chance": 0.2,
-              "sourceNote": "Saved definitions absolute final 2: glock_odd_dlay has a 20% chance to activate when glock_odd activates."
+              "sourceNote": "Definitions: glock_odd_dlay has a 50% chance to activate when glock_odd activates."
+            },
+            {
+              "id": "dependent_glock_ext_after_glock_odd_next_bar",
+              "chance": 0.01,
+              "offsetBars": 1,
+              "targets": [
+                {
+                  "key": "samples/glock_ext_even (consolidated).wav"
+                }
+              ],
+              "sourceNote": "Definitions: glock_ext_even can only activate the bar after glock_odd activates; glocks have 1% activation chance."
             }
-          ]
+          ],
+          "globalInclusionChance": 0.5,
+          "activationChance": 0.01,
+          "dropoutChance": 0.01,
+          "dropoutIncreasePerActivation": 0.01,
+          "sourceNote": "Definitions: glocks have 50% global selection, 1% activation, 1% dropout increasing +1 point per activation."
         },
         "samples/rev_crash_metal_even_xtra.wav": {
           "dependentActivationRules": [
@@ -1536,13 +1573,134 @@
           "activationChance": 0,
           "dependentActivationOnly": true,
           "sourceNote": "Saved definitions: rev_crash_metal_even_dlay_xtra is #rev_crash #metal #even #dlay #xtra, does not trigger the crash-delay hats rule, and only activates from rev crash when no crash is active."
+        },
+        "samples/accbreath_1_~_even.wav": {
+          "globalInclusionChance": 0.5,
+          "activationChance": 0.01,
+          "dropoutChance": 0.01,
+          "dropoutIncreasePerActivation": 0.04,
+          "dropoutMaxChance": 0.2,
+          "sourceNote": "Definitions: base accbreath activation is 1%. The separate 80% rule only applies while accbreath_long is active and should not be unconditional."
+        },
+        "samples/accbreath_2_even.wav": {
+          "globalInclusionChance": 0.5,
+          "activationChance": 0.01,
+          "dropoutChance": 0.01,
+          "dropoutIncreasePerActivation": 0.04,
+          "dropoutMaxChance": 0.2,
+          "sourceNote": "Definitions: base accbreath activation is 1%. The separate 80% rule only applies while accbreath_long is active and should not be unconditional."
+        },
+        "samples/accbreath_3_~_even.wav": {
+          "globalInclusionChance": 0.5,
+          "activationChance": 0.01,
+          "dropoutChance": 0.01,
+          "dropoutIncreasePerActivation": 0.04,
+          "dropoutMaxChance": 0.2,
+          "sourceNote": "Definitions: base accbreath activation is 1%. The separate 80% rule only applies while accbreath_long is active and should not be unconditional."
+        },
+        "samples/accbreath_4_odd.wav": {
+          "globalInclusionChance": 0.5,
+          "activationChance": 0.01,
+          "dropoutChance": 0.01,
+          "dropoutIncreasePerActivation": 0.04,
+          "dropoutMaxChance": 0.2,
+          "sourceNote": "Definitions: base accbreath activation is 1%. The separate 80% rule only applies while accbreath_long is active and should not be unconditional."
+        },
+        "samples/accbreath_5_~_even.wav": {
+          "globalInclusionChance": 0.5,
+          "activationChance": 0.01,
+          "dropoutChance": 0.01,
+          "dropoutIncreasePerActivation": 0.04,
+          "dropoutMaxChance": 0.2,
+          "sourceNote": "Definitions: base accbreath activation is 1%. The separate 80% rule only applies while accbreath_long is active and should not be unconditional."
+        },
+        "samples/cello_even_x2 (consolidated).wav": {
+          "globalInclusionChance": 0.5,
+          "activationChance": 0.05,
+          "dropoutChance": 0.05,
+          "sourceNote": "Definitions: normal cello has 50% global selection, 5% activation, 5% dropout. Low/high 80% pairing is separate."
+        },
+        "samples/clarinet_even_x2 (consolidated).wav": {
+          "globalInclusionChance": 0.2,
+          "activationChance": 0.02,
+          "dropoutChance": 0.3,
+          "sourceNote": "Definitions: normal clarinet has 20% global selection, 2% activation, 30% dropout."
+        },
+        "samples/bagoo_odd (consolidated).wav": {
+          "dependentActivationRules": [
+            {
+              "id": "dependent_bagoo_ext_after_bagoo_odd",
+              "chance": 0.5,
+              "targets": [
+                {
+                  "key": "samples/bagoo_ext_even (consolidated).wav"
+                }
+              ],
+              "sourceNote": "Definitions: bagoo_ext_even can only activate if bagoo_odd has just activated; then bagoo_ext_even has an additional 50% activation chance."
+            }
+          ]
+        },
+        "samples/bagoo_ext_even (consolidated).wav": {
+          "dependentActivationOnly": true,
+          "activationMode": "dependent",
+          "hardClashRules": [
+            {
+              "id": "bagoo_ext_hard_clash_clarinet",
+              "targets": [
+                {
+                  "family": "clarinet"
+                }
+              ],
+              "sourceNote": "Definitions: bagoo_ext hard clashes with clarinet."
+            }
+          ],
+          "sourceNote": "Definitions: bagoo_ext_even is dependent-only and can only activate from bagoo_odd."
+        },
+        "samples/bagoo_low_odd (consolidated).wav": {
+          "hardClashRules": [
+            {
+              "id": "bagoo_low_hard_clash_bagoo",
+              "targets": [
+                {
+                  "key": "samples/bagoo_odd (consolidated).wav"
+                },
+                {
+                  "key": "samples/bagoo_ext_even (consolidated).wav"
+                }
+              ],
+              "sourceNote": "Definitions: bagoo and bagoo_low cannot activate at the same time."
+            }
+          ]
+        },
+        "samples/synth_cont_odd (consolidated).wav": {
+          "globalInclusionChance": 0.6,
+          "activationChance": 0.02,
+          "dropoutChance": 0.03,
+          "sourceNote": "Definitions: normal synth group has 60% global selection; synth_cont has 2% activation and 3% dropout."
+        },
+        "samples/synth_high_cont_odd (consolidated).wav": {
+          "globalInclusionChance": 0.6,
+          "activationChance": 0.2,
+          "dropoutChance": 0.2,
+          "dependencyRules": [
+            {
+              "id": "synth_high_cont_requires_synth_cont_active",
+              "targets": [
+                {
+                  "key": "samples/synth_cont_odd (consolidated).wav"
+                }
+              ],
+              "sourceNote": "Definitions: synth_high_cont can only activate once synth_cont is active."
+            }
+          ],
+          "sourceNote": "Definitions: synth_high_cont has 20% activation/dropout and requires synth_cont active."
         }
       },
       "byFamily": {
         "bagoo": {
-          "globalInclusionChance": 0.9,
-          "sourceNote": "Migrated from identical byKey globalInclusionChance values for the complete bagoo family. Migrated shared activationChance from repeated byKey values. Migrated shared dropoutChance from repeated byKey values.",
-          "activationChance": 0.5,
+          "globalInclusionChance": 0.3,
+          "sourceNote": "Definitions: normal bagoo has 30% global selection, 20% activation, 20% dropout. The 90% chance is only when grimey is included.",
+          "activationChance": 0.2,
           "dropoutChance": 0.2
         },
         "bassish": {
@@ -1585,7 +1743,10 @@
         },
         "typewriter": {
           "globalInclusionChance": 0.1,
-          "sourceNote": "Migrated from identical byKey globalInclusionChance values for the complete typewriter family."
+          "sourceNote": "Definitions: typewriter has 10% global selection, 0.2% activation, 1% dropout increasing by +1 percentage point each activation.",
+          "activationChance": 0.002,
+          "dropoutChance": 0.01,
+          "dropoutIncreasePerActivation": 0.01
         },
         "vlins": {
           "globalInclusionChance": 0.5,
@@ -1700,10 +1861,6 @@
           "activationChance": 0.1,
           "sourceNote": "Migrated from repeated exact byKey activation/dropout values for a verified filename subset."
         },
-        "regex:^(?:samples/accbreath_1_~_even\\.wav|samples/accbreath_2_even\\.wav|samples/accbreath_3_~_even\\.wav|samples/accbreath_4_odd\\.wav|samples/accbreath_5_~_even\\.wav)$": {
-          "activationChance": 0.8,
-          "sourceNote": "Migrated from repeated exact byKey activation/dropout values for a verified filename subset."
-        },
         "regex:^(?:samples/accordian_odd_x4 \\(consolidated\\)\\.wav|samples/accordian_1_hook #3 \\(consolidated\\)\\.wav|samples/accordian_2_hook_odd_x4 \\(consolidated\\)\\.wav)$": {
           "activationChance": 0.7,
           "sourceNote": "Migrated from repeated exact byKey activation/dropout values for a verified filename subset."
@@ -1737,10 +1894,6 @@
         },
         "regex:^(?:samples/breathe_vox_stutter_xtra #2 \\(consolidated\\)\\.wav|samples/breathe_vox_stutter_xtra #3 \\(consolidated\\)\\.wav)$": {
           "activationChance": 0.5,
-          "sourceNote": "Migrated from repeated exact byKey activation/dropout values for a verified filename subset."
-        },
-        "regex:^(?:samples/cello_even_x2 \\(consolidated\\)\\.wav|samples/cello_high_even_x2 \\(consolidated\\)\\.wav)$": {
-          "activationChance": 0.8,
           "sourceNote": "Migrated from repeated exact byKey activation/dropout values for a verified filename subset."
         },
         "regex:^(?:samples/crash_dlay_odd \\(consolidated\\)\\.wav|samples/crash_washes_metal_dlay_even \\(consolidated\\)\\.wav)$": {

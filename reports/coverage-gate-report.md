@@ -1,6 +1,6 @@
 # Test Project 2 - Coverage Gate Report
 
-Generated: 2026-06-11T18:37:06.331Z
+Generated: 2026-06-11T19:41:34.250Z
 
 Report-only helper. No planner, renderer, catalog, registry, or rules files were edited by this script.
 
@@ -34,17 +34,17 @@ Report-only helper. No planner, renderer, catalog, registry, or rules files were
 | Check | Count |
 |---|---:|
 | Unique audio selected in build plans | 468 |
-| Unique audio scheduled in scheduling sims | 202 |
+| Unique audio scheduled in scheduling sims | 198 |
 | Unique MIDI selected in build plans | 39 |
 | Unique MIDI scheduled in scheduling sims | 29 |
 | Audio with no observed inclusion path | 432 |
-| Audio selected but not scheduled in scheduling sims, excluding dependent-only | 93 |
-| Dependent-only audio selected but not scheduled in scheduling sims | 5 |
-| Audio selected but not scheduled total in scheduling sims | 98 |
+| Audio selected but not scheduled in scheduling sims, excluding dependent-only | 96 |
+| Dependent-only audio selected but not scheduled in scheduling sims | 7 |
+| Audio selected but not scheduled total in scheduling sims | 103 |
 | MIDI selected but not scheduled in scheduling sims | 5 |
 | MIDI never selected | 13 |
 | General samples selected | 240 |
-| General samples scheduled | 153 |
+| General samples scheduled | 149 |
 | General samples with no observed inclusion | 65 |
 | Lyrix audio selected | 228 |
 | Lyrix audio scheduled | 49 |
@@ -109,7 +109,8 @@ Section count median: 6
 | lyrix/outburst_lyrix_intro_odd_wet.wav | 13 |
 | lyrix/outburst_lyrix_main_dry.wav | 13 |
 | lyrix/outburst_lyrix_main_wet.wav | 13 |
-| samples/vlins_long_suspense_odd_x2 (consolidated).wav | 12 |
+| samples/accbreath_1_~_even.wav | 13 |
+| samples/accbreath_5_~_even.wav | 12 |
 | samples/grm_ah_lyrix.wav | 9 |
 | samples/grm_dk_lyrix_handmedowns_x7.wav | 9 |
 | samples/grm_dk_tsandcs_lyrix_x4 (consolidated).wav | 9 |
@@ -123,7 +124,6 @@ Section count median: 6
 | lyrix/crashout_lyrix_even_dry (consolidated) #3.wav | 6 |
 | lyrix/crashout_lyrix_even_dry (consolidated) #4.wav | 6 |
 | lyrix/crashout_lyrix_even_dry (consolidated).wav | 6 |
-| samples/synth_elephant_odd_~_xtra.wav | 6 |
 
 ## Top dependent-only audio selected but not scheduled
 
@@ -133,6 +133,8 @@ Section count median: 6
 | samples/crash_dlay_odd (consolidated).wav | 38 |
 | samples/jazz_crash_metal_dlay_odd_xtra (consolidated).wav | 34 |
 | samples/rev_crash_metal_even_dlay_xtra.wav | 33 |
+| samples/bagoo_ext_even (consolidated).wav | 17 |
+| samples/glock_ext_even (consolidated).wav | 13 |
 | samples/crash_washes_metal_dlay_even (consolidated).wav | 12 |
 
 ## Top selected MIDI not scheduled
