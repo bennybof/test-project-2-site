@@ -436,6 +436,94 @@
     return indexes;
   }
 
+  function shouldAllowEveryBarActiveContinuationForAudio(entry) {
+    const key = String(entry?.key || "").toLowerCase();
+    const tags = new Set((Array.isArray(entry?.tags) ? entry.tags : []).map(tag => String(tag).toLowerCase()));
+
+    // Delay layers follow their source/dependent rules; do not turn them into every-bar continuations.
+    if (key.includes("dlay") || key.includes("delay")) return false;
+
+    if (tags.has("continuous")) return true;
+
+    return (
+      key.includes("glock") ||
+      key.includes("chimes") ||
+      key.includes("heartbeats") ||
+      key.includes("vinyl") ||
+      key.includes("hippy_synth") ||
+      key.includes("shaker") ||
+      key.includes("accbreath") ||
+      key.includes("pad_1") ||
+      key.includes("pad_2") ||
+      key.includes("pad_wiv-bass") ||
+      key.includes("pad_wiv_bass")
+    );
+  }
+
+  function shouldAllowEveryBarActiveContinuationForMidi(pattern) {
+    const file = String(pattern?.file || "").toLowerCase();
+    return file.includes("hats");
+  }
+
+  function isContinuationAwareBarAllowedForKey({
+    key,
+    section,
+    localBarIndex,
+    profile = null,
+    lifecycleStates = null,
+    lifecycleId = "",
+    allowEveryBarContinuation = false
+  }) {
+    if (
+      isBarOpportunityAllowedForKey(key, section, localBarIndex) &&
+      isActivationOpportunityAllowedForProfile(profile, section, localBarIndex)
+    ) {
+      return true;
+    }
+
+    if (!allowEveryBarContinuation) return false;
+
+    const lifecycleState = lifecycleStates && lifecycleId
+      ? getLifecycleState(lifecycleStates, lifecycleId)
+      : null;
+
+    if (!lifecycleState?.activated) return false;
+
+    // Once active, continuous material and hats can continue on each bar,
+    // but section/profile restrictions still apply.
+    return isActivationOpportunityAllowedForProfile(profile, section, localBarIndex);
+  }
+
+  function getContinuationAwareAllowedLocalBarIndexesForKey({
+    key,
+    section,
+    profile = null,
+    lifecycleStates = null,
+    lifecycleId = "",
+    allowEveryBarContinuation = false
+  }) {
+    const bars = Math.max(0, Number(section?.bars || 0));
+    const indexes = [];
+
+    for (let localBarIndex = 0; localBarIndex < bars; localBarIndex++) {
+      if (
+        isContinuationAwareBarAllowedForKey({
+          key,
+          section,
+          localBarIndex,
+          profile,
+          lifecycleStates,
+          lifecycleId,
+          allowEveryBarContinuation
+        })
+      ) {
+        indexes.push(localBarIndex);
+      }
+    }
+
+    return indexes;
+  }
+
   function chooseAllowedLocalBarIndexForKey(random, key, section, profile = null) {
     const allowedIndexes = getAllowedLocalBarIndexesForKey(key, section, profile);
     if (!allowedIndexes.length) return null;
@@ -6697,8 +6785,14 @@ function scheduleMidiPattern({
       return scheduledCount;
     }
 
-    const allowedPhraseBars = getAllowedLocalBarIndexesForKey(key, section, audioProfile)
-      .filter(localBarIndex => !shouldBlockHookAfterSkipFirstBarAudioKey(key, section, localBarIndex));
+    const allowedPhraseBars = getContinuationAwareAllowedLocalBarIndexesForKey({
+      key,
+      section,
+      profile: audioProfile,
+      lifecycleStates,
+      lifecycleId: getAudioLifecycleId(key),
+      allowEveryBarContinuation: shouldAllowEveryBarActiveContinuationForAudio(entry)
+    }).filter(localBarIndex => !shouldBlockHookAfterSkipFirstBarAudioKey(key, section, localBarIndex));
 
     if (!allowedPhraseBars.length) return 0;
 
@@ -6848,7 +6942,16 @@ function scheduleMidiPattern({
           continue;
         }
 
-        if (!isBarOpportunityAllowedForKey(pattern.file, section, localBarIndex)) {
+        const midiProfile = getRuleProfileForMidiPattern(pattern);
+
+        if (!isContinuationAwareBarAllowedForKey({
+          key: pattern.file,
+          section,
+          localBarIndex,
+          lifecycleStates,
+          lifecycleId: midiLifecycleId,
+          allowEveryBarContinuation: shouldAllowEveryBarActiveContinuationForMidi(pattern)
+        })) {
           continue;
         }
 
@@ -6856,7 +6959,6 @@ function scheduleMidiPattern({
           continue;
         }
 
-        const midiProfile = getRuleProfileForMidiPattern(pattern);
         const midiBaseChance = getActivationChance(midiProfile, 0.7);
 
         const midiDecisionResult = resolveRuleProfileDecision({
