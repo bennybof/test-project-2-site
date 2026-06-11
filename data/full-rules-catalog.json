@@ -3047,14 +3047,13 @@
         "lyrix/nosound_lyrix_wet (consolidated) #7.wav",
         "lyrix/nosound_lyrix_wet (consolidated).wav"
       ],
-      "nuva": [
-        "samples/nuva_2_bass_odd (consolidated).wav"
-      ],
+      "nuva": [],
       "nuva_bass": [
         "samples/dropped_nuva_bass.wav",
         "samples/grm_nuva_bass_odd_altstart.wav",
         "samples/grm_nuva_bass_odd.wav",
-        "samples/nuva_bass_odd (consolidated).wav"
+        "samples/nuva_bass_odd (consolidated).wav",
+        "samples/nuva_2_bass_odd (consolidated).wav"
       ],
       "oh": [
         "midi files/samples/oh.wav",
@@ -8825,6 +8824,24 @@
         "samples/vlins_long_suspense_odd_x2 (consolidated).wav",
         "samples/wierd_vox_dry_odd_x2 (consolidated).wav",
         "samples/wierd_vox_wet_odd_x2.wav"
+      ],
+      "bass": [
+        "samples/nuva_2_bass_odd (consolidated).wav"
+      ],
+      "low_group": [
+        "samples/nuva_2_bass_odd (consolidated).wav"
+      ],
+      "nuva_bass": [
+        "samples/nuva_2_bass_odd (consolidated).wav"
+      ],
+      "nuva_2": [
+        "samples/nuva_2_bass_odd (consolidated).wav"
+      ],
+      "sample": [
+        "samples/nuva_2_bass_odd (consolidated).wav"
+      ],
+      "drowner": [
+        "samples/nuva_2_bass_odd (consolidated).wav"
       ]
     }
   },

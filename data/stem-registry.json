@@ -21290,12 +21290,16 @@
       "cleanName": "nuva_2_bass_odd",
       "extension": ".wav",
       "type": "audio",
-      "family": "nuva",
+      "family": "nuva_bass",
       "tags": [
         "audio",
         "bass",
         "odd",
-        "sample"
+        "sample",
+        "low_group",
+        "nuva_bass",
+        "nuva_2",
+        "drowner"
       ],
       "partNumber": null,
       "opportunity": null,
