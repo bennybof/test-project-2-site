@@ -3802,9 +3802,9 @@
       if (!scheduled) continue;
 
       scheduledCount += 1;
-      // True bass families are mutually exclusive.
-      // Do not schedule another true bass while the current true bass is still sounding.
-      system.nextAllowedStartSeconds = scheduled.endTime;
+      // True bass scheduling is bar/opportunity based.
+      // Do not treat quiet exported file tails as logical overlap unless a definition explicitly says to.
+      system.nextAllowedStartSeconds = startSeconds + section.barSeconds;
 
       const lifecycleId = getAudioLifecycleId(candidate.key);
 
