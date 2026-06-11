@@ -810,6 +810,7 @@
       cutoffEvents: [],
       familyLocks: new Map(),
       groupedActivationDecisions: new Map(),
+      trueBassSystem: null,
       nextItemId: 1
     };
   }
@@ -3427,15 +3428,304 @@
     return entry.folder === "lyrix" || entry.key.toLowerCase().includes("lyrix");
   }
 
+  function getTrueBassFamily(entryOrKey) {
+    const key = typeof entryOrKey === "string"
+      ? entryOrKey.toLowerCase()
+      : String(entryOrKey?.key || "").toLowerCase();
+
+    if (!key) return "";
+    if (key.includes("real_bass")) return "real_bass";
+    if (key.includes("synth_bass")) return "synth_bass";
+    if (key.includes("nuva_bass")) return "nuva_bass";
+
+    const isLowCello =
+      key.includes("cello") &&
+      !key.includes("cello_high") &&
+      !key.includes("wiv-bass") &&
+      !key.includes("wiv_bass");
+
+    if (isLowCello) return "low_cello";
+
+    return "";
+  }
+
   function isTrueBass(entry) {
-    const key = entry.key.toLowerCase();
-    return (
-      key.includes("real_bass") ||
-      key.includes("synth_bass") ||
-      key.includes("nuva_bass") ||
-      key.includes("grm_main_bass") ||
-      key.includes("drop_bass")
+    return Boolean(getTrueBassFamily(entry));
+  }
+
+  function shouldUseTrueBassCentralScheduler(entry, section) {
+    return Boolean(
+      entry &&
+      section &&
+      section.type === "normal" &&
+      !isHookSection(section) &&
+      isTrueBass(entry)
     );
+  }
+
+  function isTrueBassCentralCandidateForSection(entry, section) {
+    if (!shouldUseTrueBassCentralScheduler(entry, section)) return false;
+
+    const key = entry.key.toLowerCase();
+
+    // Section-specific bass material is handled by its own section systems, not normal true-bass scheduling.
+    if (key.includes("grm_")) return false;
+    if (key.includes("drop_") || key.includes("dropped_")) return false;
+    if (key.includes("outburst")) return false;
+    if (key.includes("hook")) return false;
+
+    return audioMatchesSection(entry, section);
+  }
+
+  function getTrueBassFamilyWeight(family) {
+    if (family === "nuva_bass") return 0.2;
+    if (family === "real_bass") return 0.3;
+    if (family === "synth_bass") return 0.25;
+    if (family === "low_cello") return 0.25;
+    return 0;
+  }
+
+  function chooseWeightedTrueBassItem(random, items, getWeight) {
+    const weighted = items
+      .map(item => ({
+        item,
+        weight: Math.max(0, Number(getWeight(item)) || 0)
+      }))
+      .filter(item => item.weight > 0);
+
+    if (!weighted.length) return null;
+
+    const total = weighted.reduce((sum, item) => sum + item.weight, 0);
+    let roll = random() * total;
+
+    for (const weightedItem of weighted) {
+      roll -= weightedItem.weight;
+      if (roll <= 0) return weightedItem.item;
+    }
+
+    return weighted[weighted.length - 1].item;
+  }
+
+  function getOrCreateTrueBassSystemState(playbackState, random, plan) {
+    if (!playbackState) return null;
+    if (playbackState.trueBassSystem) return playbackState.trueBassSystem;
+
+    const familiesInVersion = new Set();
+
+    for (const key of plan?.selectedAudio || []) {
+      const entry = getCatalogEntry(key);
+      const family = getTrueBassFamily(entry);
+      if (family) familiesInVersion.add(family);
+    }
+
+    let includedFamilies = [...familiesInVersion].filter(family => getTrueBassFamilyWeight(family) > 0);
+    let excludedFamily = "";
+    let nuvaOnly = false;
+
+    if (includedFamilies.includes("nuva_bass") && random() < 0.05) {
+      includedFamilies = ["nuva_bass"];
+      nuvaOnly = true;
+    } else if (includedFamilies.length > 1 && random() < 0.5) {
+      excludedFamily = chooseOne(random, includedFamilies);
+      includedFamilies = includedFamilies.filter(family => family !== excludedFamily);
+    }
+
+    playbackState.trueBassSystem = {
+      includedFamilies,
+      excludedFamily,
+      nuvaOnly,
+      activeFamily: "",
+      nextAllowedStartSeconds: -Infinity,
+      debug: []
+    };
+
+    return playbackState.trueBassSystem;
+  }
+
+  function getTrueBassCandidatesForOpportunity({ plan, buffers, section, localBarIndex }) {
+    const candidates = [];
+
+    for (const key of plan?.selectedAudio || []) {
+      const entry = getCatalogEntry(key);
+      if (!entry || !isTrueBassCentralCandidateForSection(entry, section)) continue;
+      if (!buffers?.get(key)) continue;
+
+      const profile = getRuleProfileForEntry(entry);
+      const allowedBars = getAllowedLocalBarIndexesForKey(key, section, profile);
+
+      if (!allowedBars.includes(localBarIndex)) continue;
+
+      candidates.push({
+        key,
+        entry,
+        profile,
+        family: getTrueBassFamily(entry)
+      });
+    }
+
+    return candidates;
+  }
+
+  function chooseTrueBassCandidateFromFamily(random, candidates, family) {
+    const familyCandidates = candidates.filter(candidate => candidate.family === family);
+    if (!familyCandidates.length) return null;
+
+    return chooseOne(random, familyCandidates);
+  }
+
+  function scheduleTrueBassSystemInSection({
+    offlineContext,
+    destination,
+    buffers,
+    plan,
+    random,
+    playbackState,
+    lifecycleStates,
+    section
+  }) {
+    if (!section || section.type !== "normal") return 0;
+
+    const system = getOrCreateTrueBassSystemState(playbackState, random, plan);
+    if (!system || !system.includedFamilies.length) return 0;
+
+    let scheduledCount = 0;
+
+    if (!Array.isArray(section.trueBassSystemDebug)) {
+      section.trueBassSystemDebug = [];
+    }
+
+    for (let localBarIndex = 0; localBarIndex < section.bars; localBarIndex += 1) {
+      const startSeconds = section.startSeconds + localBarIndex * section.barSeconds;
+
+      if (startSeconds < system.nextAllowedStartSeconds - 0.001) {
+        continue;
+      }
+
+      const candidates = getTrueBassCandidatesForOpportunity({
+        plan,
+        buffers,
+        section,
+        localBarIndex
+      }).filter(candidate => system.includedFamilies.includes(candidate.family));
+
+      if (!candidates.length) continue;
+
+      const availableFamilies = [...new Set(candidates.map(candidate => candidate.family))];
+
+      if (system.activeFamily && !availableFamilies.includes(system.activeFamily)) {
+        system.activeFamily = "";
+      }
+
+      if (system.activeFamily) {
+        if (random() < 0.01) {
+          section.trueBassSystemDebug.push({
+            event: "true_bass_family_dropout",
+            family: system.activeFamily,
+            localBarIndex,
+            startSeconds,
+            dropoutChance: 0.01
+          });
+
+          system.activeFamily = "";
+        } else if (
+          (system.activeFamily === "real_bass" || system.activeFamily === "synth_bass") &&
+          random() < 0.005
+        ) {
+          const interchangeTarget = system.activeFamily === "real_bass" ? "synth_bass" : "real_bass";
+
+          if (
+            system.includedFamilies.includes(interchangeTarget) &&
+            availableFamilies.includes(interchangeTarget)
+          ) {
+            section.trueBassSystemDebug.push({
+              event: "true_bass_real_synth_interchange",
+              fromFamily: system.activeFamily,
+              toFamily: interchangeTarget,
+              localBarIndex,
+              startSeconds,
+              interchangeChance: 0.005
+            });
+
+            system.activeFamily = interchangeTarget;
+          }
+        }
+      }
+
+      if (!system.activeFamily) {
+        if (random() >= 0.9) {
+          section.trueBassSystemDebug.push({
+            event: "true_bass_target_coverage_gap",
+            localBarIndex,
+            startSeconds,
+            targetCoverageChance: 0.9
+          });
+
+          continue;
+        }
+
+        const chosenFamily = chooseWeightedTrueBassItem(
+          random,
+          availableFamilies,
+          family => getTrueBassFamilyWeight(family)
+        );
+
+        if (!chosenFamily) continue;
+
+        system.activeFamily = chosenFamily;
+
+        section.trueBassSystemDebug.push({
+          event: "true_bass_family_activated",
+          family: system.activeFamily,
+          localBarIndex,
+          startSeconds,
+          targetCoverageChance: 0.9
+        });
+      }
+
+      const candidate = chooseTrueBassCandidateFromFamily(random, candidates, system.activeFamily);
+      if (!candidate) continue;
+
+      const buffer = buffers.get(candidate.key);
+      if (!buffer) continue;
+
+      const scheduled = scheduleAudioBufferWithPlaybackState({
+        offlineContext,
+        destination,
+        buffer,
+        startTime: startSeconds,
+        gainValue: sectionGainForAudio(candidate.entry, section),
+        playbackState,
+        key: candidate.key,
+        entry: candidate.entry,
+        section
+      });
+
+      if (!scheduled) continue;
+
+      scheduledCount += 1;
+      system.nextAllowedStartSeconds = scheduled.endTime;
+
+      const lifecycleId = getAudioLifecycleId(candidate.key);
+
+      if (lifecycleStates && lifecycleId) {
+        activateLifecycleItem(
+          lifecycleStates,
+          lifecycleId,
+          `${section.id}:${candidate.key}:${localBarIndex}:true_bass_family_system`
+        );
+      }
+
+      section.trueBassSystemDebug.push({
+        event: "true_bass_stem_scheduled",
+        family: system.activeFamily,
+        key: candidate.key,
+        localBarIndex,
+        startSeconds,
+        endTime: scheduled.endTime
+      });
+    }
+
+    return scheduledCount;
   }
 
   function isDrumMidiPattern(pattern) {
@@ -6165,6 +6455,10 @@ function scheduleMidiPattern({
     if (!entry || !buffer) return 0;
     if (!audioMatchesSection(entry, section)) return 0;
 
+    if (shouldUseTrueBassCentralScheduler(entry, section)) {
+      return 0;
+    }
+
     const keyLower = key.toLowerCase();
     const gain = sectionGainForAudio(entry, section);
     const audioProfile = getRuleProfileForEntry(entry);
@@ -6741,6 +7035,17 @@ function scheduleMidiPattern({
           : null;
 
       const scheduledLyrixGroupIds = new Set();
+
+      scheduleTrueBassSystemInSection({
+        offlineContext,
+        destination,
+        buffers,
+        plan,
+        random,
+        playbackState,
+        lifecycleStates,
+        section
+      });
 
       for (const key of plan.selectedAudio) {
         const entry = getCatalogEntry(key);
