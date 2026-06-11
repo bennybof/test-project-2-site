@@ -5010,49 +5010,14 @@ function getNormalMidiHatChoiceGroupId(pattern) {
     // Select section-relevant audio instead of selecting everything equally.
     for (const section of sectionTimeline) {
       const matchingEntries = audioEntries.filter(entry => {
-        const key = entry.key.toLowerCase();
-
-        if (isHookDrumsSkipIntroSection(section)) {
-          return entry.key === "samples/hook_drums_skip_intro.wav";
-        }
-
-        const hookSection = isHookSection(section);
-        const hookKey = isHookKey(entry.key);
-        const allowNonHookInHook = key.includes("window_wipe");
-
-        if (hookKey && !hookSection) return false;
-        if (hookSection && !hookKey && !allowNonHookInHook) return false;
-
-        if (hookSection) return true;
-        if (section.type.includes("lyrix")) {
-          if (section.lyrixSectionId) return false;
-          return isLyrix(entry);
-        }
-        if ((key.includes("drop_") || key.includes("dropped_")) && !section.type.includes("drop")) {
-          return false;
-        }
-
-        if (section.type.includes("drop")) return key.includes("drop_") || key.includes("dropped_");
-        if (section.type.includes("outburst")) return key.includes("outburst");
-        if (section.type.includes("grimey")) return key.includes("grm_") || key.includes("rewind_sfx");
-
-        return (
-          key.includes("crash") ||
-          key.includes("synth") ||
-          key.includes("bass") ||
-          key.includes("pad") ||
-          key.includes("chimes") ||
-          key.includes("glock") ||
-          key.includes("bagoo") ||
-          key.includes("floot") ||
-          key.includes("vlins") ||
-          key.includes("vox")
-        );
+        if (section.type.includes("lyrix") && section.lyrixSectionId) return false;
+        return audioMatchesSection(entry, section);
       });
 
       const shuffled = shuffle(random, matchingEntries);
+      const selectionLimit = section.type === "normal" || section.type === "ending" ? 24 : 12;
 
-      for (const entry of shuffled.slice(0, 12)) {
+      for (const entry of shuffled.slice(0, selectionLimit)) {
         const chanceMultiplier = section.type === "normal" ? 0.65 : 1.0;
         const p = Math.min(0.9, getBaseActivationChance(entry) * chanceMultiplier);
 
@@ -5773,7 +5738,44 @@ function scheduleMidiPattern({
     return scheduledCount;
   }
 
-   function audioMatchesSection(entry, section) {
+   function profileHasSelectionChanceField(profile) {
+    return Boolean(profile && (
+      profile.globalInclusionChance !== undefined ||
+      profile.globalChance !== undefined ||
+      profile.inclusionChance !== undefined ||
+      profile.globalSelectionChance !== undefined ||
+      profile.activationChance !== undefined ||
+      profile.activationChanceEach !== undefined ||
+      profile.chance !== undefined
+    ));
+  }
+
+  function hasExplicitNormalAudioProfile(entry) {
+    if (!entry?.key) return false;
+
+    const pool = getRuleProfilePool();
+    const key = entry.key;
+    const family = entry.family || "";
+    const tags = Array.isArray(entry.tags) ? entry.tags : [];
+
+    const byTag = getRuleMapByName(pool, ["byTag", "tags", "tagRules"]);
+    const byFamily = getRuleMapByName(pool, ["byFamily", "families", "familyRules"]);
+    const byKeyPattern = getRuleMapByName(pool, ["byKeyPattern", "keyPatterns", "patterns", "patternRules"]);
+    const byKey = getRuleMapByName(pool, ["byKey", "keys", "keyRules"]);
+
+    for (const tag of tags) {
+      if (profileHasSelectionChanceField(getRuleObjectFromMap(byTag, tag))) return true;
+    }
+
+    if (profileHasSelectionChanceField(getRuleObjectFromMap(byFamily, family))) return true;
+
+    const keyPatternRules = getRuleObjectsMatchingKeyPatterns(byKeyPattern, key);
+    if (keyPatternRules.some(profileHasSelectionChanceField)) return true;
+
+    return profileHasSelectionChanceField(getRuleObjectFromMap(byKey, key));
+  }
+
+  function audioMatchesSection(entry, section) {
     const key = entry.key.toLowerCase();
     const type = section.type;
 
@@ -5839,6 +5841,8 @@ function scheduleMidiPattern({
     }
 
         if (isLyrix(entry)) return false;
+
+    if (hasExplicitNormalAudioProfile(entry)) return true;
 
     return (
       key.includes("crash") ||
