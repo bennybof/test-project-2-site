@@ -6601,7 +6601,7 @@ function scheduleMidiPattern({
     return scheduledCount;
   }
 
-  function scheduleAudioStemInSection({ offlineContext, destination, key, buffer, random, plan = null, lifecycleStates = null, playbackState = null, section }) {
+  function scheduleAudioStemInSection({ offlineContext, destination, key, buffer, random, plan = null, lifecycleStates = null, playbackState = null, section, buffers = null }) {
     const entry = getCatalogEntry(key);
     if (!entry || !buffer) return 0;
     if (!audioMatchesSection(entry, section)) return 0;
@@ -6671,7 +6671,7 @@ function scheduleMidiPattern({
       return scheduleDependentActivationFollowersForAudio({
         offlineContext,
         destination,
-        buffers: currentRenderBuffers,
+        buffers: buffers || currentRenderBuffers,
         random,
         plan,
         playbackState,
@@ -6782,7 +6782,7 @@ function scheduleMidiPattern({
         random,
         playbackState,
         section,
-        buffers: currentRenderBuffers
+        buffers: buffers || currentRenderBuffers
       }) ? 1 : 0;
     }
 
@@ -7212,7 +7212,7 @@ function scheduleMidiPattern({
       });
 
       const chosenLyrixKeyForSection =
-        section.type.includes("lyrix") && lyrixKeysForThisSection.length
+        lyrixKeysForThisSection.length
           ? chooseOne(random, lyrixKeysForThisSection)
           : null;
 
@@ -7253,7 +7253,8 @@ function scheduleMidiPattern({
           plan,
           lifecycleStates,
           playbackState,
-          section
+          section,
+          buffers
         });
 
         if (scheduledCount > 0 && !getLifecycleState(lifecycleStates, audioLifecycleId).activated) {
