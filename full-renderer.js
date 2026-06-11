@@ -443,7 +443,7 @@
     // Delay layers follow their source/dependent rules; do not turn them into every-bar continuations.
     if (key.includes("dlay") || key.includes("delay")) return false;
 
-    if (tags.has("continuous")) return true;
+    if (tags.has("continuous") || tags.has("cont")) return true;
 
     return (
       key.includes("glock") ||
@@ -456,7 +456,8 @@
       key.includes("pad_1") ||
       key.includes("pad_2") ||
       key.includes("pad_wiv-bass") ||
-      key.includes("pad_wiv_bass")
+      key.includes("pad_wiv_bass") ||
+      /(?:^|[\/_\-\s])cont(?:[._\-\s]|$)/i.test(key)
     );
   }
 
@@ -6785,22 +6786,36 @@ function scheduleMidiPattern({
       return scheduledCount;
     }
 
-    const allowedPhraseBars = getContinuationAwareAllowedLocalBarIndexesForKey({
-      key,
-      section,
-      profile: audioProfile,
-      lifecycleStates,
-      lifecycleId: getAudioLifecycleId(key),
-      allowEveryBarContinuation: shouldAllowEveryBarActiveContinuationForAudio(entry)
-    }).filter(localBarIndex => !shouldBlockHookAfterSkipFirstBarAudioKey(key, section, localBarIndex));
+    const allowEveryBarPhraseContinuation = shouldAllowEveryBarActiveContinuationForAudio(entry);
+    const phraseAudioLifecycleId = getAudioLifecycleId(key);
+    const phraseBarsToCheck = (
+      allowEveryBarPhraseContinuation
+        ? Array.from(
+            { length: Math.max(0, Number(section?.bars || 0)) },
+            (_, localBarIndex) => localBarIndex
+          )
+        : getAllowedLocalBarIndexesForKey(key, section, audioProfile)
+    ).filter(localBarIndex => !shouldBlockHookAfterSkipFirstBarAudioKey(key, section, localBarIndex));
 
-    if (!allowedPhraseBars.length) return 0;
+    if (!phraseBarsToCheck.length) return 0;
 
     const phraseBaseChance = getActivationChance(audioProfile, 0.45);
     let scheduledCount = 0;
     let nextAllowedPhraseStartSeconds = -Infinity;
 
-    for (const localBar of allowedPhraseBars) {
+    for (const localBar of phraseBarsToCheck) {
+      if (!isContinuationAwareBarAllowedForKey({
+        key,
+        section,
+        localBarIndex: localBar,
+        profile: audioProfile,
+        lifecycleStates,
+        lifecycleId: phraseAudioLifecycleId,
+        allowEveryBarContinuation: allowEveryBarPhraseContinuation
+      })) {
+        continue;
+      }
+
       const startSeconds = section.startSeconds + localBar * section.barSeconds;
 
       // Do not layer the same phrase over itself while the previous scheduled copy is still playing.
@@ -6903,7 +6918,8 @@ function scheduleMidiPattern({
 
       if (!isLifecycleIdEligible(lifecycleStates, midiLifecycleId)) return 0;
 
-      const repeatEveryBars = getMidiRepeatEveryBars(pattern);
+      const allowEveryBarMidiContinuation = shouldAllowEveryBarActiveContinuationForMidi(pattern);
+      const repeatEveryBars = allowEveryBarMidiContinuation ? 1 : getMidiRepeatEveryBars(pattern);
       const repeatEverySeconds = section.barSeconds * repeatEveryBars;
       let totalScheduledCount = 0;
 
@@ -6950,7 +6966,7 @@ function scheduleMidiPattern({
           localBarIndex,
           lifecycleStates,
           lifecycleId: midiLifecycleId,
-          allowEveryBarContinuation: shouldAllowEveryBarActiveContinuationForMidi(pattern)
+          allowEveryBarContinuation: allowEveryBarMidiContinuation
         })) {
           continue;
         }
