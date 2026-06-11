@@ -68,6 +68,56 @@ function topFromCountMap(map, limit = 25) {
     .map(([key, count]) => ({ key, count }));
 }
 
+function profileMarksDependentOnly(profile) {
+  return !!(
+    profile &&
+    typeof profile === "object" &&
+    (
+      profile.dependentActivationOnly === true ||
+      profile.dependentOnly === true ||
+      profile.activationMode === "dependent"
+    )
+  );
+}
+
+function collectRuleProfilesForKey(catalog, registryByKey, key) {
+  const profiles = catalog?.rulePools?.ruleProfiles || {};
+  const entry = registryByKey?.get(key) || null;
+  const out = [];
+
+  const byTag = profiles.byTag || {};
+  for (const tag of entry?.tags || []) {
+    if (byTag[tag]) out.push(byTag[tag]);
+  }
+
+  const byFamily = profiles.byFamily || {};
+  if (entry?.family && byFamily[entry.family]) {
+    out.push(byFamily[entry.family]);
+  }
+
+  const byKeyPattern = profiles.byKeyPattern || {};
+  for (const [patternKey, profile] of Object.entries(byKeyPattern)) {
+    if (!patternKey.startsWith("regex:")) continue;
+
+    try {
+      if (new RegExp(patternKey.slice("regex:".length)).test(key)) {
+        out.push(profile);
+      }
+    } catch {
+      // Ignore invalid report-only regex profile keys.
+    }
+  }
+
+  const byKey = profiles.byKey || {};
+  if (byKey[key]) out.push(byKey[key]);
+
+  return out;
+}
+
+function isDependentOnlyAudioKey(catalog, registryByKey, key) {
+  return collectRuleProfilesForKey(catalog, registryByKey, key).some(profileMarksDependentOnly);
+}
+
 function percentile(sortedNumbers, p) {
   if (!sortedNumbers.length) return null;
   const idx = (sortedNumbers.length - 1) * p;
@@ -368,6 +418,7 @@ function main() {
   }
 
   const registryEntries = registry.entries || [];
+  const registryByKey = new Map(registryEntries.map(entry => [entry.key, entry]));
   const registryKeys = new Set(registryEntries.map(entry => entry.key));
   const manifestKeys = new Set(r2Manifest);
   const catalogKeys = new Set(catalog.allKeys || []);
@@ -472,6 +523,12 @@ function main() {
     .filter(key => !scheduledAudio.has(key))
     .sort((a, b) => (scheduledPoolSelectedAudioCounts.get(b) || 0) - (scheduledPoolSelectedAudioCounts.get(a) || 0) || a.localeCompare(b));
 
+  const selectedDependentOnlyAudioNotScheduled = selectedAudioNotScheduled
+    .filter(key => isDependentOnlyAudioKey(catalog, registryByKey, key));
+
+  const selectedNonDependentAudioNotScheduled = selectedAudioNotScheduled
+    .filter(key => !isDependentOnlyAudioKey(catalog, registryByKey, key));
+
   const selectedMidiNotScheduled = [...scheduledPoolSelectedMidi]
     .filter(key => !scheduledMidi.has(key))
     .sort((a, b) => (scheduledPoolSelectedMidiCounts.get(b) || 0) - (scheduledPoolSelectedMidiCounts.get(a) || 0) || a.localeCompare(b));
@@ -535,7 +592,9 @@ function main() {
       selectedMidiCount: selectedMidi.size,
       scheduledMidiCount: scheduledMidi.size,
       audioNoObservedInclusionPathCount: noObservedAudioInclusion.length,
-      selectedAudioNotScheduledCount: selectedAudioNotScheduled.length,
+      selectedAudioNotScheduledTotalCount: selectedAudioNotScheduled.length,
+      selectedAudioNotScheduledCount: selectedNonDependentAudioNotScheduled.length,
+      selectedDependentOnlyAudioNotScheduledCount: selectedDependentOnlyAudioNotScheduled.length,
       selectedMidiNotScheduledCount: selectedMidiNotScheduled.length,
       neverSelectedMidiCount: neverSelectedMidi.length,
       generalSamplesSelectedCount: sampleAudioEntries.filter(entry => selectedAudio.has(entry.key)).length,
@@ -552,7 +611,8 @@ function main() {
       selectedMidi: topFromCountMap(selectedMidiCounts, 50),
       scheduledMidi: topFromCountMap(scheduledMidiCounts, 50),
       unselectedFamilies: topFromCountMap(unselectedFamilies, 50),
-      selectedAudioNotScheduled: selectedAudioNotScheduled.slice(0, 100).map(key => ({ key, selectedCount: scheduledPoolSelectedAudioCounts.get(key) || 0 })),
+      selectedAudioNotScheduled: selectedNonDependentAudioNotScheduled.slice(0, 100).map(key => ({ key, selectedCount: scheduledPoolSelectedAudioCounts.get(key) || 0 })),
+      selectedDependentOnlyAudioNotScheduled: selectedDependentOnlyAudioNotScheduled.slice(0, 100).map(key => ({ key, selectedCount: scheduledPoolSelectedAudioCounts.get(key) || 0 })),
       selectedMidiNotScheduled: selectedMidiNotScheduled.slice(0, 100).map(key => ({ key, selectedCount: scheduledPoolSelectedMidiCounts.get(key) || 0 })),
       neverSelectedMidi: neverSelectedMidi.slice(0, 100)
     },
@@ -651,7 +711,9 @@ ${report.sourceCounts.midiPatternsMissing ? "MIDI note-level validation is limit
 | Unique MIDI selected in build plans | ${report.reachability.selectedMidiCount} |
 | Unique MIDI scheduled in scheduling sims | ${report.reachability.scheduledMidiCount} |
 | Audio with no observed inclusion path | ${report.reachability.audioNoObservedInclusionPathCount} |
-| Audio selected but not scheduled in scheduling sims | ${report.reachability.selectedAudioNotScheduledCount} |
+| Audio selected but not scheduled in scheduling sims, excluding dependent-only | ${report.reachability.selectedAudioNotScheduledCount} |
+| Dependent-only audio selected but not scheduled in scheduling sims | ${report.reachability.selectedDependentOnlyAudioNotScheduledCount} |
+| Audio selected but not scheduled total in scheduling sims | ${report.reachability.selectedAudioNotScheduledTotalCount} |
 | MIDI selected but not scheduled in scheduling sims | ${report.reachability.selectedMidiNotScheduledCount} |
 | MIDI never selected | ${report.reachability.neverSelectedMidiCount} |
 | General samples selected | ${report.reachability.generalSamplesSelectedCount} |
@@ -675,11 +737,17 @@ Section count median: ${report.timeline.sectionCount.median}
 |---|---:|
 ${tableRows(report.top.unselectedFamilies.slice(0, 25).map(item => [item.key, item.count]))}
 
-## Top selected audio not scheduled
+## Top selected audio not scheduled, excluding dependent-only
 
 | File | Selected count |
 |---|---:|
 ${tableRows(report.top.selectedAudioNotScheduled.slice(0, 25).map(item => [item.key, item.selectedCount]))}
+
+## Top dependent-only audio selected but not scheduled
+
+| File | Selected count |
+|---|---:|
+${tableRows((report.top.selectedDependentOnlyAudioNotScheduled || []).slice(0, 25).map(item => [item.key, item.selectedCount]))}
 
 ## Top selected MIDI not scheduled
 

@@ -1,6 +1,6 @@
 # Test Project 2 - Coverage Gate Report
 
-Generated: 2026-06-11T17:36:55.325Z
+Generated: 2026-06-11T17:50:34.019Z
 
 Report-only helper. No planner, renderer, catalog, registry, or rules files were edited by this script.
 
@@ -38,7 +38,9 @@ Report-only helper. No planner, renderer, catalog, registry, or rules files were
 | Unique MIDI selected in build plans | 39 |
 | Unique MIDI scheduled in scheduling sims | 26 |
 | Audio with no observed inclusion path | 468 |
-| Audio selected but not scheduled in scheduling sims | 100 |
+| Audio selected but not scheduled in scheduling sims, excluding dependent-only | 95 |
+| Dependent-only audio selected but not scheduled in scheduling sims | 5 |
+| Audio selected but not scheduled total in scheduling sims | 100 |
 | MIDI selected but not scheduled in scheduling sims | 4 |
 | MIDI never selected | 13 |
 | General samples selected | 203 |
@@ -93,14 +95,10 @@ Section count median: 6
 | oh | 3 |
 | pno | 3 |
 
-## Top selected audio not scheduled
+## Top selected audio not scheduled, excluding dependent-only
 
 | File | Selected count |
 |---|---:|
-| samples/crash_dlay_odd (consolidated).wav | 36 |
-| samples/big_crash_layer_odd_dlay_metal (consolidated).wav | 20 |
-| samples/jazz_crash_metal_dlay_odd_xtra (consolidated).wav | 18 |
-| samples/rev_crash_metal_even_dlay_xtra.wav | 16 |
 | samples/synth_downsampled_odd_xtra (consolidated).wav | 15 |
 | samples/synth_downsampled_odd_xtra #2 (consolidated).wav | 15 |
 | samples/synth_downsampled_odd_xtra #3 (consolidated).wav | 15 |
@@ -122,6 +120,20 @@ Section count median: 6
 | samples/synth_bass_2_hook_x4_even (consolidated).wav | 8 |
 | samples/vlins_long_suspense_odd_x2 (consolidated).wav | 8 |
 | lyrix/dropsynthout_lyrix_xtra_even_wet (consolidated) #2.wav | 5 |
+| lyrix/dropsynthout_lyrix_xtra_even_wet (consolidated) #3.wav | 5 |
+| lyrix/dropsynthout_lyrix_xtra_even_wet (consolidated).wav | 5 |
+| samples/breathe_rev_vox_dry_suspense_even_x2 (consolidated).wav | 5 |
+| samples/glock_odd_dlay (consolidated).wav | 5 |
+
+## Top dependent-only audio selected but not scheduled
+
+| File | Selected count |
+|---|---:|
+| samples/crash_dlay_odd (consolidated).wav | 36 |
+| samples/big_crash_layer_odd_dlay_metal (consolidated).wav | 20 |
+| samples/jazz_crash_metal_dlay_odd_xtra (consolidated).wav | 18 |
+| samples/rev_crash_metal_even_dlay_xtra.wav | 16 |
+| samples/crash_washes_metal_dlay_even (consolidated).wav | 3 |
 
 ## Top selected MIDI not scheduled
 

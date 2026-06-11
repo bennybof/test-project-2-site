@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-11T17:36:55.325Z",
+  "generatedAt": "2026-06-11T17:50:34.019Z",
   "root": "C:\\Users\\Student\\OneDrive\\test-project-2-site",
   "sim": {
     "buildSimCount": 400,
@@ -39,7 +39,9 @@
     "selectedMidiCount": 39,
     "scheduledMidiCount": 26,
     "audioNoObservedInclusionPathCount": 468,
-    "selectedAudioNotScheduledCount": 100,
+    "selectedAudioNotScheduledTotalCount": 100,
+    "selectedAudioNotScheduledCount": 95,
+    "selectedDependentOnlyAudioNotScheduledCount": 5,
     "selectedMidiNotScheduledCount": 4,
     "neverSelectedMidiCount": 13,
     "generalSamplesSelectedCount": 203,
@@ -923,22 +925,6 @@
     ],
     "selectedAudioNotScheduled": [
       {
-        "key": "samples/crash_dlay_odd (consolidated).wav",
-        "selectedCount": 36
-      },
-      {
-        "key": "samples/big_crash_layer_odd_dlay_metal (consolidated).wav",
-        "selectedCount": 20
-      },
-      {
-        "key": "samples/jazz_crash_metal_dlay_odd_xtra (consolidated).wav",
-        "selectedCount": 18
-      },
-      {
-        "key": "samples/rev_crash_metal_even_dlay_xtra.wav",
-        "selectedCount": 16
-      },
-      {
         "key": "samples/synth_downsampled_odd_xtra (consolidated).wav",
         "selectedCount": 15
       },
@@ -1064,10 +1050,6 @@
       },
       {
         "key": "samples/bassish_glitchy_hook_odd_x4 #2 (consolidated).wav",
-        "selectedCount": 3
-      },
-      {
-        "key": "samples/crash_washes_metal_dlay_even (consolidated).wav",
         "selectedCount": 3
       },
       {
@@ -1321,6 +1303,28 @@
       {
         "key": "samples/window_wipe_2_xtra_even_hook_x4.wav",
         "selectedCount": 1
+      }
+    ],
+    "selectedDependentOnlyAudioNotScheduled": [
+      {
+        "key": "samples/crash_dlay_odd (consolidated).wav",
+        "selectedCount": 36
+      },
+      {
+        "key": "samples/big_crash_layer_odd_dlay_metal (consolidated).wav",
+        "selectedCount": 20
+      },
+      {
+        "key": "samples/jazz_crash_metal_dlay_odd_xtra (consolidated).wav",
+        "selectedCount": 18
+      },
+      {
+        "key": "samples/rev_crash_metal_even_dlay_xtra.wav",
+        "selectedCount": 16
+      },
+      {
+        "key": "samples/crash_washes_metal_dlay_even (consolidated).wav",
+        "selectedCount": 3
       }
     ],
     "selectedMidiNotScheduled": [
