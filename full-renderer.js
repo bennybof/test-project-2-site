@@ -5681,6 +5681,11 @@ function scheduleMidiPattern({
       return false;
     }
 
+    // Outburst section material must not leak into normal/drop/grimey/ending sections.
+    if (key.includes("outburst") && !type.includes("outburst")) {
+      return false;
+    }
+
     if (key.includes("everything_intro")) return type === "everything_intro";
     if (key.includes("hook_drums_skip_intro")) return type === "hook_drums_skip_intro";
     if (hookSection) {
