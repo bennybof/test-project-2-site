@@ -1,6 +1,6 @@
 # Test Project 2 - Coverage Gate Report
 
-Generated: 2026-06-11T23:21:04.371Z
+Generated: 2026-06-11T23:34:40.399Z
 
 Report-only helper. No planner, renderer, catalog, registry, or rules files were edited by this script.
 
@@ -34,20 +34,20 @@ Report-only helper. No planner, renderer, catalog, registry, or rules files were
 | Check | Count |
 |---|---:|
 | Unique audio selected in build plans | 468 |
-| Unique audio scheduled in scheduling sims | 247 |
+| Unique audio scheduled in scheduling sims | 246 |
 | Unique MIDI selected in build plans | 39 |
-| Unique MIDI scheduled in scheduling sims | 29 |
+| Unique MIDI scheduled in scheduling sims | 28 |
 | Audio with no observed inclusion path | 432 |
-| Audio selected but not scheduled in scheduling sims, excluding dependent-only | 53 |
+| Audio selected but not scheduled in scheduling sims, excluding dependent-only | 54 |
 | Dependent-only audio selected but not scheduled in scheduling sims | 1 |
-| Audio selected but not scheduled total in scheduling sims | 54 |
-| MIDI selected but not scheduled in scheduling sims | 5 |
+| Audio selected but not scheduled total in scheduling sims | 55 |
+| MIDI selected but not scheduled in scheduling sims | 6 |
 | MIDI never selected | 13 |
 | General samples selected | 240 |
-| General samples scheduled | 152 |
+| General samples scheduled | 156 |
 | General samples with no observed inclusion | 65 |
 | Lyrix audio selected | 228 |
-| Lyrix audio scheduled | 95 |
+| Lyrix audio scheduled | 90 |
 | Lyrix sections seen | 21 / 57 |
 
 ## Timeline / duration variation
@@ -104,21 +104,21 @@ Section count median: 6
 | samples/synth_downsampled_odd_xtra #2 (consolidated).wav | 16 |
 | samples/synth_downsampled_odd_xtra #3 (consolidated).wav | 16 |
 | samples/synth_downsampled_odd_xtra #4 (consolidated).wav | 16 |
-| samples/vlins_long_suspense_odd_x2 (consolidated).wav | 12 |
+| samples/accbreath_1_~_even.wav | 13 |
+| samples/accbreath_long_x4.wav | 9 |
+| samples/vlins_1_even_x2 (consolidated).wav | 9 |
 | samples/synth_bass_1_hook #2 (consolidated).wav | 8 |
 | samples/synth_bass_1_hook #3 (consolidated).wav | 8 |
 | samples/synth_bass_1_hook_odd_x4 (consolidated).wav | 8 |
 | samples/synth_bass_2_hook_x4_even (consolidated).wav | 8 |
+| lyrix/crashout_lyrix_even_dry (consolidated).wav | 6 |
 | samples/random_vox_dry_x4_even_~.wav | 6 |
-| samples/synth_elephant_odd_~_xtra.wav | 6 |
-| samples/heartbeats_xtra.wav | 5 |
-| samples/shaker_big_xtra (consolidated).wav | 5 |
-| samples/shaker_small_xtra (consolidated).wav | 5 |
 | samples/high_bassish_hook_odd_x2 (consolidated) #2.wav | 4 |
 | samples/high_bassish_hook_odd_x2 (consolidated).wav | 4 |
 | samples/hippy_synth_odd (consolidated).wav | 4 |
 | samples/trumpet_hook_odd_x4 (consolidated) #2.wav | 4 |
 | samples/trumpet_hook_odd_x4 (consolidated).wav | 4 |
+| lyrix/grounded_lyrix_xtra_v2 (consolidated) #3.wav | 3 |
 | samples/trumpet_even_x4.wav | 3 |
 | samples/typewriter_even_xtra.wav | 3 |
 | lyrix/fast_hook_blessnow_lyrix_odd_wet (consolidated).wav | 2 |
@@ -135,6 +135,7 @@ Section count median: 6
 
 | MIDI file | Selected count |
 |---|---:|
+| midi files/beepipes_ghosts_drums_beepipe.mid | 11 |
 | midi files/snare_xtra_drums_even_snare.mid | 11 |
 | midi files/rims_xtra_2_drums_rim.mid | 5 |
 | midi files/beepipes_2_drums_odd_beepipe.mid | 1 |

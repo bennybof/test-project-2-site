@@ -1546,7 +1546,20 @@
   }
 
   function getRuleProfileForMidiPattern(pattern) {
-    return getRuleProfileForEntry(getMidiPatternRuleEntry(pattern));
+    const baseProfile = getRuleProfileForEntry(getMidiPatternRuleEntry(pattern));
+
+    if (!isNormalMidiHatPattern(pattern)) {
+      return baseProfile;
+    }
+
+    const choiceGroupId = getNormalMidiHatChoiceGroupId(pattern);
+    const dropoutChance = choiceGroupId === "holdit_hats_forlyrix"
+      ? 0.3
+      : getNormalHatPatternDropoutChance(choiceGroupId);
+
+    return mergeRuleProfiles(baseProfile, {
+      dropoutChance
+    });
   }
 
   function getRuleChance(profile, names, fallback = 0) {
