@@ -5485,7 +5485,8 @@ function scheduleMidiPattern({
       key.includes("snare") ||
       key.includes("rims") ||
       key.includes("hats") ||
-      key.includes("ride")
+      key.includes("ride") ||
+      isBeepipesMidiPattern(pattern)
     );
   }
 
