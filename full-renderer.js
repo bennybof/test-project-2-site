@@ -6408,6 +6408,11 @@ function scheduleMidiPattern({
         continue;
       }
 
+      const audioLifecycleId = getAudioLifecycleId(key);
+      const wasActiveBeforeDecision = lifecycleStates
+        ? Boolean(getLifecycleState(lifecycleStates, audioLifecycleId).activated)
+        : false;
+
       const audioDecisionResult = resolveRuleProfileDecision({
         random,
         plan,
@@ -6440,6 +6445,15 @@ function scheduleMidiPattern({
         if (scheduled) {
           scheduledCount += 1;
           nextAllowedPhraseStartSeconds = scheduled.endTime;
+
+          if (lifecycleStates && audioLifecycleId && !wasActiveBeforeDecision) {
+            activateLifecycleItem(
+              lifecycleStates,
+              audioLifecycleId,
+              `${section.id}:${key}:${localBar}:phrase_audio`
+            );
+          }
+
           scheduledCount += scheduleDependents(startSeconds, audioDecisionResult.context);
         }
       }
