@@ -6391,18 +6391,23 @@ function scheduleMidiPattern({
       return scheduledCount;
     }
 
-    const phraseRepeats = section.type === "normal" ? 1 : 2;
-    const allowedPhraseBars = getAllowedLocalBarIndexesForKey(key, section)
+    const allowedPhraseBars = getAllowedLocalBarIndexesForKey(key, section, audioProfile)
       .filter(localBarIndex => !shouldBlockHookAfterSkipFirstBarAudioKey(key, section, localBarIndex));
 
     if (!allowedPhraseBars.length) return 0;
 
     const phraseBaseChance = getActivationChance(audioProfile, 0.45);
     let scheduledCount = 0;
+    let nextAllowedPhraseStartSeconds = -Infinity;
 
-    for (let i = 0; i < phraseRepeats; i++) {
-      const localBar = chooseOne(random, allowedPhraseBars);
+    for (const localBar of allowedPhraseBars) {
       const startSeconds = section.startSeconds + localBar * section.barSeconds;
+
+      // Do not layer the same phrase over itself while the previous scheduled copy is still playing.
+      if (startSeconds < nextAllowedPhraseStartSeconds - 0.001) {
+        continue;
+      }
+
       const audioDecisionResult = resolveRuleProfileDecision({
         random,
         plan,
@@ -6434,6 +6439,7 @@ function scheduleMidiPattern({
 
         if (scheduled) {
           scheduledCount += 1;
+          nextAllowedPhraseStartSeconds = scheduled.endTime;
           scheduledCount += scheduleDependents(startSeconds, audioDecisionResult.context);
         }
       }
