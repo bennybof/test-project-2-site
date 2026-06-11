@@ -2401,6 +2401,21 @@
       return false;
     }
 
+    const dropoutConfig = getDropoutRuleConfig(profile);
+    const hasDropoutRule =
+      dropoutConfig.baseChance > 0 ||
+      dropoutConfig.increasePerActivation > 0;
+
+    const isExplicitContinuous =
+      hasTag("cont") ||
+      hasTag("continuous") ||
+      key.includes("_cont") ||
+      key.includes("-cont");
+
+    if (!hasDropoutRule && !isExplicitContinuous) {
+      return false;
+    }
+
     if (kind === "midi") {
       return true;
     }
