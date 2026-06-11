@@ -3802,9 +3802,9 @@
       if (!scheduled) continue;
 
       scheduledCount += 1;
-      // True bass has a 90% target coverage rule, so short tail overlaps are allowed.
-      // Waiting until the full buffer end skips the next valid bass opportunity and creates large gaps.
-      system.nextAllowedStartSeconds = startSeconds + section.barSeconds;
+      // True bass families are mutually exclusive.
+      // Do not schedule another true bass while the current true bass is still sounding.
+      system.nextAllowedStartSeconds = scheduled.endTime;
 
       const lifecycleId = getAudioLifecycleId(candidate.key);
 
