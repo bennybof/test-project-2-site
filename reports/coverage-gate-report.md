@@ -1,6 +1,6 @@
 # Test Project 2 - Coverage Gate Report
 
-Generated: 2026-06-11T17:08:45.539Z
+Generated: 2026-06-11T17:36:55.325Z
 
 Report-only helper. No planner, renderer, catalog, registry, or rules files were edited by this script.
 
@@ -38,8 +38,8 @@ Report-only helper. No planner, renderer, catalog, registry, or rules files were
 | Unique MIDI selected in build plans | 39 |
 | Unique MIDI scheduled in scheduling sims | 26 |
 | Audio with no observed inclusion path | 468 |
-| Audio selected but not scheduled | 311 |
-| MIDI selected but not scheduled | 13 |
+| Audio selected but not scheduled in scheduling sims | 100 |
+| MIDI selected but not scheduled in scheduling sims | 4 |
 | MIDI never selected | 13 |
 | General samples selected | 203 |
 | General samples scheduled | 115 |
@@ -97,49 +97,40 @@ Section count median: 6
 
 | File | Selected count |
 |---|---:|
-| samples/crash_dlay_odd (consolidated).wav | 335 |
-| samples/big_crash_layer_odd_dlay_metal (consolidated).wav | 224 |
-| samples/rev_crash_metal_even_dlay_xtra.wav | 199 |
-| samples/jazz_crash_metal_dlay_odd_xtra (consolidated).wav | 185 |
-| samples/hippy_synth_wiv-bass_odd (consolidated).wav | 135 |
-| lyrix/outburst_lyrix_intro wet #2.wav | 125 |
-| lyrix/outburst_lyrix_intro_dry #2.wav | 125 |
-| lyrix/outburst_lyrix_intro_odd_dry.wav | 125 |
-| lyrix/outburst_lyrix_intro_odd_wet.wav | 125 |
-| lyrix/outburst_lyrix_main_dry.wav | 125 |
-| lyrix/outburst_lyrix_main_wet.wav | 125 |
-| samples/synth_downsampled_odd_xtra (consolidated).wav | 116 |
-| samples/synth_downsampled_odd_xtra #2 (consolidated).wav | 116 |
-| samples/synth_downsampled_odd_xtra #3 (consolidated).wav | 116 |
-| samples/synth_downsampled_odd_xtra #4 (consolidated).wav | 116 |
-| samples/grm_ah_lyrix.wav | 84 |
-| samples/grm_dk_lyrix_handmedowns_x7.wav | 84 |
-| samples/grm_dk_tsandcs_lyrix_x4 (consolidated).wav | 84 |
-| samples/grm_dunah_rhymeschemes_lyrix_x6_~ (consolidated).wav | 84 |
-| samples/vlins_long_suspense_odd_x2 (consolidated).wav | 73 |
-| samples/glock_odd_dlay (consolidated).wav | 65 |
-| samples/vlins_1_even_x2 (consolidated).wav | 60 |
-| samples/crash_washes_metal_dlay_even (consolidated).wav | 53 |
-| samples/synth_bass_1_hook #2 (consolidated).wav | 53 |
-| samples/synth_bass_1_hook #3 (consolidated).wav | 53 |
+| samples/crash_dlay_odd (consolidated).wav | 36 |
+| samples/big_crash_layer_odd_dlay_metal (consolidated).wav | 20 |
+| samples/jazz_crash_metal_dlay_odd_xtra (consolidated).wav | 18 |
+| samples/rev_crash_metal_even_dlay_xtra.wav | 16 |
+| samples/synth_downsampled_odd_xtra (consolidated).wav | 15 |
+| samples/synth_downsampled_odd_xtra #2 (consolidated).wav | 15 |
+| samples/synth_downsampled_odd_xtra #3 (consolidated).wav | 15 |
+| samples/synth_downsampled_odd_xtra #4 (consolidated).wav | 15 |
+| samples/hippy_synth_wiv-bass_odd (consolidated).wav | 14 |
+| lyrix/outburst_lyrix_intro wet #2.wav | 12 |
+| lyrix/outburst_lyrix_intro_dry #2.wav | 12 |
+| lyrix/outburst_lyrix_intro_odd_dry.wav | 12 |
+| lyrix/outburst_lyrix_intro_odd_wet.wav | 12 |
+| lyrix/outburst_lyrix_main_dry.wav | 12 |
+| lyrix/outburst_lyrix_main_wet.wav | 12 |
+| samples/grm_ah_lyrix.wav | 11 |
+| samples/grm_dk_lyrix_handmedowns_x7.wav | 11 |
+| samples/grm_dk_tsandcs_lyrix_x4 (consolidated).wav | 11 |
+| samples/grm_dunah_rhymeschemes_lyrix_x6_~ (consolidated).wav | 11 |
+| samples/synth_bass_1_hook #2 (consolidated).wav | 9 |
+| samples/synth_bass_1_hook #3 (consolidated).wav | 9 |
+| samples/synth_bass_1_hook_odd_x4 (consolidated).wav | 9 |
+| samples/synth_bass_2_hook_x4_even (consolidated).wav | 8 |
+| samples/vlins_long_suspense_odd_x2 (consolidated).wav | 8 |
+| lyrix/dropsynthout_lyrix_xtra_even_wet (consolidated) #2.wav | 5 |
 
 ## Top selected MIDI not scheduled
 
 | MIDI file | Selected count |
 |---|---:|
-| midi files/snare_xtra_drums_even_snare.mid | 143 |
-| midi files/beepipes_ghosts_drums_beepipe.mid | 129 |
-| midi files/rims_xtra_2_drums_rim.mid | 40 |
-| midi files/trap_hats_metal_ch.mid | 14 |
-| midi files/messy_hats_fast_metal_ch.mid | 9 |
-| midi files/jazz_hats_metal_hook_even_~_ride04.mid | 7 |
-| midi files/jazz_hats_metal_hook_even_~_ridehard.mid | 7 |
-| midi files/beepipes_2_drums_odd_beepipe.mid | 6 |
-| midi files/hats_wiv-beepipes_2_metal_odd_ch.mid | 6 |
-| midi files/hats_wiv-beepipes_2_metal_odd_oh.mid | 6 |
-| midi files/rims_xtra_1_drums_rim.mid | 5 |
-| midi files/messy_hats_fast_ends_in_main_hats_metal_ch.mid | 3 |
-| midi files/messy_hats_fast_ends_in_main_hats_metal_oh.mid | 3 |
+| midi files/beepipes_ghosts_drums_beepipe.mid | 15 |
+| midi files/snare_xtra_drums_even_snare.mid | 10 |
+| midi files/rims_xtra_2_drums_rim.mid | 5 |
+| midi files/rims_xtra_1_drums_rim.mid | 1 |
 
 ## Lyrix sections never seen
 

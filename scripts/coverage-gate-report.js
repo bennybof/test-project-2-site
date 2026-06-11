@@ -394,6 +394,8 @@ function main() {
 
   const selectedAudioCounts = new Map();
   const selectedMidiCounts = new Map();
+  const scheduledPoolSelectedAudioCounts = new Map();
+  const scheduledPoolSelectedMidiCounts = new Map();
   const scheduledAudioCounts = new Map();
   const scheduledMidiCounts = new Map();
   const lyrixSectionCounts = new Map();
@@ -419,6 +421,9 @@ function main() {
     sectionCounts.push((plan.sectionTimeline || []).length);
 
     if (seed <= SCHEDULE_SIM_COUNT) {
+      for (const key of plan.selectedAudio || []) increment(scheduledPoolSelectedAudioCounts, key);
+      for (const key of plan.selectedMidi || []) increment(scheduledPoolSelectedMidiCounts, key);
+
       try {
         const buffers = new Map();
         for (const key of plan.selectedAudio || []) buffers.set(key, createFakeBuffer());
@@ -448,6 +453,8 @@ function main() {
 
   const selectedAudio = new Set(selectedAudioCounts.keys());
   const selectedMidi = new Set(selectedMidiCounts.keys());
+  const scheduledPoolSelectedAudio = new Set(scheduledPoolSelectedAudioCounts.keys());
+  const scheduledPoolSelectedMidi = new Set(scheduledPoolSelectedMidiCounts.keys());
   const scheduledAudio = new Set(scheduledAudioCounts.keys());
   const scheduledMidi = new Set(scheduledMidiCounts.keys());
 
@@ -461,13 +468,13 @@ function main() {
     .filter(entry => !selectedAudio.has(entry.key))
     .map(entry => entry.key);
 
-  const selectedAudioNotScheduled = [...selectedAudio]
+  const selectedAudioNotScheduled = [...scheduledPoolSelectedAudio]
     .filter(key => !scheduledAudio.has(key))
-    .sort((a, b) => (selectedAudioCounts.get(b) || 0) - (selectedAudioCounts.get(a) || 0) || a.localeCompare(b));
+    .sort((a, b) => (scheduledPoolSelectedAudioCounts.get(b) || 0) - (scheduledPoolSelectedAudioCounts.get(a) || 0) || a.localeCompare(b));
 
-  const selectedMidiNotScheduled = [...selectedMidi]
+  const selectedMidiNotScheduled = [...scheduledPoolSelectedMidi]
     .filter(key => !scheduledMidi.has(key))
-    .sort((a, b) => (selectedMidiCounts.get(b) || 0) - (selectedMidiCounts.get(a) || 0) || a.localeCompare(b));
+    .sort((a, b) => (scheduledPoolSelectedMidiCounts.get(b) || 0) - (scheduledPoolSelectedMidiCounts.get(a) || 0) || a.localeCompare(b));
 
   const neverSelectedMidi = midiRegistryEntries
     .map(entry => entry.key)
@@ -545,8 +552,8 @@ function main() {
       selectedMidi: topFromCountMap(selectedMidiCounts, 50),
       scheduledMidi: topFromCountMap(scheduledMidiCounts, 50),
       unselectedFamilies: topFromCountMap(unselectedFamilies, 50),
-      selectedAudioNotScheduled: selectedAudioNotScheduled.slice(0, 100).map(key => ({ key, selectedCount: selectedAudioCounts.get(key) || 0 })),
-      selectedMidiNotScheduled: selectedMidiNotScheduled.slice(0, 100).map(key => ({ key, selectedCount: selectedMidiCounts.get(key) || 0 })),
+      selectedAudioNotScheduled: selectedAudioNotScheduled.slice(0, 100).map(key => ({ key, selectedCount: scheduledPoolSelectedAudioCounts.get(key) || 0 })),
+      selectedMidiNotScheduled: selectedMidiNotScheduled.slice(0, 100).map(key => ({ key, selectedCount: scheduledPoolSelectedMidiCounts.get(key) || 0 })),
       neverSelectedMidi: neverSelectedMidi.slice(0, 100)
     },
     lyrixSections: {
@@ -644,8 +651,8 @@ ${report.sourceCounts.midiPatternsMissing ? "MIDI note-level validation is limit
 | Unique MIDI selected in build plans | ${report.reachability.selectedMidiCount} |
 | Unique MIDI scheduled in scheduling sims | ${report.reachability.scheduledMidiCount} |
 | Audio with no observed inclusion path | ${report.reachability.audioNoObservedInclusionPathCount} |
-| Audio selected but not scheduled | ${report.reachability.selectedAudioNotScheduledCount} |
-| MIDI selected but not scheduled | ${report.reachability.selectedMidiNotScheduledCount} |
+| Audio selected but not scheduled in scheduling sims | ${report.reachability.selectedAudioNotScheduledCount} |
+| MIDI selected but not scheduled in scheduling sims | ${report.reachability.selectedMidiNotScheduledCount} |
 | MIDI never selected | ${report.reachability.neverSelectedMidiCount} |
 | General samples selected | ${report.reachability.generalSamplesSelectedCount} |
 | General samples scheduled | ${report.reachability.generalSamplesScheduledCount} |
