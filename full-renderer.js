@@ -436,12 +436,19 @@
     return indexes;
   }
 
+  function hasExplicitOddEvenTimingToken(value) {
+    return /(?:^|[\/_\-\s])(?:odd|even)(?:[._\-\s]|$)/i.test(String(value || ""));
+  }
+
   function shouldAllowEveryBarActiveContinuationForAudio(entry) {
     const key = String(entry?.key || "").toLowerCase();
     const tags = new Set((Array.isArray(entry?.tags) ? entry.tags : []).map(tag => String(tag).toLowerCase()));
 
     // Delay layers follow their source/dependent rules; do not turn them into every-bar continuations.
     if (key.includes("dlay") || key.includes("delay")) return false;
+
+    // Explicit odd/even timing must be respected. Example: glock_odd without glock_ext_even should stay every other bar.
+    if (hasExplicitOddEvenTimingToken(key)) return false;
 
     if (tags.has("continuous") || tags.has("cont")) return true;
 
@@ -463,7 +470,10 @@
 
   function shouldAllowEveryBarActiveContinuationForMidi(pattern) {
     const file = String(pattern?.file || "").toLowerCase();
-    return file.includes("hats");
+
+    // Main hats without odd/even can continue every bar.
+    // MIDI files that explicitly say odd/even must keep that timing restriction.
+    return file.includes("hats") && !hasExplicitOddEvenTimingToken(file);
   }
 
   function isContinuationAwareBarAllowedForKey({
