@@ -6933,8 +6933,10 @@ function scheduleMidiPattern({
       const repeatEverySeconds = section.barSeconds * repeatEveryBars;
       let totalScheduledCount = 0;
 
-      for (let t = section.startSeconds; t < section.endSeconds; t += repeatEverySeconds) {
-        const localBarIndex = Math.round((t - section.startSeconds) / section.barSeconds);
+      const sectionBarCount = Math.max(0, Number(section?.bars || 0));
+
+      for (let localBarIndex = 0; localBarIndex < sectionBarCount; localBarIndex += repeatEveryBars) {
+        const t = section.startSeconds + localBarIndex * section.barSeconds;
 
         const forcedInSection = isSectionForcedMidiPattern(section, pattern.file);
 
