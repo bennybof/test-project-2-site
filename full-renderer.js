@@ -55,12 +55,23 @@
       section.parts.length > 0
     );
 
-    const included = candidates.filter(section =>
-      chance(random, Number(section.globalInclusionChance) || 0)
+    if (!candidates.length) return null;
+
+    const totalWeight = candidates.reduce((sum, section) =>
+      sum + Math.max(0, Number(section.globalInclusionChance) || 0),
+      0
     );
 
-    if (!included.length) return null;
-    return chooseOne(random, included);
+    if (totalWeight <= 0) return null;
+
+    let roll = random() * totalWeight;
+
+    for (const section of candidates) {
+      roll -= Math.max(0, Number(section.globalInclusionChance) || 0);
+      if (roll <= 0) return section;
+    }
+
+    return candidates[candidates.length - 1];
   }
 
   function getBridgeLyrixGlobalRules() {
