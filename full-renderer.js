@@ -5302,27 +5302,34 @@ function getNormalMidiHatChoiceGroupId(pattern) {
         let chosenPatterns = [];
 
         if (chosenChoice === "main_hats") {
-          const mainCh = (companionGroups.get("main_hats_ch_metal") || [])
-            .filter(pattern => pattern.file === "midi files/main_hats_ch_metal_ch.mid");
+          const mainChPattern = midiPatternPool.find(pattern =>
+            pattern.file === "midi files/main_hats_ch_metal_ch.mid"
+          );
 
-          const normalMainOhChoices = (companionGroups.get("main_hats_oh_metal") || [])
-            .filter(pattern => pattern.file === "midi files/main_hats_oh_metal_oh.mid");
+          const normalMainOhPattern = midiPatternPool.find(pattern =>
+            pattern.file === "midi files/main_hats_oh_metal_oh.mid"
+          );
 
-          const contMainOhChoices = (companionGroups.get("main_hats_oh_cont_metal") || [])
-            .filter(pattern => pattern.file === "midi files/main_hats_oh_cont_metal_oh.mid");
+          const contMainOhPattern = midiPatternPool.find(pattern =>
+            pattern.file === "midi files/main_hats_oh_cont_metal_oh.mid"
+          );
 
-          let mainOhChoices = continuingNormalHatChoice
-            ? contMainOhChoices
-            : normalMainOhChoices;
+          const preferredMainOhPattern = continuingNormalHatChoice
+            ? contMainOhPattern
+            : normalMainOhPattern;
 
-          if (!mainOhChoices.length) {
-            mainOhChoices = [...normalMainOhChoices, ...contMainOhChoices];
-          }
+          const fallbackMainOhPattern = continuingNormalHatChoice
+            ? normalMainOhPattern
+            : contMainOhPattern;
 
-          chosenPatterns = [...mainCh];
+          chosenPatterns = mainChPattern ? [mainChPattern] : [];
 
-          if (mainOhChoices.length && random() >= 0.1) {
-            chosenPatterns.push(chooseOne(random, mainOhChoices));
+          if (random() >= 0.1) {
+            const mainOhPattern = preferredMainOhPattern || fallbackMainOhPattern;
+
+            if (mainOhPattern) {
+              chosenPatterns.push(mainOhPattern);
+            }
           }
 
           if (!chosenPatterns.length) {
