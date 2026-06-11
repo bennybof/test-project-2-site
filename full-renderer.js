@@ -454,14 +454,21 @@
   function shouldAllowEveryBarActiveContinuationForAudio(entry) {
     const key = String(entry?.key || "").toLowerCase();
     const tags = new Set((Array.isArray(entry?.tags) ? entry.tags : []).map(tag => String(tag).toLowerCase()));
+    const isExplicitContinuous =
+      tags.has("continuous") ||
+      tags.has("cont") ||
+      /(?:^|[\/_\-\s])cont(?:[._\-\s]|$)/i.test(key);
 
     // Delay layers follow their source/dependent rules; do not turn them into every-bar continuations.
     if (key.includes("dlay") || key.includes("delay")) return false;
 
-    // Explicit odd/even timing must be respected. Example: glock_odd without glock_ext_even should stay every other bar.
-    if (hasExplicitOddEvenTimingToken(key)) return false;
+    // #cont is an explicit continuation instruction, even when the filename also contains odd/even.
+    // This fixes cont stems such as synth_cont_odd and rhodes_replace-synth_cont_odd staying stuck every other bar.
+    if (isExplicitContinuous) return true;
 
-    if (tags.has("continuous") || tags.has("cont")) return true;
+    // Explicit odd/even timing must still be respected for non-cont material.
+    // Example: glock_odd without glock_ext_even should stay every other bar.
+    if (hasExplicitOddEvenTimingToken(key)) return false;
 
     return (
       key.includes("glock") ||
@@ -474,8 +481,7 @@
       key.includes("pad_1") ||
       key.includes("pad_2") ||
       key.includes("pad_wiv-bass") ||
-      key.includes("pad_wiv_bass") ||
-      /(?:^|[\/_\-\s])cont(?:[._\-\s]|$)/i.test(key)
+      key.includes("pad_wiv_bass")
     );
   }
 
