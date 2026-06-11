@@ -5139,7 +5139,10 @@ function getNormalMidiHatChoiceGroupId(pattern) {
         if (hookSection) return true;
         if (section.type.includes("grimey")) return key.includes("grm_") || key.includes("grimey");
         if (section.type.includes("drop")) return key.includes("crash") || key.includes("snare");
-        if (section.type.includes("outburst")) return key.includes("crash") || key.includes("hats");
+        if (section.type.includes("outburst")) {
+          if (key.includes("messy_hats")) return false;
+          return key.includes("crash") || key.includes("hats");
+        }
         return key.includes("main_hats") || key.includes("snare") || key.includes("rims") || key.includes("hats") || isBeepipesMidiPattern(pattern);
       });
 
