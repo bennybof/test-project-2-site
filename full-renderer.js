@@ -5028,6 +5028,10 @@ function getNormalMidiHatChoiceGroupId(pattern) {
           if (section.lyrixSectionId) return false;
           return isLyrix(entry);
         }
+        if ((key.includes("drop_") || key.includes("dropped_")) && !section.type.includes("drop")) {
+          return false;
+        }
+
         if (section.type.includes("drop")) return key.includes("drop_") || key.includes("dropped_");
         if (section.type.includes("outburst")) return key.includes("outburst");
         if (section.type.includes("grimey")) return key.includes("grm_") || key.includes("rewind_sfx");
@@ -5791,6 +5795,11 @@ function scheduleMidiPattern({
 
     // Outburst section material must not leak into normal/drop/grimey/ending sections.
     if (key.includes("outburst") && !type.includes("outburst")) {
+      return false;
+    }
+
+    // Drop section material must not leak into normal/grimey/outburst/ending sections.
+    if ((key.includes("drop_") || key.includes("dropped_")) && !type.includes("drop")) {
       return false;
     }
 
