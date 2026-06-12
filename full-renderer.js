@@ -7994,10 +7994,6 @@ function scheduleMidiPattern({
           playbackState,
           buffers
         });
-
-        if (section.type.includes("lyrix")) {
-          continue;
-        }
       }
       if (section.type.includes("lyrix") && !section.lyrixSectionId) {
         const hasAnySelectedLyrix = plan.selectedAudio.some(key => {
