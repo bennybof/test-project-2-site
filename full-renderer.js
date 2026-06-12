@@ -7213,6 +7213,23 @@ function scheduleMidiPattern({
       chance(random, Number(finalSceneSwapConfig.sceneSwapChance) || 0);
 
     
+    const isIntrusiveLyrix = lyrixSection.id === "intrusive";
+    const intrusiveStopRule = isIntrusiveLyrix ? lyrixSection.stopAfterPart4Rule || null : null;
+    const intrusiveStopAfterPart = Number(intrusiveStopRule?.stopAfterPart || 0);
+    const intrusiveStopsAfterPart = intrusiveStopAfterPart > 0 &&
+      chance(random, Number(intrusiveStopRule?.chance) || 0);
+
+    const intrusiveOptionalBranches = isIntrusiveLyrix && Array.isArray(lyrixSection.optionalBranches)
+      ? lyrixSection.optionalBranches.filter(branch => chance(random, Number(branch.activationChance) || 0))
+      : [];
+    const intrusiveOptionalBranchActive = intrusiveOptionalBranches.length > 0;
+    const intrusiveBranchFollowup = intrusiveOptionalBranchActive
+      ? lyrixSection.ifEitherOptionalBranchActivates || null
+      : null;
+    const intrusiveMutedMainPart = intrusiveOptionalBranchActive
+      ? Number(intrusiveBranchFollowup?.muteMainPart || 0)
+      : 0;
+
     const isWeed2BranchFromWeed1 = lyrixSection.id === "weed_1" && section.weedBranchSection?.id === "weed_2";
 
     for (const part of lyrixSection.parts) {
@@ -7226,7 +7243,35 @@ function scheduleMidiPattern({
         continue;
       }
 
-      partStartTimes.set(partNumber, start);
+      if (intrusiveStopsAfterPart && partNumber > intrusiveStopAfterPart) {
+        continue;
+      }
+
+      if (intrusiveMutedMainPart > 0 && partNumber === intrusiveMutedMainPart) {
+        const mutedDryBuffer = part.dry ? buffers.get(part.dry) : null;
+        const mutedSingleBuffer = part.file ? buffers.get(part.file) : null;
+        const mutedWetBuffer = part.wet && !part.dryOnly ? buffers.get(part.wet) : null;
+
+        partStartTimes.set(partNumber, start);
+
+        if (mutedDryBuffer) {
+          start += mutedDryBuffer.duration;
+        } else if (mutedSingleBuffer) {
+          start += mutedSingleBuffer.duration;
+        } else if (mutedWetBuffer) {
+          start += mutedWetBuffer.duration;
+        }
+
+        continue;
+      }
+
+      const timingOverride = isIntrusiveLyrix ? part.timingOverride || null : null;
+      const overrideStartAfterPart = Number(timingOverride?.startsAfterPart);
+      const partScheduleStart = Number.isFinite(overrideStartAfterPart) && Number.isFinite(Number(timingOverride?.offsetBars))
+        ? (partStartTimes.get(overrideStartAfterPart) ?? start) + Number(timingOverride.offsetBars) * section.barSeconds
+        : start;
+
+      partStartTimes.set(partNumber, partScheduleStart);
 
       let activeDryPath = part.dry || null;
       let activeWetPath = part.wet && !part.dryOnly ? part.wet : null;
@@ -7275,7 +7320,7 @@ function scheduleMidiPattern({
         destination,
         path: activeDryPath,
         buffer: dryBuffer,
-        startTime: start,
+        startTime: partScheduleStart,
         gainValue: gain,
         playbackState,
         section
@@ -7286,7 +7331,7 @@ function scheduleMidiPattern({
         destination,
         path: activeWetPath,
         buffer: wetBuffer,
-        startTime: start,
+        startTime: partScheduleStart,
         gainValue: gain,
         playbackState,
         section
@@ -7297,18 +7342,105 @@ function scheduleMidiPattern({
         destination,
         path: activeSinglePath,
         buffer: singleBuffer,
-        startTime: start,
+        startTime: partScheduleStart,
         gainValue: gain,
         playbackState,
         section
       });
 
-      if (dryBuffer) {
-        start += dryBuffer.duration;
-      } else if (singleBuffer) {
-        start += singleBuffer.duration;
-      } else if (wetBuffer) {
-        start += wetBuffer.duration;
+      const feedbackRule = isIntrusiveLyrix ? lyrixSection.feedbackRule || null : null;
+      if (Number(feedbackRule?.activatesWithPart) === partNumber && feedbackRule.file && chance(random, Number(feedbackRule.activationChance) || 0)) {
+        scheduleAudioBufferWithPlaybackState({
+          offlineContext,
+          destination,
+          buffer: buffers.get(feedbackRule.file),
+          startTime: partScheduleStart,
+          gainValue: 0.72,
+          playbackState,
+          key: feedbackRule.file,
+          entry: getCatalogEntry(feedbackRule.file),
+          section
+        });
+      }
+
+      if (!timingOverride?.doesNotWaitForPreviousPartEnd) {
+        if (dryBuffer) {
+          start += dryBuffer.duration;
+        } else if (singleBuffer) {
+          start += singleBuffer.duration;
+        } else if (wetBuffer) {
+          start += wetBuffer.duration;
+        }
+      }
+    }
+
+    if (intrusiveOptionalBranchActive) {
+      for (const branch of intrusiveOptionalBranches) {
+        const branchStartBars = Number(branch.startsAfterSectionStartBars) || 0;
+        const branchStart = section.startSeconds + branchStartBars * section.barSeconds;
+
+        if (branch.file) {
+          scheduleLyrixPathWithPlaybackState({
+            offlineContext,
+            destination,
+            path: branch.file,
+            buffer: buffers.get(branch.file),
+            startTime: branchStart,
+            gainValue: 0.72,
+            playbackState,
+            section
+          });
+        }
+      }
+
+      const bleepRule = intrusiveBranchFollowup?.bleep || null;
+      const bleepStart = bleepRule?.file
+        ? section.startSeconds + (Number(bleepRule.startsAfterSectionStartBars) || 0) * section.barSeconds
+        : null;
+
+      if (bleepRule?.file && typeof bleepStart === "number") {
+        scheduleAudioBufferWithPlaybackState({
+          offlineContext,
+          destination,
+          buffer: buffers.get(bleepRule.file),
+          startTime: bleepStart,
+          gainValue: 0.72,
+          playbackState,
+          key: bleepRule.file,
+          entry: getCatalogEntry(bleepRule.file),
+          section
+        });
+      }
+
+      const afterbleepRule = intrusiveBranchFollowup?.afterbleep || null;
+      const afterbleepStart = typeof bleepStart === "number"
+        ? bleepStart + (Number(afterbleepRule?.startsAfterBleepBars) || 0) * section.barSeconds
+        : null;
+
+      if (afterbleepRule?.files?.dry && typeof afterbleepStart === "number") {
+        scheduleLyrixPathWithPlaybackState({
+          offlineContext,
+          destination,
+          path: afterbleepRule.files.dry,
+          buffer: buffers.get(afterbleepRule.files.dry),
+          startTime: afterbleepStart,
+          gainValue: 0.72,
+          playbackState,
+          section
+        });
+      }
+
+      if (afterbleepRule?.files?.wet && typeof afterbleepStart === "number") {
+        scheduleLyrixPathWithPlaybackState({
+          offlineContext,
+          destination,
+          path: afterbleepRule.files.wet,
+          buffer: buffers.get(afterbleepRule.files.wet),
+          startTime: afterbleepStart,
+          gainValue: 0.72,
+          playbackState,
+          section
+        });
       }
     }
 
