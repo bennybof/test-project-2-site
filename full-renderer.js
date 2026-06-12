@@ -47,7 +47,8 @@
     "clockout",
     "holdit",
     "intrusive",
-    "scooby"
+    "scooby",
+    "buf"
   ]);
 
 
@@ -72,8 +73,10 @@
       Number(section.globalInclusionChance) > 0 &&
       (!section.maxSeparateOccasions || (lyrixSectionUsage.get(section.id) || 0) < Number(section.maxSeparateOccasions)) &&
       getLyrixSectionLengthBars(section) > 0 &&
-      Array.isArray(section.parts) &&
-      section.parts.length > 0
+      (
+        (Array.isArray(section.parts) && section.parts.length > 0) ||
+        (Array.isArray(section.coreFiles) && section.coreFiles.length > 0)
+      )
     );
 
     if (!candidates.length) return null;
@@ -241,7 +244,17 @@
   }
   function getLyrixSectionAudioFiles(section) {
     const files = [];
-    if (!section?.parts) return files;
+    if (!section) return files;
+
+    for (const coreFile of section.coreFiles || []) {
+      files.push(coreFile);
+    }
+
+    for (const adlibFile of section.adlibRule?.files || []) {
+      files.push(adlibFile);
+    }
+
+    if (!section?.parts) return [...new Set(files)];
 
     for (const part of section.parts) {
       if (part.dry) files.push(part.dry);
@@ -6773,6 +6786,58 @@ function scheduleMidiPattern({
 
   function scheduleExplicitLyrixSection({ offlineContext, destination, section, random, playbackState = null, buffers }) {
     const lyrixSection = section.lyrixSection;
+    if (!lyrixSection) return false;
+
+    if (!lyrixSection?.parts?.length && Array.isArray(lyrixSection.coreFiles) && lyrixSection.coreFiles.length) {
+      let coreStart = section.startSeconds;
+      const coreFiles = lyrixSection.coreLyrixMode === "shuffle_all_once"
+        ? shuffle(random, lyrixSection.coreFiles)
+        : lyrixSection.coreFiles.slice();
+
+      const adlibFiles = Array.isArray(lyrixSection.adlibRule?.files)
+        ? lyrixSection.adlibRule.files
+        : [];
+
+      const adlibChance = Number(lyrixSection.adlibRule?.chancePerCoreLyrixActivation ?? 0);
+
+      for (const coreFile of coreFiles) {
+        const coreBuffer = buffers.get(coreFile);
+
+        scheduleLyrixPathWithPlaybackState({
+          offlineContext,
+          destination,
+          path: coreFile,
+          buffer: coreBuffer,
+          startTime: coreStart,
+          gainValue: 0.72,
+          playbackState,
+          section
+        });
+
+        if (adlibFiles.length && chance(random, adlibChance)) {
+          const adlibFile = chooseOne(random, adlibFiles);
+          const adlibBuffer = buffers.get(adlibFile);
+
+          scheduleLyrixPathWithPlaybackState({
+            offlineContext,
+            destination,
+            path: adlibFile,
+            buffer: adlibBuffer,
+            startTime: coreStart,
+            gainValue: 0.72,
+            playbackState,
+            section
+          });
+        }
+
+        if (coreBuffer) {
+          coreStart += coreBuffer.duration;
+        }
+      }
+
+      return true;
+    }
+
     if (!lyrixSection?.parts?.length) return false;
 
     let start = section.startSeconds;
