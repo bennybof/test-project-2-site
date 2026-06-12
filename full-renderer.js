@@ -38,12 +38,22 @@
     "kachow",
     "fall",
     "phones",
-    "shade"
+    "shade",
+    "tits",
+    "swoosh"
   ]);
 
 
   function getLyrixSectionLengthBars(section) {
-    return Number(section.lengthBars || section.activationPointLengthBars || section.logicalLengthBars || 0);
+    return Number(
+      section.lengthBars ||
+      section.activationPointLengthBars ||
+      section.logicalLengthBars ||
+      section.lengthBarsWithoutContinuation ||
+      section.defaultLengthBars ||
+      section.maxLengthBars ||
+      0
+    );
   }
   function getFirstPassLyrixSections() {
     if (!lyrixRules?.sections) return [];
