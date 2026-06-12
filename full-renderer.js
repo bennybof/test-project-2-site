@@ -34,7 +34,11 @@
     "grounded",
     "greenguy",
     "gromit_1",
-    "gromit_2"
+    "gromit_2",
+    "kachow",
+    "fall",
+    "phones",
+    "shade"
   ]);
 
 
