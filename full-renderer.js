@@ -492,9 +492,15 @@
 
   function shouldAllowEveryBarActiveContinuationForMidi(pattern) {
     const file = String(pattern?.file || "").toLowerCase();
+    const isExplicitContinuous =
+      keyHasFilenameToken(file, "cont") ||
+      /(?:^|[\\/_\-\s])cont(?:[._\-\s]|$)/i.test(file);
+
+    // Explicit cont MIDI should continue every bar, even when the filename also has odd/even.
+    if (isExplicitContinuous) return true;
 
     // Main hats without odd/even can continue every bar.
-    // MIDI files that explicitly say odd/even must keep that timing restriction.
+    // MIDI files that explicitly say odd/even but not cont keep that timing restriction.
     return file.includes("hats") && !hasExplicitOddEvenTimingToken(file);
   }
 
