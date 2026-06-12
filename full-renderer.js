@@ -73,7 +73,10 @@
     if (!lyrixRules?.sections || !parentSectionId) return [];
 
     return lyrixRules.sections.filter(section =>
-      section.kind === "conditionalContinuation" &&
+      (
+        section.kind === "conditionalContinuation" ||
+        section.kind === "continuation"
+      ) &&
       section.parentSectionId === parentSectionId
     );
   }
@@ -84,9 +87,15 @@
       section.parts.length > 0
     );
 
-    const activated = candidates.filter(section =>
-      chance(random, Number(section.activationChanceAfterParent) || 0)
-    );
+    const activated = candidates.filter(section => {
+      const activationChance = Number(
+        section.activationChanceAfterParent ??
+        section.continuationChance ??
+        0
+      ) || 0;
+
+      return chance(random, activationChance);
+    });
 
     return activated.length ? chooseOne(random, activated) : null;
   }
