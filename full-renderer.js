@@ -41,7 +41,13 @@
     "shade",
     "tits",
     "swoosh",
-    "nosound"
+    "nosound",
+    "weed_1",
+    "weed_2",
+    "clockout",
+    "holdit",
+    "intrusive",
+    "scooby"
   ]);
 
 
