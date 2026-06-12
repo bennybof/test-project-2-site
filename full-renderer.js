@@ -5520,7 +5520,7 @@ function getNormalMidiHatChoiceGroupId(pattern) {
             }
           }
           addSection("lyrix", getLyrixSectionLengthBars(lyrixSection), {
-            reset: true,
+            reset: false,
             tags: ["lyrix", "lyrix_rules_first_pass"],
             lyrixSectionId: lyrixSection.id,
             lyrixSection,
@@ -5552,7 +5552,7 @@ function getNormalMidiHatChoiceGroupId(pattern) {
               }
 
               addSection("lyrix", getLyrixSectionLengthBars(lyrixSection), {
-                reset: true,
+                reset: false,
                 tags: ["lyrix", "lyrix_rules_first_pass", "repeat_immediate"],
                 lyrixSectionId: lyrixSection.id,
                 lyrixSection,
