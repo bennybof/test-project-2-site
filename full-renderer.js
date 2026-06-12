@@ -5343,6 +5343,11 @@ function getNormalMidiHatChoiceGroupId(pattern) {
         isEmphasis: options.isEmphasis ?? inferredLyrixEnergy.isEmphasis
       });
 
+      if (options.lyrixSection?.crescendoRule?.allowCrescendosDuringSection === false) {
+        section.isCrescendo = false;
+        section.crescendo = false;
+      }
+
       sectionTimeline.push(section);
 
       if (section.reset) {
