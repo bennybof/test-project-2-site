@@ -286,9 +286,35 @@
     if (!activated.length) return null;
     return chooseOne(random, activated);
   }
+  function getLyrixSectionAtmosphereFiles(section) {
+    const configuredFiles = Array.isArray(section?.atmosphereFiles)
+      ? section.atmosphereFiles
+      : [];
+
+    if (section?.id === "weed_1") {
+      return [
+        ...configuredFiles,
+        { file: "samples/weed_atmos.wav" }
+      ];
+    }
+
+    return configuredFiles;
+  }
+
+  function getLyrixSectionAtmospherePath(fileRule) {
+    if (!fileRule) return "";
+    if (typeof fileRule === "string") return fileRule;
+    return fileRule.file || fileRule.path || "";
+  }
+
   function getLyrixSectionAudioFiles(section) {
     const files = [];
     if (!section) return files;
+
+    for (const atmosphereFile of getLyrixSectionAtmosphereFiles(section)) {
+      const atmospherePath = getLyrixSectionAtmospherePath(atmosphereFile);
+      if (atmospherePath) files.push(atmospherePath);
+    }
 
     for (const coreFile of section.coreFiles || []) {
       files.push(coreFile);
@@ -7134,6 +7160,32 @@ function scheduleMidiPattern({
     }
 
     applyLyrixSecondBarCutoffRule(playbackState, section, lyrixSection, random);
+
+    for (const atmosphereFile of getLyrixSectionAtmosphereFiles(lyrixSection)) {
+      const atmospherePath = getLyrixSectionAtmospherePath(atmosphereFile);
+      if (!atmospherePath) continue;
+
+      const atmosphereBuffer = buffers.get(atmospherePath);
+      if (!atmosphereBuffer) continue;
+
+      const atmosphereEntry = getCatalogEntry(atmospherePath);
+      const configuredGain = typeof atmosphereFile === "object" ? Number(atmosphereFile.gain) : NaN;
+      const gainValue = Number.isFinite(configuredGain)
+        ? configuredGain
+        : sectionGainForAudio(atmosphereEntry, section);
+
+      scheduleAudioBufferWithPlaybackState({
+        offlineContext,
+        destination,
+        buffer: atmosphereBuffer,
+        startTime: section.startSeconds,
+        gainValue,
+        playbackState,
+        key: atmospherePath,
+        entry: atmosphereEntry,
+        section
+      });
+    }
 
     const partStartTimes = new Map();
 
