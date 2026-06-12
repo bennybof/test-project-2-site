@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-12T01:38:31.662Z",
+  "generatedAt": "2026-06-12T02:12:00.705Z",
   "root": "C:\\Users\\Student\\OneDrive\\test-project-2-site",
   "sim": {
     "buildSimCount": 400,
@@ -49,8 +49,8 @@
     "generalSamplesNoObservedInclusionCount": 65,
     "lyrixAudioSelectedCount": 228,
     "lyrixAudioScheduledCount": 83,
-    "lyrixSectionsSeenCount": 21,
-    "lyrixSectionsNeverSeenCount": 36
+    "lyrixSectionsSeenCount": 22,
+    "lyrixSectionsNeverSeenCount": 35
   },
   "top": {
     "selectedAudio": [
@@ -281,6 +281,30 @@
         "count": 14
       },
       {
+        "key": "lyrix/outburst_lyrix_intro wet #2.wav",
+        "count": 13
+      },
+      {
+        "key": "lyrix/outburst_lyrix_intro_dry #2.wav",
+        "count": 13
+      },
+      {
+        "key": "lyrix/outburst_lyrix_intro_odd_dry.wav",
+        "count": 13
+      },
+      {
+        "key": "lyrix/outburst_lyrix_intro_odd_wet.wav",
+        "count": 13
+      },
+      {
+        "key": "lyrix/outburst_lyrix_main_dry.wav",
+        "count": 13
+      },
+      {
+        "key": "lyrix/outburst_lyrix_main_wet.wav",
+        "count": 13
+      },
+      {
         "key": "samples/beeps_xtra_odd (consolidated).wav",
         "count": 13
       },
@@ -377,10 +401,6 @@
         "count": 8
       },
       {
-        "key": "lyrix/outburst_lyrix_intro_dry #2.wav",
-        "count": 7
-      },
-      {
         "key": "samples/real_bass_cut_tail_odd (consolidated).wav",
         "count": 7
       },
@@ -395,10 +415,6 @@
       {
         "key": "samples/synth_glitch_5_odd_x2_xtra #2 (consolidated).wav",
         "count": 7
-      },
-      {
-        "key": "lyrix/outburst_lyrix_intro_odd_wet.wav",
-        "count": 6
       },
       {
         "key": "samples/ah_medium_outro_2 (consolidated).wav",
@@ -439,22 +455,6 @@
       {
         "key": "samples/synth_glitch_4_odd_x2_xtra #3 (consolidated).wav",
         "count": 6
-      },
-      {
-        "key": "lyrix/outburst_lyrix_main_dry.wav",
-        "count": 5
-      },
-      {
-        "key": "samples/ah_highest_outro_2 (consolidated).wav",
-        "count": 5
-      },
-      {
-        "key": "samples/ah_highest_outro_3 (consolidated).wav",
-        "count": 5
-      },
-      {
-        "key": "samples/ah_medium_outro_4 (consolidated).wav",
-        "count": 5
       }
     ],
     "selectedMidi": [
@@ -1292,6 +1292,10 @@
         "count": 5
       },
       {
+        "id": "outburst_lyrix",
+        "count": 142
+      },
+      {
         "id": "sellingshares",
         "count": 12
       },
@@ -1326,7 +1330,6 @@
       "intrusive",
       "kachow",
       "nosound",
-      "outburst_lyrix",
       "phones",
       "scooby",
       "shade",

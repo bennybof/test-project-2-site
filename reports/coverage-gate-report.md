@@ -1,6 +1,6 @@
 # Test Project 2 - Coverage Gate Report
 
-Generated: 2026-06-12T01:38:31.662Z
+Generated: 2026-06-12T02:12:00.705Z
 
 Report-only helper. No planner, renderer, catalog, registry, or rules files were edited by this script.
 
@@ -48,7 +48,7 @@ Report-only helper. No planner, renderer, catalog, registry, or rules files were
 | General samples with no observed inclusion | 65 |
 | Lyrix audio selected | 228 |
 | Lyrix audio scheduled | 83 |
-| Lyrix sections seen | 21 / 57 |
+| Lyrix sections seen | 22 / 57 |
 
 ## Timeline / duration variation
 
@@ -159,7 +159,6 @@ Section count median: 6
 - `intrusive`
 - `kachow`
 - `nosound`
-- `outburst_lyrix`
 - `phones`
 - `scooby`
 - `shade`

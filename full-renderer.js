@@ -228,6 +228,11 @@
       if (part.file) files.push(part.file);
     }
 
+    if (section.mainLyrix) {
+      if (section.mainLyrix.dry) files.push(section.mainLyrix.dry);
+      if (section.mainLyrix.wet) files.push(section.mainLyrix.wet);
+    }
+
 
     const adlibs = section.adlibs ? [].concat(section.adlibs) : [];
 
@@ -4950,16 +4955,31 @@ function getNormalMidiHatChoiceGroupId(pattern) {
       }
 
       if (roll < 0.28) {
+        const outburstLyrixSection = (lyrixRules?.sections || []).find(section =>
+          section?.id === "outburst_lyrix" ||
+          (section?.kind === "conditionalBeatSectionLyrix" && section?.beatSectionId === "outburst")
+        ) || null;
+
+        const outburstLyrixActivationNumber = outburstLyrixSection
+          ? (lyrixSectionUsage.get(outburstLyrixSection.id) || 0) + 1
+          : 0;
+
+        if (outburstLyrixSection) {
+          lyrixSectionUsage.set(outburstLyrixSection.id, outburstLyrixActivationNumber);
+        }
+
         addSection("outburst_intro", 4, {
           reset: true,
-          tags: ["outburst", "major_reset"]
+          tags: ["outburst", "major_reset"],
+          lyrixSectionId: outburstLyrixSection?.id || null,
+          lyrixSection: outburstLyrixSection,
+          lyrixActivationNumber: outburstLyrixActivationNumber
         });
 
         addSection("outburst_main", 8, {
           reset: false,
           tags: ["outburst"]
         });
-
         for (const key of catalog.rulePools.outburst.files) {
           forceIncludeAudioSelection({
             random,
@@ -6151,6 +6171,45 @@ function scheduleMidiPattern({
       }
     }
 
+    const mainLyrix = lyrixSection.mainLyrix || null;
+
+    if (mainLyrix) {
+      const startsAfterIntroBars = Number(mainLyrix.startsAfterIntroBars);
+      const startsAtSectionBar = Number(mainLyrix.startsAtOutburstSectionBar);
+      const mainStartBars = Number.isFinite(startsAfterIntroBars)
+        ? startsAfterIntroBars
+        : Number.isFinite(startsAtSectionBar)
+          ? Math.max(0, startsAtSectionBar - 1)
+          : 0;
+      const mainStart = section.startSeconds + mainStartBars * section.barSeconds;
+      const mainGain = Number(mainLyrix.gain) || 0.72;
+
+      if (mainLyrix.dry) {
+        scheduleLyrixPathWithPlaybackState({
+          offlineContext,
+          destination,
+          path: mainLyrix.dry,
+          buffer: buffers.get(mainLyrix.dry),
+          startTime: mainStart,
+          gainValue: mainGain,
+          playbackState,
+          section
+        });
+      }
+
+      if (mainLyrix.wet) {
+        scheduleLyrixPathWithPlaybackState({
+          offlineContext,
+          destination,
+          path: mainLyrix.wet,
+          buffer: buffers.get(mainLyrix.wet),
+          startTime: mainStart,
+          gainValue: mainGain,
+          playbackState,
+          section
+        });
+      }
+    }
 
     const adlibs = lyrixSection.adlibs ? [].concat(lyrixSection.adlibs) : [];
 
@@ -7201,9 +7260,11 @@ function scheduleMidiPattern({
           playbackState,
           buffers
         });
-        continue;
-      }
 
+        if (section.type.includes("lyrix")) {
+          continue;
+        }
+      }
       if (section.type.includes("lyrix") && !section.lyrixSectionId) {
         const hasAnySelectedLyrix = plan.selectedAudio.some(key => {
           const entry = getCatalogEntry(key);
@@ -7257,8 +7318,8 @@ function scheduleMidiPattern({
 
 
         if (entry && isLyrix(entry)) {
+          if (section.lyrixSectionId || section.type.includes("outburst")) continue;
           if (key !== chosenLyrixKeyForSection) continue;
-
           const groupId = getLyrixGroupKeys(entry).slice().sort().join("|");
           if (scheduledLyrixGroupIds.has(groupId)) continue;
           scheduledLyrixGroupIds.add(groupId);
