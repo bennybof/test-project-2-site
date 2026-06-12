@@ -1833,6 +1833,7 @@
     {
       "id": "nosound",
       "kind": "main",
+      "lengthBars": 8,
       "fileMatchMode": "explicitFiles",
       "globalInclusionChance": 0.2,
       "canBeFirstLyric": true,
@@ -1914,8 +1915,8 @@
       },
       "lastPartRule": {
         "finalMainPart": 7,
-        "omitFinalPartChance": 0.85,
-        "omitFinalPartChanceSource": "user-confirmed",
+        "omitFinalPartChance": 0.9,
+        "omitFinalPartChanceSource": "saved definitions absolute final 2",
         "ifFinalPartNotOmitted": {
           "sceneSwapChance": 0.5,
           "sceneSwapFiles": {

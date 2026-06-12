@@ -40,7 +40,8 @@
     "phones",
     "shade",
     "tits",
-    "swoosh"
+    "swoosh",
+    "nosound"
   ]);
 
 
@@ -256,6 +257,11 @@
       if (adlib.files?.wet) files.push(adlib.files.wet);
     }
     if (section.part3ReplacementRule?.replacementFile) files.push(section.part3ReplacementRule.replacementFile);
+
+    const finalSceneSwapFiles = section.lastPartRule?.ifFinalPartNotOmitted?.sceneSwapFiles;
+    if (finalSceneSwapFiles?.dry) files.push(finalSceneSwapFiles.dry);
+    if (finalSceneSwapFiles?.wet) files.push(finalSceneSwapFiles.wet);
+
     if (section.leadIn?.file) files.push(section.leadIn.file);
     if (section.leadIn?.files?.dry) files.push(section.leadIn.files.dry);
     if (section.leadIn?.files?.wet) files.push(section.leadIn.files.wet);
@@ -1250,6 +1256,81 @@
         reason
       });
     }
+
+    return {
+      activeCutCount,
+      futureCutCount,
+      blockWindow
+    };
+  }
+
+  function playbackItemHasTag(item, tag) {
+    const normalizedTag = normalizeRuleDecisionToken(tag);
+    return Array.isArray(item?.tags) && item.tags.some(value => normalizeRuleDecisionToken(value) === normalizedTag);
+  }
+
+  function isAtmospherePlaybackItem(item) {
+    return playbackItemHasTag(item, "atmosphere") || playbackItemHasTag(item, "family:atmosphere");
+  }
+
+  function isLyrixPlaybackItem(item) {
+    return playbackItemHasTag(item, "lyrix") ||
+      playbackItemHasTag(item, "folder:lyrix") ||
+      normalizeRuleDecisionToken(item?.family) === "lyrix";
+  }
+
+  function shouldCutForLyrixSecondBarRule(item) {
+    return item && !isAtmospherePlaybackItem(item) && !isLyrixPlaybackItem(item);
+  }
+
+  function applyLyrixSecondBarCutoffRule(playbackState, section, lyrixSection, random) {
+    const rule = lyrixSection?.secondBarCutoffRule;
+    if (!playbackState || !section || !rule) return null;
+
+    const appliesAtSectionBar = Math.max(1, Number(rule.appliesAtSectionBar) || 2);
+    const cutTimeSeconds = section.startSeconds + (appliesAtSectionBar - 1) * section.barSeconds;
+    const blockEndSeconds = Math.min(section.endSeconds, cutTimeSeconds + section.barSeconds);
+    const fadeSeconds = Math.max(0, Number(rule.fadeSeconds ?? 0.01));
+
+    let activeCutCount = 0;
+    const activeItems = getActivePlaybackItemsAtTime(playbackState, cutTimeSeconds, {});
+
+    for (const item of activeItems) {
+      if (!shouldCutForLyrixSecondBarRule(item)) continue;
+
+      if (cutOffPlaybackItem(playbackState, item, cutTimeSeconds, {
+        fadeSeconds,
+        reason: `${lyrixSection.id || "lyrix"}_second_bar_cutoff`
+      })) {
+        activeCutCount += 1;
+      }
+    }
+
+    let futureCutCount = 0;
+    const forceFutureDropoutChance = clampProbability(rule.forceNonAtmosphereDropoutChance ?? 0);
+
+    if (chance(random, forceFutureDropoutChance)) {
+      const futureItems = getFuturePlaybackItemsAfterTime(playbackState, cutTimeSeconds, {})
+        .filter(item => Number(item.startSeconds) < section.endSeconds)
+        .filter(shouldCutForLyrixSecondBarRule);
+
+      for (const item of futureItems) {
+        if (cutOffPlaybackItem(playbackState, item, cutTimeSeconds, {
+          fadeSeconds,
+          reason: `${lyrixSection.id || "lyrix"}_second_bar_forced_dropout`
+        })) {
+          futureCutCount += 1;
+        }
+      }
+    }
+
+    const blockWindow = rule.blockNewStemActivations
+      ? addActivationBlockWindow(playbackState, {
+          startsAtSeconds: cutTimeSeconds,
+          endsAtSeconds: blockEndSeconds,
+          reason: `${lyrixSection.id || "lyrix"}_second_bar_block_new_activations`
+        })
+      : null;
 
     return {
       activeCutCount,
@@ -6671,7 +6752,9 @@ function scheduleMidiPattern({
       (leadIn?.firstActivationOnly && Number(section.lyrixActivationNumber || 1) > 1);
 
     if (leadIn && !shouldSkipLeadIn) {
-      const leadInChance = leadIn.chance === undefined ? 1 : Number(leadIn.chance);
+      const leadInChance = leadIn.chance === undefined
+        ? (leadIn.activationChance === undefined ? 1 : Number(leadIn.activationChance))
+        : Number(leadIn.chance);
 
       if (chance(random, leadInChance)) {
         const leadInStart = Math.max(0, section.startSeconds - (Number(leadIn.startsBeforeBars) || 0) * section.barSeconds);
@@ -6721,14 +6804,53 @@ function scheduleMidiPattern({
       }
     }
 
+    applyLyrixSecondBarCutoffRule(playbackState, section, lyrixSection, random);
+
     const partStartTimes = new Map();
 
+    const lastPartRule = lyrixSection.lastPartRule || null;
+    const finalMainPart = Number(lastPartRule?.finalMainPart || 0);
+    const omitFinalMainPart = finalMainPart > 0 && chance(random, Number(lastPartRule?.omitFinalPartChance) || 0);
+    const finalSceneSwapConfig = lastPartRule?.ifFinalPartNotOmitted || null;
+    const useFinalSceneSwap = finalMainPart > 0 &&
+      !omitFinalMainPart &&
+      finalSceneSwapConfig &&
+      chance(random, Number(finalSceneSwapConfig.sceneSwapChance) || 0);
+
     for (const part of lyrixSection.parts) {
-      partStartTimes.set(Number(part.part) || 1, start);
+      const partNumber = Number(part.part) || 1;
+      partStartTimes.set(partNumber, start);
+
       let activeDryPath = part.dry || null;
+      let activeWetPath = part.wet && !part.dryOnly ? part.wet : null;
+      let activeSinglePath = part.file || null;
+
+      if (finalMainPart > 0 && partNumber === finalMainPart) {
+        const normalDryBuffer = activeDryPath ? buffers.get(activeDryPath) : null;
+        const normalSingleBuffer = activeSinglePath ? buffers.get(activeSinglePath) : null;
+        const normalWetBuffer = activeWetPath ? buffers.get(activeWetPath) : null;
+
+        if (omitFinalMainPart) {
+          if (normalDryBuffer) {
+            start += normalDryBuffer.duration;
+          } else if (normalSingleBuffer) {
+            start += normalSingleBuffer.duration;
+          } else if (normalWetBuffer) {
+            start += normalWetBuffer.duration;
+          }
+          continue;
+        }
+
+        if (useFinalSceneSwap) {
+          activeDryPath = finalSceneSwapConfig.sceneSwapFiles?.dry || activeDryPath;
+          activeWetPath = finalSceneSwapConfig.sceneSwapFiles?.wet || activeWetPath;
+          activeSinglePath = null;
+        }
+      }
+
       const replacementRule = lyrixSection.part3ReplacementRule;
 
-      if (replacementRule && Number(part.part) === Number(replacementRule.targetPart)) {
+      if (replacementRule && partNumber === Number(replacementRule.targetPart)) {
         const replacementChance = Number(replacementRule.chance) || 0;
 
         if (replacementRule.replaces === "dry" && replacementRule.replacementFile && chance(random, replacementChance)) {
@@ -6737,8 +6859,8 @@ function scheduleMidiPattern({
       }
 
       const dryBuffer = activeDryPath ? buffers.get(activeDryPath) : null;
-      const wetBuffer = part.wet && !part.dryOnly ? buffers.get(part.wet) : null;
-      const singleBuffer = part.file ? buffers.get(part.file) : null;
+      const wetBuffer = activeWetPath ? buffers.get(activeWetPath) : null;
+      const singleBuffer = activeSinglePath ? buffers.get(activeSinglePath) : null;
       const gain = Number(part.gain) || 0.72;
 
       scheduleLyrixPathWithPlaybackState({
@@ -6755,7 +6877,7 @@ function scheduleMidiPattern({
       scheduleLyrixPathWithPlaybackState({
         offlineContext,
         destination,
-        path: part.wet,
+        path: activeWetPath,
         buffer: wetBuffer,
         startTime: start,
         gainValue: gain,
@@ -6766,7 +6888,7 @@ function scheduleMidiPattern({
       scheduleLyrixPathWithPlaybackState({
         offlineContext,
         destination,
-        path: part.file,
+        path: activeSinglePath,
         buffer: singleBuffer,
         startTime: start,
         gainValue: gain,
