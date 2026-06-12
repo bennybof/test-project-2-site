@@ -3699,7 +3699,7 @@
         globalInclusionChance: 0.3,
         activationChance: 0.1,
         dropoutChance: 0.5,
-        shutoffChance: 0.5,
+        shutoffChance: 0,
         shutoffEveryBars: 12,
         shutoffLengthBars: 12
       };
@@ -3711,7 +3711,7 @@
         globalInclusionChance: 0.6,
         activationChance: 0.3,
         dropoutChance: 0.5,
-        shutoffChance: 0.5,
+        shutoffChance: 0,
         shutoffEveryBars: 12,
         shutoffLengthBars: 12
       };
@@ -6200,7 +6200,16 @@ function getNormalMidiHatChoiceGroupId(pattern) {
     return await offlineContext.decodeAudioData(arrayBuffer);
   }
 
-  function scheduleBuffer(offlineContext, destination, buffer, startTime, gainValue = 1, offset = 0) {
+  function getCentralInstrumentFamilyPanValue(family) {
+    const normalizedFamily = normalizeRuleDecisionToken(family);
+
+    if (normalizedFamily === "sax") return -1;
+    if (normalizedFamily === "gtar") return 1;
+
+    return 0;
+  }
+
+  function scheduleBuffer(offlineContext, destination, buffer, startTime, gainValue = 1, offset = 0, panValue = 0) {
     if (!buffer) return null;
     if (startTime >= offlineContext.length / offlineContext.sampleRate) return null;
 
@@ -6214,8 +6223,19 @@ function getNormalMidiHatChoiceGroupId(pattern) {
     source.buffer = buffer;
     gain.gain.value = gainValue;
 
+    const safePanValue = Math.max(-1, Math.min(1, Number.isFinite(Number(panValue)) ? Number(panValue) : 0));
+    let panner = null;
+
     source.connect(gain);
-    gain.connect(destination);
+
+    if (safePanValue !== 0 && typeof offlineContext.createStereoPanner === "function") {
+      panner = offlineContext.createStereoPanner();
+      panner.pan.value = safePanValue;
+      gain.connect(panner);
+      panner.connect(destination);
+    } else {
+      gain.connect(destination);
+    }
 
     source.start(safeStartTime, safeOffset);
 
@@ -6223,6 +6243,8 @@ function getNormalMidiHatChoiceGroupId(pattern) {
       scheduled: true,
       source,
       gainNode: gain,
+      pannerNode: panner,
+      panValue: safePanValue,
       buffer,
       startTime: safeStartTime,
       offset: safeOffset,
@@ -6275,13 +6297,16 @@ function getNormalMidiHatChoiceGroupId(pattern) {
     section = null,
     family = ""
   } = {}) {
+    const panValue = getCentralInstrumentFamilyPanValue(family || getCentralInstrumentFamily(entry));
+
     const scheduleHandle = scheduleBuffer(
       offlineContext,
       destination,
       buffer,
       startTime,
       gainValue,
-      offset
+      offset,
+      panValue
     );
 
     recordSectionScheduledAudio(section, {
