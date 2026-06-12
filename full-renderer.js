@@ -7189,6 +7189,11 @@ function scheduleMidiPattern({
 
     const partStartTimes = new Map();
 
+    const endingRule = lyrixSection.endingRule || null;
+    const finishAfterPart = Number(endingRule?.finishAfterPart || 0);
+    const shouldFinishAfterPart = finishAfterPart > 0 &&
+      chance(random, Number(endingRule?.finishAfterPartChance) || 0);
+
     const lastPartRule = lyrixSection.lastPartRule || null;
     const finalMainPart = Number(lastPartRule?.finalMainPart || 0);
     const omitFinalMainPart = finalMainPart > 0 && chance(random, Number(lastPartRule?.omitFinalPartChance) || 0);
@@ -7205,6 +7210,10 @@ function scheduleMidiPattern({
       const partNumber = Number(part.part) || 1;
 
       if (isWeed2BranchFromWeed1 && partNumber >= 9) {
+        continue;
+      }
+
+      if (shouldFinishAfterPart && partNumber > finishAfterPart) {
         continue;
       }
 
