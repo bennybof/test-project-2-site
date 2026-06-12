@@ -650,15 +650,29 @@
   function normalizeLifecycleContinuationKey(key) {
     const raw = String(key || "").trim();
 
-    const value = raw
+    let value = raw
       .toLowerCase()
       .replace(/\s*\(consolidated\)\s*/gi, "")
       .replace(/\.[a-z0-9]+$/i, "")
-      .replace(/#\d+/g, "")
+      .replace(/#\d+/g, "");
+
+    const isExplicitExt = /(?:^|[\/_\-\s])ext(?=[._\-\s()]|$)/i.test(value);
+
+    value = value
       .replace(/(?:^|[\/_\-\s])cont(?=[._\-\s()]|$)/gi, "_")
+      .replace(/(?:^|[\/_\-\s])ext(?=[._\-\s()]|$)/gi, "_")
       .replace(/[\/\\_\-\s]+/g, "_")
       .replace(/_+/g, "_")
       .replace(/^_+|_+$/g, "");
+
+    if (isExplicitExt) {
+      value = value
+        .replace(/(^|_)bagoo_even($|_)/g, "$1bagoo_odd$2")
+        .replace(/(^|_)glock_even_dlay($|_)/g, "$1glock_odd_dlay$2")
+        .replace(/(^|_)glock_even($|_)/g, "$1glock_odd$2")
+        .replace(/_+/g, "_")
+        .replace(/^_+|_+$/g, "");
+    }
 
     return value || raw;
   }
