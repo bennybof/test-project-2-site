@@ -6903,7 +6903,8 @@ function scheduleMidiPattern({
         localBarIndex: localBar,
         startSeconds,
         baseChance: phraseBaseChance,
-        profile: audioProfile
+        profile: audioProfile,
+        allowLifecycleContinuation: allowEveryBarPhraseContinuation
       });
 
       if (audioDecisionResult.allowed) {
