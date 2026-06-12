@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-12T12:44:42.242Z",
+  "generatedAt": "2026-06-12T13:56:22.819Z",
   "root": "C:\\Users\\Student\\OneDrive\\test-project-2-site",
   "sim": {
     "buildSimCount": 400,
@@ -33,17 +33,17 @@
   },
   "reachability": {
     "selectedAudioCount": 481,
-    "scheduledAudioCount": 240,
+    "scheduledAudioCount": 244,
     "selectedMidiCount": 39,
     "scheduledMidiCount": 33,
     "audioNoObservedInclusionPathCount": 420,
-    "selectedAudioNotScheduledTotalCount": 38,
-    "selectedAudioNotScheduledCount": 38,
+    "selectedAudioNotScheduledTotalCount": 34,
+    "selectedAudioNotScheduledCount": 34,
     "selectedDependentOnlyAudioNotScheduledCount": 0,
     "selectedMidiNotScheduledCount": 1,
     "neverSelectedMidiCount": 13,
     "generalSamplesSelectedCount": 246,
-    "generalSamplesScheduledCount": 160,
+    "generalSamplesScheduledCount": 164,
     "generalSamplesNoObservedInclusionCount": 59,
     "lyrixAudioSelectedCount": 235,
     "lyrixAudioScheduledCount": 80,
@@ -335,12 +335,12 @@
         "count": 9
       },
       {
-        "key": "samples/synth_suspense_even (consolidated).wav",
+        "key": "samples/sax_1_odd_x2 (consolidated).wav",
         "count": 9
       },
       {
-        "key": "samples/sax_1_odd_x2 (consolidated).wav",
-        "count": 8
+        "key": "samples/synth_suspense_even (consolidated).wav",
+        "count": 9
       },
       {
         "key": "samples/synth_glitch_2_odd_xtra (consolidated).wav",
@@ -379,14 +379,6 @@
         "count": 6
       },
       {
-        "key": "samples/gtar_3 (consolidated) #2.wav",
-        "count": 6
-      },
-      {
-        "key": "samples/gtar_3_even (consolidated).wav",
-        "count": 6
-      },
-      {
         "key": "samples/sax_2_odd_x2 (consolidated).wav",
         "count": 6
       },
@@ -415,23 +407,11 @@
         "count": 5
       },
       {
-        "key": "samples/gtar_2 #2 (consolidated).wav",
+        "key": "samples/gtar_3 (consolidated) #2.wav",
         "count": 5
       },
       {
-        "key": "samples/gtar_2 #3 (consolidated).wav",
-        "count": 5
-      },
-      {
-        "key": "samples/gtar_2 #4 (consolidated).wav",
-        "count": 5
-      },
-      {
-        "key": "samples/gtar_2 #5 (consolidated).wav",
-        "count": 5
-      },
-      {
-        "key": "samples/gtar_2_even (consolidated).wav",
+        "key": "samples/gtar_3_even (consolidated).wav",
         "count": 5
       },
       {
@@ -453,6 +433,26 @@
       {
         "key": "samples/synth_frozen_verb_odd_~_xtra (consolidated).wav",
         "count": 5
+      },
+      {
+        "key": "samples/synth_glitch_1_odd_xtra (consolidated).wav",
+        "count": 5
+      },
+      {
+        "key": "samples/synth_wiv-bagoo_low_odd_~ (consolidated).wav",
+        "count": 5
+      },
+      {
+        "key": "samples/tbone_1_even_x2 (consolidated).wav",
+        "count": 5
+      },
+      {
+        "key": "samples/vlins_long_suspense_odd_x2 (consolidated).wav",
+        "count": 5
+      },
+      {
+        "key": "lyrix/crashout_lyrix_even_wet (consolidated) #2.wav",
+        "count": 4
       }
     ],
     "selectedMidi": [
@@ -965,22 +965,6 @@
       {
         "key": "samples/synth_downsampled_odd_xtra #4 (consolidated).wav",
         "selectedCount": 20
-      },
-      {
-        "key": "samples/gtar_5 (consolidated) #2.wav",
-        "selectedCount": 14
-      },
-      {
-        "key": "samples/gtar_5 (consolidated) #3.wav",
-        "selectedCount": 14
-      },
-      {
-        "key": "samples/gtar_5 (consolidated) #4.wav",
-        "selectedCount": 14
-      },
-      {
-        "key": "samples/gtar_5_odd (consolidated).wav",
-        "selectedCount": 14
       },
       {
         "key": "samples/gtar_8 (consolidated) #2.wav",

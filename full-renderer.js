@@ -647,12 +647,28 @@
     state.withdrawn = true;
     return state;
   }
+  function normalizeLifecycleContinuationKey(key) {
+    const raw = String(key || "").trim();
+
+    const value = raw
+      .toLowerCase()
+      .replace(/\s*\(consolidated\)\s*/gi, "")
+      .replace(/\.[a-z0-9]+$/i, "")
+      .replace(/#\d+/g, "")
+      .replace(/(?:^|[\/_\-\s])cont(?=[._\-\s()]|$)/gi, "_")
+      .replace(/[\/\\_\-\s]+/g, "_")
+      .replace(/_+/g, "_")
+      .replace(/^_+|_+$/g, "");
+
+    return value || raw;
+  }
+
   function getAudioLifecycleId(key) {
-    return `audio:${key}`;
+    return "audio:" + normalizeLifecycleContinuationKey(key);
   }
 
   function getMidiLifecycleId(key) {
-    return `midi:${key}`;
+    return "midi:" + normalizeLifecycleContinuationKey(key);
   }
 
   function createLifecycleMapFromPlan(plan) {

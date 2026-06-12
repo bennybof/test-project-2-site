@@ -1,6 +1,6 @@
 # Test Project 2 - Coverage Gate Report
 
-Generated: 2026-06-12T12:44:42.242Z
+Generated: 2026-06-12T13:56:22.819Z
 
 Report-only helper. No planner, renderer, catalog, registry, or rules files were edited by this script.
 
@@ -34,17 +34,17 @@ Report-only helper. No planner, renderer, catalog, registry, or rules files were
 | Check | Count |
 |---|---:|
 | Unique audio selected in build plans | 481 |
-| Unique audio scheduled in scheduling sims | 240 |
+| Unique audio scheduled in scheduling sims | 244 |
 | Unique MIDI selected in build plans | 39 |
 | Unique MIDI scheduled in scheduling sims | 33 |
 | Audio with no observed inclusion path | 420 |
-| Audio selected but not scheduled in scheduling sims, excluding dependent-only | 38 |
+| Audio selected but not scheduled in scheduling sims, excluding dependent-only | 34 |
 | Dependent-only audio selected but not scheduled in scheduling sims | 0 |
-| Audio selected but not scheduled total in scheduling sims | 38 |
+| Audio selected but not scheduled total in scheduling sims | 34 |
 | MIDI selected but not scheduled in scheduling sims | 1 |
 | MIDI never selected | 13 |
 | General samples selected | 246 |
-| General samples scheduled | 160 |
+| General samples scheduled | 164 |
 | General samples with no observed inclusion | 59 |
 | Lyrix audio selected | 235 |
 | Lyrix audio scheduled | 80 |
@@ -103,10 +103,6 @@ Section count median: 6
 | samples/synth_downsampled_odd_xtra #2 (consolidated).wav | 20 |
 | samples/synth_downsampled_odd_xtra #3 (consolidated).wav | 20 |
 | samples/synth_downsampled_odd_xtra #4 (consolidated).wav | 20 |
-| samples/gtar_5 (consolidated) #2.wav | 14 |
-| samples/gtar_5 (consolidated) #3.wav | 14 |
-| samples/gtar_5 (consolidated) #4.wav | 14 |
-| samples/gtar_5_odd (consolidated).wav | 14 |
 | samples/gtar_8 (consolidated) #2.wav | 14 |
 | samples/gtar_8_odd (consolidated).wav | 14 |
 | samples/synth_bass_1_hook #2 (consolidated).wav | 8 |
@@ -124,6 +120,10 @@ Section count median: 6
 | lyrix/hook_nextmove_obligadaboo_lyrix_v3.wav | 1 |
 | lyrix/slow_hook_chillout_lyrix_odd_dry (consolidated) #2.wav | 1 |
 | lyrix/slow_hook_chillout_lyrix_odd_dry (consolidated) #3.wav | 1 |
+| lyrix/slow_hook_chillout_lyrix_odd_dry (consolidated) #4.wav | 1 |
+| lyrix/slow_hook_hindsight_lyrix_even_dry (consolidated) #2.wav | 1 |
+| lyrix/slow_hook_hindsight_lyrix_even_dry (consolidated) #3.wav | 1 |
+| lyrix/slow_hook_hindsight_lyrix_even_dry (consolidated).wav | 1 |
 
 ## Top dependent-only audio selected but not scheduled
 
