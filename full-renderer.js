@@ -5897,6 +5897,10 @@ function getNormalMidiHatChoiceGroupId(pattern) {
             pattern.file === "midi files/main_hats_oh_cont_metal_oh.mid"
           );
 
+          const contMainOhChPattern = midiPatternPool.find(pattern =>
+            pattern.file === "midi files/main_hats_oh_cont_metal_ch.mid"
+          );
+
           const preferredMainOhPattern = continuingNormalHatChoice
             ? contMainOhPattern
             : normalMainOhPattern;
@@ -5909,6 +5913,14 @@ function getNormalMidiHatChoiceGroupId(pattern) {
 
           if (random() >= 0.1) {
             const mainOhPattern = preferredMainOhPattern || fallbackMainOhPattern;
+
+            if (
+              continuingNormalHatChoice &&
+              mainOhPattern === contMainOhPattern &&
+              contMainOhChPattern
+            ) {
+              chosenPatterns.push(contMainOhChPattern);
+            }
 
             if (mainOhPattern) {
               chosenPatterns.push(mainOhPattern);

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-12T14:00:26.519Z",
+  "generatedAt": "2026-06-12T14:42:43.939Z",
   "root": "C:\\Users\\Student\\OneDrive\\test-project-2-site",
   "sim": {
     "buildSimCount": 400,
@@ -33,17 +33,17 @@
   },
   "reachability": {
     "selectedAudioCount": 481,
-    "scheduledAudioCount": 244,
-    "selectedMidiCount": 39,
-    "scheduledMidiCount": 33,
+    "scheduledAudioCount": 242,
+    "selectedMidiCount": 40,
+    "scheduledMidiCount": 34,
     "audioNoObservedInclusionPathCount": 420,
-    "selectedAudioNotScheduledTotalCount": 34,
-    "selectedAudioNotScheduledCount": 34,
+    "selectedAudioNotScheduledTotalCount": 36,
+    "selectedAudioNotScheduledCount": 36,
     "selectedDependentOnlyAudioNotScheduledCount": 0,
     "selectedMidiNotScheduledCount": 1,
-    "neverSelectedMidiCount": 13,
+    "neverSelectedMidiCount": 12,
     "generalSamplesSelectedCount": 246,
-    "generalSamplesScheduledCount": 164,
+    "generalSamplesScheduledCount": 162,
     "generalSamplesNoObservedInclusionCount": 59,
     "lyrixAudioSelectedCount": 235,
     "lyrixAudioScheduledCount": 80,
@@ -335,10 +335,6 @@
         "count": 9
       },
       {
-        "key": "samples/sax_1_odd_x2 (consolidated).wav",
-        "count": 9
-      },
-      {
         "key": "samples/synth_suspense_even (consolidated).wav",
         "count": 9
       },
@@ -352,6 +348,10 @@
       },
       {
         "key": "samples/rhodes_replace-synth_odd.wav",
+        "count": 7
+      },
+      {
+        "key": "samples/sax_1_odd_x2 (consolidated).wav",
         "count": 7
       },
       {
@@ -379,7 +379,7 @@
         "count": 6
       },
       {
-        "key": "samples/sax_2_odd_x2 (consolidated).wav",
+        "key": "samples/grm_dk_tsandcs_lyrix_x4 (consolidated).wav",
         "count": 6
       },
       {
@@ -403,7 +403,27 @@
         "count": 5
       },
       {
-        "key": "samples/grm_dk_tsandcs_lyrix_x4 (consolidated).wav",
+        "key": "samples/grm_dunah_rhymeschemes_lyrix_x6_~ (consolidated).wav",
+        "count": 5
+      },
+      {
+        "key": "samples/gtar_2 #2 (consolidated).wav",
+        "count": 5
+      },
+      {
+        "key": "samples/gtar_2 #3 (consolidated).wav",
+        "count": 5
+      },
+      {
+        "key": "samples/gtar_2 #4 (consolidated).wav",
+        "count": 5
+      },
+      {
+        "key": "samples/gtar_2 #5 (consolidated).wav",
+        "count": 5
+      },
+      {
+        "key": "samples/gtar_2_even (consolidated).wav",
         "count": 5
       },
       {
@@ -427,32 +447,12 @@
         "count": 5
       },
       {
+        "key": "samples/sax_2_odd_x2 (consolidated).wav",
+        "count": 5
+      },
+      {
         "key": "samples/synth_cont_odd (consolidated).wav",
         "count": 5
-      },
-      {
-        "key": "samples/synth_frozen_verb_odd_~_xtra (consolidated).wav",
-        "count": 5
-      },
-      {
-        "key": "samples/synth_glitch_1_odd_xtra (consolidated).wav",
-        "count": 5
-      },
-      {
-        "key": "samples/synth_wiv-bagoo_low_odd_~ (consolidated).wav",
-        "count": 5
-      },
-      {
-        "key": "samples/tbone_1_even_x2 (consolidated).wav",
-        "count": 5
-      },
-      {
-        "key": "samples/vlins_long_suspense_odd_x2 (consolidated).wav",
-        "count": 5
-      },
-      {
-        "key": "lyrix/crashout_lyrix_even_wet (consolidated) #2.wav",
-        "count": 4
       }
     ],
     "selectedMidi": [
@@ -463,6 +463,10 @@
       {
         "key": "midi files/main_hats_oh_metal_oh.mid",
         "count": 226
+      },
+      {
+        "key": "midi files/main_hats_oh_cont_metal_ch.mid",
+        "count": 187
       },
       {
         "key": "midi files/main_hats_oh_cont_metal_oh.mid",
@@ -621,6 +625,10 @@
       {
         "key": "midi files/main_hats_oh_metal_oh.mid",
         "count": 25
+      },
+      {
+        "key": "midi files/main_hats_oh_cont_metal_ch.mid",
+        "count": 17
       },
       {
         "key": "midi files/main_hats_oh_cont_metal_oh.mid",
@@ -967,11 +975,19 @@
         "selectedCount": 20
       },
       {
-        "key": "samples/gtar_8 (consolidated) #2.wav",
+        "key": "samples/gtar_5 (consolidated) #2.wav",
         "selectedCount": 14
       },
       {
-        "key": "samples/gtar_8_odd (consolidated).wav",
+        "key": "samples/gtar_5 (consolidated) #3.wav",
+        "selectedCount": 14
+      },
+      {
+        "key": "samples/gtar_5 (consolidated) #4.wav",
+        "selectedCount": 14
+      },
+      {
+        "key": "samples/gtar_5_odd (consolidated).wav",
         "selectedCount": 14
       },
       {
@@ -1106,7 +1122,6 @@
       "midi files/holdit_hats_forlyrix_metal_ch.mid",
       "midi files/holdit_hats_forlyrix_metal_crash.mid",
       "midi files/jazz_rides_metal_ridehard.mid",
-      "midi files/main_hats_oh_cont_metal_ch.mid",
       "midi files/main_hats_oh_metal_ch.mid"
     ]
   },
