@@ -43,7 +43,6 @@
     "swoosh",
     "nosound",
     "weed_1",
-    "weed_2",
     "clockout",
     "holdit",
     "intrusive",
@@ -90,6 +89,27 @@
     );
 
     return activated.length ? chooseOne(random, activated) : null;
+  }
+
+  
+  function getLyrixSectionById(sectionId) {
+    if (!lyrixRules?.sections || !sectionId) return null;
+    return lyrixRules.sections.find(section => section.id === sectionId) || null;
+  }
+
+  function chooseWeedBranchContinuationSection(random) {
+    const weed1 = getLyrixSectionById("weed_1");
+    const weed2 = getLyrixSectionById("weed_2");
+
+    if (!weed1 || !weed2) return null;
+
+    const weed1Weight = Math.max(0, Number(weed1.branchChanceWithinSystem) || 0);
+    const weed2Weight = Math.max(0, Number(weed2.branchChanceWithinSystem) || 0);
+    const totalWeight = weed1Weight + weed2Weight;
+
+    if (totalWeight <= 0) return null;
+
+    return random() * totalWeight < weed2Weight ? weed2 : null;
   }
 
   function chooseFirstPassLyrixSection(random, lyrixSectionUsage = new Map()) {
@@ -5567,12 +5587,22 @@ function getNormalMidiHatChoiceGroupId(pattern) {
               }
             }
           }
-          const mainLyrixTimelineSection = addSection("lyrix", getLyrixSectionLengthBars(lyrixSection), {
+          const weedBranchSection = lyrixSection.id === "weed_1"
+            ? chooseWeedBranchContinuationSection(random)
+            : null;
+
+          const weedBranchStartOffsetBars = Number(weedBranchSection?.startsAfterSectionBars?.bars);
+          const plannedLyrixLengthBars = weedBranchSection?.id === "weed_2" && Number.isFinite(weedBranchStartOffsetBars)
+            ? weedBranchStartOffsetBars + getLyrixSectionLengthBars(weedBranchSection)
+            : getLyrixSectionLengthBars(lyrixSection);
+
+          const mainLyrixTimelineSection = addSection("lyrix", plannedLyrixLengthBars, {
             reset: false,
             tags: ["lyrix", "lyrix_rules_first_pass"],
             lyrixSectionId: lyrixSection.id,
             lyrixSection,
-            lyrixActivationNumber
+            lyrixActivationNumber,
+            weedBranchSection
           });
 
           for (const key of getLyrixSectionAudioFiles(lyrixSection)) {
@@ -5588,6 +5618,19 @@ function getNormalMidiHatChoiceGroupId(pattern) {
 
 
           
+          if (weedBranchSection?.id === "weed_2") {
+            for (const key of getLyrixSectionAudioFiles(weedBranchSection)) {
+              forceIncludeAudioSelection({
+                random,
+                globalInclusionState,
+                requiredActivationState,
+                selectedAudio,
+                key,
+                reason: "forced_weed_branch_section"
+              });
+            }
+          }
+
           const conditionalContinuationSection = chooseConditionalLyrixContinuationAfterParent(random, lyrixSection);
 
           if (conditionalContinuationSection) {
@@ -7103,8 +7146,16 @@ function scheduleMidiPattern({
       finalSceneSwapConfig &&
       chance(random, Number(finalSceneSwapConfig.sceneSwapChance) || 0);
 
+    
+    const isWeed2BranchFromWeed1 = lyrixSection.id === "weed_1" && section.weedBranchSection?.id === "weed_2";
+
     for (const part of lyrixSection.parts) {
       const partNumber = Number(part.part) || 1;
+
+      if (isWeed2BranchFromWeed1 && partNumber >= 9) {
+        continue;
+      }
+
       partStartTimes.set(partNumber, start);
 
       let activeDryPath = part.dry || null;
@@ -7236,8 +7287,18 @@ function scheduleMidiPattern({
     for (const adlib of adlibs) {
       let adlibStart = null;
 
+      if (isWeed2BranchFromWeed1 && Number.isFinite(Number(adlib.startsAfterWeedSectionStartBars))) {
+        continue;
+      }
+
       if (adlib.part) {
         adlibStart = partStartTimes.get(Number(adlib.part));
+      } else if (Number.isFinite(Number(adlib.startsAfterWeedSectionStartBars))) {
+        const weedSectionStartSeconds = Number.isFinite(Number(section.weedSectionStartSeconds))
+          ? Number(section.weedSectionStartSeconds)
+          : section.startSeconds;
+
+        adlibStart = weedSectionStartSeconds + Number(adlib.startsAfterWeedSectionStartBars) * section.barSeconds;
       } else if (adlib.startsWhen && String(adlib.startsWhen).includes("_lyrix_starts")) {
         adlibStart = section.startSeconds;
       }
@@ -7327,6 +7388,37 @@ function scheduleMidiPattern({
       });
 
       start += buffer.duration;
+    }
+
+    if (isWeed2BranchFromWeed1) {
+      const weed2Section = section.weedBranchSection;
+      const weed2StartOffsetBars = Number(weed2Section?.startsAfterSectionBars?.bars) || 0;
+      const weed2StartSeconds = section.startSeconds + weed2StartOffsetBars * section.barSeconds;
+      const weed2LengthBars = getLyrixSectionLengthBars(weed2Section);
+      const weed2DurationSeconds = weed2LengthBars * section.barSeconds;
+
+      scheduleExplicitLyrixSection({
+        offlineContext,
+        destination,
+        section: {
+          ...section,
+          id: `${section.id}_weed_2_branch`,
+          lyrixSectionId: weed2Section.id,
+          lyrixSection: weed2Section,
+          lyrixActivationNumber: 1,
+          suppressLyrixLeadIn: true,
+          startSeconds: weed2StartSeconds,
+          endSeconds: weed2StartSeconds + weed2DurationSeconds,
+          durationSeconds: weed2DurationSeconds,
+          duration: weed2DurationSeconds,
+          bars: weed2LengthBars,
+          weedBranchSection: null,
+          weedSectionStartSeconds: section.startSeconds
+        },
+        random,
+        playbackState,
+        buffers
+      });
     }
 
     return true;
