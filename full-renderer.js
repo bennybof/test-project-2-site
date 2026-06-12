@@ -6753,6 +6753,18 @@ function scheduleMidiPattern({
       return scheduled ? 1 + scheduleDependents(startSeconds) : 0;
     }
 
+    if (isLyrix(entry)) {
+      return scheduleLyrixGroupInSection({
+        offlineContext,
+        destination,
+        key,
+        random,
+        playbackState,
+        section,
+        buffers: buffers || currentRenderBuffers
+      }) ? 1 : 0;
+    }
+
     if (keyLower.includes("outburst")) {
       const scheduled = scheduleAudioBufferWithPlaybackState({
         offlineContext,
@@ -6785,18 +6797,6 @@ function scheduleMidiPattern({
       });
 
       return scheduled ? 1 + scheduleDependents(startSeconds) : 0;
-    }
-
-    if (isLyrix(entry)) {
-      return scheduleLyrixGroupInSection({
-        offlineContext,
-        destination,
-        key,
-        random,
-        playbackState,
-        section,
-        buffers: buffers || currentRenderBuffers
-      }) ? 1 : 0;
     }
 
     if (isLikelyOneShot(entry)) {

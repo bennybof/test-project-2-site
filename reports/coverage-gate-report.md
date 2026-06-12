@@ -1,6 +1,6 @@
 # Test Project 2 - Coverage Gate Report
 
-Generated: 2026-06-12T01:01:53.161Z
+Generated: 2026-06-12T01:38:31.662Z
 
 Report-only helper. No planner, renderer, catalog, registry, or rules files were edited by this script.
 
@@ -34,20 +34,20 @@ Report-only helper. No planner, renderer, catalog, registry, or rules files were
 | Check | Count |
 |---|---:|
 | Unique audio selected in build plans | 468 |
-| Unique audio scheduled in scheduling sims | 247 |
+| Unique audio scheduled in scheduling sims | 240 |
 | Unique MIDI selected in build plans | 39 |
 | Unique MIDI scheduled in scheduling sims | 31 |
 | Audio with no observed inclusion path | 432 |
-| Audio selected but not scheduled in scheduling sims, excluding dependent-only | 52 |
+| Audio selected but not scheduled in scheduling sims, excluding dependent-only | 59 |
 | Dependent-only audio selected but not scheduled in scheduling sims | 2 |
-| Audio selected but not scheduled total in scheduling sims | 54 |
+| Audio selected but not scheduled total in scheduling sims | 61 |
 | MIDI selected but not scheduled in scheduling sims | 3 |
 | MIDI never selected | 13 |
 | General samples selected | 240 |
 | General samples scheduled | 157 |
 | General samples with no observed inclusion | 65 |
 | Lyrix audio selected | 228 |
-| Lyrix audio scheduled | 90 |
+| Lyrix audio scheduled | 83 |
 | Lyrix sections seen | 21 / 57 |
 
 ## Timeline / duration variation
@@ -117,13 +117,13 @@ Section count median: 6
 | samples/hippy_synth_odd (consolidated).wav | 4 |
 | samples/trumpet_hook_odd_x4 (consolidated) #2.wav | 4 |
 | samples/trumpet_hook_odd_x4 (consolidated).wav | 4 |
-| lyrix/grounded_lyrix_xtra_v2 (consolidated) #3.wav | 3 |
 | samples/trumpet_even_x4.wav | 3 |
 | samples/typewriter_even_xtra.wav | 3 |
 | lyrix/fast_hook_blessnow_lyrix_odd_wet (consolidated).wav | 2 |
 | samples/bassish_glitchy_hook_odd_x4 (consolidated).wav | 2 |
 | samples/bassish_glitchy_hook_odd_x4 #2 (consolidated).wav | 2 |
 | samples/high_bassish_2_hook #2 (consolidated).wav | 2 |
+| samples/high_bassish_2_hook_odd_x2 (consolidated).wav | 2 |
 
 ## Top dependent-only audio selected but not scheduled
 
