@@ -6923,7 +6923,13 @@ function scheduleMidiPattern({
 
         if (scheduled) {
           scheduledCount += 1;
-          nextAllowedPhraseStartSeconds = scheduled.endTime;
+          // Use logical bar spacing for repeat blocking.
+          // Do not use full exported WAV duration here, because reverb/tails can wrongly skip
+          // the next valid activation opportunity.
+          const logicalRepeatBlockSeconds = Number(section?.barSeconds || 0);
+          nextAllowedPhraseStartSeconds = logicalRepeatBlockSeconds > 0
+            ? startSeconds + logicalRepeatBlockSeconds
+            : scheduled.endTime;
 
           if (lifecycleStates && audioLifecycleId && !wasActiveBeforeDecision) {
             activateLifecycleItem(
