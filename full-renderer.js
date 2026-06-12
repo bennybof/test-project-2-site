@@ -2301,6 +2301,28 @@
     return decision;
   }
 
+  function cutoffContextIsCrash(context = {}) {
+    const key = String(context?.itemKey || context?.key || "").toLowerCase();
+    const tags = context?.itemTags instanceof Set ? context.itemTags : new Set();
+
+    return (
+      key.includes("crash") ||
+      tags.has("crash") ||
+      tags.has("family:crash") ||
+      tags.has("jazz_crash") ||
+      tags.has("rev_crash")
+    );
+  }
+
+  function cutoffTargetIsBeepipe(target = {}) {
+    return /beepipe|beepipes/i.test(JSON.stringify(target || {}));
+  }
+
+  function shouldSkipCutoffRuleForContextTarget(context = {}, target = {}) {
+    if (!cutoffContextIsCrash(context)) return false;
+    return cutoffTargetIsBeepipe(target);
+  }
+
   function applyCutoffRulesForAllowedDecision(playbackState, context, profile = {}) {
     if (!playbackState || !context || !profile) return [];
 
@@ -2314,6 +2336,8 @@
       const includeFutureScheduled = Boolean(rule.includeFutureScheduled ?? rule.includeFuture ?? false);
 
       for (const target of targets) {
+        if (shouldSkipCutoffRuleForContextTarget(context, target)) continue;
+
         const filter = getPlaybackFilterFromRuleTarget(target);
         const result = applyGenericCutoffAction(playbackState, {
           cutTimeSeconds: context.startSeconds,
