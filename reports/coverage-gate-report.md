@@ -1,6 +1,6 @@
 # Test Project 2 - Coverage Gate Report
 
-Generated: 2026-06-12T02:12:00.705Z
+Generated: 2026-06-12T11:37:03.485Z
 
 Report-only helper. No planner, renderer, catalog, registry, or rules files were edited by this script.
 
@@ -24,7 +24,7 @@ Report-only helper. No planner, renderer, catalog, registry, or rules files were
 | Stem registry entries | 953 |
 | Registry audio entries | 901 |
 | Registry MIDI entries | 52 |
-| Catalog allKeys | 952 |
+| Catalog allKeys | 953 |
 | Lyrix rule file refs | 576 |
 | Lyrix sections | 57 |
 | MIDI patterns | 52 |
@@ -33,21 +33,21 @@ Report-only helper. No planner, renderer, catalog, registry, or rules files were
 
 | Check | Count |
 |---|---:|
-| Unique audio selected in build plans | 468 |
+| Unique audio selected in build plans | 481 |
 | Unique audio scheduled in scheduling sims | 240 |
 | Unique MIDI selected in build plans | 39 |
-| Unique MIDI scheduled in scheduling sims | 31 |
-| Audio with no observed inclusion path | 432 |
-| Audio selected but not scheduled in scheduling sims, excluding dependent-only | 59 |
-| Dependent-only audio selected but not scheduled in scheduling sims | 2 |
-| Audio selected but not scheduled total in scheduling sims | 61 |
-| MIDI selected but not scheduled in scheduling sims | 3 |
+| Unique MIDI scheduled in scheduling sims | 33 |
+| Audio with no observed inclusion path | 420 |
+| Audio selected but not scheduled in scheduling sims, excluding dependent-only | 38 |
+| Dependent-only audio selected but not scheduled in scheduling sims | 0 |
+| Audio selected but not scheduled total in scheduling sims | 38 |
+| MIDI selected but not scheduled in scheduling sims | 1 |
 | MIDI never selected | 13 |
-| General samples selected | 240 |
-| General samples scheduled | 157 |
-| General samples with no observed inclusion | 65 |
-| Lyrix audio selected | 228 |
-| Lyrix audio scheduled | 83 |
+| General samples selected | 246 |
+| General samples scheduled | 160 |
+| General samples with no observed inclusion | 59 |
+| Lyrix audio selected | 235 |
+| Lyrix audio scheduled | 80 |
 | Lyrix sections seen | 22 / 57 |
 
 ## Timeline / duration variation
@@ -72,10 +72,9 @@ Section count median: 6
 | weed | 57 |
 | buf | 36 |
 | clockout | 30 |
-| gtar | 26 |
 | scooby | 25 |
+| intrusive | 21 |
 | angry | 20 |
-| intrusive | 19 |
 | holdit | 18 |
 | nosound | 18 |
 | bollocks | 16 |
@@ -85,60 +84,58 @@ Section count median: 6
 | kachow | 12 |
 | space | 12 |
 | ah | 11 |
-| drop | 9 |
-| slow | 9 |
 | swoosh | 8 |
+| drop | 7 |
 | phones | 7 |
+| accbreath | 6 |
 | tits | 5 |
+| rhodes | 4 |
+| beeps | 3 |
+| oh | 3 |
 | pno | 3 |
-| rhodes | 3 |
-| sax | 3 |
-| breathe_rev_vox | 2 |
+| typewriter | 3 |
 
 ## Top selected audio not scheduled, excluding dependent-only
 
 | File | Selected count |
 |---|---:|
-| samples/synth_downsampled_odd_xtra (consolidated).wav | 16 |
-| samples/synth_downsampled_odd_xtra #2 (consolidated).wav | 16 |
-| samples/synth_downsampled_odd_xtra #3 (consolidated).wav | 16 |
-| samples/synth_downsampled_odd_xtra #4 (consolidated).wav | 16 |
-| samples/accbreath_4_odd.wav | 10 |
-| samples/vlins_1_even_x2 (consolidated).wav | 9 |
-| samples/accbreath_3_~_even.wav | 8 |
+| samples/synth_downsampled_odd_xtra (consolidated).wav | 20 |
+| samples/synth_downsampled_odd_xtra #2 (consolidated).wav | 20 |
+| samples/synth_downsampled_odd_xtra #3 (consolidated).wav | 20 |
+| samples/synth_downsampled_odd_xtra #4 (consolidated).wav | 20 |
+| samples/gtar_5 (consolidated) #2.wav | 14 |
+| samples/gtar_5 (consolidated) #3.wav | 14 |
+| samples/gtar_5 (consolidated) #4.wav | 14 |
+| samples/gtar_5_odd (consolidated).wav | 14 |
+| samples/gtar_8 (consolidated) #2.wav | 14 |
+| samples/gtar_8_odd (consolidated).wav | 14 |
 | samples/synth_bass_1_hook #2 (consolidated).wav | 8 |
 | samples/synth_bass_1_hook #3 (consolidated).wav | 8 |
 | samples/synth_bass_1_hook_odd_x4 (consolidated).wav | 8 |
 | samples/synth_bass_2_hook_x4_even (consolidated).wav | 8 |
-| lyrix/crashout_lyrix_even_dry (consolidated).wav | 6 |
-| samples/synth_elephant_odd_~_xtra.wav | 6 |
-| samples/high_bassish_hook_odd_x2 (consolidated) #2.wav | 4 |
-| samples/high_bassish_hook_odd_x2 (consolidated).wav | 4 |
-| samples/hippy_synth_odd (consolidated).wav | 4 |
-| samples/trumpet_hook_odd_x4 (consolidated) #2.wav | 4 |
-| samples/trumpet_hook_odd_x4 (consolidated).wav | 4 |
-| samples/trumpet_even_x4.wav | 3 |
-| samples/typewriter_even_xtra.wav | 3 |
-| lyrix/fast_hook_blessnow_lyrix_odd_wet (consolidated).wav | 2 |
-| samples/bassish_glitchy_hook_odd_x4 (consolidated).wav | 2 |
-| samples/bassish_glitchy_hook_odd_x4 #2 (consolidated).wav | 2 |
-| samples/high_bassish_2_hook #2 (consolidated).wav | 2 |
-| samples/high_bassish_2_hook_odd_x2 (consolidated).wav | 2 |
+| lyrix/grounded_lyrix_xtra_odd_dry (consolidated) #3.wav | 3 |
+| lyrix/slow_hook_worstcase_lyrix_dry (consolidated) #2.wav | 2 |
+| samples/crash_washes_metal_even (consolidated).wav | 2 |
+| lyrix/fast_hook_bababuda_lyrix_odd_wet (consolidated).wav | 1 |
+| lyrix/fast_hook_blessnow_lyrix_odd_wet (consolidated).wav | 1 |
+| lyrix/fast_hook_timeout_lyrix_leadin_odd_dry.wav | 1 |
+| lyrix/gromit_1_lyrix_leadin_dry.wav | 1 |
+| lyrix/gromit_1_lyrix_leadin_wet.wav | 1 |
+| lyrix/hook_nextmove_obligadaboo_lyrix_v3.wav | 1 |
+| lyrix/slow_hook_chillout_lyrix_odd_dry (consolidated) #2.wav | 1 |
+| lyrix/slow_hook_chillout_lyrix_odd_dry (consolidated) #3.wav | 1 |
 
 ## Top dependent-only audio selected but not scheduled
 
 | File | Selected count |
 |---|---:|
-| samples/rev_crash_metal_even_dlay_xtra.wav | 33 |
-| samples/glock_ext_even (consolidated).wav | 13 |
+
 
 ## Top selected MIDI not scheduled
 
 | MIDI file | Selected count |
 |---|---:|
-| midi files/beepipes_2_drums_odd_beepipe.mid | 1 |
-| midi files/jazz_hats_metal_hook_even_~_ride04.mid | 1 |
-| midi files/jazz_hats_metal_hook_even_~_ridehard.mid | 1 |
+| midi files/jazz_ride_wiv-jazz_hats_wiv-jazz_crash_metal_odd_ridehard.mid | 4 |
 
 ## Lyrix sections never seen
 

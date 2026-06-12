@@ -431,6 +431,31 @@ const rulePools = {
         ]
       }
     },
+    byFamily: {
+      gtar: {
+        hardClashRules: [
+          {
+            id: "hard_clash_gtar_with_ahs",
+            targets: [
+              { family: "ah" },
+              { tag: "ahs" }
+            ],
+            sourceNote: "Saved definitions absolute final 2: Gtar cannot activate at the same time as ahs."
+          }
+        ],
+        softMultiplierRules: [
+          {
+            id: "soft_gtar_with_tbone_x0_1",
+            multiplier: 0.1,
+            targets: [
+              { family: "tbone" },
+              { tag: "tbone" }
+            ],
+            sourceNote: "Saved definitions absolute final 2: Gtar is 90% less likely to activate while tbone is active."
+          }
+        ]
+      }
+    },
     byKey: {
       "samples/crash_metal_odd_metal (consolidated).wav": {
         globalInclusionChance: 1,

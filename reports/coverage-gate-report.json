@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-12T02:12:00.705Z",
+  "generatedAt": "2026-06-12T11:37:03.485Z",
   "root": "C:\\Users\\Student\\OneDrive\\test-project-2-site",
   "sim": {
     "buildSimCount": 400,
@@ -15,7 +15,7 @@
     "registryMidi": 52,
     "registrySamplesAudio": 305,
     "registryLyrixAudio": 576,
-    "catalogAllKeys": 952,
+    "catalogAllKeys": 953,
     "lyrixRuleFileRefs": 576,
     "lyrixSections": 57,
     "midiPatterns": 52,
@@ -25,70 +25,36 @@
     "manifestNotRegistry": [],
     "registryNotManifest": [],
     "catalogNotRegistry": [],
-    "registryNotCatalog": [
-      "lyrix/fast_hook_badababa_odd.wav"
-    ],
+    "registryNotCatalog": [],
     "folderTreeNotManifest": [],
     "manifestNotFolderTree": [],
     "lyrixRefsMissingManifest": [],
     "lyrixRefsMissingRegistry": []
   },
   "reachability": {
-    "selectedAudioCount": 468,
+    "selectedAudioCount": 481,
     "scheduledAudioCount": 240,
     "selectedMidiCount": 39,
-    "scheduledMidiCount": 31,
-    "audioNoObservedInclusionPathCount": 432,
-    "selectedAudioNotScheduledTotalCount": 61,
-    "selectedAudioNotScheduledCount": 59,
-    "selectedDependentOnlyAudioNotScheduledCount": 2,
-    "selectedMidiNotScheduledCount": 3,
+    "scheduledMidiCount": 33,
+    "audioNoObservedInclusionPathCount": 420,
+    "selectedAudioNotScheduledTotalCount": 38,
+    "selectedAudioNotScheduledCount": 38,
+    "selectedDependentOnlyAudioNotScheduledCount": 0,
+    "selectedMidiNotScheduledCount": 1,
     "neverSelectedMidiCount": 13,
-    "generalSamplesSelectedCount": 240,
-    "generalSamplesScheduledCount": 157,
-    "generalSamplesNoObservedInclusionCount": 65,
-    "lyrixAudioSelectedCount": 228,
-    "lyrixAudioScheduledCount": 83,
+    "generalSamplesSelectedCount": 246,
+    "generalSamplesScheduledCount": 160,
+    "generalSamplesNoObservedInclusionCount": 59,
+    "lyrixAudioSelectedCount": 235,
+    "lyrixAudioScheduledCount": 80,
     "lyrixSectionsSeenCount": 22,
     "lyrixSectionsNeverSeenCount": 35
   },
   "top": {
     "selectedAudio": [
       {
-        "key": "samples/big_crash_layer_odd_dlay_metal (consolidated).wav",
-        "count": 384
-      },
-      {
-        "key": "samples/crash_dlay_odd (consolidated).wav",
-        "count": 359
-      },
-      {
-        "key": "samples/jazz_crash_metal_dlay_odd_xtra (consolidated).wav",
-        "count": 347
-      },
-      {
-        "key": "samples/rev_crash_metal_even_dlay_xtra.wav",
-        "count": 346
-      },
-      {
         "key": "samples/crash_metal_odd_metal (consolidated).wav",
-        "count": 325
-      },
-      {
-        "key": "samples/pad_wiv-bass (consolidated).wav",
-        "count": 321
-      },
-      {
-        "key": "samples/big_crash_layer_odd_metal (consolidated).wav",
-        "count": 316
-      },
-      {
-        "key": "samples/glock_ext_even_dlay (consolidated).wav",
-        "count": 263
-      },
-      {
-        "key": "samples/rev_crash_metal_even_xtra.wav",
-        "count": 260
+        "count": 400
       },
       {
         "key": "samples/synth_bass_odd_x2 (consolidated).wav",
@@ -99,56 +65,132 @@
         "count": 249
       },
       {
-        "key": "samples/jazz_crash_metal_odd (consolidated).wav",
-        "count": 246
+        "key": "samples/sax_1_odd_x2 (consolidated).wav",
+        "count": 221
       },
       {
-        "key": "samples/glock_odd_dlay (consolidated).wav",
-        "count": 240
-      },
-      {
-        "key": "samples/cello_wiv-bass_even (consolidated).wav",
-        "count": 204
-      },
-      {
-        "key": "samples/hippy_synth_wiv-bass_odd (consolidated).wav",
-        "count": 190
+        "key": "samples/sax_2_odd_x2 (consolidated).wav",
+        "count": 221
       },
       {
         "key": "samples/synth_downsampled_odd_xtra (consolidated).wav",
-        "count": 173
+        "count": 156
       },
       {
         "key": "samples/synth_downsampled_odd_xtra #2 (consolidated).wav",
-        "count": 173
+        "count": 156
       },
       {
         "key": "samples/synth_downsampled_odd_xtra #3 (consolidated).wav",
-        "count": 173
+        "count": 156
       },
       {
         "key": "samples/synth_downsampled_odd_xtra #4 (consolidated).wav",
-        "count": 173
+        "count": 156
       },
       {
-        "key": "samples/chimes_odd (consolidated).wav",
-        "count": 171
+        "key": "samples/gtar_1 #2 (consolidated).wav",
+        "count": 153
       },
       {
-        "key": "samples/glock_ext_even (consolidated).wav",
-        "count": 160
+        "key": "samples/gtar_1 #3 (consolidated).wav",
+        "count": 153
       },
       {
-        "key": "samples/glock_odd (consolidated).wav",
-        "count": 149
+        "key": "samples/gtar_1 #4 (consolidated).wav",
+        "count": 153
       },
       {
-        "key": "samples/oh_rev_metal_2_odd_xtra.wav",
-        "count": 132
+        "key": "samples/gtar_1_odd (consolidated).wav",
+        "count": 153
       },
       {
-        "key": "samples/oh_rev_metal_odd_~_xtra.wav",
-        "count": 131
+        "key": "samples/gtar_10_odd.wav",
+        "count": 153
+      },
+      {
+        "key": "samples/gtar_11_odd (consolidated).wav",
+        "count": 153
+      },
+      {
+        "key": "samples/gtar_2 #2 (consolidated).wav",
+        "count": 153
+      },
+      {
+        "key": "samples/gtar_2 #3 (consolidated).wav",
+        "count": 153
+      },
+      {
+        "key": "samples/gtar_2 #4 (consolidated).wav",
+        "count": 153
+      },
+      {
+        "key": "samples/gtar_2 #5 (consolidated).wav",
+        "count": 153
+      },
+      {
+        "key": "samples/gtar_2_even (consolidated).wav",
+        "count": 153
+      },
+      {
+        "key": "samples/gtar_3 (consolidated) #2.wav",
+        "count": 153
+      },
+      {
+        "key": "samples/gtar_3_even (consolidated).wav",
+        "count": 153
+      },
+      {
+        "key": "samples/gtar_4 (consolidated) #2.wav",
+        "count": 153
+      },
+      {
+        "key": "samples/gtar_4_odd (consolidated).wav",
+        "count": 153
+      },
+      {
+        "key": "samples/gtar_5 (consolidated) #2.wav",
+        "count": 153
+      },
+      {
+        "key": "samples/gtar_5 (consolidated) #3.wav",
+        "count": 153
+      },
+      {
+        "key": "samples/gtar_5 (consolidated) #4.wav",
+        "count": 153
+      },
+      {
+        "key": "samples/gtar_5_odd (consolidated).wav",
+        "count": 153
+      },
+      {
+        "key": "samples/gtar_6 (consolidated) #2.wav",
+        "count": 153
+      },
+      {
+        "key": "samples/gtar_6_odd (consolidated).wav",
+        "count": 153
+      },
+      {
+        "key": "samples/gtar_7 (consolidated) #2.wav",
+        "count": 153
+      },
+      {
+        "key": "samples/gtar_7_odd (consolidated).wav",
+        "count": 153
+      },
+      {
+        "key": "samples/gtar_8 (consolidated) #2.wav",
+        "count": 153
+      },
+      {
+        "key": "samples/gtar_8_odd (consolidated).wav",
+        "count": 153
+      },
+      {
+        "key": "samples/gtar_9_odd (consolidated).wav",
+        "count": 153
       },
       {
         "key": "lyrix/outburst_lyrix_intro wet #2.wav",
@@ -187,97 +229,41 @@
         "count": 129
       },
       {
-        "key": "samples/synth_cont_odd (consolidated).wav",
-        "count": 127
+        "key": "samples/grm_ah_beat_x3.wav",
+        "count": 85
       },
       {
-        "key": "samples/bagoo_ext_even (consolidated).wav",
-        "count": 126
+        "key": "samples/grm_ah_lyrix.wav",
+        "count": 85
       },
       {
-        "key": "samples/crash_washes_metal_dlay_even (consolidated).wav",
-        "count": 118
+        "key": "samples/grm_airhorn_odd_alt.wav",
+        "count": 85
       },
       {
-        "key": "samples/other_vox_wet_even_x2.wav",
-        "count": 118
+        "key": "samples/grm_bass_lead_odd (consolidated).wav",
+        "count": 85
       },
       {
-        "key": "samples/vlins_long_suspense_odd_x2 (consolidated).wav",
-        "count": 116
+        "key": "samples/grm_dk_lyrix_handmedowns_x7.wav",
+        "count": 85
       },
       {
-        "key": "samples/beeps_odd_x2_xtra (consolidated).wav",
-        "count": 113
-      },
-      {
-        "key": "samples/accbreath_5_~_even.wav",
-        "count": 109
-      },
-      {
-        "key": "samples/accbreath_1_~_even.wav",
-        "count": 108
-      },
-      {
-        "key": "samples/beeps_xtra_odd (consolidated).wav",
-        "count": 107
-      },
-      {
-        "key": "samples/synth_high_cont_odd (consolidated).wav",
-        "count": 107
-      },
-      {
-        "key": "samples/beeps_intro_odd (consolidated).wav",
-        "count": 105
-      },
-      {
-        "key": "samples/wierd_vox_dry_odd_x2 (consolidated).wav",
-        "count": 102
-      },
-      {
-        "key": "samples/accbreath_4_odd.wav",
-        "count": 100
-      },
-      {
-        "key": "samples/accbreath_long_x4.wav",
-        "count": 100
-      },
-      {
-        "key": "samples/wierd_vox_wet_odd_x2.wav",
-        "count": 100
-      },
-      {
-        "key": "samples/accbreath_3_~_even.wav",
-        "count": 99
-      },
-      {
-        "key": "samples/big_wash_build_metal_suspense (consolidated).wav",
-        "count": 99
+        "key": "samples/grm_dk_tsandcs_lyrix_x4 (consolidated).wav",
+        "count": 85
       }
     ],
     "scheduledAudio": [
       {
-        "key": "samples/jazz_crash_metal_odd (consolidated).wav",
-        "count": 28
-      },
-      {
-        "key": "samples/jazz_crash_metal_dlay_odd_xtra (consolidated).wav",
-        "count": 26
-      },
-      {
-        "key": "samples/rev_crash_metal_even_xtra.wav",
-        "count": 25
-      },
-      {
         "key": "samples/crash_metal_odd_metal (consolidated).wav",
-        "count": 23
+        "count": 40
+      },
+      {
+        "key": "samples/synth_main_odd (consolidated).wav",
+        "count": 22
       },
       {
         "key": "samples/synth_bass_odd_x2 (consolidated).wav",
-        "count": 16
-      },
-      {
-        "key": "samples/beeps_intro_odd (consolidated).wav",
         "count": 14
       },
       {
@@ -305,10 +291,6 @@
         "count": 13
       },
       {
-        "key": "samples/beeps_xtra_odd (consolidated).wav",
-        "count": 13
-      },
-      {
         "key": "samples/breathe_vox_big_outburst_~.wav",
         "count": 13
       },
@@ -319,30 +301,6 @@
       {
         "key": "samples/happybrass_outburst (consolidated).wav",
         "count": 13
-      },
-      {
-        "key": "samples/synth_high_cont_odd (consolidated).wav",
-        "count": 12
-      },
-      {
-        "key": "samples/big_crash_layer_odd_metal (consolidated).wav",
-        "count": 11
-      },
-      {
-        "key": "samples/big_wash_build_metal_suspense (consolidated).wav",
-        "count": 10
-      },
-      {
-        "key": "samples/pad_wiv-bass (consolidated).wav",
-        "count": 10
-      },
-      {
-        "key": "samples/cello_even_x2 (consolidated).wav",
-        "count": 9
-      },
-      {
-        "key": "samples/chimes_odd (consolidated).wav",
-        "count": 9
       },
       {
         "key": "samples/grm_ah_beat_x3.wav",
@@ -369,27 +327,19 @@
         "count": 9
       },
       {
+        "key": "samples/real_bass_tail_odd (consolidated).wav",
+        "count": 9
+      },
+      {
         "key": "samples/rewind_sfx.wav",
         "count": 9
       },
       {
-        "key": "samples/wierd_vox_wet_odd_x2.wav",
+        "key": "samples/synth_suspense_even (consolidated).wav",
         "count": 9
       },
       {
-        "key": "samples/beeps_odd_x2_xtra (consolidated).wav",
-        "count": 8
-      },
-      {
-        "key": "samples/oh_rev_metal_2_odd_xtra.wav",
-        "count": 8
-      },
-      {
-        "key": "samples/oh_rev_metal_odd_~_xtra.wav",
-        "count": 8
-      },
-      {
-        "key": "samples/small_wash_build_metal_odd_xtra (consolidated).wav",
+        "key": "samples/sax_1_odd_x2 (consolidated).wav",
         "count": 8
       },
       {
@@ -397,55 +347,59 @@
         "count": 8
       },
       {
-        "key": "samples/synth_suspense_even (consolidated).wav",
+        "key": "samples/synth_glitch_2_odd_xtra #2 (consolidated).wav",
         "count": 8
       },
       {
-        "key": "samples/real_bass_cut_tail_odd (consolidated).wav",
+        "key": "samples/rhodes_replace-synth_odd.wav",
         "count": 7
       },
       {
-        "key": "samples/real_bass_tail_odd (consolidated).wav",
+        "key": "samples/synth_frozen_verb_odd_~ #2 (consolidated).wav",
         "count": 7
       },
       {
-        "key": "samples/synth_glitch_1_odd_xtra (consolidated).wav",
-        "count": 7
-      },
-      {
-        "key": "samples/synth_glitch_5_odd_x2_xtra #2 (consolidated).wav",
-        "count": 7
-      },
-      {
-        "key": "samples/ah_medium_outro_2 (consolidated).wav",
+        "key": "lyrix/crashout_lyrix_even_dry (consolidated) #2.wav",
         "count": 6
       },
       {
-        "key": "samples/crash_washes_metal_even (consolidated).wav",
+        "key": "lyrix/crashout_lyrix_even_dry (consolidated) #3.wav",
         "count": 6
       },
       {
-        "key": "samples/other_vox_wet_even_x2.wav",
+        "key": "lyrix/crashout_lyrix_even_dry (consolidated) #4.wav",
         "count": 6
       },
       {
-        "key": "samples/real_bass_xtra_tail_even (consolidated).wav",
+        "key": "samples/ah_medium_outro_3 (consolidated).wav",
         "count": 6
       },
       {
-        "key": "samples/synth_frozen_verb_odd_~ #3 (consolidated).wav",
+        "key": "samples/cello_high_even_x2 (consolidated).wav",
         "count": 6
       },
       {
-        "key": "samples/synth_frozen_verb_odd_~ #4 (consolidated).wav",
+        "key": "samples/gtar_3 (consolidated) #2.wav",
         "count": 6
       },
       {
-        "key": "samples/synth_frozen_verb_odd_~_xtra (consolidated).wav",
+        "key": "samples/gtar_3_even (consolidated).wav",
         "count": 6
       },
       {
-        "key": "samples/synth_glitch_3_odd_x2_xtra (consolidated).wav",
+        "key": "samples/sax_2_odd_x2 (consolidated).wav",
+        "count": 6
+      },
+      {
+        "key": "samples/synth_bass_intro.wav",
+        "count": 6
+      },
+      {
+        "key": "samples/synth_feedback_even_~_xtra (consolidated).wav",
+        "count": 6
+      },
+      {
+        "key": "samples/synth_glitch_3_odd_x2_xtra #2 (consolidated).wav",
         "count": 6
       },
       {
@@ -453,130 +407,174 @@
         "count": 6
       },
       {
-        "key": "samples/synth_glitch_4_odd_x2_xtra #3 (consolidated).wav",
-        "count": 6
+        "key": "samples/dying_outro_even.wav",
+        "count": 5
+      },
+      {
+        "key": "samples/grm_dk_tsandcs_lyrix_x4 (consolidated).wav",
+        "count": 5
+      },
+      {
+        "key": "samples/gtar_2 #2 (consolidated).wav",
+        "count": 5
+      },
+      {
+        "key": "samples/gtar_2 #3 (consolidated).wav",
+        "count": 5
+      },
+      {
+        "key": "samples/gtar_2 #4 (consolidated).wav",
+        "count": 5
+      },
+      {
+        "key": "samples/gtar_2 #5 (consolidated).wav",
+        "count": 5
+      },
+      {
+        "key": "samples/gtar_2_even (consolidated).wav",
+        "count": 5
+      },
+      {
+        "key": "samples/hippy_synth_wiv-bass_odd (consolidated).wav",
+        "count": 5
+      },
+      {
+        "key": "samples/pno_replace-synth_odd (consolidated).wav",
+        "count": 5
+      },
+      {
+        "key": "samples/rhodes_replace-synth_cont_odd (consolidated).wav",
+        "count": 5
+      },
+      {
+        "key": "samples/synth_cont_odd (consolidated).wav",
+        "count": 5
+      },
+      {
+        "key": "samples/synth_frozen_verb_odd_~_xtra (consolidated).wav",
+        "count": 5
       }
     ],
     "selectedMidi": [
       {
         "key": "midi files/main_hats_ch_metal_ch.mid",
-        "count": 233
+        "count": 245
       },
       {
         "key": "midi files/main_hats_oh_metal_oh.mid",
-        "count": 213
+        "count": 226
       },
       {
         "key": "midi files/main_hats_oh_cont_metal_oh.mid",
-        "count": 185
+        "count": 187
       },
       {
         "key": "midi files/speedy_hats_metal_ch.mid",
-        "count": 180
-      },
-      {
-        "key": "midi files/snare_xtra_drums_even_snare.mid",
-        "count": 160
-      },
-      {
-        "key": "midi files/speedy_hats_cont_metal_ch.mid",
-        "count": 151
+        "count": 153
       },
       {
         "key": "midi files/snare_pattern_drums_snare.mid",
-        "count": 143
+        "count": 150
       },
       {
-        "key": "midi files/beepipes_ghosts_drums_beepipe.mid",
-        "count": 136
+        "key": "midi files/snare_xtra_drums_even_snare.mid",
+        "count": 134
       },
       {
         "key": "midi files/crash_small_hook_intro_metal_odd_crash.mid",
-        "count": 132
+        "count": 129
       },
       {
         "key": "midi files/messy_hats_metal_odd_ch.mid",
-        "count": 117
+        "count": 127
       },
       {
-        "key": "midi files/beepipes_dying_drums_beepipe.mid",
-        "count": 104
-      },
-      {
-        "key": "midi files/rims_drums_rim.mid",
-        "count": 103
+        "key": "midi files/speedy_hats_cont_metal_ch.mid",
+        "count": 125
       },
       {
         "key": "midi files/beepipes_1_drums.mid",
-        "count": 98
+        "count": 119
       },
       {
         "key": "midi files/beepipes_xtra_drums_beepipe.mid",
-        "count": 94
+        "count": 107
       },
       {
-        "key": "midi files/crash_hook_metal_odd_crash.mid",
-        "count": 79
+        "key": "midi files/rims_drums_rim.mid",
+        "count": 105
+      },
+      {
+        "key": "midi files/beepipes_ghosts_drums_beepipe.mid",
+        "count": 93
+      },
+      {
+        "key": "midi files/beepipes_dying_drums_beepipe.mid",
+        "count": 91
       },
       {
         "key": "midi files/messy_hats_addin_metal_odd_ch.mid",
-        "count": 75
-      },
-      {
-        "key": "midi files/rims_xtra_2_drums_rim.mid",
-        "count": 55
-      },
-      {
-        "key": "midi files/rims_xtra_3_drums_rim.mid",
-        "count": 52
+        "count": 84
       },
       {
         "key": "midi files/beepipes_1_drums_hook_~.mid",
-        "count": 47
+        "count": 52
+      },
+      {
+        "key": "midi files/crash_hook_metal_odd_crash.mid",
+        "count": 43
       },
       {
         "key": "midi files/jazz_ghost_rides_metal_ride04.mid",
-        "count": 34
+        "count": 40
       },
       {
         "key": "midi files/jazz_hats_metal_ride03.mid",
-        "count": 34
+        "count": 40
       },
       {
         "key": "midi files/jazz_ride_wiv-jazz_hats_wiv-jazz_crash_metal_odd_ridehard.mid",
-        "count": 34
+        "count": 40
       },
       {
         "key": "midi files/jazz_rides_wiv-jazz-hats_metal_ridehard.mid",
-        "count": 34
+        "count": 40
       },
       {
-        "key": "midi files/holdit_hats_metal_ch.mid",
-        "count": 17
-      },
-      {
-        "key": "midi files/holdit_hats_metal_crash.mid",
-        "count": 17
-      },
-      {
-        "key": "midi files/holdit_hats_metal_oh.mid",
-        "count": 17
+        "key": "midi files/rims_xtra_3_drums_rim.mid",
+        "count": 36
       },
       {
         "key": "midi files/lego_hats_metal_x0.5_ch.mid",
-        "count": 17
+        "count": 33
       },
       {
         "key": "midi files/lego_hats_metal_x0.5_oh.mid",
-        "count": 17
+        "count": 33
       },
       {
-        "key": "midi files/trap_hats_metal_wiv_crash_ch.mid",
-        "count": 17
+        "key": "midi files/rims_xtra_2_drums_rim.mid",
+        "count": 32
+      },
+      {
+        "key": "midi files/holdit_hats_metal_crash.mid",
+        "count": 21
+      },
+      {
+        "key": "midi files/holdit_hats_metal_ch.mid",
+        "count": 19
+      },
+      {
+        "key": "midi files/holdit_hats_metal_oh.mid",
+        "count": 19
       },
       {
         "key": "midi files/trap_hats_metal_ch.mid",
-        "count": 14
+        "count": 15
+      },
+      {
+        "key": "midi files/trap_hats_metal_wiv_crash_ch.mid",
+        "count": 13
       },
       {
         "key": "midi files/jazz_hats_metal_hook_even_~_ride04.mid",
@@ -587,32 +585,32 @@
         "count": 8
       },
       {
-        "key": "midi files/rims_xtra_1_drums_rim.mid",
-        "count": 8
-      },
-      {
-        "key": "midi files/beepipes_2_drums_odd_beepipe.mid",
-        "count": 7
-      },
-      {
-        "key": "midi files/hats_wiv-beepipes_2_metal_odd_ch.mid",
-        "count": 7
-      },
-      {
-        "key": "midi files/hats_wiv-beepipes_2_metal_odd_oh.mid",
-        "count": 7
-      },
-      {
-        "key": "midi files/messy_hats_fast_metal_ch.mid",
-        "count": 7
-      },
-      {
         "key": "midi files/messy_hats_fast_ends_in_main_hats_metal_ch.mid",
-        "count": 6
+        "count": 7
       },
       {
         "key": "midi files/messy_hats_fast_ends_in_main_hats_metal_oh.mid",
+        "count": 7
+      },
+      {
+        "key": "midi files/beepipes_2_drums_odd_beepipe.mid",
         "count": 6
+      },
+      {
+        "key": "midi files/hats_wiv-beepipes_2_metal_odd_ch.mid",
+        "count": 6
+      },
+      {
+        "key": "midi files/hats_wiv-beepipes_2_metal_odd_oh.mid",
+        "count": 6
+      },
+      {
+        "key": "midi files/rims_xtra_1_drums_rim.mid",
+        "count": 6
+      },
+      {
+        "key": "midi files/messy_hats_fast_metal_ch.mid",
+        "count": 4
       }
     ],
     "scheduledMidi": [
@@ -622,94 +620,94 @@
       },
       {
         "key": "midi files/main_hats_oh_metal_oh.mid",
-        "count": 23
+        "count": 25
       },
       {
         "key": "midi files/main_hats_oh_cont_metal_oh.mid",
-        "count": 20
+        "count": 17
       },
       {
-        "key": "midi files/speedy_hats_metal_ch.mid",
-        "count": 20
-      },
-      {
-        "key": "midi files/speedy_hats_cont_metal_ch.mid",
+        "key": "midi files/messy_hats_metal_odd_ch.mid",
         "count": 15
+      },
+      {
+        "key": "midi files/snare_xtra_drums_even_snare.mid",
+        "count": 15
+      },
+      {
+        "key": "midi files/messy_hats_addin_metal_odd_ch.mid",
+        "count": 14
       },
       {
         "key": "midi files/crash_small_hook_intro_metal_odd_crash.mid",
         "count": 13
       },
       {
-        "key": "midi files/crash_hook_metal_odd_crash.mid",
+        "key": "midi files/beepipes_dying_drums_beepipe.mid",
         "count": 11
       },
       {
-        "key": "midi files/messy_hats_metal_odd_ch.mid",
+        "key": "midi files/beepipes_xtra_drums_beepipe.mid",
         "count": 10
+      },
+      {
+        "key": "midi files/beepipes_1_drums_hook_~.mid",
+        "count": 9
+      },
+      {
+        "key": "midi files/beepipes_1_drums.mid",
+        "count": 9
+      },
+      {
+        "key": "midi files/beepipes_ghosts_drums_beepipe.mid",
+        "count": 9
       },
       {
         "key": "midi files/snare_pattern_drums_snare.mid",
         "count": 9
       },
       {
-        "key": "midi files/beepipes_1_drums_hook_~.mid",
-        "count": 8
+        "key": "midi files/speedy_hats_cont_metal_ch.mid",
+        "count": 9
       },
       {
-        "key": "midi files/beepipes_dying_drums_beepipe.mid",
-        "count": 8
-      },
-      {
-        "key": "midi files/beepipes_1_drums.mid",
-        "count": 6
+        "key": "midi files/speedy_hats_metal_ch.mid",
+        "count": 9
       },
       {
         "key": "midi files/rims_drums_rim.mid",
+        "count": 8
+      },
+      {
+        "key": "midi files/crash_hook_metal_odd_crash.mid",
         "count": 6
       },
       {
-        "key": "midi files/beepipes_xtra_drums_beepipe.mid",
-        "count": 5
+        "key": "midi files/lego_hats_metal_x0.5_ch.mid",
+        "count": 6
+      },
+      {
+        "key": "midi files/lego_hats_metal_x0.5_oh.mid",
+        "count": 6
       },
       {
         "key": "midi files/jazz_ghost_rides_metal_ride04.mid",
-        "count": 5
+        "count": 3
       },
       {
         "key": "midi files/jazz_hats_metal_ride03.mid",
-        "count": 5
+        "count": 3
       },
       {
         "key": "midi files/jazz_rides_wiv-jazz-hats_metal_ridehard.mid",
-        "count": 4
-      },
-      {
-        "key": "midi files/messy_hats_addin_metal_odd_ch.mid",
-        "count": 4
-      },
-      {
-        "key": "midi files/snare_xtra_drums_even_snare.mid",
-        "count": 4
-      },
-      {
-        "key": "midi files/jazz_ride_wiv-jazz_hats_wiv-jazz_crash_metal_odd_ridehard.mid",
         "count": 3
       },
       {
-        "key": "midi files/rims_xtra_3_drums_rim.mid",
-        "count": 3
-      },
-      {
-        "key": "midi files/beepipes_ghosts_drums_beepipe.mid",
+        "key": "midi files/messy_hats_fast_ends_in_main_hats_metal_ch.mid",
         "count": 2
       },
       {
-        "key": "midi files/messy_hats_fast_metal_ch.mid",
-        "count": 2
-      },
-      {
-        "key": "midi files/rims_xtra_1_drums_rim.mid",
+        "key": "midi files/messy_hats_fast_ends_in_main_hats_metal_oh.mid",
         "count": 2
       },
       {
@@ -717,8 +715,12 @@
         "count": 2
       },
       {
-        "key": "midi files/trap_hats_metal_wiv_crash_ch.mid",
+        "key": "midi files/rims_xtra_3_drums_rim.mid",
         "count": 2
+      },
+      {
+        "key": "midi files/beepipes_2_drums_odd_beepipe.mid",
+        "count": 1
       },
       {
         "key": "midi files/hats_wiv-beepipes_2_metal_odd_ch.mid",
@@ -729,15 +731,19 @@
         "count": 1
       },
       {
-        "key": "midi files/messy_hats_fast_ends_in_main_hats_metal_ch.mid",
+        "key": "midi files/holdit_hats_metal_ch.mid",
         "count": 1
       },
       {
-        "key": "midi files/messy_hats_fast_ends_in_main_hats_metal_oh.mid",
+        "key": "midi files/holdit_hats_metal_crash.mid",
         "count": 1
       },
       {
-        "key": "midi files/trap_hats_metal_ch.mid",
+        "key": "midi files/holdit_hats_metal_oh.mid",
+        "count": 1
+      },
+      {
+        "key": "midi files/trap_hats_metal_wiv_crash_ch.mid",
         "count": 1
       }
     ],
@@ -755,20 +761,16 @@
         "count": 30
       },
       {
-        "key": "gtar",
-        "count": 26
-      },
-      {
         "key": "scooby",
         "count": 25
       },
       {
-        "key": "angry",
-        "count": 20
+        "key": "intrusive",
+        "count": 21
       },
       {
-        "key": "intrusive",
-        "count": 19
+        "key": "angry",
+        "count": 20
       },
       {
         "key": "holdit",
@@ -807,35 +809,43 @@
         "count": 11
       },
       {
-        "key": "drop",
-        "count": 9
-      },
-      {
-        "key": "slow",
-        "count": 9
-      },
-      {
         "key": "swoosh",
         "count": 8
+      },
+      {
+        "key": "drop",
+        "count": 7
       },
       {
         "key": "phones",
         "count": 7
       },
       {
+        "key": "accbreath",
+        "count": 6
+      },
+      {
         "key": "tits",
         "count": 5
+      },
+      {
+        "key": "rhodes",
+        "count": 4
+      },
+      {
+        "key": "beeps",
+        "count": 3
+      },
+      {
+        "key": "oh",
+        "count": 3
       },
       {
         "key": "pno",
         "count": 3
       },
       {
-        "key": "rhodes",
-        "count": 3
-      },
-      {
-        "key": "sax",
+        "key": "typewriter",
         "count": 3
       },
       {
@@ -843,7 +853,7 @@
         "count": 2
       },
       {
-        "key": "grm",
+        "key": "crash",
         "count": 2
       },
       {
@@ -859,8 +869,12 @@
         "count": 2
       },
       {
-        "key": "accordian",
-        "count": 1
+        "key": "shaker",
+        "count": 2
+      },
+      {
+        "key": "slow",
+        "count": 2
       },
       {
         "key": "advert",
@@ -883,11 +897,11 @@
         "count": 1
       },
       {
-        "key": "bomb",
+        "key": "big",
         "count": 1
       },
       {
-        "key": "breathe_vox",
+        "key": "bomb",
         "count": 1
       },
       {
@@ -899,10 +913,6 @@
         "count": 1
       },
       {
-        "key": "crash",
-        "count": 1
-      },
-      {
         "key": "dk",
         "count": 1
       },
@@ -911,7 +921,11 @@
         "count": 1
       },
       {
-        "key": "fast_hook_timeout",
+        "key": "fast",
+        "count": 1
+      },
+      {
+        "key": "fast_hook_blessnow",
         "count": 1
       },
       {
@@ -919,58 +933,62 @@
         "count": 1
       },
       {
+        "key": "grm",
+        "count": 1
+      },
+      {
         "key": "harmonia",
         "count": 1
       },
       {
+        "key": "heartbeats",
+        "count": 1
+      },
+      {
         "key": "heinzsight",
-        "count": 1
-      },
-      {
-        "key": "highwow",
-        "count": 1
-      },
-      {
-        "key": "iron",
-        "count": 1
-      },
-      {
-        "key": "jesuis",
-        "count": 1
-      },
-      {
-        "key": "jump",
         "count": 1
       }
     ],
     "selectedAudioNotScheduled": [
       {
         "key": "samples/synth_downsampled_odd_xtra (consolidated).wav",
-        "selectedCount": 16
+        "selectedCount": 20
       },
       {
         "key": "samples/synth_downsampled_odd_xtra #2 (consolidated).wav",
-        "selectedCount": 16
+        "selectedCount": 20
       },
       {
         "key": "samples/synth_downsampled_odd_xtra #3 (consolidated).wav",
-        "selectedCount": 16
+        "selectedCount": 20
       },
       {
         "key": "samples/synth_downsampled_odd_xtra #4 (consolidated).wav",
-        "selectedCount": 16
+        "selectedCount": 20
       },
       {
-        "key": "samples/accbreath_4_odd.wav",
-        "selectedCount": 10
+        "key": "samples/gtar_5 (consolidated) #2.wav",
+        "selectedCount": 14
       },
       {
-        "key": "samples/vlins_1_even_x2 (consolidated).wav",
-        "selectedCount": 9
+        "key": "samples/gtar_5 (consolidated) #3.wav",
+        "selectedCount": 14
       },
       {
-        "key": "samples/accbreath_3_~_even.wav",
-        "selectedCount": 8
+        "key": "samples/gtar_5 (consolidated) #4.wav",
+        "selectedCount": 14
+      },
+      {
+        "key": "samples/gtar_5_odd (consolidated).wav",
+        "selectedCount": 14
+      },
+      {
+        "key": "samples/gtar_8 (consolidated) #2.wav",
+        "selectedCount": 14
+      },
+      {
+        "key": "samples/gtar_8_odd (consolidated).wav",
+        "selectedCount": 14
       },
       {
         "key": "samples/synth_bass_1_hook #2 (consolidated).wav",
@@ -989,79 +1007,15 @@
         "selectedCount": 8
       },
       {
-        "key": "lyrix/crashout_lyrix_even_dry (consolidated).wav",
-        "selectedCount": 6
-      },
-      {
-        "key": "samples/synth_elephant_odd_~_xtra.wav",
-        "selectedCount": 6
-      },
-      {
-        "key": "samples/high_bassish_hook_odd_x2 (consolidated) #2.wav",
-        "selectedCount": 4
-      },
-      {
-        "key": "samples/high_bassish_hook_odd_x2 (consolidated).wav",
-        "selectedCount": 4
-      },
-      {
-        "key": "samples/hippy_synth_odd (consolidated).wav",
-        "selectedCount": 4
-      },
-      {
-        "key": "samples/trumpet_hook_odd_x4 (consolidated) #2.wav",
-        "selectedCount": 4
-      },
-      {
-        "key": "samples/trumpet_hook_odd_x4 (consolidated).wav",
-        "selectedCount": 4
-      },
-      {
-        "key": "samples/trumpet_even_x4.wav",
+        "key": "lyrix/grounded_lyrix_xtra_odd_dry (consolidated) #3.wav",
         "selectedCount": 3
       },
       {
-        "key": "samples/typewriter_even_xtra.wav",
-        "selectedCount": 3
-      },
-      {
-        "key": "lyrix/fast_hook_blessnow_lyrix_odd_wet (consolidated).wav",
+        "key": "lyrix/slow_hook_worstcase_lyrix_dry (consolidated) #2.wav",
         "selectedCount": 2
       },
       {
-        "key": "samples/bassish_glitchy_hook_odd_x4 (consolidated).wav",
-        "selectedCount": 2
-      },
-      {
-        "key": "samples/bassish_glitchy_hook_odd_x4 #2 (consolidated).wav",
-        "selectedCount": 2
-      },
-      {
-        "key": "samples/high_bassish_2_hook #2 (consolidated).wav",
-        "selectedCount": 2
-      },
-      {
-        "key": "samples/high_bassish_2_hook_odd_x2 (consolidated).wav",
-        "selectedCount": 2
-      },
-      {
-        "key": "samples/oh_rev_metal_hook_odd.wav",
-        "selectedCount": 2
-      },
-      {
-        "key": "samples/random_vox_wet_x4_even_~.wav",
-        "selectedCount": 2
-      },
-      {
-        "key": "samples/synth_high_odd (consolidated).wav",
-        "selectedCount": 2
-      },
-      {
-        "key": "samples/typewriter_intro_odd_xtra.wav",
-        "selectedCount": 2
-      },
-      {
-        "key": "samples/vinyl_xtra (consolidated).wav",
+        "key": "samples/crash_washes_metal_even (consolidated).wav",
         "selectedCount": 2
       },
       {
@@ -1069,7 +1023,11 @@
         "selectedCount": 1
       },
       {
-        "key": "lyrix/fast_hook_timeout_lyrix_odd_wet (consolidated).wav",
+        "key": "lyrix/fast_hook_blessnow_lyrix_odd_wet (consolidated).wav",
+        "selectedCount": 1
+      },
+      {
+        "key": "lyrix/fast_hook_timeout_lyrix_leadin_odd_dry.wav",
         "selectedCount": 1
       },
       {
@@ -1081,63 +1039,19 @@
         "selectedCount": 1
       },
       {
-        "key": "lyrix/hook_nextmove_main_lyrix_odd_wet (consolidated) #10.wav",
+        "key": "lyrix/hook_nextmove_obligadaboo_lyrix_v3.wav",
         "selectedCount": 1
       },
       {
-        "key": "lyrix/hook_nextmove_main_lyrix_odd_wet (consolidated) #2.wav",
+        "key": "lyrix/slow_hook_chillout_lyrix_odd_dry (consolidated) #2.wav",
         "selectedCount": 1
       },
       {
-        "key": "lyrix/hook_nextmove_main_lyrix_odd_wet (consolidated) #3.wav",
+        "key": "lyrix/slow_hook_chillout_lyrix_odd_dry (consolidated) #3.wav",
         "selectedCount": 1
       },
       {
-        "key": "lyrix/hook_nextmove_main_lyrix_odd_wet (consolidated) #4.wav",
-        "selectedCount": 1
-      },
-      {
-        "key": "lyrix/hook_nextmove_main_lyrix_odd_wet (consolidated) #5.wav",
-        "selectedCount": 1
-      },
-      {
-        "key": "lyrix/hook_nextmove_main_lyrix_odd_wet (consolidated) #6.wav",
-        "selectedCount": 1
-      },
-      {
-        "key": "lyrix/hook_nextmove_main_lyrix_odd_wet (consolidated) #7.wav",
-        "selectedCount": 1
-      },
-      {
-        "key": "lyrix/hook_nextmove_main_lyrix_odd_wet (consolidated) #8.wav",
-        "selectedCount": 1
-      },
-      {
-        "key": "lyrix/hook_nextmove_main_lyrix_odd_wet (consolidated) #9.wav",
-        "selectedCount": 1
-      },
-      {
-        "key": "lyrix/hook_nextmove_main_lyrix_odd_wet (consolidated).wav",
-        "selectedCount": 1
-      },
-      {
-        "key": "lyrix/slow_hook_chillout_lyrix_odd_dry (consolidated).wav",
-        "selectedCount": 1
-      },
-      {
-        "key": "lyrix/slow_hook_chillout_lyrix_odd_wet (consolidated) #2.wav",
-        "selectedCount": 1
-      },
-      {
-        "key": "lyrix/slow_hook_chillout_lyrix_odd_wet (consolidated) #3.wav",
-        "selectedCount": 1
-      },
-      {
-        "key": "lyrix/slow_hook_chillout_lyrix_odd_wet (consolidated) #4.wav",
-        "selectedCount": 1
-      },
-      {
-        "key": "lyrix/slow_hook_chillout_lyrix_odd_wet (consolidated).wav",
+        "key": "lyrix/slow_hook_chillout_lyrix_odd_dry (consolidated) #4.wav",
         "selectedCount": 1
       },
       {
@@ -1153,56 +1067,47 @@
         "selectedCount": 1
       },
       {
-        "key": "lyrix/slow_hook_talk_lyrix_odd_dry (consolidated).wav",
+        "key": "lyrix/slow_hook_lessismore_lyrix_odd_dry (consolidated).wav",
         "selectedCount": 1
       },
       {
-        "key": "lyrix/slow_hook_worstcase_lyrix_dry (consolidated).wav",
+        "key": "lyrix/slow_hook_timeout_lyrix_odd_dry (consolidated) #2.wav",
+        "selectedCount": 1
+      },
+      {
+        "key": "lyrix/slow_hook_timeout_lyrix_odd_dry (consolidated) #3.wav",
+        "selectedCount": 1
+      },
+      {
+        "key": "lyrix/slow_hook_timeout_lyrix_odd_dry (consolidated).wav",
+        "selectedCount": 1
+      },
+      {
+        "key": "lyrix/yapa_leaveitout_adlib_lyrix #6.wav",
+        "selectedCount": 1
+      },
+      {
+        "key": "samples/bassish_glitchy_hook_odd_x4 (consolidated).wav",
+        "selectedCount": 1
+      },
+      {
+        "key": "samples/bassish_glitchy_hook_odd_x4 #2 (consolidated).wav",
+        "selectedCount": 1
+      },
+      {
+        "key": "samples/big_crash_layer_odd_dlay_metal (consolidated).wav",
         "selectedCount": 1
       },
       {
         "key": "samples/grm_main_lyrix_x6.wav",
         "selectedCount": 1
-      },
-      {
-        "key": "samples/rev_crash_metal_even_hook.wav",
-        "selectedCount": 1
-      },
-      {
-        "key": "samples/rhodes_low_hook_odd_x4 (consolidated).wav",
-        "selectedCount": 1
-      },
-      {
-        "key": "samples/sax_1_hook_odd_x2 (consolidated).wav",
-        "selectedCount": 1
-      },
-      {
-        "key": "samples/typewriter_odd_xtra.wav",
-        "selectedCount": 1
       }
     ],
-    "selectedDependentOnlyAudioNotScheduled": [
-      {
-        "key": "samples/rev_crash_metal_even_dlay_xtra.wav",
-        "selectedCount": 33
-      },
-      {
-        "key": "samples/glock_ext_even (consolidated).wav",
-        "selectedCount": 13
-      }
-    ],
+    "selectedDependentOnlyAudioNotScheduled": [],
     "selectedMidiNotScheduled": [
       {
-        "key": "midi files/beepipes_2_drums_odd_beepipe.mid",
-        "selectedCount": 1
-      },
-      {
-        "key": "midi files/jazz_hats_metal_hook_even_~_ride04.mid",
-        "selectedCount": 1
-      },
-      {
-        "key": "midi files/jazz_hats_metal_hook_even_~_ridehard.mid",
-        "selectedCount": 1
+        "key": "midi files/jazz_ride_wiv-jazz_hats_wiv-jazz_crash_metal_odd_ridehard.mid",
+        "selectedCount": 4
       }
     ],
     "neverSelectedMidi": [

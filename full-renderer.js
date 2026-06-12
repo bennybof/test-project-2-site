@@ -932,6 +932,7 @@
       familyLocks: new Map(),
       groupedActivationDecisions: new Map(),
       trueBassSystem: null,
+      centralInstrumentFamilySystems: new Map(),
       nextItemId: 1
     };
   }
@@ -3597,6 +3598,86 @@
     );
   }
 
+  function getCentralInstrumentFamily(entryOrKey) {
+    const key = typeof entryOrKey === "string"
+      ? entryOrKey.toLowerCase()
+      : String(entryOrKey?.key || "").toLowerCase();
+
+    const family = typeof entryOrKey === "string"
+      ? ""
+      : normalizeRuleDecisionToken(entryOrKey?.family || "");
+
+    if (family === "gtar" || key.includes("/gtar_")) return "gtar";
+
+    if ((family === "sax" || key.includes("/sax_")) && !key.includes("hook")) {
+      return "sax";
+    }
+
+    return "";
+  }
+
+  function isCentralInstrumentFamilyEntry(entry) {
+    return Boolean(getCentralInstrumentFamily(entry));
+  }
+
+  function isCentralInstrumentFamilyFirstPartCandidate(entry) {
+    return Boolean(
+      entry &&
+      isAudio(entry) &&
+      !isLyrix(entry) &&
+      entry.folder === "samples" &&
+      getCentralInstrumentFamily(entry) &&
+      !String(entry.key || "").toLowerCase().includes("hook") &&
+      isFirstAudioSequencePart(entry)
+    );
+  }
+
+  function getCentralInstrumentFamilyConfig(family) {
+    if (family === "gtar") {
+      return {
+        family,
+        globalInclusionChance: 0.3,
+        activationChance: 0.1,
+        dropoutChance: 0.5,
+        shutoffChance: 0.5,
+        shutoffEveryBars: 12,
+        shutoffLengthBars: 12
+      };
+    }
+
+    if (family === "sax") {
+      return {
+        family,
+        globalInclusionChance: 0.6,
+        activationChance: 0.3,
+        dropoutChance: 0.5,
+        shutoffChance: 0.5,
+        shutoffEveryBars: 12,
+        shutoffLengthBars: 12
+      };
+    }
+
+    return null;
+  }
+
+  function getCentralInstrumentFamilyCandidateEntries(family) {
+    return getAllCatalogEntries().filter(entry =>
+      isCentralInstrumentFamilyFirstPartCandidate(entry) &&
+      getCentralInstrumentFamily(entry) === family
+    );
+  }
+
+  function selectedAudioHasTrueBassFamily(selectedAudio, family) {
+    if (!selectedAudio) return false;
+
+    for (const key of selectedAudio) {
+      const entry = getCatalogEntry(key);
+      if (getTrueBassFamily(entry) === family) return true;
+    }
+
+    return false;
+  }
+
   function isTrueBassCentralCandidateForSection(entry, section) {
     if (!shouldUseTrueBassCentralScheduler(entry, section)) return false;
 
@@ -4088,6 +4169,357 @@ function isSectionForcedAudioStartKey(section, key) {
   return Array.isArray(section?.forcedAudioStartKeys) && section.forcedAudioStartKeys.includes(key);
 }
 
+function getOrCreateCentralInstrumentFamilySystemState(playbackState, family) {
+  if (!playbackState) return null;
+
+  if (!playbackState.centralInstrumentFamilySystems) {
+    playbackState.centralInstrumentFamilySystems = new Map();
+  }
+
+  if (!playbackState.centralInstrumentFamilySystems.has(family)) {
+    playbackState.centralInstrumentFamilySystems.set(family, {
+      family,
+      active: false,
+      lastActivatedKey: "",
+      nextAllowedStartSeconds: -Infinity,
+      blockedUntilTrackBar: 0,
+      lastShutoffBlockIndex: -1
+    });
+  }
+
+  return playbackState.centralInstrumentFamilySystems.get(family);
+}
+
+function recordCentralInstrumentFamilyDebug(section, event) {
+  if (!section) return;
+
+  if (!Array.isArray(section.centralInstrumentFamilyDebug)) {
+    section.centralInstrumentFamilyDebug = [];
+  }
+
+  section.centralInstrumentFamilyDebug.push(event);
+}
+
+function applyCentralInstrumentFamilyShutoff({
+  state,
+  family,
+  section,
+  localBarIndex,
+  random
+} = {}) {
+  const config = getCentralInstrumentFamilyConfig(family);
+  if (!state || !config || !section) return false;
+
+  const trackBar = Math.max(1, Number(section.trackStartBar || 1) + Number(localBarIndex || 0));
+  const blockLength = Math.max(1, Number(config.shutoffEveryBars) || 12);
+  const blockIndex = Math.floor((trackBar - 1) / blockLength);
+  const blockStartTrackBar = blockIndex * blockLength + 1;
+
+  if (state.lastShutoffBlockIndex !== blockIndex) {
+    state.lastShutoffBlockIndex = blockIndex;
+
+    const roll = typeof random === "function" ? random() : 1;
+    const shutoff = roll < config.shutoffChance;
+
+    if (shutoff) {
+      state.blockedUntilTrackBar = blockStartTrackBar + Math.max(1, Number(config.shutoffLengthBars) || 12);
+      state.active = false;
+    }
+
+    recordCentralInstrumentFamilyDebug(section, {
+      event: "central_instrument_family_12_bar_shutoff_roll",
+      family,
+      trackBar,
+      blockStartTrackBar,
+      roll,
+      shutoffChance: config.shutoffChance,
+      shutoff,
+      blockedUntilTrackBar: state.blockedUntilTrackBar
+    });
+  }
+
+  return trackBar < state.blockedUntilTrackBar;
+}
+
+function getCentralInstrumentFamilyCandidatesForOpportunity({
+  plan,
+  buffers,
+  section,
+  localBarIndex,
+  family
+} = {}) {
+  const candidates = [];
+
+  if (!section || section.type !== "normal") return candidates;
+
+  for (const key of plan?.selectedAudio || []) {
+    const entry = getCatalogEntry(key);
+    if (!entry || !isCentralInstrumentFamilyFirstPartCandidate(entry)) continue;
+    if (getCentralInstrumentFamily(entry) !== family) continue;
+    if (!buffers?.get(key)) continue;
+
+    const profile = getRuleProfileForEntry(entry);
+    const allowedBars = getAllowedLocalBarIndexesForKey(key, section, profile);
+
+    if (!allowedBars.includes(localBarIndex)) continue;
+
+    candidates.push({
+      key,
+      entry,
+      profile,
+      family
+    });
+  }
+
+  return candidates;
+}
+
+function scheduleCentralInstrumentFamilyCandidate({
+  offlineContext,
+  destination,
+  buffers,
+  random,
+  plan = null,
+  playbackState = null,
+  lifecycleStates = null,
+  section,
+  candidate,
+  startSeconds,
+  decisionContext = null
+} = {}) {
+  if (!candidate?.entry || !section) return { scheduledCount: 0, endTime: startSeconds };
+
+  const sequence = getNormalNumberedAudioSequenceForEntry(candidate.entry);
+  const sequenceItems = sequence.length && sequence[0]?.key === candidate.entry.key
+    ? sequence
+    : [{ key: candidate.key, entry: candidate.entry, partNumber: 1 }];
+
+  let scheduledCount = 0;
+  let partStartSeconds = startSeconds;
+  let latestEndTime = startSeconds;
+
+  for (const sequenceItem of sequenceItems) {
+    const partEntry = sequenceItem.entry || getCatalogEntry(sequenceItem.key);
+    const partBuffer = buffers?.get(sequenceItem.key);
+
+    if (!partEntry || !partBuffer) continue;
+
+    const scheduled = scheduleAudioBufferWithPlaybackState({
+      offlineContext,
+      destination,
+      buffer: partBuffer,
+      startTime: partStartSeconds,
+      gainValue: sectionGainForAudio(partEntry, section),
+      playbackState,
+      key: sequenceItem.key,
+      entry: partEntry,
+      section,
+      family: getCentralInstrumentFamily(partEntry)
+    });
+
+    if (!scheduled?.scheduled) continue;
+
+    scheduledCount += 1;
+    latestEndTime = Math.max(latestEndTime, scheduled.endTime);
+
+    recordSectionScheduledAudio(section, {
+      key: sequenceItem.key,
+      entry: partEntry,
+      scheduleHandle: scheduled,
+      family: getCentralInstrumentFamily(partEntry)
+    });
+
+    if (lifecycleStates) {
+      activateLifecycleItem(
+        lifecycleStates,
+        getAudioLifecycleId(sequenceItem.key),
+        `${section.id}:${sequenceItem.key}:central_instrument_family_system`
+      );
+    }
+
+    scheduleDependentActivationFollowersForAudio({
+      offlineContext,
+      destination,
+      buffers,
+      random,
+      plan,
+      playbackState,
+      lifecycleStates,
+      section,
+      sourceContext: decisionContext,
+      sourceProfile: getRuleProfileForEntry(partEntry),
+      sourceKey: sequenceItem.key,
+      startSeconds: partStartSeconds
+    });
+
+    partStartSeconds = scheduled.endTime;
+  }
+
+  return {
+    scheduledCount,
+    endTime: latestEndTime
+  };
+}
+
+function scheduleCentralInstrumentFamilySystemsInSection({
+  offlineContext,
+  destination,
+  buffers,
+  plan,
+  random,
+  playbackState,
+  lifecycleStates,
+  section
+} = {}) {
+  if (!section || section.type !== "normal") return 0;
+
+  let scheduledCount = 0;
+
+  for (let localBarIndex = 0; localBarIndex < section.bars; localBarIndex += 1) {
+    const startSeconds = section.startSeconds + localBarIndex * section.barSeconds;
+
+    for (const family of ["sax", "gtar"]) {
+      const config = getCentralInstrumentFamilyConfig(family);
+      const state = getOrCreateCentralInstrumentFamilySystemState(playbackState, family);
+
+      if (!config || !state) continue;
+
+      const candidates = getCentralInstrumentFamilyCandidatesForOpportunity({
+        plan,
+        buffers,
+        section,
+        localBarIndex,
+        family
+      });
+
+      if (!candidates.length) continue;
+
+      if (applyCentralInstrumentFamilyShutoff({
+        state,
+        family,
+        section,
+        localBarIndex,
+        random
+      })) {
+        recordCentralInstrumentFamilyDebug(section, {
+          event: "central_instrument_family_blocked_by_12_bar_shutoff",
+          family,
+          localBarIndex,
+          startSeconds,
+          blockedUntilTrackBar: state.blockedUntilTrackBar
+        });
+        continue;
+      }
+
+      if (startSeconds < state.nextAllowedStartSeconds - 0.001) {
+        continue;
+      }
+
+      if (state.active) {
+        const dropoutRoll = typeof random === "function" ? random() : 1;
+
+        if (dropoutRoll < config.dropoutChance) {
+          state.active = false;
+
+          recordCentralInstrumentFamilyDebug(section, {
+            event: "central_instrument_family_dropout",
+            family,
+            localBarIndex,
+            startSeconds,
+            dropoutRoll,
+            dropoutChance: config.dropoutChance
+          });
+
+          continue;
+        }
+      }
+
+      let baseChance = state.active ? 1 : config.activationChance;
+
+      if (
+        family === "gtar" &&
+        getActivePlaybackItemsAtTime(playbackState, startSeconds, { family: "real_bass" }).length
+      ) {
+        baseChance = clampProbability(baseChance * 2);
+      }
+
+      const candidate = chooseOne(random, candidates);
+      if (!candidate) continue;
+
+      const decisionResult = resolveRuleProfileDecision({
+        random,
+        plan,
+        playbackState,
+        kind: "audio",
+        key: candidate.key,
+        entry: candidate.entry,
+        section,
+        lifecycleStates,
+        localBarIndex,
+        startSeconds,
+        baseChance,
+        profile: candidate.profile,
+        allowLifecycleContinuation: true
+      });
+
+      if (!decisionResult.allowed) {
+        if (state.active) state.active = false;
+
+        recordCentralInstrumentFamilyDebug(section, {
+          event: "central_instrument_family_decision_blocked",
+          family,
+          key: candidate.key,
+          localBarIndex,
+          startSeconds,
+          reasonCodes: decisionResult.decision?.reasonCodes || []
+        });
+
+        continue;
+      }
+
+      const scheduled = scheduleCentralInstrumentFamilyCandidate({
+        offlineContext,
+        destination,
+        buffers,
+        random,
+        plan,
+        playbackState,
+        lifecycleStates,
+        section,
+        candidate,
+        startSeconds,
+        decisionContext: decisionResult.context
+      });
+
+      if (scheduled.scheduledCount <= 0) continue;
+
+      scheduledCount += scheduled.scheduledCount;
+      state.active = true;
+      state.lastActivatedKey = candidate.key;
+
+      const gapBars = family === "gtar"
+        ? Math.floor((typeof random === "function" ? random() : 0) * 3)
+        : 0;
+
+      state.nextAllowedStartSeconds = scheduled.endTime + gapBars * section.barSeconds;
+
+      recordCentralInstrumentFamilyDebug(section, {
+        event: "central_instrument_family_scheduled",
+        family,
+        key: candidate.key,
+        localBarIndex,
+        startSeconds,
+        endTime: scheduled.endTime,
+        scheduledCount: scheduled.scheduledCount,
+        gapBars,
+        nextAllowedStartSeconds: state.nextAllowedStartSeconds
+      });
+    }
+  }
+
+  return scheduledCount;
+}
+
 function getHookSynthBassSequenceKeys(section = null) {
   const keys = Array.isArray(section?.forcedHookSynthBassSequenceKeys)
     ? section.forcedHookSynthBassSequenceKeys
@@ -4529,6 +4961,66 @@ function getNormalMidiHatChoiceGroupId(pattern) {
         }
       }
     }
+  }
+
+  function includeCentralInstrumentFamilySelections({
+    random,
+    selectedAudio = null,
+    globalInclusionState = null,
+    requiredActivationState = null
+  } = {}) {
+    if (!selectedAudio) return 0;
+
+    let addedCount = 0;
+
+    for (const family of ["sax", "gtar"]) {
+      const config = getCentralInstrumentFamilyConfig(family);
+      const candidates = getCentralInstrumentFamilyCandidateEntries(family);
+
+      if (!config || !candidates.length) continue;
+
+      let globalChance = config.globalInclusionChance;
+
+      if (family === "gtar" && selectedAudioHasTrueBassFamily(selectedAudio, "real_bass")) {
+        globalChance = clampProbability(globalChance * 1.5);
+      }
+
+      const roll = typeof random === "function" ? random() : 1;
+      const included = roll < globalChance;
+
+      setGlobalInclusionDecision(globalInclusionState, {
+        kind: "audio_family",
+        key: `central_instrument_family:${family}`,
+        included,
+        globalChance,
+        roll,
+        profileSummary: {
+          family,
+          tags: ["instrument", family, "central_instrument_family"]
+        }
+      });
+
+      if (!included) continue;
+
+      for (const entry of candidates) {
+        const hadKey = selectedAudio.has(entry.key);
+
+        forceIncludeAudioSelection({
+          random,
+          globalInclusionState,
+          requiredActivationState,
+          selectedAudio,
+          key: entry.key,
+          reason: `central_instrument_family_inclusion:${family}`
+        });
+
+        if (!hadKey && selectedAudio.has(entry.key)) {
+          addedCount += 1;
+        }
+      }
+    }
+
+    return addedCount;
   }
 
   function recordSectionPlannedAudio(section, entry) {
@@ -5061,6 +5553,7 @@ function getNormalMidiHatChoiceGroupId(pattern) {
     for (const section of sectionTimeline) {
       const matchingEntries = audioEntries.filter(entry => {
         if (section.type.includes("lyrix") && section.lyrixSectionId) return false;
+        if (section.type === "normal" && isCentralInstrumentFamilyEntry(entry)) return false;
         return audioMatchesSection(entry, section);
       });
 
@@ -5087,6 +5580,14 @@ function getNormalMidiHatChoiceGroupId(pattern) {
       }
     }
 
+    includeCentralInstrumentFamilySelections({
+      random,
+      selectedAudio,
+      globalInclusionState,
+      requiredActivationState
+    });
+
+    // central_instrument_family_selection_inserted_before_hats
     let activeNormalHatChoice = null;
     let forcedNextNormalHatChoice = null;
     let messyEndsInMainMustResolve = false;
@@ -7309,6 +7810,19 @@ function scheduleMidiPattern({
         lifecycleStates,
         section
       });
+
+      scheduleCentralInstrumentFamilySystemsInSection({
+        offlineContext,
+        destination,
+        buffers,
+        plan,
+        random,
+        playbackState,
+        lifecycleStates,
+        section
+      });
+
+      // central_instrument_family_scheduler_inserted_after_true_bass
 
       for (const key of plan.selectedAudio) {
         const entry = getCatalogEntry(key);
