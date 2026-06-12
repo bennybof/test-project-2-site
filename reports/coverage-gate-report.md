@@ -1,6 +1,6 @@
 # Test Project 2 - Coverage Gate Report
 
-Generated: 2026-06-12T00:08:03.233Z
+Generated: 2026-06-12T00:40:32.233Z
 
 Report-only helper. No planner, renderer, catalog, registry, or rules files were edited by this script.
 
@@ -34,17 +34,17 @@ Report-only helper. No planner, renderer, catalog, registry, or rules files were
 | Check | Count |
 |---|---:|
 | Unique audio selected in build plans | 468 |
-| Unique audio scheduled in scheduling sims | 246 |
+| Unique audio scheduled in scheduling sims | 247 |
 | Unique MIDI selected in build plans | 39 |
-| Unique MIDI scheduled in scheduling sims | 28 |
+| Unique MIDI scheduled in scheduling sims | 31 |
 | Audio with no observed inclusion path | 432 |
-| Audio selected but not scheduled in scheduling sims, excluding dependent-only | 54 |
-| Dependent-only audio selected but not scheduled in scheduling sims | 1 |
-| Audio selected but not scheduled total in scheduling sims | 55 |
-| MIDI selected but not scheduled in scheduling sims | 6 |
+| Audio selected but not scheduled in scheduling sims, excluding dependent-only | 52 |
+| Dependent-only audio selected but not scheduled in scheduling sims | 2 |
+| Audio selected but not scheduled total in scheduling sims | 54 |
+| MIDI selected but not scheduled in scheduling sims | 3 |
 | MIDI never selected | 13 |
 | General samples selected | 240 |
-| General samples scheduled | 156 |
+| General samples scheduled | 157 |
 | General samples with no observed inclusion | 65 |
 | Lyrix audio selected | 228 |
 | Lyrix audio scheduled | 90 |
@@ -99,20 +99,19 @@ Section count median: 6
 
 | File | Selected count |
 |---|---:|
-| samples/hippy_synth_wiv-bass_odd (consolidated).wav | 18 |
 | samples/synth_downsampled_odd_xtra (consolidated).wav | 16 |
 | samples/synth_downsampled_odd_xtra #2 (consolidated).wav | 16 |
 | samples/synth_downsampled_odd_xtra #3 (consolidated).wav | 16 |
 | samples/synth_downsampled_odd_xtra #4 (consolidated).wav | 16 |
-| samples/accbreath_1_~_even.wav | 13 |
-| samples/accbreath_long_x4.wav | 9 |
+| samples/accbreath_4_odd.wav | 10 |
 | samples/vlins_1_even_x2 (consolidated).wav | 9 |
+| samples/accbreath_3_~_even.wav | 8 |
 | samples/synth_bass_1_hook #2 (consolidated).wav | 8 |
 | samples/synth_bass_1_hook #3 (consolidated).wav | 8 |
 | samples/synth_bass_1_hook_odd_x4 (consolidated).wav | 8 |
 | samples/synth_bass_2_hook_x4_even (consolidated).wav | 8 |
 | lyrix/crashout_lyrix_even_dry (consolidated).wav | 6 |
-| samples/random_vox_dry_x4_even_~.wav | 6 |
+| samples/synth_elephant_odd_~_xtra.wav | 6 |
 | samples/high_bassish_hook_odd_x2 (consolidated) #2.wav | 4 |
 | samples/high_bassish_hook_odd_x2 (consolidated).wav | 4 |
 | samples/hippy_synth_odd (consolidated).wav | 4 |
@@ -124,20 +123,19 @@ Section count median: 6
 | lyrix/fast_hook_blessnow_lyrix_odd_wet (consolidated).wav | 2 |
 | samples/bassish_glitchy_hook_odd_x4 (consolidated).wav | 2 |
 | samples/bassish_glitchy_hook_odd_x4 #2 (consolidated).wav | 2 |
+| samples/high_bassish_2_hook #2 (consolidated).wav | 2 |
 
 ## Top dependent-only audio selected but not scheduled
 
 | File | Selected count |
 |---|---:|
 | samples/rev_crash_metal_even_dlay_xtra.wav | 33 |
+| samples/glock_ext_even (consolidated).wav | 13 |
 
 ## Top selected MIDI not scheduled
 
 | MIDI file | Selected count |
 |---|---:|
-| midi files/beepipes_ghosts_drums_beepipe.mid | 11 |
-| midi files/snare_xtra_drums_even_snare.mid | 11 |
-| midi files/rims_xtra_2_drums_rim.mid | 5 |
 | midi files/beepipes_2_drums_odd_beepipe.mid | 1 |
 | midi files/jazz_hats_metal_hook_even_~_ride04.mid | 1 |
 | midi files/jazz_hats_metal_hook_even_~_ridehard.mid | 1 |

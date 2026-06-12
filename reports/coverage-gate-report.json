@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-12T00:08:03.233Z",
+  "generatedAt": "2026-06-12T00:40:32.233Z",
   "root": "C:\\Users\\Student\\OneDrive\\test-project-2-site",
   "sim": {
     "buildSimCount": 400,
@@ -35,17 +35,17 @@
   },
   "reachability": {
     "selectedAudioCount": 468,
-    "scheduledAudioCount": 246,
+    "scheduledAudioCount": 247,
     "selectedMidiCount": 39,
-    "scheduledMidiCount": 28,
+    "scheduledMidiCount": 31,
     "audioNoObservedInclusionPathCount": 432,
-    "selectedAudioNotScheduledTotalCount": 55,
-    "selectedAudioNotScheduledCount": 54,
-    "selectedDependentOnlyAudioNotScheduledCount": 1,
-    "selectedMidiNotScheduledCount": 6,
+    "selectedAudioNotScheduledTotalCount": 54,
+    "selectedAudioNotScheduledCount": 52,
+    "selectedDependentOnlyAudioNotScheduledCount": 2,
+    "selectedMidiNotScheduledCount": 3,
     "neverSelectedMidiCount": 13,
     "generalSamplesSelectedCount": 240,
-    "generalSamplesScheduledCount": 156,
+    "generalSamplesScheduledCount": 157,
     "generalSamplesNoObservedInclusionCount": 65,
     "lyrixAudioSelectedCount": 228,
     "lyrixAudioScheduledCount": 90,
@@ -262,11 +262,11 @@
       },
       {
         "key": "samples/jazz_crash_metal_dlay_odd_xtra (consolidated).wav",
-        "count": 26
+        "count": 27
       },
       {
         "key": "samples/rev_crash_metal_even_xtra.wav",
-        "count": 26
+        "count": 23
       },
       {
         "key": "samples/crash_metal_odd_metal (consolidated).wav",
@@ -301,16 +301,24 @@
         "count": 12
       },
       {
-        "key": "samples/big_wash_build_metal_suspense (consolidated).wav",
+        "key": "samples/big_crash_layer_odd_metal (consolidated).wav",
         "count": 10
       },
       {
-        "key": "samples/cello_even_x2 (consolidated).wav",
+        "key": "samples/big_wash_build_metal_suspense (consolidated).wav",
         "count": 10
       },
       {
         "key": "samples/chimes_odd (consolidated).wav",
         "count": 10
+      },
+      {
+        "key": "samples/pad_wiv-bass (consolidated).wav",
+        "count": 10
+      },
+      {
+        "key": "samples/cello_even_x2 (consolidated).wav",
+        "count": 9
       },
       {
         "key": "samples/grm_ah_beat_x3.wav",
@@ -341,7 +349,15 @@
         "count": 9
       },
       {
+        "key": "samples/wierd_vox_wet_odd_x2.wav",
+        "count": 9
+      },
+      {
         "key": "samples/beeps_odd_x2_xtra (consolidated).wav",
+        "count": 8
+      },
+      {
+        "key": "samples/oh_rev_metal_2_odd_xtra.wav",
         "count": 8
       },
       {
@@ -361,19 +377,15 @@
         "count": 8
       },
       {
-        "key": "samples/wierd_vox_wet_odd_x2.wav",
-        "count": 8
-      },
-      {
         "key": "lyrix/outburst_lyrix_intro_dry #2.wav",
         "count": 7
       },
       {
-        "key": "lyrix/outburst_lyrix_intro_odd_wet.wav",
+        "key": "samples/real_bass_cut_tail_odd (consolidated).wav",
         "count": 7
       },
       {
-        "key": "samples/big_crash_layer_odd_metal (consolidated).wav",
+        "key": "samples/real_bass_tail_odd (consolidated).wav",
         "count": 7
       },
       {
@@ -385,6 +397,14 @@
         "count": 7
       },
       {
+        "key": "lyrix/outburst_lyrix_intro_odd_wet.wav",
+        "count": 6
+      },
+      {
+        "key": "lyrix/outburst_lyrix_main_dry.wav",
+        "count": 6
+      },
+      {
         "key": "samples/ah_medium_outro_2 (consolidated).wav",
         "count": 6
       },
@@ -393,23 +413,11 @@
         "count": 6
       },
       {
-        "key": "samples/grm_dunah_rhymeschemes_lyrix_x6_~ (consolidated).wav",
-        "count": 6
-      },
-      {
         "key": "samples/other_vox_wet_even_x2.wav",
         "count": 6
       },
       {
-        "key": "samples/pad_wiv-bass (consolidated).wav",
-        "count": 6
-      },
-      {
-        "key": "samples/real_bass_cut_tail_odd (consolidated).wav",
-        "count": 6
-      },
-      {
-        "key": "samples/real_bass_tail_odd (consolidated).wav",
+        "key": "samples/real_bass_xtra_tail_even (consolidated).wav",
         "count": 6
       },
       {
@@ -433,6 +441,10 @@
         "count": 6
       },
       {
+        "key": "samples/synth_glitch_4_odd_x2_xtra #3 (consolidated).wav",
+        "count": 6
+      },
+      {
         "key": "lyrix/crashout_lyrix_even_dry (consolidated) #2.wav",
         "count": 5
       },
@@ -442,18 +454,6 @@
       },
       {
         "key": "lyrix/crashout_lyrix_even_dry (consolidated) #4.wav",
-        "count": 5
-      },
-      {
-        "key": "lyrix/outburst_lyrix_main_dry.wav",
-        "count": 5
-      },
-      {
-        "key": "samples/accbreath_2_even.wav",
-        "count": 5
-      },
-      {
-        "key": "samples/ah_highest_outro_2 (consolidated).wav",
         "count": 5
       }
     ],
@@ -649,16 +649,16 @@
         "count": 10
       },
       {
+        "key": "midi files/snare_pattern_drums_snare.mid",
+        "count": 9
+      },
+      {
         "key": "midi files/beepipes_1_drums_hook_~.mid",
         "count": 8
       },
       {
         "key": "midi files/beepipes_dying_drums_beepipe.mid",
         "count": 8
-      },
-      {
-        "key": "midi files/snare_pattern_drums_snare.mid",
-        "count": 7
       },
       {
         "key": "midi files/beepipes_1_drums.mid",
@@ -681,7 +681,15 @@
         "count": 5
       },
       {
+        "key": "midi files/jazz_rides_wiv-jazz-hats_metal_ridehard.mid",
+        "count": 4
+      },
+      {
         "key": "midi files/messy_hats_addin_metal_odd_ch.mid",
+        "count": 4
+      },
+      {
+        "key": "midi files/snare_xtra_drums_even_snare.mid",
         "count": 4
       },
       {
@@ -689,12 +697,12 @@
         "count": 3
       },
       {
-        "key": "midi files/jazz_rides_wiv-jazz-hats_metal_ridehard.mid",
+        "key": "midi files/rims_xtra_3_drums_rim.mid",
         "count": 3
       },
       {
-        "key": "midi files/rims_xtra_3_drums_rim.mid",
-        "count": 3
+        "key": "midi files/beepipes_ghosts_drums_beepipe.mid",
+        "count": 2
       },
       {
         "key": "midi files/messy_hats_fast_metal_ch.mid",
@@ -702,6 +710,10 @@
       },
       {
         "key": "midi files/rims_xtra_1_drums_rim.mid",
+        "count": 2
+      },
+      {
+        "key": "midi files/rims_xtra_2_drums_rim.mid",
         "count": 2
       },
       {
@@ -933,10 +945,6 @@
     ],
     "selectedAudioNotScheduled": [
       {
-        "key": "samples/hippy_synth_wiv-bass_odd (consolidated).wav",
-        "selectedCount": 18
-      },
-      {
         "key": "samples/synth_downsampled_odd_xtra (consolidated).wav",
         "selectedCount": 16
       },
@@ -953,16 +961,16 @@
         "selectedCount": 16
       },
       {
-        "key": "samples/accbreath_1_~_even.wav",
-        "selectedCount": 13
-      },
-      {
-        "key": "samples/accbreath_long_x4.wav",
-        "selectedCount": 9
+        "key": "samples/accbreath_4_odd.wav",
+        "selectedCount": 10
       },
       {
         "key": "samples/vlins_1_even_x2 (consolidated).wav",
         "selectedCount": 9
+      },
+      {
+        "key": "samples/accbreath_3_~_even.wav",
+        "selectedCount": 8
       },
       {
         "key": "samples/synth_bass_1_hook #2 (consolidated).wav",
@@ -985,7 +993,7 @@
         "selectedCount": 6
       },
       {
-        "key": "samples/random_vox_dry_x4_even_~.wav",
+        "key": "samples/synth_elephant_odd_~_xtra.wav",
         "selectedCount": 6
       },
       {
@@ -1046,10 +1054,6 @@
       },
       {
         "key": "samples/random_vox_wet_x4_even_~.wav",
-        "selectedCount": 2
-      },
-      {
-        "key": "samples/slackjaw_scratch_xtra_even (consolidated).wav",
         "selectedCount": 2
       },
       {
@@ -1129,11 +1133,11 @@
         "selectedCount": 1
       },
       {
-        "key": "samples/rev_crash_metal_even_hook.wav",
+        "key": "samples/grm_main_lyrix_x6.wav",
         "selectedCount": 1
       },
       {
-        "key": "samples/rhodes_low_2_hook_odd_x4 (consolidated).wav",
+        "key": "samples/rev_crash_metal_even_hook.wav",
         "selectedCount": 1
       },
       {
@@ -1153,21 +1157,13 @@
       {
         "key": "samples/rev_crash_metal_even_dlay_xtra.wav",
         "selectedCount": 33
+      },
+      {
+        "key": "samples/glock_ext_even (consolidated).wav",
+        "selectedCount": 13
       }
     ],
     "selectedMidiNotScheduled": [
-      {
-        "key": "midi files/beepipes_ghosts_drums_beepipe.mid",
-        "selectedCount": 11
-      },
-      {
-        "key": "midi files/snare_xtra_drums_even_snare.mid",
-        "selectedCount": 11
-      },
-      {
-        "key": "midi files/rims_xtra_2_drums_rim.mid",
-        "selectedCount": 5
-      },
       {
         "key": "midi files/beepipes_2_drums_odd_beepipe.mid",
         "selectedCount": 1

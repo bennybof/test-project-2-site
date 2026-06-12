@@ -5722,7 +5722,7 @@ function getNormalMidiHatChoiceGroupId(pattern) {
     return Number(opportunityMatch[1]);
   }
 
-  return pattern?.lengthBeats > 8 ? 4 : 2;
+  return pattern?.lengthBeats > 8 ? 4 : 1;
 }
 function scheduleMidiPattern({
     offlineContext,
