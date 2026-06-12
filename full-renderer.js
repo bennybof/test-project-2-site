@@ -58,6 +58,7 @@
       section.activationPointLengthBars ||
       section.logicalLengthBars ||
       section.lengthBarsWithoutContinuation ||
+      section.lengthLoops ||
       section.defaultLengthBars ||
       section.maxLengthBars ||
       0
@@ -66,6 +67,29 @@
   function getFirstPassLyrixSections() {
     if (!lyrixRules?.sections) return [];
     return lyrixRules.sections.filter(section => firstPassLyrixSectionIds.has(section.id));
+  }
+
+  
+  function getConditionalLyrixContinuationsForParent(parentSectionId) {
+    if (!lyrixRules?.sections || !parentSectionId) return [];
+
+    return lyrixRules.sections.filter(section =>
+      section.kind === "conditionalContinuation" &&
+      section.parentSectionId === parentSectionId
+    );
+  }
+
+  function chooseConditionalLyrixContinuationAfterParent(random, parentSection) {
+    const candidates = getConditionalLyrixContinuationsForParent(parentSection?.id).filter(section =>
+      Array.isArray(section.parts) &&
+      section.parts.length > 0
+    );
+
+    const activated = candidates.filter(section =>
+      chance(random, Number(section.activationChanceAfterParent) || 0)
+    );
+
+    return activated.length ? chooseOne(random, activated) : null;
   }
 
   function chooseFirstPassLyrixSection(random, lyrixSectionUsage = new Map()) {
@@ -5543,7 +5567,7 @@ function getNormalMidiHatChoiceGroupId(pattern) {
               }
             }
           }
-          addSection("lyrix", getLyrixSectionLengthBars(lyrixSection), {
+          const mainLyrixTimelineSection = addSection("lyrix", getLyrixSectionLengthBars(lyrixSection), {
             reset: false,
             tags: ["lyrix", "lyrix_rules_first_pass"],
             lyrixSectionId: lyrixSection.id,
@@ -5562,6 +5586,24 @@ function getNormalMidiHatChoiceGroupId(pattern) {
             });
           }
 
+
+          
+          const conditionalContinuationSection = chooseConditionalLyrixContinuationAfterParent(random, lyrixSection);
+
+          if (conditionalContinuationSection) {
+            mainLyrixTimelineSection.conditionalLyrixContinuation = conditionalContinuationSection;
+
+            for (const key of getLyrixSectionAudioFiles(conditionalContinuationSection)) {
+              forceIncludeAudioSelection({
+                random,
+                globalInclusionState,
+                requiredActivationState,
+                selectedAudio,
+                key,
+                reason: "forced_lyrix_conditional_continuation"
+              });
+            }
+          }
 
           if (lyrixSection.repeatImmediatelyChance && chance(random, Number(lyrixSection.repeatImmediatelyChance) || 0)) {
             const repeatCountsAsSeparateOccasion = lyrixSection.repeatCountsAsSeparateOccasion !== false;
@@ -6830,12 +6872,82 @@ function scheduleMidiPattern({
     return scheduledCount;
   }
 
+  function isConditionalLyrixContinuationBlockedAtTime(playbackState, continuationSection, timeSeconds) {
+    const blockedTokens = Array.isArray(continuationSection?.blockedIfActive)
+      ? continuationSection.blockedIfActive
+      : [];
+
+    if (!blockedTokens.length) return false;
+
+    const activeItems = getActivePlaybackItemsAtTime(playbackState, timeSeconds, { kind: "audio" });
+
+    return blockedTokens.some(token => {
+      const normalizedToken = normalizeRuleDecisionToken(token);
+
+      return normalizedToken && activeItems.some(item =>
+        normalizeRuleDecisionToken(item.key).includes(normalizedToken) ||
+        normalizeRuleDecisionToken(item.family).includes(normalizedToken)
+      );
+    });
+  }
+
+  function scheduleConditionalLyrixContinuationAfterLastLyrix({
+    offlineContext,
+    destination,
+    parentSection,
+    continuationSection,
+    random,
+    playbackState,
+    buffers,
+    parentLastLyrixEndSeconds
+  } = {}) {
+    if (!continuationSection || !parentSection) return false;
+
+    const gapBars = Math.max(0, Number(continuationSection.startsAfterParentBars) || 0);
+    const continuationStart = Number(parentLastLyrixEndSeconds || parentSection.endSeconds || parentSection.startSeconds) +
+      gapBars * parentSection.barSeconds;
+
+    if (isConditionalLyrixContinuationBlockedAtTime(playbackState, continuationSection, continuationStart)) {
+      return false;
+    }
+
+    const continuationBars = Math.max(0, Number(getLyrixSectionLengthBars(continuationSection)) || 0);
+    const continuationDuration = continuationBars * parentSection.barSeconds;
+
+    return scheduleExplicitLyrixSection({
+      offlineContext,
+      destination,
+      section: {
+        ...parentSection,
+        id: `${parentSection.id}_${continuationSection.id}`,
+        type: `${parentSection.type}_conditional_continuation`,
+        tags: [
+          ...(Array.isArray(parentSection.tags) ? parentSection.tags : []),
+          "lyrix_conditional_continuation"
+        ],
+        lyrixSectionId: continuationSection.id,
+        lyrixSection: continuationSection,
+        lyrixActivationNumber: 1,
+        suppressLyrixLeadIn: true,
+        startSeconds: continuationStart,
+        endSeconds: continuationStart + continuationDuration,
+        durationSeconds: continuationDuration,
+        duration: continuationDuration,
+        bars: continuationBars
+      },
+      random,
+      playbackState,
+      buffers
+    });
+  }
+
   function scheduleExplicitLyrixSection({ offlineContext, destination, section, random, playbackState = null, buffers }) {
     const lyrixSection = section.lyrixSection;
     if (!lyrixSection) return false;
 
     if (!lyrixSection?.parts?.length && Array.isArray(lyrixSection.coreFiles) && lyrixSection.coreFiles.length) {
       let coreStart = section.startSeconds;
+      let parentLastLyrixEndSeconds = section.startSeconds;
       const coreFiles = lyrixSection.coreLyrixMode === "shuffle_all_once"
         ? shuffle(random, lyrixSection.coreFiles)
         : lyrixSection.coreFiles.slice();
@@ -6895,8 +7007,22 @@ function scheduleMidiPattern({
         }
 
         if (coreBuffer) {
-          coreStart += coreBuffer.duration;
+          parentLastLyrixEndSeconds = coreStart + coreBuffer.duration;
+          coreStart = parentLastLyrixEndSeconds;
         }
+      }
+
+      if (section.conditionalLyrixContinuation) {
+        scheduleConditionalLyrixContinuationAfterLastLyrix({
+          offlineContext,
+          destination,
+          parentSection: section,
+          continuationSection: section.conditionalLyrixContinuation,
+          random,
+          playbackState,
+          buffers,
+          parentLastLyrixEndSeconds
+        });
       }
 
       return true;
