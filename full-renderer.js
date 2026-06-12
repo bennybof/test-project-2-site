@@ -6284,7 +6284,12 @@ function getNormalMidiHatChoiceGroupId(pattern) {
 
     return {
       selectedAudio: [...selectedAudio],
-      selectedMidi: [...selectedMidi],
+      selectedMidi: [
+        ...new Set([
+          ...selectedMidi,
+          ...sectionTimeline.flatMap(section => section.lyrixSection?.legoHatsTriggerRule?.midiFiles || [])
+        ])
+      ],
       lifecycleStates: [...lifecycleStates.values()],
       globalInclusionDebug: globalInclusionState.debug.map(item => ({ ...item })),
       requiredActivationDebug: {
@@ -6784,6 +6789,42 @@ function scheduleMidiPattern({
     });
   }
 
+  function scheduleTriggeredMidiFilesAtTime({
+    offlineContext,
+    destination,
+    section,
+    random,
+    playbackState,
+    buffers,
+    midiFiles = [],
+    startTime,
+    gainValue = 0.62
+  } = {}) {
+    if (!Array.isArray(midiFiles) || !midiFiles.length) return 0;
+
+    let scheduledCount = 0;
+
+    for (const midiFile of midiFiles) {
+      const pattern = midiPatterns?.patterns?.find(item => item.file === midiFile);
+      if (!pattern) continue;
+
+      scheduledCount += scheduleMidiPattern({
+        offlineContext,
+        destination,
+        pattern,
+        buffers,
+        barStart: startTime,
+        beatSeconds: section.barSeconds / 4,
+        gainValue,
+        playbackState,
+        section,
+        localBarIndex: null
+      });
+    }
+
+    return scheduledCount;
+  }
+
   function scheduleExplicitLyrixSection({ offlineContext, destination, section, random, playbackState = null, buffers }) {
     const lyrixSection = section.lyrixSection;
     if (!lyrixSection) return false;
@@ -6827,6 +6868,24 @@ function scheduleMidiPattern({
             gainValue: 0.72,
             playbackState,
             section
+          });
+        }
+
+        const legoHatsRule = lyrixSection.legoHatsTriggerRule || null;
+        const legoHatsChance = Number(legoHatsRule?.chancePerCoreLyrixActivation ?? 0);
+        const legoHatsMidiFiles = Array.isArray(legoHatsRule?.midiFiles) ? legoHatsRule.midiFiles : [];
+
+        if (legoHatsMidiFiles.length && chance(random, legoHatsChance)) {
+          scheduleTriggeredMidiFilesAtTime({
+            offlineContext,
+            destination,
+            section,
+            random,
+            playbackState,
+            buffers,
+            midiFiles: legoHatsMidiFiles,
+            startTime: coreStart,
+            gainValue: 0.62
           });
         }
 
