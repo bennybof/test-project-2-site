@@ -10159,9 +10159,18 @@ function scheduleMidiPattern({
           ? Number(loopEveryBarsByKey[key])
           : (keyLower.includes("grm_kicks_x0.5") ? 1 : 2);
 
-        const repeatEverySeconds = configuredRepeatEveryBars <= 0
-          ? section.barSeconds
-          : Math.max(0.25, configuredRepeatEveryBars) * section.barSeconds;
+        const isGrimeySustainedBedKey =
+          key.includes("grm_main_bass_odd") ||
+          key.includes("grm_nuva_bass_odd") ||
+          key.includes("grm_bagoo_1_odd") ||
+          key.includes("grm_bagoo_2_even") ||
+          key.includes("grm_synth_1_odd");
+
+        const repeatEverySeconds = isGrimeySustainedBedKey
+          ? Math.max(0.001, buffer.duration)
+          : configuredRepeatEveryBars <= 0
+            ? section.barSeconds
+            : Math.max(0.25, configuredRepeatEveryBars) * section.barSeconds;
 
         let scheduledCount = 0;
 
