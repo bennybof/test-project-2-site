@@ -6589,7 +6589,7 @@ function getNormalMidiHatChoiceGroupId(pattern) {
           "samples/grm_main_lyrix_x6.wav"
         ];
 
-        if (chance(random, 0.5)) grimeyMainKeys.push(grimeyAltstartKey);
+        // Altstart needs bar-specific replacement behaviour. Defer it for now so it does not layer with the chosen main bass.
         if (chance(random, 0.6)) grimeyMainKeys.push("samples/grm_breathe_vox_odd (consolidated).wav");
 
         function chooseWeightedGrimeyRoute(options) {
@@ -6824,13 +6824,8 @@ function getNormalMidiHatChoiceGroupId(pattern) {
           tags: ["grimey", "major_reset", "grimey_entry", "tempo_70"]
         });
         grimeyEntrySection.grimeyAudioKeys = existingGrimeyKeys(grimeyEntryKeys);
-        const grimeyEntryLoopKeys = existingGrimeyKeys([
-          "samples/grm_hats_fuzz_intro_odd.wav"
-        ]);
-        grimeyEntrySection.grimeyLoopAudioKeys = grimeyEntryLoopKeys;
-        grimeyEntrySection.grimeyLoopEveryBarsByKey = Object.fromEntries(
-          grimeyEntryLoopKeys.map(key => [key, 1])
-        );
+        grimeyEntrySection.grimeyLoopAudioKeys = [];
+        grimeyEntrySection.grimeyLoopEveryBarsByKey = {};
         grimeyEntrySection.forcedAudioStartKeys = existingGrimeyKeys([
           "samples/grm_bass_lead_odd (consolidated).wav"
         ]);
@@ -6850,7 +6845,12 @@ function getNormalMidiHatChoiceGroupId(pattern) {
         ]);
         grimeyMainSection.grimeyLoopAudioKeys = grimeyMainLoopKeys;
         grimeyMainSection.grimeyLoopEveryBarsByKey = Object.fromEntries(
-          grimeyMainLoopKeys.map(key => [key, 1])
+          grimeyMainLoopKeys.map(key => [
+            key,
+            key.includes("grm_kicks_x0.5") || key.includes("grm_hats_fuzz.wav")
+              ? 1
+              : 0
+          ])
         );
         grimeyMainSection.grimeyRoute = {
           routeName: grimeyRouteName,
@@ -6870,7 +6870,8 @@ function getNormalMidiHatChoiceGroupId(pattern) {
               return (
                 !lowerKey.includes("lyrix") &&
                 !lowerKey.includes("breathe_vox") &&
-                !lowerKey.includes("airhorn")
+                !lowerKey.includes("airhorn") &&
+                !lowerKey.includes("outro")
               );
             })
           );
@@ -6880,7 +6881,7 @@ function getNormalMidiHatChoiceGroupId(pattern) {
               key,
               routePlan.routeName === "simple" || routePlan.routeName === "ah_grm"
                 ? Math.max(1, routePlan.bars)
-                : 1
+                : 0
             ])
           );
           grimeyRouteSection.forcedAudioStartKeys = existingGrimeyKeys([
@@ -10036,15 +10037,21 @@ function scheduleMidiPattern({
       const shouldLoopInGrimeySection = isGrimeySection && grimeyLoopAudioKeys.includes(key);
 
       if (shouldLoopInGrimeySection) {
-        const repeatEveryBars = Math.max(
-          1,
-          Number(loopEveryBarsByKey[key] || (keyLower.includes("grm_kicks_x0.5") ? 1 : 2))
-        );
+        const configuredRepeatEveryBars = Object.prototype.hasOwnProperty.call(loopEveryBarsByKey, key)
+          ? Number(loopEveryBarsByKey[key])
+          : (keyLower.includes("grm_kicks_x0.5") ? 1 : 2);
+
+        const repeatEverySeconds = configuredRepeatEveryBars <= 0
+          ? Math.max(0.1, Number(buffer?.duration || 0) || section.barSeconds)
+          : Math.max(1, configuredRepeatEveryBars) * section.barSeconds;
 
         let scheduledCount = 0;
 
-        for (let localBar = 0; localBar < Math.max(1, section.bars); localBar += repeatEveryBars) {
-          const startSeconds = section.startSeconds + localBar * section.barSeconds;
+        for (
+          let startSeconds = section.startSeconds;
+          startSeconds < section.endSeconds;
+          startSeconds += repeatEverySeconds
+        ) {
           if (startSeconds >= section.endSeconds) continue;
 
           const scheduled = scheduleAudioBufferWithPlaybackState({
@@ -10068,7 +10075,11 @@ function scheduleMidiPattern({
       }
 
       const startSeconds = isGrimeySection
-        ? section.startSeconds
+        ? (
+            keyLower.includes("outro")
+              ? Math.max(section.startSeconds, section.endSeconds - Math.max(0, Number(buffer?.duration || 0)))
+              : section.startSeconds
+          )
         : section.startSeconds + Math.floor(random() * Math.max(1, section.bars)) * section.barSeconds;
 
       const scheduled = scheduleAudioBufferWithPlaybackState({
