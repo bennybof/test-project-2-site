@@ -5769,6 +5769,8 @@ function getNormalMidiHatChoiceGroupId(pattern) {
     const lyrixSectionUsage = new Map();
     const includedBridgeLyrixSections = selectIncludedBridgeLyrixSections(random);
     const hookStartDecision = chooseHookStartDecision(random);
+    const outburstGloballySelected = chance(random, 0.01);
+    let outburstHasActivated = false;
 
     let cursorSeconds = 0;
     let cursorBars = 0;
@@ -5859,6 +5861,47 @@ function getNormalMidiHatChoiceGroupId(pattern) {
         timeSeconds: cursorSeconds,
         reason: "grimey_exit_new_56_grid"
       });
+    }
+
+    function addOutburstSection(reason = "global_selected_outburst") {
+      const outburstLyrixSection = (lyrixRules?.sections || []).find(section =>
+        section?.id === "outburst_lyrix" ||
+        (section?.kind === "conditionalBeatSectionLyrix" && section?.beatSectionId === "outburst")
+      ) || null;
+
+      const outburstLyrixActivationNumber = outburstLyrixSection
+        ? (lyrixSectionUsage.get(outburstLyrixSection.id) || 0) + 1
+        : 0;
+
+      if (outburstLyrixSection) {
+        lyrixSectionUsage.set(outburstLyrixSection.id, outburstLyrixActivationNumber);
+      }
+
+      addSection("outburst_intro", 4, {
+        reset: true,
+        tags: ["outburst", "outburst_section", "major_reset", reason],
+        lyrixSectionId: outburstLyrixSection?.id || null,
+        lyrixSection: outburstLyrixSection,
+        lyrixActivationNumber: outburstLyrixActivationNumber
+      });
+
+      addSection("outburst_main", 8, {
+        reset: false,
+        tags: ["outburst", "outburst_section", reason]
+      });
+
+      for (const key of catalog.rulePools.outburst?.files || []) {
+        forceIncludeAudioSelection({
+          random,
+          globalInclusionState,
+          requiredActivationState,
+          selectedAudio,
+          key,
+          reason: "forced_outburst_section"
+        });
+      }
+
+      outburstHasActivated = true;
     }
 
     if (hookStartDecision.startsInHook) {
@@ -5958,6 +6001,15 @@ function getNormalMidiHatChoiceGroupId(pattern) {
     // Main body: build a section timeline instead of dumping everything randomly.
     while (cursorSeconds < duration - mainBarSeconds * 8) {
       const roll = random();
+
+      if (
+        outburstGloballySelected &&
+        !outburstHasActivated &&
+        cursorSeconds >= 60
+      ) {
+        addOutburstSection("global_selected_outburst");
+        continue;
+      }
 
       if (roll < 0.08) {
         addSection("hook", 8, {
@@ -6141,41 +6193,10 @@ function getNormalMidiHatChoiceGroupId(pattern) {
       }
 
       if (roll < 0.28) {
-        const outburstLyrixSection = (lyrixRules?.sections || []).find(section =>
-          section?.id === "outburst_lyrix" ||
-          (section?.kind === "conditionalBeatSectionLyrix" && section?.beatSectionId === "outburst")
-        ) || null;
-
-        const outburstLyrixActivationNumber = outburstLyrixSection
-          ? (lyrixSectionUsage.get(outburstLyrixSection.id) || 0) + 1
-          : 0;
-
-        if (outburstLyrixSection) {
-          lyrixSectionUsage.set(outburstLyrixSection.id, outburstLyrixActivationNumber);
-        }
-
-        addSection("outburst_intro", 4, {
-          reset: true,
-          tags: ["outburst", "major_reset"],
-          lyrixSectionId: outburstLyrixSection?.id || null,
-          lyrixSection: outburstLyrixSection,
-          lyrixActivationNumber: outburstLyrixActivationNumber
-        });
-
-        addSection("outburst_main", 8, {
+        addSection("normal", 8, {
           reset: false,
-          tags: ["outburst"]
+          tags: ["normal", "outburst_not_globally_selected"]
         });
-        for (const key of catalog.rulePools.outburst.files) {
-          forceIncludeAudioSelection({
-            random,
-            globalInclusionState,
-            requiredActivationState,
-            selectedAudio,
-            key,
-            reason: "forced_outburst_section"
-          });
-        }
         continue;
       }
 
@@ -9077,11 +9098,25 @@ function scheduleMidiPattern({
     }
 
     if (keyLower.includes("outburst")) {
+      if (section.type !== "outburst_intro") return 0;
+
+      let startTime = null;
+
+      if (keyLower.includes("happybrass_lead_outburst")) {
+        startTime = section.startSeconds + section.barSeconds;
+      } else if (keyLower.includes("happybrass_outburst")) {
+        startTime = section.startSeconds + 2 * section.barSeconds;
+      } else if (keyLower.includes("breathe_vox_big_outburst")) {
+        startTime = section.startSeconds + 5 * section.barSeconds;
+      } else {
+        return 0;
+      }
+
       const scheduled = scheduleAudioBufferWithPlaybackState({
         offlineContext,
         destination,
         buffer,
-        startTime: section.startSeconds,
+        startTime,
         gainValue: gain,
         playbackState,
         key,
@@ -9089,7 +9124,7 @@ function scheduleMidiPattern({
         section
       });
 
-      return scheduled ? 1 + scheduleDependents(section.startSeconds) : 0;
+      return scheduled ? 1 + scheduleDependents(startTime) : 0;
     }
 
     if (keyLower.includes("grm_") || keyLower.includes("rewind_sfx")) {
