@@ -6393,6 +6393,13 @@ function getNormalMidiHatChoiceGroupId(pattern) {
       requiredActivationState
     });
 
+    expandSelectedAhsEntryExitSequences({
+      random,
+      selectedAudio,
+      globalInclusionState,
+      requiredActivationState
+    });
+
     expandDependentActivationTargets({
       random,
       selectedAudio,
@@ -6674,6 +6681,352 @@ function scheduleMidiPattern({
     return profileHasSelectionChanceField(getRuleObjectFromMap(byKey, key));
   }
 
+  const AHS_ENTRY_EXIT_TRIGGER_KEY = "samples/ah_medium_main (consolidated).wav";
+
+  const AHS_LAYER_TRANSITION_RULES = [
+    {
+      id: "ah_highest",
+      intro: [
+        { key: "samples/ah_highest_intro_1 (consolidated).wav", bars: 2 },
+        { key: "samples/ah_highest_intro_2 (consolidated).wav", bars: 2 },
+        { key: "samples/ah_highest_intro_3 (consolidated).wav", bars: 2 }
+      ],
+      main: [
+        "samples/ah_highest_main (consolidated).wav",
+        "samples/ah_highest_main #2 (consolidated).wav"
+      ],
+      outro: [
+        { key: "samples/ah_highest_outro_1 (consolidated).wav", bars: 2 },
+        { key: "samples/ah_highest_outro_2 (consolidated).wav", bars: 1 },
+        { key: "samples/ah_highest_outro_3 (consolidated).wav", bars: 1 },
+        { key: "samples/ah_highest_outro_4 (consolidated).wav", bars: 1 }
+      ]
+    },
+    {
+      id: "ah_medium",
+      intro: [
+        { key: "samples/ah_medium_intro_1 (consolidated).wav", bars: 2 },
+        { key: "samples/ah_medium_intro_2 (consolidated).wav", bars: 2 },
+        { key: "samples/ah_medium_intro_3 (consolidated).wav", bars: 2 },
+        { key: "samples/ah_medium_intro_4 (consolidated).wav", bars: 1 }
+      ],
+      main: [
+        "samples/ah_medium_main (consolidated).wav",
+        "samples/ah_medium_main #2 (consolidated).wav"
+      ],
+      outro: [
+        { key: "samples/ah_medium_outro_1 (consolidated).wav", bars: 1 },
+        { key: "samples/ah_medium_outro_2 (consolidated).wav", bars: 2 },
+        { key: "samples/ah_medium_outro_3 (consolidated).wav", bars: 2 },
+        { key: "samples/ah_medium_outro_4 (consolidated).wav", bars: 2 }
+      ]
+    },
+    {
+      id: "ah_low",
+      intro: [
+        { key: "samples/ah_low_intro_1 (consolidated).wav", bars: 2 },
+        { key: "samples/ah_low_intro_2 (consolidated).wav", bars: 2 }
+      ],
+      main: [
+        "samples/ah_low_main (consolidated).wav",
+        "samples/ah_low_main #2 (consolidated).wav"
+      ],
+      outro: [
+        { key: "samples/ah_low_outro_1 (consolidated).wav", bars: 3 },
+        { key: "samples/ah_low_outro_2 (consolidated).wav", bars: 2 }
+      ]
+    },
+    {
+      id: "ah_lowest",
+      intro: [
+        { key: "samples/ah_lowest_intro_1 (consolidated).wav", bars: 1 },
+        { key: "samples/ah_lowest_intro_2 (consolidated).wav", bars: 2 }
+      ],
+      main: [
+        "samples/ah_lowest_main (consolidated).wav",
+        "samples/ah_lowest_main #2 (consolidated).wav"
+      ],
+      outro: [
+        { key: "samples/ah_lowest_outro_1 (consolidated).wav", bars: 2 },
+        { key: "samples/ah_lowest_outro_2 (consolidated).wav", bars: 1 }
+      ]
+    }
+  ];
+
+  function normalizeAhsKey(key) {
+    return String(key || "").toLowerCase();
+  }
+
+  function isAhsKey(key) {
+    return /^samples\/ah_(highest|medium|low|lowest)_/.test(normalizeAhsKey(key));
+  }
+
+  function isAhsPrimaryMainKey(key) {
+    return /^samples\/ah_(highest|medium|low|lowest)_main \(consolidated\)\.wav$/.test(normalizeAhsKey(key));
+  }
+
+  function isAhsEntryExitTriggerKey(key) {
+    return normalizeAhsKey(key) === AHS_ENTRY_EXIT_TRIGGER_KEY;
+  }
+
+  function getAllAhsEntryExitSequenceKeys() {
+    return AHS_LAYER_TRANSITION_RULES.flatMap(layer => [
+      ...layer.intro.map(item => item.key),
+      ...layer.main,
+      ...layer.outro.map(item => item.key)
+    ]);
+  }
+
+  function expandSelectedAhsEntryExitSequences({
+    random,
+    selectedAudio = null,
+    globalInclusionState = null,
+    requiredActivationState = null
+  } = {}) {
+    if (!selectedAudio) return 0;
+
+    const hasEverythingIntroSelected = [...selectedAudio].some(key =>
+      String(key || "").toLowerCase().includes("everything_intro")
+    );
+
+    if (hasEverythingIntroSelected) return 0;
+
+    const hasAhsTrigger = [...selectedAudio].some(key => isAhsPrimaryMainKey(key));
+    if (!hasAhsTrigger) return 0;
+
+    let addedCount = 0;
+
+    for (const key of getAllAhsEntryExitSequenceKeys()) {
+      const hadKey = selectedAudio.has(key);
+
+      forceIncludeAudioSelection({
+        random,
+        globalInclusionState,
+        requiredActivationState,
+        selectedAudio,
+        key,
+        reason: "forced_ahs_entry_exit_sequence"
+      });
+
+      if (!hadKey && selectedAudio.has(key)) {
+        addedCount += 1;
+      }
+    }
+
+    return addedCount;
+  }
+
+  function shouldUseAhsEntryExitScheduler(section, key) {
+    return section?.type === "normal" && isAhsEntryExitTriggerKey(key);
+  }
+
+  function shouldSuppressGenericNormalAhsScheduling(section, key) {
+    return section?.type === "normal" && isAhsKey(key);
+  }
+
+  function scheduleAhsKeyAtTime({
+    offlineContext,
+    destination,
+    buffers,
+    playbackState,
+    section,
+    lifecycleStates,
+    key,
+    startSeconds
+  } = {}) {
+    const entry = getCatalogEntry(key);
+    const buffer = buffers?.get(key);
+
+    if (!entry || !buffer) return { count: 0, durationSeconds: 0 };
+
+    const scheduled = scheduleAudioBufferWithPlaybackState({
+      offlineContext,
+      destination,
+      buffer,
+      startTime: startSeconds,
+      gainValue: sectionGainForAudio(entry, section),
+      playbackState,
+      key,
+      entry,
+      section
+    });
+
+    if (!scheduled) return { count: 0, durationSeconds: buffer.duration || 0 };
+
+    if (lifecycleStates) {
+      activateLifecycleItem(
+        lifecycleStates,
+        getAudioLifecycleId(key),
+        `${section.id}:${key}:ahs_entry_exit_sequence`
+      );
+    }
+
+    return { count: 1, durationSeconds: buffer.duration || 0 };
+  }
+
+  function scheduleAhsLayerTransition({
+    offlineContext,
+    destination,
+    buffers,
+    playbackState,
+    section,
+    lifecycleStates,
+    layer,
+    mode,
+    startSeconds
+  } = {}) {
+    let cursorSeconds = startSeconds;
+    let scheduledCount = 0;
+
+    if (mode === "intro") {
+      for (const item of layer.intro) {
+        const result = scheduleAhsKeyAtTime({
+          offlineContext,
+          destination,
+          buffers,
+          playbackState,
+          section,
+          lifecycleStates,
+          key: item.key,
+          startSeconds: cursorSeconds
+        });
+
+        scheduledCount += result.count;
+        cursorSeconds += item.bars * section.barSeconds;
+      }
+
+      for (const key of layer.main) {
+        const result = scheduleAhsKeyAtTime({
+          offlineContext,
+          destination,
+          buffers,
+          playbackState,
+          section,
+          lifecycleStates,
+          key,
+          startSeconds: cursorSeconds
+        });
+
+        scheduledCount += result.count;
+        cursorSeconds += result.durationSeconds;
+      }
+
+      return scheduledCount;
+    }
+
+    for (const key of layer.main) {
+      const result = scheduleAhsKeyAtTime({
+        offlineContext,
+        destination,
+        buffers,
+        playbackState,
+        section,
+        lifecycleStates,
+        key,
+        startSeconds: cursorSeconds
+      });
+
+      scheduledCount += result.count;
+      cursorSeconds += result.durationSeconds;
+    }
+
+    for (const item of layer.outro) {
+      const result = scheduleAhsKeyAtTime({
+        offlineContext,
+        destination,
+        buffers,
+        playbackState,
+        section,
+        lifecycleStates,
+        key: item.key,
+        startSeconds: cursorSeconds
+      });
+
+      scheduledCount += result.count;
+      cursorSeconds += item.bars * section.barSeconds;
+    }
+
+    return scheduledCount;
+  }
+
+  function scheduleAhsEntryExitSequence({
+    offlineContext,
+    destination,
+    buffers,
+    key,
+    entry,
+    random,
+    plan = null,
+    playbackState = null,
+    lifecycleStates = null,
+    section
+  } = {}) {
+    const triggerLifecycleId = getAudioLifecycleId(AHS_ENTRY_EXIT_TRIGGER_KEY);
+
+    if (lifecycleStates && getLifecycleState(lifecycleStates, triggerLifecycleId).activated) {
+      return 0;
+    }
+
+    const profile = getRuleProfileForEntry(entry);
+    const startSeconds = section.startSeconds;
+    const decisionResult = resolveRuleProfileDecision({
+      random,
+      plan,
+      playbackState,
+      kind: "audio",
+      key,
+      entry,
+      section,
+      lifecycleStates,
+      localBarIndex: 0,
+      startSeconds,
+      baseChance: getActivationChance(profile, 0.45),
+      profile
+    });
+
+    if (!decisionResult.allowed) return 0;
+
+    applyCutoffRulesForAllowedDecision(playbackState, decisionResult.context, profile);
+
+    const mode = chance(random, 0.5) ? "intro" : "outro";
+    const activeBuffers = buffers || currentRenderBuffers;
+    let scheduledCount = 0;
+
+    for (const layer of AHS_LAYER_TRANSITION_RULES) {
+      scheduledCount += scheduleAhsLayerTransition({
+        offlineContext,
+        destination,
+        buffers: activeBuffers,
+        playbackState,
+        section,
+        lifecycleStates,
+        layer,
+        mode,
+        startSeconds
+      });
+    }
+
+    if (scheduledCount > 0 && lifecycleStates) {
+      activateLifecycleItem(
+        lifecycleStates,
+        triggerLifecycleId,
+        `${section.id}:${AHS_ENTRY_EXIT_TRIGGER_KEY}:ahs_${mode}_sequence`
+      );
+    }
+
+    if (section) {
+      if (!Array.isArray(section.ahsEntryExitDebug)) section.ahsEntryExitDebug = [];
+      section.ahsEntryExitDebug.push({
+        mode,
+        triggerKey: AHS_ENTRY_EXIT_TRIGGER_KEY,
+        startSeconds,
+        scheduledCount
+      });
+    }
+
+    return scheduledCount;
+  }
+
   function audioMatchesSection(entry, section) {
     const key = entry.key.toLowerCase();
     const type = section.type;
@@ -6691,6 +7044,12 @@ function scheduleMidiPattern({
 
     // Alternate downloads must not be scheduled as ordinary section audio.
     if (entry.folder === "alternate downloads") return false;
+
+    if (isAhsKey(entry.key)) {
+      if (type === "normal") return isAhsEntryExitTriggerKey(entry.key);
+      if (type === "everything_intro") return isAhsPrimaryMainKey(entry.key);
+      return false;
+    }
 
     // Grimey section material must not leak into normal/drop/outburst/ending sections.
     if ((key.includes("grm_") || key.includes("rewind_sfx")) && !type.includes("grimey")) {
@@ -8072,6 +8431,25 @@ function scheduleMidiPattern({
     const gain = sectionGainForAudio(entry, section);
     const audioProfile = getRuleProfileForEntry(entry);
 
+    if (shouldUseAhsEntryExitScheduler(section, key)) {
+      return scheduleAhsEntryExitSequence({
+        offlineContext,
+        destination,
+        buffers: buffers || currentRenderBuffers,
+        key,
+        entry,
+        random,
+        plan,
+        playbackState,
+        lifecycleStates,
+        section
+      });
+    }
+
+    if (shouldSuppressGenericNormalAhsScheduling(section, key)) {
+      return 0;
+    }
+
     if (isHookSynthBassSequenceKey(section, key)) {
       if (!isHookSynthBassSequenceTriggerKey(section, key)) {
         return 0;
@@ -9284,3 +9662,5 @@ currentRenderBuffers = buffers;
 
   init();
 })();
+
+
