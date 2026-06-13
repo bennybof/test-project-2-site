@@ -6088,6 +6088,8 @@ function getNormalMidiHatChoiceGroupId(pattern) {
     const hookStartDecision = chooseHookStartDecision(random);
     const outburstGloballySelected = chance(random, 0.01);
     let outburstHasActivated = false;
+    const grimeyGloballySelected = getUrlBooleanFlag("forceGrimey", "forceGrm") || chance(random, 0.1);
+    let grimeyHasActivated = false;
     let tagLyrixPreFirstAttempted = false;
 
     let cursorSeconds = 0;
@@ -6558,31 +6560,321 @@ function getNormalMidiHatChoiceGroupId(pattern) {
         continue;
       }
 
-      if (roll < 0.34) {
-        addSection("grimey_entry", 2, {
-          reset: true,
-          tags: ["grimey", "major_reset"]
-        });
+      if (grimeyGloballySelected && !grimeyHasActivated) {
+        grimeyHasActivated = true;
+
+        const grimeyBassKey = chance(random, 0.5)
+          ? "samples/grm_nuva_bass_odd.wav"
+          : "samples/grm_main_bass_odd.wav";
+
+        const grimeyAltstartKey = grimeyBassKey.includes("nuva")
+          ? "samples/grm_nuva_bass_odd_altstart.wav"
+          : "samples/grm_main_bass_odd_altstart.wav";
+
+        const grimeyEntryKeys = [
+          "samples/grm_bass_lead_odd (consolidated).wav",
+          "samples/grm_intro_airhorn_odd.wav",
+          "samples/grm_hats_fuzz_intro_odd.wav",
+          "samples/grm_breathe_vox_intro_odd.wav"
+        ];
+
+        const grimeyMainKeys = [
+          grimeyBassKey,
+          "samples/grm_kicks_x0.5 (consolidated).wav",
+          "samples/grm_hats_fuzz.wav",
+          "samples/grm_bagoo_1_odd.wav",
+          "samples/grm_bagoo_2_even.wav",
+          "samples/grm_synth_1_odd.wav",
+          "samples/grm_chimes.wav",
+          "samples/grm_main_lyrix_x6.wav"
+        ];
+
+        if (chance(random, 0.5)) grimeyMainKeys.push(grimeyAltstartKey);
+        if (chance(random, 0.6)) grimeyMainKeys.push("samples/grm_breathe_vox_odd (consolidated).wav");
+
+        function chooseWeightedGrimeyRoute(options) {
+          const totalWeight = options.reduce((sum, option) => sum + option.weight, 0);
+          let roll = random() * totalWeight;
+
+          for (const option of options) {
+            roll -= option.weight;
+            if (roll <= 0) return option.route;
+          }
+
+          return options[options.length - 1]?.route || "exit";
+        }
+
+        function chooseMainGrimeyNextRoute() {
+          return chooseWeightedGrimeyRoute([
+            { route: "exit", weight: 20 },
+            { route: "iron", weight: 20 },
+            { route: "dk", weight: 40 },
+            { route: "bazz", weight: 20 }
+          ]);
+        }
+
+        function chooseNextGrimeyRoute(routeName) {
+          if (routeName === "dk") {
+            return chooseWeightedGrimeyRoute([
+              { route: "dunah", weight: 20 },
+              { route: "iron", weight: 30 },
+              { route: "bazz", weight: 20 },
+              { route: "simple", weight: 20 },
+              { route: "exit", weight: 10 }
+            ]);
+          }
+
+          if (routeName === "bazz") {
+            return chooseWeightedGrimeyRoute([
+              { route: "ah_grm", weight: 40 },
+              { route: "dunah", weight: 30 },
+              { route: "simple", weight: 30 }
+            ]);
+          }
+
+          if (routeName === "ah_grm") {
+            return chooseWeightedGrimeyRoute([
+              { route: "simple", weight: 35 },
+              { route: "exit", weight: 35 },
+              { route: "exit", weight: 30 }
+            ]);
+          }
+
+          if (routeName === "simple") {
+            return chooseWeightedGrimeyRoute([
+              { route: "dunah", weight: 35 },
+              { route: "iron", weight: 35 }
+            ]);
+          }
+
+          if (routeName === "dunah") {
+            return chooseWeightedGrimeyRoute([
+              { route: "iron", weight: 40 },
+              { route: "dk", weight: 30 },
+              { route: "simple", weight: 30 }
+            ]);
+          }
+
+          if (routeName === "iron") {
+            return chooseWeightedGrimeyRoute([
+              { route: "exit", weight: 20 },
+              { route: "dk", weight: 30 },
+              { route: "dunah", weight: 50 }
+            ]);
+          }
+
+          return "exit";
+        }
+
+        function chooseExitCapableNextGrimeyRoute(routeName) {
+          if (routeName === "dk" || routeName === "iron" || routeName === "ah_grm") return "exit";
+          if (routeName === "bazz") return "ah_grm";
+          if (routeName === "simple") return "iron";
+
+          if (routeName === "dunah") {
+            return chooseWeightedGrimeyRoute([
+              { route: "iron", weight: 40 },
+              { route: "dk", weight: 30 }
+            ]);
+          }
+
+          return "exit";
+        }
+
+        function buildGrimeyRouteSectionPlan(routeName, previousRouteName = "main", previousHadHats = false) {
+          const withLyrix = chance(random, 0.9);
+          const carryHats = previousHadHats && (routeName === "bazz" || routeName === "dunah");
+          const hasHats = carryHats || chance(random, 0.5);
+
+          if (routeName === "dk") {
+            const useFeelitRepeat = previousRouteName === "main" && chance(random, 0.3);
+            const keys = [
+              useFeelitRepeat
+                ? "samples/grm_dk_beat_feelit.wav"
+                : hasHats
+                  ? "samples/grm_dk_beat_has_hats.wav"
+                  : "samples/grm_dk_beat (consolidated).wav"
+            ];
+
+            if (!useFeelitRepeat && withLyrix) {
+              keys.push(
+                chance(random, 0.5)
+                  ? "samples/grm_dk_tsandcs_lyrix_x4 (consolidated).wav"
+                  : "samples/grm_dk_lyrix_handmedowns_x7.wav"
+              );
+            }
+
+            if (chance(random, 0.8)) keys.push("samples/grm_dk_beat_breathe_vox.wav");
+            return { routeName, bars: useFeelitRepeat ? 4 : 8, keys, hasHats };
+          }
+
+          if (routeName === "bazz") {
+            return {
+              routeName,
+              bars: 8,
+              keys: [
+                hasHats
+                  ? "samples/grm_bazz_beat_has_hats (consolidated).wav"
+                  : "samples/grm_bazz_beat (consolidated).wav"
+              ],
+              hasHats
+            };
+          }
+
+          if (routeName === "ah_grm") {
+            const keys = ["samples/grm_ah_beat_x3.wav"];
+            if (withLyrix) keys.push("samples/grm_ah_lyrix.wav");
+            return { routeName, bars: 3, keys, hasHats: false };
+          }
+
+          if (routeName === "simple") {
+            const keys = ["samples/grm_simple_beat_x10 (consolidated).wav"];
+            if (withLyrix) keys.push("samples/grm_homealone_lyrix_simple_x7.wav");
+            return { routeName, bars: 10, keys, hasHats: false };
+          }
+
+          if (routeName === "dunah") {
+            const keys = [
+              chance(random, 0.5)
+                ? "samples/grm_dunah_beat_x2.wav"
+                : "samples/grm_dunah_beat.wav"
+            ];
+
+            if (withLyrix) keys.push("samples/grm_dunah_rhymeschemes_lyrix_x6_~ (consolidated).wav");
+            if (chance(random, 0.2)) keys.push("samples/dunah_grm_beat_outro.wav");
+
+            return { routeName, bars: 8, keys, hasHats };
+          }
+
+          if (routeName === "iron") {
+            const keys = [
+              chance(random, 0.5)
+                ? "samples/grm_iron_beat_x2.wav"
+                : "samples/grm_iron_beat.wav"
+            ];
+
+            if (chance(random, 0.2)) keys.unshift("samples/grm_iron_beat_intro (consolidated).wav");
+            if (withLyrix) keys.push("samples/grm_iron_ilovegrime_lyrix_x4 (consolidated).wav");
+
+            return { routeName, bars: 8, keys, hasHats: false };
+          }
+
+          return null;
+        }
+
+        const MAX_GRIMEY_ROUTE_SECTIONS = 5;
+        const grimeyRoutePlan = [];
+        let previousGrimeyRouteName = "main";
+        let previousGrimeyRouteHadHats = false;
+        let nextGrimeyRouteName = chooseMainGrimeyNextRoute();
+
+        for (let routeIndex = 0; routeIndex < MAX_GRIMEY_ROUTE_SECTIONS; routeIndex++) {
+          if (nextGrimeyRouteName === "exit") break;
+
+          const routePlan = buildGrimeyRouteSectionPlan(
+            nextGrimeyRouteName,
+            previousGrimeyRouteName,
+            previousGrimeyRouteHadHats
+          );
+
+          if (!routePlan || !Array.isArray(routePlan.keys) || !routePlan.keys.length) break;
+
+          routePlan.index = routeIndex + 1;
+          grimeyRoutePlan.push(routePlan);
+
+          const isFinalAllowedRouteSlot = routeIndex === MAX_GRIMEY_ROUTE_SECTIONS - 1;
+          if (isFinalAllowedRouteSlot) break;
+
+          const shouldForceExitCapableNext = routeIndex === MAX_GRIMEY_ROUTE_SECTIONS - 2;
+          previousGrimeyRouteName = routePlan.routeName;
+          previousGrimeyRouteHadHats = routePlan.hasHats === true;
+
+          nextGrimeyRouteName = shouldForceExitCapableNext
+            ? chooseExitCapableNextGrimeyRoute(routePlan.routeName)
+            : chooseNextGrimeyRoute(routePlan.routeName);
+        }
+
+        const grimeyRouteName = grimeyRoutePlan.length
+          ? grimeyRoutePlan.map(routePlan => routePlan.routeName).join("_to_")
+          : "end_after_main";
+
+        const grimeyRouteKeys = [];
+        for (const routePlan of grimeyRoutePlan) {
+          grimeyRouteKeys.push(...routePlan.keys);
+        }
+
+        const grimeyExitKeys = [
+          "samples/grm_bass_leave.wav"
+        ];
+
+        const existingGrimeyKeys = keys =>
+          Array.from(new Set(keys)).filter(key => getCatalogEntry(key));
+
+        const forcedGrimeyKeys = existingGrimeyKeys([
+          ...grimeyEntryKeys,
+          ...grimeyMainKeys,
+          ...grimeyRouteKeys,
+          ...grimeyExitKeys
+        ]);
 
         enterGrimey();
 
-        addSection("grimey", 8, {
-          reset: false,
-          tags: ["grimey", "tempo_70"]
+        const grimeyEntrySection = addSection("grimey_entry", 2, {
+          reset: true,
+          tags: ["grimey", "major_reset", "grimey_entry", "tempo_70"]
         });
+        grimeyEntrySection.grimeyAudioKeys = existingGrimeyKeys(grimeyEntryKeys);
+        grimeyEntrySection.forcedAudioStartKeys = existingGrimeyKeys([
+          "samples/grm_bass_lead_odd (consolidated).wav"
+        ]);
+
+        const grimeyMainSection = addSection("grimey", 8, {
+          reset: false,
+          tags: ["grimey", "tempo_70", "grimey_main"]
+        });
+        grimeyMainSection.grimeyAudioKeys = existingGrimeyKeys(grimeyMainKeys);
+        grimeyMainSection.grimeyRoute = {
+          routeName: grimeyRouteName,
+          bassKey: grimeyBassKey
+        };
+
+        for (const routePlan of grimeyRoutePlan) {
+          const grimeyRouteSection = addSection(`grimey_${routePlan.index}_${routePlan.routeName}`, routePlan.bars, {
+            reset: false,
+            tags: ["grimey", "tempo_70", "grimey_route", routePlan.routeName]
+          });
+
+          grimeyRouteSection.grimeyAudioKeys = existingGrimeyKeys(routePlan.keys);
+          grimeyRouteSection.forcedAudioStartKeys = existingGrimeyKeys([
+            routePlan.keys[0]
+          ]);
+          grimeyRouteSection.grimeyRoute = {
+            routeName: routePlan.routeName,
+            routeIndex: routePlan.index,
+            routeChain: grimeyRouteName
+          };
+        }
 
         exitGrimeyToNewMainGrid();
 
-        for (const key of catalog.rulePools.grimey.files) {
+        const grimeyExitSection = addSection("grimey_exit", 1, {
+          reset: true,
+          tags: ["grimey", "major_reset", "grimey_exit", "tempo_56_return"]
+        });
+        grimeyExitSection.grimeyAudioKeys = existingGrimeyKeys(grimeyExitKeys);
+        grimeyExitSection.forcedAudioStartKeys = existingGrimeyKeys(grimeyExitKeys);
+
+        for (const key of forcedGrimeyKeys) {
           forceIncludeAudioSelection({
             random,
             globalInclusionState,
             requiredActivationState,
             selectedAudio,
             key,
-            reason: "forced_grimey_section"
+            reason: "forced_simplified_grimey_route"
           });
         }
+
         continue;
       }
 
@@ -8100,6 +8392,10 @@ function scheduleMidiPattern({
     }
 
     if (type.includes("grimey")) {
+      if (Array.isArray(section.grimeyAudioKeys)) {
+        return section.grimeyAudioKeys.includes(entry.key);
+      }
+
       return key.includes("grm_") || key.includes("rewind_sfx");
     }
 
@@ -8167,7 +8463,7 @@ function scheduleMidiPattern({
     }
 
     if (type.includes("grimey")) {
-      return key.includes("hats") || key.includes("snare") || key.includes("rims");
+      return key.includes("grm") || key.includes("grimey");
     }
 
     if (type.includes("drop")) {
@@ -11118,6 +11414,3 @@ currentRenderBuffers = buffers;
 
   init();
 })();
-
-
-
