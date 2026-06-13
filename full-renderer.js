@@ -7550,6 +7550,8 @@ function scheduleMidiPattern({
       }
     }
 
+    const isWeed2BranchFromWeed1ForAdlibs = lyrixSection.id === "weed_1" && section.weedBranchSection?.id === "weed_2";
+
     const adlibs = lyrixSection.adlibs ? [].concat(lyrixSection.adlibs) : [];
 
     for (const adlib of adlibs) {
@@ -7559,7 +7561,7 @@ function scheduleMidiPattern({
 
       let adlibStart = null;
 
-      if (isWeed2BranchFromWeed1 && Number.isFinite(Number(adlib.startsAfterWeedSectionStartBars))) {
+      if (isWeed2BranchFromWeed1ForAdlibs && Number.isFinite(Number(adlib.startsAfterWeedSectionStartBars))) {
         continue;
       }
 
