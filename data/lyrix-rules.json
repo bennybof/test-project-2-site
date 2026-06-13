@@ -5729,7 +5729,8 @@
         "ininout_bridge_lyrix should not play two bars in a row.",
         "If ininout_bridge repeats, it plays two bars after it originally activated.",
         "breathing_bridge_~_lyrix follows normal ~ timing."
-      ]
+      ],
+      "activationChanceEach": 0.5
     },
     {
       "id": "tits_repeat_rule",
