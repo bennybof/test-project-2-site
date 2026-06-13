@@ -174,7 +174,15 @@
   }
   function getBridgeLyrixActivationChance(section) {
     const bridgeRules = getBridgeLyrixGlobalRules();
-    return clampProbability(section?.activationChance ?? bridgeRules?.activationChanceEach ?? 0.02);
+    const explicitActivationChance = section?.activationChance ?? bridgeRules?.activationChanceEach;
+
+    if (explicitActivationChance !== undefined) {
+      return clampProbability(explicitActivationChance);
+    }
+
+    // Bridge definitions provide dropoutChance, not activationChanceEach.
+    // Use the inverse dropout chance as the per-opportunity bridge activation gate.
+    return clampProbability(1 - getBridgeLyrixDropoutChance(section));
   }
 
   function canBridgePlayBeforeLyrixSection(section) {
