@@ -16289,7 +16289,8 @@
         "audio",
         "even",
         "sample",
-        "tilde_align"
+        "tilde_align",
+        "atmosphere"
       ],
       "partNumber": null,
       "opportunity": null,
@@ -16313,7 +16314,8 @@
         "accbreath",
         "audio",
         "even",
-        "sample"
+        "sample",
+        "atmosphere"
       ],
       "partNumber": null,
       "opportunity": null,
@@ -16338,7 +16340,8 @@
         "audio",
         "even",
         "sample",
-        "tilde_align"
+        "tilde_align",
+        "atmosphere"
       ],
       "partNumber": null,
       "opportunity": null,
@@ -16362,7 +16365,8 @@
         "accbreath",
         "audio",
         "odd",
-        "sample"
+        "sample",
+        "atmosphere"
       ],
       "partNumber": null,
       "opportunity": null,
@@ -16387,7 +16391,8 @@
         "audio",
         "even",
         "sample",
-        "tilde_align"
+        "tilde_align",
+        "atmosphere"
       ],
       "partNumber": null,
       "opportunity": null,
@@ -18293,7 +18298,11 @@
         "cello",
         "even",
         "sample",
-        "cello_wiv_bass"
+        "cello_wiv_bass",
+        "wiv_bass",
+        "bass_support",
+        "atmosphere",
+        "low_group"
       ],
       "partNumber": null,
       "opportunity": null,
@@ -18500,7 +18509,9 @@
         "dlay",
         "even",
         "metal",
-        "sample"
+        "sample",
+        "atmosphere",
+        "drowned"
       ],
       "partNumber": null,
       "opportunity": null,
@@ -21046,7 +21057,10 @@
         "hippy_synth",
         "odd",
         "sample",
-        "hippy_synth_wiv_bass"
+        "hippy_synth_wiv_bass",
+        "wiv_bass",
+        "bass_support",
+        "atmosphere"
       ],
       "partNumber": null,
       "opportunity": null,
@@ -21580,7 +21594,10 @@
         "bass",
         "pad",
         "sample",
-        "pad_wiv_bass"
+        "pad_wiv_bass",
+        "wiv_bass",
+        "bass_support",
+        "atmosphere"
       ],
       "partNumber": null,
       "opportunity": null,

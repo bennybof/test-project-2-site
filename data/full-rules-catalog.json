@@ -353,7 +353,89 @@
           "activationChance": 0.01,
           "dropoutChance": 0.01,
           "dropoutIncreasePerActivation": 0.04,
-          "dropoutMaxChance": 0.2
+          "dropoutMaxChance": 0.2,
+          "dependentActivationRules": [
+            {
+              "id": "accbreath_long_triggers_accbreath_1_even_wav",
+              "targets": [
+                {
+                  "kind": "audio",
+                  "key": "samples/accbreath_1_~_even.wav"
+                }
+              ],
+              "chance": 0.8,
+              "requiredActive": [
+                {
+                  "kind": "audio",
+                  "key": "samples/accbreath_long_x4.wav"
+                }
+              ]
+            },
+            {
+              "id": "accbreath_long_triggers_accbreath_2_even_wav",
+              "targets": [
+                {
+                  "kind": "audio",
+                  "key": "samples/accbreath_2_even.wav"
+                }
+              ],
+              "chance": 0.8,
+              "requiredActive": [
+                {
+                  "kind": "audio",
+                  "key": "samples/accbreath_long_x4.wav"
+                }
+              ]
+            },
+            {
+              "id": "accbreath_long_triggers_accbreath_3_even_wav",
+              "targets": [
+                {
+                  "kind": "audio",
+                  "key": "samples/accbreath_3_~_even.wav"
+                }
+              ],
+              "chance": 0.8,
+              "requiredActive": [
+                {
+                  "kind": "audio",
+                  "key": "samples/accbreath_long_x4.wav"
+                }
+              ]
+            },
+            {
+              "id": "accbreath_long_triggers_accbreath_4_odd_wav",
+              "targets": [
+                {
+                  "kind": "audio",
+                  "key": "samples/accbreath_4_odd.wav"
+                }
+              ],
+              "chance": 0.8,
+              "requiredActive": [
+                {
+                  "kind": "audio",
+                  "key": "samples/accbreath_long_x4.wav"
+                }
+              ]
+            },
+            {
+              "id": "accbreath_long_triggers_accbreath_5_even_wav",
+              "targets": [
+                {
+                  "kind": "audio",
+                  "key": "samples/accbreath_5_~_even.wav"
+                }
+              ],
+              "chance": 0.8,
+              "requiredActive": [
+                {
+                  "kind": "audio",
+                  "key": "samples/accbreath_long_x4.wav"
+                }
+              ]
+            }
+          ]
         },
         "samples/chimes_odd (consolidated).wav": {
           "globalInclusionChance": 0.5,
@@ -386,7 +468,109 @@
         "samples/crash_washes_metal_even (consolidated).wav": {
           "globalInclusionChance": 0.2,
           "activationChance": 0.05,
-          "dropoutChance": 0.5
+          "dropoutChance": 0.5,
+          "dependentActivationRules": [
+            {
+              "id": "crash_washes_metal_even_triggers_dlay_pair",
+              "targets": [
+                {
+                  "kind": "audio",
+                  "key": "samples/crash_washes_metal_dlay_even (consolidated).wav"
+                }
+              ],
+              "chance": 0.2,
+              "requiredActive": [
+                {
+                  "kind": "audio",
+                  "key": "samples/crash_washes_metal_even (consolidated).wav"
+                }
+              ]
+            }
+          ]
+        },
+        "samples/accbreath_1_~_even.wav": {
+          "dependentActivationOnly": true,
+          "activationMode": "dependent",
+          "dropoutChance": 0.01,
+          "dropoutIncreasePerActivation": 0.04,
+          "dropoutMaxChance": 0.2
+        },
+        "samples/accbreath_2_even.wav": {
+          "dependentActivationOnly": true,
+          "activationMode": "dependent",
+          "dropoutChance": 0.01,
+          "dropoutIncreasePerActivation": 0.04,
+          "dropoutMaxChance": 0.2
+        },
+        "samples/accbreath_3_~_even.wav": {
+          "dependentActivationOnly": true,
+          "activationMode": "dependent",
+          "dropoutChance": 0.01,
+          "dropoutIncreasePerActivation": 0.04,
+          "dropoutMaxChance": 0.2
+        },
+        "samples/accbreath_4_odd.wav": {
+          "dependentActivationOnly": true,
+          "activationMode": "dependent",
+          "dropoutChance": 0.01,
+          "dropoutIncreasePerActivation": 0.04,
+          "dropoutMaxChance": 0.2
+        },
+        "samples/accbreath_5_~_even.wav": {
+          "dependentActivationOnly": true,
+          "activationMode": "dependent",
+          "dropoutChance": 0.01,
+          "dropoutIncreasePerActivation": 0.04,
+          "dropoutMaxChance": 0.2
+        },
+        "samples/crash_washes_metal_dlay_even (consolidated).wav": {
+          "dependentActivationOnly": true,
+          "activationMode": "dependent"
+        },
+        "samples/cello_wiv-bass_even (consolidated).wav": {
+          "globalInclusionChance": 1,
+          "dropoutChance": 0.05,
+          "dropoutIncreasePerActivation": 0.01,
+          "hardClashRules": [
+            {
+              "id": "bass_support_blocks_nuva_bass",
+              "targets": [
+                {
+                  "family": "nuva_bass"
+                }
+              ]
+            }
+          ]
+        },
+        "samples/pad_wiv-bass (consolidated).wav": {
+          "globalInclusionChance": 1,
+          "dropoutChance": 0.05,
+          "dropoutIncreasePerActivation": 0.01,
+          "hardClashRules": [
+            {
+              "id": "bass_support_blocks_nuva_bass",
+              "targets": [
+                {
+                  "family": "nuva_bass"
+                }
+              ]
+            }
+          ]
+        },
+        "samples/hippy_synth_wiv-bass_odd (consolidated).wav": {
+          "globalInclusionChance": 1,
+          "dropoutChance": 0.05,
+          "dropoutIncreasePerActivation": 0.01,
+          "hardClashRules": [
+            {
+              "id": "bass_support_blocks_nuva_bass",
+              "targets": [
+                {
+                  "family": "nuva_bass"
+                }
+              ]
+            }
+          ]
         }
       }
     },

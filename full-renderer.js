@@ -4509,6 +4509,38 @@
 
     if (!candidate) return 0;
 
+    const candidateProfile = getRuleProfileForEntry(candidate.entry);
+    const localBarIndex = section?.barSeconds
+      ? Math.max(0, Math.round((startTime - section.startSeconds) / section.barSeconds))
+      : null;
+
+    const candidateDecisionResult = resolveRuleProfileDecision({
+      random,
+      plan,
+      playbackState,
+      kind: "audio",
+      key: candidate.key,
+      entry: candidate.entry,
+      section,
+      lifecycleStates,
+      localBarIndex,
+      startSeconds: startTime,
+      baseChance: 1,
+      profile: candidateProfile
+    });
+
+    if (!candidateDecisionResult.allowed) {
+      section.bassSupportSystemDebug.push({
+        event: "bass_support_blocked_by_rule_profile",
+        key: candidate.key,
+        startTime,
+        decision: candidateDecisionResult.decision
+      });
+      return 0;
+    }
+
+    applyCutoffRulesForAllowedDecision(playbackState, candidateDecisionResult.context, candidateProfile);
+
     const scheduled = scheduleAudioBufferWithPlaybackState({
       offlineContext,
       destination,
