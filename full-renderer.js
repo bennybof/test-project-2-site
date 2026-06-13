@@ -5862,8 +5862,7 @@ function getNormalMidiHatChoiceGroupId(pattern) {
     // Keep important foundations available.
     const foundationCandidates = [
       "samples/synth_main_odd (consolidated).wav",
-      "samples/synth_bass_odd_x2 (consolidated).wav",
-      "samples/crash_metal_odd_metal (consolidated).wav"
+      "samples/synth_bass_odd_x2 (consolidated).wav"
     ];
 
     for (const key of foundationCandidates) {
