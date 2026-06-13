@@ -7506,6 +7506,10 @@ function scheduleMidiPattern({
     // Alternate downloads must not be scheduled as ordinary section audio.
     if (entry.folder === "alternate downloads") return false;
 
+    if (isBombTickKey(entry.key)) {
+      return type === "normal" || type.includes("lyrix");
+    }
+
     if (isAhsKey(entry.key)) {
       if (type === "normal") return isAhsEntryExitTriggerKey(entry.key);
       if (type === "everything_intro") return isAhsPrimaryMainKey(entry.key);
