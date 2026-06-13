@@ -6244,11 +6244,18 @@ function getNormalMidiHatChoiceGroupId(pattern) {
 
     // Keep important foundations available.
     const foundationCandidates = [
-      "samples/synth_main_odd (consolidated).wav",
-      "samples/synth_bass_odd_x2 (consolidated).wav"
+      {
+        key: "samples/synth_main_odd (consolidated).wav",
+        fallbackChance: 0.6
+      },
+      {
+        key: "samples/synth_bass_odd_x2 (consolidated).wav",
+        fallbackChance: 0.65
+      }
     ];
 
-    for (const key of foundationCandidates) {
+    for (const foundationCandidate of foundationCandidates) {
+      const key = foundationCandidate.key;
       const entry = getCatalogEntry(key);
 
       includeAudioByGlobalDecision({
@@ -6258,7 +6265,7 @@ function getNormalMidiHatChoiceGroupId(pattern) {
         selectedAudio,
         key,
         entry,
-        fallbackChance: 0.65,
+        fallbackChance: foundationCandidate.fallbackChance,
         reason: "foundation_candidate"
       });
     }
@@ -10541,3 +10548,4 @@ currentRenderBuffers = buffers;
 
   init();
 })();
+
