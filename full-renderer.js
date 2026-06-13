@@ -9811,6 +9811,173 @@ function scheduleMidiPattern({
     applyRandomColourScheme();
   }
 
+
+  const ADVERT_SECRET_EVENT_FILE = "alternate downloads/advert.wav";
+  const SECRET_EVENT_SESSION_KEY = "tp2_last_secret_event_download";
+
+  function getForcedSecretEventId() {
+    const params = new URLSearchParams(window.location.search);
+    return String(params.get("forceSecretEvent") || params.get("forceEvent") || "")
+      .trim()
+      .toLowerCase();
+  }
+
+  function getLastSecretEventDownloadId() {
+    try {
+      return String(window.sessionStorage?.getItem(SECRET_EVENT_SESSION_KEY) || "");
+    } catch (error) {
+      return "";
+    }
+  }
+
+  function rememberSecretEventDownload(secretEvent) {
+    if (!secretEvent || secretEvent.forced) return;
+
+    try {
+      window.sessionStorage?.setItem(SECRET_EVENT_SESSION_KEY, secretEvent.id);
+    } catch (error) {
+      // Session storage is best-effort only.
+    }
+  }
+
+  function chooseAdvertSecretEvent(random, duration) {
+    const forcedSecretEventId = getForcedSecretEventId();
+    const forcedAdvert = forcedSecretEventId === "advert" || forcedSecretEventId === "advert.wav";
+
+    if (!forcedAdvert && getLastSecretEventDownloadId() === "advert") {
+      return null;
+    }
+
+    if (!forcedAdvert && !chance(random, 0.01)) {
+      return null;
+    }
+
+    const minStartSeconds = 60;
+    const maxStartSeconds = Math.min(120, Math.max(minStartSeconds, Number(duration) - 1));
+
+    if (!Number.isFinite(maxStartSeconds) || maxStartSeconds <= minStartSeconds) {
+      return null;
+    }
+
+    return {
+      id: "advert",
+      type: "advert",
+      file: ADVERT_SECRET_EVENT_FILE,
+      startSeconds: forcedAdvert
+        ? minStartSeconds
+        : minStartSeconds + (maxStartSeconds - minStartSeconds) * random(),
+      forced: forcedAdvert
+    };
+  }
+
+  function createEmptyAudioBufferLike(sourceBuffer, lengthSamples) {
+    const channelCount = Math.max(1, sourceBuffer?.numberOfChannels || 2);
+    const sampleRate = sourceBuffer?.sampleRate || 44100;
+    const scratchContext = new OfflineAudioContext(channelCount, 1, sampleRate);
+
+    return scratchContext.createBuffer(
+      channelCount,
+      Math.max(1, Math.floor(lengthSamples)),
+      sampleRate
+    );
+  }
+
+  function copyAudioBufferSegment({
+    sourceBuffer,
+    targetBuffer,
+    sourceStartSample = 0,
+    targetStartSample = 0,
+    lengthSamples = 0,
+    fadeInSamples = 0,
+    fadeOutSamples = 0
+  }) {
+    if (!sourceBuffer || !targetBuffer) return;
+
+    const safeLength = Math.max(0, Math.floor(lengthSamples));
+    const sourceChannelCount = sourceBuffer.numberOfChannels || 1;
+    const targetChannelCount = targetBuffer.numberOfChannels || 1;
+
+    for (let channel = 0; channel < targetChannelCount; channel++) {
+      const sourceData = sourceBuffer.getChannelData(Math.min(channel, sourceChannelCount - 1));
+      const targetData = targetBuffer.getChannelData(channel);
+
+      for (let i = 0; i < safeLength; i++) {
+        const sourceIndex = sourceStartSample + i;
+        const targetIndex = targetStartSample + i;
+
+        if (sourceIndex < 0 || sourceIndex >= sourceData.length) continue;
+        if (targetIndex < 0 || targetIndex >= targetData.length) continue;
+
+        let gain = 1;
+
+        if (fadeInSamples > 0 && i < fadeInSamples) {
+          gain *= i / fadeInSamples;
+        }
+
+        if (fadeOutSamples > 0 && i >= safeLength - fadeOutSamples) {
+          gain *= Math.max(0, (safeLength - i - 1) / fadeOutSamples);
+        }
+
+        targetData[targetIndex] += sourceData[sourceIndex] * gain;
+      }
+    }
+  }
+
+  function insertAdvertSecretEvent(renderedBuffer, advertBuffer, secretEvent) {
+    if (!renderedBuffer || !advertBuffer || !secretEvent) return renderedBuffer;
+
+    const sampleRate = renderedBuffer.sampleRate || 44100;
+    const startSample = Math.max(
+      0,
+      Math.min(renderedBuffer.length - 1, Math.floor(secretEvent.startSeconds * sampleRate))
+    );
+    const fadeSamples = Math.max(1, Math.floor(0.01 * sampleRate));
+    const outputLength = renderedBuffer.length + advertBuffer.length;
+    const outputBuffer = createEmptyAudioBufferLike(renderedBuffer, outputLength);
+
+    copyAudioBufferSegment({
+      sourceBuffer: renderedBuffer,
+      targetBuffer: outputBuffer,
+      sourceStartSample: 0,
+      targetStartSample: 0,
+      lengthSamples: startSample,
+      fadeOutSamples: Math.min(fadeSamples, startSample)
+    });
+
+    copyAudioBufferSegment({
+      sourceBuffer: advertBuffer,
+      targetBuffer: outputBuffer,
+      sourceStartSample: 0,
+      targetStartSample: startSample,
+      lengthSamples: advertBuffer.length
+    });
+
+    copyAudioBufferSegment({
+      sourceBuffer: renderedBuffer,
+      targetBuffer: outputBuffer,
+      sourceStartSample: startSample,
+      targetStartSample: startSample + advertBuffer.length,
+      lengthSamples: renderedBuffer.length - startSample,
+      fadeInSamples: Math.min(fadeSamples, renderedBuffer.length - startSample)
+    });
+
+    return outputBuffer;
+  }
+
+  function applySecretEventToRenderedBuffer({ renderedBuffer, buffers, secretEvent }) {
+    if (!secretEvent) return renderedBuffer;
+
+    if (secretEvent.id === "advert") {
+      const advertBuffer = buffers?.get(secretEvent.file);
+      const outputBuffer = insertAdvertSecretEvent(renderedBuffer, advertBuffer, secretEvent);
+      rememberSecretEventDownload(secretEvent);
+      return outputBuffer;
+    }
+
+    return renderedBuffer;
+  }
+
+
   function getUrlBooleanFlag(...names) {
     const params = new URLSearchParams(window.location.search);
 
@@ -9913,6 +10080,10 @@ function scheduleMidiPattern({
     const plan = buildFullPlan(random);
     const duration = getPlanRenderDuration(plan, fallbackDuration);
     const globalFadeOptions = chooseGlobalFadeOptions(mulberry32((currentSeed ^ 0xFADE30) >>> 0));
+    const secretEvent = chooseAdvertSecretEvent(
+      mulberry32((currentSeed ^ 0xAD7E27) >>> 0),
+      duration
+    );
 
     if (plan.disableGlobalFadeIn) {
       globalFadeOptions.fadeIn = false;
@@ -9925,6 +10096,8 @@ function scheduleMidiPattern({
     console.log("[global fade options]", globalFadeOptions);
 
     const neededPaths = new Set();
+
+    if (secretEvent?.file) neededPaths.add(secretEvent.file);
 
     for (const key of plan.selectedAudio) neededPaths.add(key);
 
@@ -9975,7 +10148,8 @@ currentRenderBuffers = buffers;
           selectedAudioCount: plan.selectedAudio.length,
           selectedMidiCount: plan.selectedMidi.length,
           sectionCount: Array.isArray(plan.sectionTimeline) ? plan.sectionTimeline.length : 0,
-          debugMode: "json_only_no_audio_render"
+          debugMode: "json_only_no_audio_render",
+          secretEvent
         }),
         `test-project-2-debug-plan-seed-${currentSeed}.json`
       );
@@ -9986,9 +10160,15 @@ currentRenderBuffers = buffers;
       return;
     }
 
-    const renderedBuffer = await offlineContext.startRendering();
+    let renderedBuffer = await offlineContext.startRendering();
 
     applyGlobalFadeToRenderedBuffer(renderedBuffer, globalFadeOptions);
+
+    renderedBuffer = applySecretEventToRenderedBuffer({
+      renderedBuffer,
+      buffers,
+      secretEvent
+    });
 
     if (format === "wav") {
       const wavBlob = audioBufferToWavBlob(renderedBuffer);
