@@ -6293,6 +6293,21 @@ function getNormalMidiHatChoiceGroupId(pattern) {
       });
     }
 
+    const forceBombTickCandidate = getUrlBooleanFlag("forceBombTick", "forceBomb");
+
+    includeAudioByGlobalDecision({
+      random,
+      globalInclusionState,
+      requiredActivationState,
+      selectedAudio,
+      key: BOMB_TICK_AUDIO_KEY,
+      fallbackChance: forceBombTickCandidate ? 1 : BOMB_TICK_GLOBAL_SELECTION_CHANCE,
+      force: forceBombTickCandidate,
+      reason: forceBombTickCandidate
+        ? "forced_bomb_tick_test_url"
+        : "bomb_tick_global_selection"
+    });
+
     // Select section-relevant audio instead of selecting everything equally.
     for (const section of sectionTimeline) {
       const matchingEntries = audioEntries.filter(entry => {
@@ -9151,7 +9166,9 @@ function scheduleMidiPattern({
 
     if (isLikelyOneShot(entry)) {
       const allowedBars = getAllowedLocalBarIndexesForKey(key, section, audioProfile);
-      const oneShotBaseChance = getActivationChance(audioProfile, 0.12);
+      const oneShotBaseChance = isBombTickKey(key)
+        ? (getUrlBooleanFlag("forceBombTick", "forceBomb") ? 1 : BOMB_TICK_ACTIVATION_CHANCE)
+        : getActivationChance(audioProfile, 0.12);
       let scheduledCount = 0;
 
       for (const localBarIndex of allowedBars) {
@@ -9213,7 +9230,9 @@ function scheduleMidiPattern({
     if (!phraseBarsToCheck.length) return 0;
 
     const synthSpecificPhraseChance = getSpecificNormalSynthActivationChance(key, lifecycleStates);
-    const defaultPhraseBaseChance = getActivationChance(audioProfile, synthSpecificPhraseChance ?? 0.45);
+    const defaultPhraseBaseChance = isBombTickKey(key)
+      ? (getUrlBooleanFlag("forceBombTick", "forceBomb") ? 1 : BOMB_TICK_ACTIVATION_CHANCE)
+      : getActivationChance(audioProfile, synthSpecificPhraseChance ?? 0.45);
     let scheduledCount = 0;
     let nextAllowedPhraseStartSeconds = -Infinity;
 
@@ -9822,6 +9841,9 @@ function scheduleMidiPattern({
 
   const ADVERT_SECRET_EVENT_FILE = "alternate downloads/advert.wav";
   const SONG_BLOWN_UP_SECRET_EVENT_FILE = "alternate downloads/song_blown_up.wav";
+  const BOMB_TICK_AUDIO_KEY = "samples/bomb_tick_xtra.wav";
+  const BOMB_TICK_GLOBAL_SELECTION_CHANCE = 0.1;
+  const BOMB_TICK_ACTIVATION_CHANCE = 0.01;
   const SECRET_EVENT_SESSION_KEY = "tp2_last_secret_event_download";
 
   function getForcedSecretEventId() {
