@@ -8023,6 +8023,8 @@ function scheduleMidiPattern({
       start += buffer.duration;
     }
 
+    const isWeed2BranchFromWeed1 = Boolean(section?.weedBranchSection);
+
     if (isWeed2BranchFromWeed1) {
       const weed2Section = section.weedBranchSection;
       const weed2StartOffsetBars = Number(weed2Section?.startsAfterSectionBars?.bars) || 0;
@@ -9662,5 +9664,3 @@ currentRenderBuffers = buffers;
 
   init();
 })();
-
-
