@@ -6824,6 +6824,13 @@ function getNormalMidiHatChoiceGroupId(pattern) {
           tags: ["grimey", "major_reset", "grimey_entry", "tempo_70"]
         });
         grimeyEntrySection.grimeyAudioKeys = existingGrimeyKeys(grimeyEntryKeys);
+        const grimeyEntryLoopKeys = existingGrimeyKeys([
+          "samples/grm_hats_fuzz_intro_odd.wav"
+        ]);
+        grimeyEntrySection.grimeyLoopAudioKeys = grimeyEntryLoopKeys;
+        grimeyEntrySection.grimeyLoopEveryBarsByKey = Object.fromEntries(
+          grimeyEntryLoopKeys.map(key => [key, 1])
+        );
         grimeyEntrySection.forcedAudioStartKeys = existingGrimeyKeys([
           "samples/grm_bass_lead_odd (consolidated).wav"
         ]);
@@ -6843,10 +6850,7 @@ function getNormalMidiHatChoiceGroupId(pattern) {
         ]);
         grimeyMainSection.grimeyLoopAudioKeys = grimeyMainLoopKeys;
         grimeyMainSection.grimeyLoopEveryBarsByKey = Object.fromEntries(
-          grimeyMainLoopKeys.map(key => [
-            key,
-            key.includes("grm_kicks_x0.5") ? 1 : 2
-          ])
+          grimeyMainLoopKeys.map(key => [key, 1])
         );
         grimeyMainSection.grimeyRoute = {
           routeName: grimeyRouteName,
@@ -6876,7 +6880,7 @@ function getNormalMidiHatChoiceGroupId(pattern) {
               key,
               routePlan.routeName === "simple" || routePlan.routeName === "ah_grm"
                 ? Math.max(1, routePlan.bars)
-                : 2
+                : 1
             ])
           );
           grimeyRouteSection.forcedAudioStartKeys = existingGrimeyKeys([
