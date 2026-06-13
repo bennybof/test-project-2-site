@@ -5579,6 +5579,34 @@ function getNormalMidiHatChoiceGroupId(pattern) {
     return base;
   }
 
+  function isNormalSynthGlobalGateEntry(entryOrKey) {
+    const key = typeof entryOrKey === "string"
+      ? entryOrKey.toLowerCase()
+      : String(entryOrKey?.key || "").toLowerCase();
+
+    const family = typeof entryOrKey === "string"
+      ? ""
+      : String(entryOrKey?.family || "").toLowerCase();
+
+    if (!key.includes("synth")) return false;
+
+    // Separate systems. These must not be blocked by the normal synth group gate.
+    if (key.includes("synth_bass")) return false;
+    if (key.includes("hippy_synth")) return false;
+    if (key.includes("replace-synth")) return false;
+    if (key.includes("drop_synth")) return false;
+    if (key.includes("grm_synth")) return false;
+
+    return (
+      family === "synth" ||
+      family === "synth_downsampled" ||
+      family === "synth_elephant" ||
+      family === "synth_feedback" ||
+      family === "synth_frozen_verb" ||
+      family === "synth_glitch"
+    );
+  }
+
   function getBaseActivationChance(entry) {
     const key = entry.key.toLowerCase();
 
@@ -6378,12 +6406,22 @@ function getNormalMidiHatChoiceGroupId(pattern) {
     const audioEntries = getAllCatalogEntries().filter(entry => isAudio(entry) && !isMidiSample(entry));
     const midiPatternPool = midiPatterns.patterns.filter(isDrumMidiPattern);
 
-    // Keep important foundations available.
+    // Normal synth has one group-level global gate.
+    // Definition target: 60% chance that normal synth is available at all,
+    // 40% chance that no normal synth can be globally included in the track.
+    const normalSynthGroupIncluded = Boolean(includeAudioByGlobalDecision({
+      random,
+      globalInclusionState,
+      requiredActivationState,
+      selectedAudio,
+      key: "samples/synth_main_odd (consolidated).wav",
+      entry: getCatalogEntry("samples/synth_main_odd (consolidated).wav"),
+      fallbackChance: 0.6,
+      reason: "normal_synth_group_global_gate"
+    }));
+
+    // Keep other important foundations available.
     const foundationCandidates = [
-      {
-        key: "samples/synth_main_odd (consolidated).wav",
-        fallbackChance: 0.6
-      },
       {
         key: "samples/synth_bass_odd_x2 (consolidated).wav",
         fallbackChance: 0.65
@@ -6461,6 +6499,7 @@ function getNormalMidiHatChoiceGroupId(pattern) {
     // Select section-relevant audio instead of selecting everything equally.
     for (const section of sectionTimeline) {
       const matchingEntries = audioEntries.filter(entry => {
+        if (!normalSynthGroupIncluded && isNormalSynthGlobalGateEntry(entry)) return false;
         if ((section.type === "normal" || (section.type.includes("lyrix") && section.lyrixSectionId)) && isCentralInstrumentFamilyEntry(entry)) return false;
         return audioMatchesSection(entry, section);
       });
