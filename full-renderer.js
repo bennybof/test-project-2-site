@@ -8225,6 +8225,48 @@ function scheduleMidiPattern({
     return scheduledCount;
   }
 
+  function getSpecificNormalSynthActivationChance(key, lifecycleStates = null) {
+    const keyLower = String(key || "").toLowerCase();
+
+    // These are separate systems and should not be reduced by normal synth rules.
+    if (keyLower.includes("synth_bass")) return null;
+    if (keyLower.includes("hippy_synth")) return null;
+    if (keyLower.includes("replace-synth")) return null;
+
+    const synthMainLifecycleId = getAudioLifecycleId("samples/synth_main_odd (consolidated).wav");
+    const synthMainActive = lifecycleStates
+      ? Boolean(getLifecycleState(lifecycleStates, synthMainLifecycleId)?.activated)
+      : false;
+
+    if (keyLower.includes("synth_frozen_verb")) return synthMainActive ? 0.01 : 0.003;
+    if (keyLower.includes("synth_downsampled")) return synthMainActive ? 0.01 : 0.003;
+    if (keyLower.includes("synth_elephant")) return synthMainActive ? 0.005 : 0.001;
+    if (keyLower.includes("synth_glitch")) return 0.01;
+    if (keyLower.includes("synth_main")) return 0.04;
+
+    // Do not guess replacement-only suspense rules here.
+    if (keyLower.includes("synth_cont_lower_suspense")) return null;
+
+    if (keyLower.includes("synth_cont")) return 0.02;
+
+    return null;
+  }
+
+  function shouldAllowNormalNumberedAudioSequenceLifecycleContinuation(key) {
+    const keyLower = String(key || "").toLowerCase();
+
+    if (keyLower.includes("synth_bass")) return true;
+    if (keyLower.includes("hippy_synth")) return true;
+    if (keyLower.includes("replace-synth")) return true;
+
+    return !(
+      keyLower.includes("synth_frozen_verb") ||
+      keyLower.includes("synth_downsampled") ||
+      keyLower.includes("synth_elephant") ||
+      keyLower.includes("synth_glitch")
+    );
+  }
+
   function scheduleNormalNumberedAudioSequence({
     offlineContext,
     destination,
@@ -8253,7 +8295,10 @@ function scheduleMidiPattern({
       section.forcedNumberedSequenceTestKeys.includes(entry.key);
     const localBar = forceSequenceStart || isContinuing ? allowedBars[0] : chooseOne(random, allowedBars);
     const startSeconds = section.startSeconds + localBar * section.barSeconds;
-    const baseChance = forceSequenceStart ? 1 : getActivationChance(profile, 0.45);
+    const synthSpecificSequenceChance = getSpecificNormalSynthActivationChance(entry.key, lifecycleStates);
+    const baseChance = forceSequenceStart
+      ? 1
+      : getActivationChance(profile, synthSpecificSequenceChance ?? 0.45);
 
     const sequenceDecisionResult = resolveRuleProfileDecision({
       random,
@@ -8268,7 +8313,7 @@ function scheduleMidiPattern({
       startSeconds,
       baseChance,
       profile,
-      allowLifecycleContinuation: true
+      allowLifecycleContinuation: shouldAllowNormalNumberedAudioSequenceLifecycleContinuation(entry.key)
     });
 
     if (!sequenceDecisionResult.allowed) return 0;
@@ -8687,7 +8732,8 @@ function scheduleMidiPattern({
 
     if (!phraseBarsToCheck.length) return 0;
 
-    const phraseBaseChance = getActivationChance(audioProfile, 0.45);
+    const synthSpecificPhraseChance = getSpecificNormalSynthActivationChance(key, lifecycleStates);
+    const phraseBaseChance = getActivationChance(audioProfile, synthSpecificPhraseChance ?? 0.45);
     let scheduledCount = 0;
     let nextAllowedPhraseStartSeconds = -Infinity;
 
