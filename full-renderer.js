@@ -7759,7 +7759,7 @@ function getNormalMidiHatChoiceGroupId(pattern) {
     return 0;
   }
 
-  function scheduleBuffer(offlineContext, destination, buffer, startTime, gainValue = 1, offset = 0, panValue = 0, durationOverrideSeconds = null) {
+  function scheduleBuffer(offlineContext, destination, buffer, startTime, gainValue = 1, offset = 0, panValue = 0, durationOverrideSeconds = null, endFadeSeconds = 0) {
     if (!buffer) return null;
     if (startTime >= offlineContext.length / offlineContext.sampleRate) return null;
 
@@ -7792,7 +7792,26 @@ function getNormalMidiHatChoiceGroupId(pattern) {
       gain.connect(destination);
     }
 
-    source.start(safeStartTime, safeOffset, requestedDuration);
+    const safeEndTime = safeStartTime + requestedDuration;
+    const requestedEndFadeSeconds = Math.max(0, Number(endFadeSeconds) || 0);
+    const safeEndFadeSeconds = Math.min(requestedEndFadeSeconds, Math.max(0, requestedDuration / 2));
+
+    if (safeEndFadeSeconds > 0) {
+      const fadeStartTime = Math.max(safeStartTime, safeEndTime - safeEndFadeSeconds);
+
+      try {
+        gain.gain.setValueAtTime(gainValue, safeStartTime);
+        gain.gain.setValueAtTime(gainValue, fadeStartTime);
+        gain.gain.linearRampToValueAtTime(0, safeEndTime);
+      } catch (error) {
+        console.warn("Scheduled audio end fade failed:", error);
+      }
+
+      source.start(safeStartTime, safeOffset);
+      source.stop(safeEndTime);
+    } else {
+      source.start(safeStartTime, safeOffset, requestedDuration);
+    }
 
     return {
       scheduled: true,
@@ -7851,7 +7870,7 @@ function getNormalMidiHatChoiceGroupId(pattern) {
     entry = null,
     section = null,
     family = ""
-  , durationSeconds = null } = {}) {
+  , durationSeconds = null, endFadeSeconds = 0 } = {}) {
     const panValue = getCentralInstrumentFamilyPanValue(family || getCentralInstrumentFamily(entry));
 
     const scheduleHandle = scheduleBuffer(
@@ -7862,7 +7881,8 @@ function getNormalMidiHatChoiceGroupId(pattern) {
       gainValue,
       offset,
       panValue,
-      durationSeconds
+      durationSeconds,
+      endFadeSeconds
     );
 
     recordSectionScheduledAudio(section, {
@@ -10209,7 +10229,8 @@ function scheduleMidiPattern({
             key,
             entry,
             section,
-            durationSeconds
+            durationSeconds,
+            endFadeSeconds: isGrimeySustainedBedKey ? 0.08 : 0
           });
 
           if (scheduled) {
