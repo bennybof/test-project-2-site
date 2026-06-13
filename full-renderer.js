@@ -4566,6 +4566,14 @@ function getNormalHatPatternActivationChance(choiceGroupId) {
 function getNormalMidiHatPatternActivationChance(pattern) {
   if (!isNormalMidiHatPattern(pattern)) return null;
 
+  const baseId = normalizeRuleDecisionToken(getMidiPatternBaseId(pattern));
+
+  // speedy_hats_cont is only selected by the normal-hat continuation system.
+  // Once selected, it must not fail the separate generic activation roll.
+  if (baseId.startsWith("speedy_hats_cont")) {
+    return 1;
+  }
+
   const choiceGroupId = getNormalMidiHatChoiceGroupId(pattern);
   if (!choiceGroupId) return null;
 
@@ -7376,6 +7384,12 @@ function scheduleMidiPattern({
         key.includes("chimes") ||
         key.includes("glock")
       );
+    }
+
+    // This crash is used by special/ending contexts.
+    // Do not let it enter ordinary normal sections as a generic one-shot at bar 0.
+    if (type === "normal" && key.includes("crash_metal_odd_metal")) {
+      return false;
     }
 
         if (isLyrix(entry)) return false;
