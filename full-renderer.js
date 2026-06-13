@@ -2591,6 +2591,9 @@
     return events;
   }
   function applyRuleProfileToDecision(playbackState, context, decision, profile = {}, random = null) {
+    applyTypewriterReplacementBlockToDecision(playbackState, context, decision);
+    if (decision.blocked) return decision;
+
     applyActivationBlockWindows(playbackState, context, decision);
     if (decision.blocked) return decision;
 
@@ -3797,15 +3800,158 @@
     return entry.key.startsWith("midi files/samples/");
   }
 
+  const TYPEWRITER_KEYS = [
+    "samples/typewriter_intro_odd_xtra.wav",
+    "samples/typewriter_odd_xtra.wav",
+    "samples/typewriter_even_xtra.wav"
+  ];
+
+  function isTypewriterKey(entryOrKey) {
+    const key = typeof entryOrKey === "string"
+      ? entryOrKey.toLowerCase()
+      : String(entryOrKey?.key || "").toLowerCase();
+
+    return key.includes("typewriter");
+  }
+
+  function getActiveTypewriterPlaybackItemAtTime(playbackState, startSeconds) {
+    return getActivePlaybackItems(playbackState).find(item =>
+      isTypewriterKey(item?.key) &&
+      doesPlaybackItemOverlapTime(item, startSeconds)
+    ) || null;
+  }
+
+  function getTypewriterActivationChance(playbackState, startSeconds, section) {
+    const baseChance = 0.002;
+    const barSeconds = Number(section?.barSeconds || 0);
+    const lookbackStart = Math.max(0, Number(startSeconds || 0) - Math.max(barSeconds, 0));
+
+    const hasCrashOrSlackjawTrigger = getActivePlaybackItems(playbackState).some(item => {
+      const key = String(item?.key || "").toLowerCase();
+      const tags = Array.isArray(item?.tags) ? item.tags : [];
+      const isTrigger =
+        key.includes("crash") ||
+        key.includes("slackjaw") ||
+        tags.includes("crash") ||
+        tags.includes("slackjaw_scratch");
+
+      if (!isTrigger) return false;
+
+      const itemStart = Number(item.startSeconds || 0);
+      return itemStart >= lookbackStart && itemStart <= Number(startSeconds || 0);
+    });
+
+    return hasCrashOrSlackjawTrigger ? baseChance * 2 : baseChance;
+  }
+
+  function isTypewriterReplacementTargetContext(context = {}, activeTypewriterItem = null) {
+    const key = String(context.itemKey || context.key || "").toLowerCase();
+    const tags = context.itemTags instanceof Set
+      ? context.itemTags
+      : new Set(Array.isArray(context.itemTags) ? context.itemTags : []);
+
+    const hasTag = tag => tags.has(normalizeRuleDecisionToken(tag));
+
+    if (!key || isTypewriterKey(key)) return false;
+
+    if (
+      key.includes("crash") ||
+      hasTag("crash") ||
+      hasTag("rev_crash") ||
+      hasTag("jazz_crash") ||
+      hasTag("crash_wash")
+    ) {
+      return false;
+    }
+
+    if (key.includes("beepipe") || hasTag("beepipes")) return false;
+
+    if (key.includes("slackjaw") || hasTag("slackjaw_scratch")) {
+      return !String(activeTypewriterItem?.key || "").toLowerCase().includes("typewriter_intro");
+    }
+
+    if (key.includes("bomb_tick") || hasTag("bomb_tick")) return true;
+    if (hasTag("hats") || hasTag("oh") || hasTag("drums")) return true;
+
+    return (
+      key.includes("hats") ||
+      key.includes("_oh") ||
+      key.endsWith("oh.mid") ||
+      key.includes("snare") ||
+      key.includes("rim") ||
+      key.includes("kick")
+    );
+  }
+
+  function applyTypewriterReplacementBlockToDecision(playbackState, context, decision) {
+    if (!playbackState || !context || !decision || decision.blocked) return decision;
+
+    const startSeconds = Number(context.startSeconds || 0);
+    const activeTypewriter = getActiveTypewriterPlaybackItemAtTime(playbackState, startSeconds);
+
+    if (!activeTypewriter) return decision;
+    if (!isTypewriterReplacementTargetContext(context, activeTypewriter)) return decision;
+
+    return blockRuleDecision(decision, "typewriter_replacement_block", {
+      typewriterKey: activeTypewriter.key,
+      typewriterStartSeconds: activeTypewriter.startSeconds,
+      typewriterEndSeconds: activeTypewriter.endSeconds
+    });
+  }
+
+  function applyTypewriterReplacementCutoffs(playbackState, scheduled, key, section) {
+    if (!playbackState || !scheduled?.scheduled) return null;
+
+    const startSeconds = Number(scheduled.startTime || 0);
+    const endSeconds = Number(scheduled.endTime || startSeconds);
+    const cutEvents = [];
+
+    for (const item of [...playbackState.activeItems.values()]) {
+      if (isTypewriterKey(item?.key)) continue;
+
+      const itemStart = Number(item.startSeconds || 0);
+      const itemEnd = item.endSeconds === null ? Infinity : Number(item.endSeconds || itemStart);
+      if (itemEnd <= startSeconds || itemStart >= endSeconds) continue;
+
+      const context = {
+        kind: item.kind,
+        itemKey: item.key,
+        itemTags: new Set(Array.isArray(item.tags) ? item.tags : []),
+        startSeconds: Math.max(startSeconds, itemStart)
+      };
+
+      if (!isTypewriterReplacementTargetContext(context, { key })) continue;
+
+      const cutTime = Math.max(startSeconds, itemStart);
+      if (cutOffPlaybackItem(playbackState, item, cutTime, {
+        fadeSeconds: 0.01,
+        reason: "typewriter_replaces_incompatible_material"
+      })) {
+        cutEvents.push({ key: item.key, cutTimeSeconds: cutTime });
+      }
+    }
+
+    const event = { key, startSeconds, endSeconds, cutEvents };
+
+    if (section) {
+      if (!Array.isArray(section.typewriterReplacementDebug)) section.typewriterReplacementDebug = [];
+      section.typewriterReplacementDebug.push(event);
+    }
+
+    return event;
+  }
+
   function isLikelyOneShot(entry) {
     const key = entry.key.toLowerCase();
+
+    if (isTypewriterKey(key)) return false;
+
     return (
       key.includes("crash") ||
       key.includes("snare") ||
       key.includes("rim") ||
       key.includes("kick") ||
       key.includes("beepipe") ||
-      key.includes("typewriter") ||
       key.includes("rewind") ||
       key.includes("airhorn") ||
       key.includes("sfx")
@@ -6111,6 +6257,21 @@ function getNormalMidiHatChoiceGroupId(pattern) {
       });
     }
 
+    // Typewriter is a dedicated low-probability percussion phrase system.
+    // Definitions: files are phrases and should be available for eligible activation attempts.
+    for (const key of TYPEWRITER_KEYS) {
+      if (!getCatalogEntry(key)) continue;
+
+      forceIncludeAudioSelection({
+        random,
+        globalInclusionState,
+        requiredActivationState,
+        selectedAudio,
+        key,
+        reason: "forced_typewriter_candidate"
+      });
+    }
+
     // Select section-relevant audio instead of selecting everything equally.
     for (const section of sectionTimeline) {
       const matchingEntries = audioEntries.filter(entry => {
@@ -7391,6 +7552,9 @@ function scheduleMidiPattern({
     if (type === "normal" && key.includes("crash_metal_odd_metal")) {
       return false;
     }
+
+
+    if (type === "normal" && isTypewriterKey(entry.key)) return true;
 
         if (isLyrix(entry)) return false;
 
@@ -9010,7 +9174,7 @@ function scheduleMidiPattern({
     if (!phraseBarsToCheck.length) return 0;
 
     const synthSpecificPhraseChance = getSpecificNormalSynthActivationChance(key, lifecycleStates);
-    const phraseBaseChance = getActivationChance(audioProfile, synthSpecificPhraseChance ?? 0.45);
+    const defaultPhraseBaseChance = getActivationChance(audioProfile, synthSpecificPhraseChance ?? 0.45);
     let scheduledCount = 0;
     let nextAllowedPhraseStartSeconds = -Infinity;
 
@@ -9028,6 +9192,14 @@ function scheduleMidiPattern({
       }
 
       const startSeconds = section.startSeconds + localBar * section.barSeconds;
+
+      if (isTypewriterKey(key) && getActiveTypewriterPlaybackItemAtTime(playbackState, startSeconds)) {
+        continue;
+      }
+
+      const phraseBaseChance = isTypewriterKey(key)
+        ? getTypewriterActivationChance(playbackState, startSeconds, section)
+        : defaultPhraseBaseChance;
 
       // Do not layer the same phrase over itself while the previous scheduled copy is still playing.
       if (startSeconds < nextAllowedPhraseStartSeconds - 0.001) {
@@ -9071,13 +9243,21 @@ function scheduleMidiPattern({
 
         if (scheduled) {
           scheduledCount += 1;
+
+          if (isTypewriterKey(key)) {
+            applyTypewriterReplacementCutoffs(playbackState, scheduled, key, section);
+          }
+
           // Use logical bar spacing for repeat blocking.
           // Do not use full exported WAV duration here, because reverb/tails can wrongly skip
           // the next valid activation opportunity.
+          // Exception: typewriter files are defined as phrases that play once for their full file duration.
           const logicalRepeatBlockSeconds = Number(section?.barSeconds || 0);
-          nextAllowedPhraseStartSeconds = logicalRepeatBlockSeconds > 0
-            ? startSeconds + logicalRepeatBlockSeconds
-            : scheduled.endTime;
+          nextAllowedPhraseStartSeconds = isTypewriterKey(key)
+            ? scheduled.endTime
+            : logicalRepeatBlockSeconds > 0
+              ? startSeconds + logicalRepeatBlockSeconds
+              : scheduled.endTime;
 
           if (lifecycleStates && audioLifecycleId && !wasActiveBeforeDecision) {
             activateLifecycleItem(
