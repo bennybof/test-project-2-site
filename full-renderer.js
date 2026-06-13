@@ -4334,6 +4334,36 @@
 
   return 0.02;
 }
+
+function getNormalHatPatternActivationChance(choiceGroupId) {
+  // No separate normal-hats activation chance was found in the definitions.
+  // User decision: invert dropout-rate groups for activation chance fallback.
+  // Most normal hats activate at 20%; trap/holdit/messy_fast/messy_fast_ends_in_main activate at 2%.
+  // Hook hats, jazz hats, and holdit_hats_forlyrix have their own section-specific rules.
+  if (choiceGroupId === "hook_hats") return null;
+  if (choiceGroupId === "holdit_hats_forlyrix") return null;
+
+  if (
+    choiceGroupId === "trap_hats" ||
+    choiceGroupId === "holdit_hats" ||
+    choiceGroupId === "messy_hats_fast" ||
+    choiceGroupId === "messy_hats_fast_ends_in_main_hats"
+  ) {
+    return 0.02;
+  }
+
+  return 0.2;
+}
+
+function getNormalMidiHatPatternActivationChance(pattern) {
+  if (!isNormalMidiHatPattern(pattern)) return null;
+
+  const choiceGroupId = getNormalMidiHatChoiceGroupId(pattern);
+  if (!choiceGroupId) return null;
+
+  return getNormalHatPatternActivationChance(choiceGroupId);
+}
+
 function getNormalHatChoiceWeight(choiceGroupId, section) {
   const baseWeights = new Map([
     ["trap_hats", 2],
@@ -8920,7 +8950,8 @@ function scheduleMidiPattern({
           continue;
         }
 
-        const midiBaseChance = getActivationChance(midiProfile, 0.7);
+        const normalHatActivationChance = getNormalMidiHatPatternActivationChance(pattern);
+        const midiBaseChance = getActivationChance(midiProfile, normalHatActivationChance ?? 0.7);
 
         const midiDecisionResult = resolveRuleProfileDecision({
           random,
