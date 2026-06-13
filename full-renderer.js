@@ -6909,13 +6909,36 @@ function getNormalMidiHatChoiceGroupId(pattern) {
           reset: true,
           tags: ["grimey", "major_reset", "grimey_entry", "tempo_70"]
         });
-        grimeyEntrySection.grimeyAudioKeys = existingGrimeyKeys(grimeyEntryKeys);
+        const grimeyEntryBedKeys = [
+          grimeyBassKey,
+          "samples/grm_kicks_x0.5 (consolidated).wav",
+          "samples/grm_hats_fuzz.wav",
+          "samples/grm_bagoo_1_odd.wav",
+          "samples/grm_bagoo_2_even.wav",
+          "samples/grm_synth_1_odd.wav"
+        ];
+
+        grimeyEntrySection.grimeyAudioKeys = existingGrimeyKeys([
+          ...grimeyEntryKeys,
+          ...grimeyEntryBedKeys
+        ]);
+
         const grimeyEntryLoopKeys = existingGrimeyKeys([
-          "samples/grm_hats_fuzz_intro_odd.wav"
+          "samples/grm_hats_fuzz_intro_odd.wav",
+          ...grimeyEntryBedKeys
         ]);
         grimeyEntrySection.grimeyLoopAudioKeys = grimeyEntryLoopKeys;
         grimeyEntrySection.grimeyLoopEveryBarsByKey = Object.fromEntries(
-          grimeyEntryLoopKeys.map(key => [key, 1])
+          grimeyEntryLoopKeys.map(key => [
+            key,
+            key.includes("grm_kicks_x0.5") ? 0.5 : 1
+          ])
+        );
+        grimeyEntrySection.grimeyLoopStartOffsetBarsByKey = Object.fromEntries(
+          grimeyEntryLoopKeys.map(key => [
+            key,
+            key.includes("grm_kicks_x0.5") ? 0.5 : 0
+          ])
         );
         grimeyEntrySection.forcedAudioStartKeys = existingGrimeyKeys([
           "samples/grm_bass_lead_odd (consolidated).wav"
@@ -10142,8 +10165,14 @@ function scheduleMidiPattern({
 
         let scheduledCount = 0;
 
+        const loopStartOffsetBarsByKey = section.grimeyLoopStartOffsetBarsByKey || {};
+        const configuredStartOffsetBars = Object.prototype.hasOwnProperty.call(loopStartOffsetBarsByKey, key)
+          ? Number(loopStartOffsetBarsByKey[key])
+          : 0;
+        const loopStartSeconds = section.startSeconds + Math.max(0, Number.isFinite(configuredStartOffsetBars) ? configuredStartOffsetBars : 0) * section.barSeconds;
+
         for (
-          let startSeconds = section.startSeconds;
+          let startSeconds = loopStartSeconds;
           startSeconds < section.endSeconds;
           startSeconds += repeatEverySeconds
         ) {
