@@ -7510,6 +7510,22 @@ function scheduleMidiPattern({
       return type === "normal" || type.includes("lyrix");
     }
 
+    // These ordinary non-hook sample families have explicit rules/catalog entries,
+    // but their filenames do not match the older broad audio section allow-list.
+    // Keep this narrow: do not include gtar/sax/pno/rhodes/outro/lyrix-special systems here.
+    if (
+      key.includes("accbreath") ||
+      key.includes("beeps") ||
+      key.includes("heartbeats") ||
+      key.includes("vinyl") ||
+      key.includes("wash_build") ||
+      key.includes("shaker_") ||
+      key.includes("slackjaw_scratch") ||
+      key.includes("breathe_rev_vox")
+    ) {
+      return type === "normal" || type.includes("lyrix");
+    }
+
     if (isAhsKey(entry.key)) {
       if (type === "normal") return isAhsEntryExitTriggerKey(entry.key);
       if (type === "everything_intro") return isAhsPrimaryMainKey(entry.key);
