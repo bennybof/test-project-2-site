@@ -347,6 +347,46 @@
               "includeFutureScheduled": false
             }
           ]
+        },
+        "samples/accbreath_long_x4.wav": {
+          "globalInclusionChance": 0.5,
+          "activationChance": 0.01,
+          "dropoutChance": 0.01,
+          "dropoutIncreasePerActivation": 0.04,
+          "dropoutMaxChance": 0.2
+        },
+        "samples/chimes_odd (consolidated).wav": {
+          "globalInclusionChance": 0.5,
+          "activationChance": 0.1,
+          "dropoutChance": 0.1
+        },
+        "samples/heartbeats_xtra.wav": {
+          "globalInclusionChance": 0.1,
+          "activationChance": 0.005,
+          "dropoutChance": 0.02,
+          "dropoutIncreasePerActivation": 0.02
+        },
+        "samples/vinyl_xtra (consolidated).wav": {
+          "globalInclusionChance": 0.2,
+          "activationChance": 0.005,
+          "dropoutChance": 0.01,
+          "dropoutIncreasePerActivation": 0.01
+        },
+        "samples/hippy_synth_odd (consolidated).wav": {
+          "globalInclusionChance": 0.1,
+          "activationChance": 0.01,
+          "dropoutChance": 0.05
+        },
+        "samples/pad_1_xtra (consolidated).wav": {
+          "globalInclusionChance": 0.1,
+          "activationChance": 0.01,
+          "dropoutChance": 0.01,
+          "dropoutIncreasePerActivation": 0.01
+        },
+        "samples/crash_washes_metal_even (consolidated).wav": {
+          "globalInclusionChance": 0.2,
+          "activationChance": 0.05,
+          "dropoutChance": 0.5
         }
       }
     },

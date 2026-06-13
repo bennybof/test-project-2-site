@@ -5741,6 +5741,52 @@ function getNormalMidiHatChoiceGroupId(pattern) {
     };
   }
 
+
+  const ATMOSPHERE_ROOT_SELECTION_KEYS = [
+    "samples/accbreath_long_x4.wav",
+    "samples/chimes_odd (consolidated).wav",
+    "samples/heartbeats_xtra.wav",
+    "samples/vinyl_xtra (consolidated).wav",
+    "samples/hippy_synth_odd (consolidated).wav",
+    "samples/pad_1_xtra (consolidated).wav",
+    "samples/crash_washes_metal_even (consolidated).wav"
+  ];
+
+  function includeAtmosphereRootSelections({
+    random,
+    globalInclusionState = null,
+    requiredActivationState = null,
+    selectedAudio = null
+  } = {}) {
+    if (!selectedAudio) return 0;
+
+    let addedCount = 0;
+
+    for (const key of ATMOSPHERE_ROOT_SELECTION_KEYS) {
+      const entry = getCatalogEntry(key);
+      if (!entry) continue;
+
+      const hadKey = selectedAudio.has(key);
+
+      includeAudioByGlobalDecision({
+        random,
+        globalInclusionState,
+        requiredActivationState,
+        selectedAudio,
+        key,
+        entry,
+        fallbackChance: 0,
+        reason: "atmosphere_root_global_selection"
+      });
+
+      if (!hadKey && selectedAudio.has(key)) {
+        addedCount += 1;
+      }
+    }
+
+    return addedCount;
+  }
+
   function buildFullPlan(random) {
     const minTargetDurationSeconds = 150;
     const maxTargetDurationSeconds = 300;
@@ -6313,6 +6359,13 @@ function getNormalMidiHatChoiceGroupId(pattern) {
       reason: forceBombTickCandidate
         ? "forced_bomb_tick_test_url"
         : "bomb_tick_global_selection"
+    });
+
+    includeAtmosphereRootSelections({
+      random,
+      globalInclusionState,
+      requiredActivationState,
+      selectedAudio
     });
 
     // Select section-relevant audio instead of selecting everything equally.
