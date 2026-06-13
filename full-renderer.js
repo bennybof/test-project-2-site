@@ -4310,6 +4310,41 @@
       const buffer = buffers.get(candidate.key);
       if (!buffer) continue;
 
+      const candidateTags = new Set(
+        (Array.isArray(candidate.entry?.tags) ? candidate.entry.tags : [])
+          .map(tag => normalizeRuleDecisionToken(tag))
+      );
+
+      const candidateFamily = normalizeRuleDecisionToken(candidate.family || candidate.entry?.family || "");
+      if (candidateFamily) {
+        candidateTags.add(candidateFamily);
+        candidateTags.add(`family:${candidateFamily}`);
+      }
+
+      candidateTags.add("true_bass");
+
+      const blockedWindow = getMatchingActivationBlockWindow(playbackState, {
+        kind: "audio",
+        itemKey: candidate.key,
+        itemTags: candidateTags,
+        startSeconds
+      });
+
+      if (blockedWindow) {
+        section.trueBassSystemDebug.push({
+          event: "true_bass_blocked_by_activation_window",
+          family: system.activeFamily,
+          key: candidate.key,
+          localBarIndex,
+          startSeconds,
+          reason: blockedWindow.reason,
+          blockStartsAtSeconds: blockedWindow.startsAtSeconds,
+          blockEndsAtSeconds: blockedWindow.endsAtSeconds
+        });
+
+        continue;
+      }
+
       const scheduled = scheduleAudioBufferWithPlaybackState({
         offlineContext,
         destination,
@@ -7482,7 +7517,11 @@ function scheduleMidiPattern({
   }
 
   function shouldUseAhsEntryExitScheduler(section, key) {
-    return section?.type === "normal" && isAhsEntryExitTriggerKey(key);
+    return (
+      section?.type === "normal" &&
+      isAhsEntryExitTriggerKey(key) &&
+      !section.ahsEntryExitPreAttempted
+    );
   }
 
   function shouldSuppressGenericNormalAhsScheduling(section, key) {
@@ -7542,6 +7581,38 @@ function scheduleMidiPattern({
   } = {}) {
     let cursorSeconds = startSeconds;
     let scheduledCount = 0;
+    let latestEndSeconds = startSeconds;
+    let mainStartSeconds = Infinity;
+    let mainEndSeconds = startSeconds;
+
+    function recordAhsScheduleResult(result, scheduledStartSeconds) {
+      scheduledCount += result.count;
+      latestEndSeconds = Math.max(
+        latestEndSeconds,
+        scheduledStartSeconds + Math.max(0, Number(result.durationSeconds) || 0)
+      );
+    }
+
+    function scheduleAhsMainKey(key) {
+      if (!Number.isFinite(mainStartSeconds)) {
+        mainStartSeconds = cursorSeconds;
+      }
+
+      const result = scheduleAhsKeyAtTime({
+        offlineContext,
+        destination,
+        buffers,
+        playbackState,
+        section,
+        lifecycleStates,
+        key,
+        startSeconds: cursorSeconds
+      });
+
+      recordAhsScheduleResult(result, cursorSeconds);
+      cursorSeconds += result.durationSeconds;
+      mainEndSeconds = Math.max(mainEndSeconds, cursorSeconds);
+    }
 
     if (mode === "intro") {
       for (const item of layer.intro) {
@@ -7556,43 +7627,25 @@ function scheduleMidiPattern({
           startSeconds: cursorSeconds
         });
 
-        scheduledCount += result.count;
+        recordAhsScheduleResult(result, cursorSeconds);
         cursorSeconds += item.bars * section.barSeconds;
+        latestEndSeconds = Math.max(latestEndSeconds, cursorSeconds);
       }
 
       for (const key of layer.main) {
-        const result = scheduleAhsKeyAtTime({
-          offlineContext,
-          destination,
-          buffers,
-          playbackState,
-          section,
-          lifecycleStates,
-          key,
-          startSeconds: cursorSeconds
-        });
-
-        scheduledCount += result.count;
-        cursorSeconds += result.durationSeconds;
+        scheduleAhsMainKey(key);
       }
 
-      return scheduledCount;
+      return {
+        count: scheduledCount,
+        endSeconds: Math.max(latestEndSeconds, cursorSeconds),
+        mainStartSeconds,
+        mainEndSeconds
+      };
     }
 
     for (const key of layer.main) {
-      const result = scheduleAhsKeyAtTime({
-        offlineContext,
-        destination,
-        buffers,
-        playbackState,
-        section,
-        lifecycleStates,
-        key,
-        startSeconds: cursorSeconds
-      });
-
-      scheduledCount += result.count;
-      cursorSeconds += result.durationSeconds;
+      scheduleAhsMainKey(key);
     }
 
     for (const item of layer.outro) {
@@ -7607,11 +7660,78 @@ function scheduleMidiPattern({
         startSeconds: cursorSeconds
       });
 
-      scheduledCount += result.count;
+      recordAhsScheduleResult(result, cursorSeconds);
       cursorSeconds += item.bars * section.barSeconds;
+      latestEndSeconds = Math.max(latestEndSeconds, cursorSeconds);
     }
 
-    return scheduledCount;
+    return {
+      count: scheduledCount,
+      endSeconds: Math.max(latestEndSeconds, cursorSeconds),
+      mainStartSeconds,
+      mainEndSeconds
+    };
+  }
+
+  function addAhsMainActivationBlockWindows(playbackState, startsAtSeconds, endsAtSeconds) {
+    if (!playbackState) return [];
+
+    const windows = [];
+
+    for (const family of ["real_bass", "synth_bass", "nuva_bass", "low_cello"]) {
+      windows.push(addActivationBlockWindow(playbackState, {
+        startsAtSeconds,
+        endsAtSeconds,
+        kind: "audio",
+        family,
+        reason: "ahs_main_blocks_true_bass_activation"
+      }));
+    }
+
+    windows.push(addActivationBlockWindow(playbackState, {
+      startsAtSeconds,
+      endsAtSeconds,
+      kind: "audio",
+      tag: "true_bass",
+      reason: "ahs_main_blocks_true_bass_activation"
+    }));
+
+    for (const tag of ["hats", "main_hats", "speedy_hats", "trap_hats", "lego_hats", "messy_hats", "jazz_hats", "ch", "oh"]) {
+      windows.push(addActivationBlockWindow(playbackState, {
+        startsAtSeconds,
+        endsAtSeconds,
+        kind: "midi",
+        tag,
+        reason: "ahs_main_blocks_hat_activation"
+      }));
+    }
+
+    return windows.filter(Boolean);
+  }
+
+  function applyAhsMainActivationBlockWindow(playbackState, startsAtSeconds, endsAtSeconds) {
+    if (!playbackState) {
+      return {
+        blockWindowCount: 0
+      };
+    }
+
+    const start = Math.max(0, Number(startsAtSeconds) || 0);
+    const end = Math.max(start, Number(endsAtSeconds) || start);
+
+    if (end <= start) {
+      return {
+        blockWindowCount: 0
+      };
+    }
+
+    const blockWindows = addAhsMainActivationBlockWindows(playbackState, start, end);
+
+    return {
+      blockWindowCount: blockWindows.length,
+      startsAtSeconds: start,
+      endsAtSeconds: end
+    };
   }
 
   function scheduleAhsEntryExitSequence({
@@ -7656,9 +7776,12 @@ function scheduleMidiPattern({
     const mode = chance(random, 0.5) ? "intro" : "outro";
     const activeBuffers = buffers || currentRenderBuffers;
     let scheduledCount = 0;
+    let sequenceEndSeconds = startSeconds;
+    let mainStartSeconds = Infinity;
+    let mainEndSeconds = startSeconds;
 
     for (const layer of AHS_LAYER_TRANSITION_RULES) {
-      scheduledCount += scheduleAhsLayerTransition({
+      const result = scheduleAhsLayerTransition({
         offlineContext,
         destination,
         buffers: activeBuffers,
@@ -7669,7 +7792,21 @@ function scheduleMidiPattern({
         mode,
         startSeconds
       });
+
+      scheduledCount += result.count;
+      sequenceEndSeconds = Math.max(sequenceEndSeconds, result.endSeconds || startSeconds);
+
+      if (Number.isFinite(result.mainStartSeconds)) {
+        mainStartSeconds = Math.min(mainStartSeconds, result.mainStartSeconds);
+        mainEndSeconds = Math.max(mainEndSeconds, result.mainEndSeconds || result.mainStartSeconds);
+      }
     }
+
+    const suppressionResult = scheduledCount > 0 && Number.isFinite(mainStartSeconds)
+      ? applyAhsMainActivationBlockWindow(playbackState, mainStartSeconds, mainEndSeconds)
+      : {
+          blockWindowCount: 0
+        };
 
     if (scheduledCount > 0 && lifecycleStates) {
       activateLifecycleItem(
@@ -7685,7 +7822,11 @@ function scheduleMidiPattern({
         mode,
         triggerKey: AHS_ENTRY_EXIT_TRIGGER_KEY,
         startSeconds,
-        scheduledCount
+        endSeconds: sequenceEndSeconds,
+        mainStartSeconds: Number.isFinite(mainStartSeconds) ? mainStartSeconds : null,
+        mainEndSeconds,
+        scheduledCount,
+        suppressionResult
       });
     }
 
@@ -9798,6 +9939,32 @@ function scheduleMidiPattern({
     }
     for (const section of sections) {
       expirePlaybackItemsAtTime(playbackState, section.startSeconds);
+
+      if (
+        section?.type === "normal" &&
+        Array.isArray(plan?.selectedAudio) &&
+        plan.selectedAudio.includes(AHS_ENTRY_EXIT_TRIGGER_KEY)
+      ) {
+        section.ahsEntryExitPreAttempted = true;
+
+        const ahsTriggerEntry = getCatalogEntry(AHS_ENTRY_EXIT_TRIGGER_KEY);
+
+        if (ahsTriggerEntry) {
+          scheduleAhsEntryExitSequence({
+            offlineContext,
+            destination,
+            buffers,
+            key: AHS_ENTRY_EXIT_TRIGGER_KEY,
+            entry: ahsTriggerEntry,
+            random,
+            plan,
+            playbackState,
+            lifecycleStates,
+            section
+          });
+        }
+      }
+
       const sectionMidiKeys = Array.isArray(section.selectedMidi) ? section.selectedMidi : plan.selectedMidi;
       const sectionMidi = sectionMidiKeys
         .map(file => {
