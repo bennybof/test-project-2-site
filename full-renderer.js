@@ -7230,6 +7230,13 @@ function scheduleMidiPattern({
       ? Number(intrusiveBranchFollowup?.muteMainPart || 0)
       : 0;
 
+    const isHolditLyrix = lyrixSection.id === "holdit";
+    const holditEarlyStopRule = isHolditLyrix ? lyrixSection.earlyStopRule || null : null;
+    const holditEarlyStopAfterPart = Number(holditEarlyStopRule?.stopAfterPart || 0);
+    const holditStopsEarly = holditEarlyStopAfterPart > 0 &&
+      chance(random, Number(holditEarlyStopRule?.chance) || 0);
+    let holditEarlyStopAdlibStart = null;
+
     const isWeed2BranchFromWeed1 = lyrixSection.id === "weed_1" && section.weedBranchSection?.id === "weed_2";
 
     for (const part of lyrixSection.parts) {
@@ -7244,6 +7251,13 @@ function scheduleMidiPattern({
       }
 
       if (intrusiveStopsAfterPart && partNumber > intrusiveStopAfterPart) {
+        continue;
+      }
+
+      if (holditStopsEarly && partNumber > holditEarlyStopAfterPart) {
+        if (holditEarlyStopAdlibStart === null) {
+          holditEarlyStopAdlibStart = start;
+        }
         continue;
       }
 
@@ -7484,9 +7498,57 @@ function scheduleMidiPattern({
       }
     }
 
+    if (holditStopsEarly && typeof holditEarlyStopAdlibStart === "number") {
+      const holditHindsightAdlib = lyrixSection.adlibs?.find(adlib => adlib.id === "hindsight_adlib_holdit") || null;
+      const heinzsightLyrix = lyrixSection.relatedLyrix?.find(item => item.id === "heinzsight") || null;
+
+      if (holditHindsightAdlib?.files?.dry) {
+        scheduleLyrixPathWithPlaybackState({
+          offlineContext,
+          destination,
+          path: holditHindsightAdlib.files.dry,
+          buffer: buffers.get(holditHindsightAdlib.files.dry),
+          startTime: holditEarlyStopAdlibStart,
+          gainValue: 0.72,
+          playbackState,
+          section
+        });
+      }
+
+      if (holditHindsightAdlib?.files?.wet) {
+        scheduleLyrixPathWithPlaybackState({
+          offlineContext,
+          destination,
+          path: holditHindsightAdlib.files.wet,
+          buffer: buffers.get(holditHindsightAdlib.files.wet),
+          startTime: holditEarlyStopAdlibStart,
+          gainValue: 0.72,
+          playbackState,
+          section
+        });
+      }
+
+      if (heinzsightLyrix?.file) {
+        scheduleLyrixPathWithPlaybackState({
+          offlineContext,
+          destination,
+          path: heinzsightLyrix.file,
+          buffer: buffers.get(heinzsightLyrix.file),
+          startTime: holditEarlyStopAdlibStart,
+          gainValue: 0.72,
+          playbackState,
+          section
+        });
+      }
+    }
+
     const adlibs = lyrixSection.adlibs ? [].concat(lyrixSection.adlibs) : [];
 
     for (const adlib of adlibs) {
+      if (holditStopsEarly && adlib.id === "hindsight_adlib_holdit") {
+        continue;
+      }
+
       let adlibStart = null;
 
       if (isWeed2BranchFromWeed1 && Number.isFinite(Number(adlib.startsAfterWeedSectionStartBars))) {
