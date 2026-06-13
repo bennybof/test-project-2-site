@@ -3358,6 +3358,70 @@
           "lyrix/yapa_lyrix_xtra_even_wet (consolidated) #7.wav",
           "lyrix/yapa_lyrix_xtra_even_wet (consolidated).wav"
         ]
+      },
+      "breathe_rev_vox_suspense_even_x2": {
+        "dry": [
+          "samples/breathe_rev_vox_dry_suspense_even_x2 (consolidated).wav"
+        ],
+        "wet": [
+          "samples/breathe_rev_vox_wet_suspense_even_x2 (consolidated).wav"
+        ]
+      },
+      "breathe_vox_big_even_x2": {
+        "dry": [
+          "samples/breathe_vox_big_dry_even_x2.wav"
+        ],
+        "wet": [
+          "samples/breathe_vox_wet_big_even_x2.wav"
+        ]
+      },
+      "breathe_vox_small_different_even_x4": {
+        "dry": [
+          "samples/breathe_vox_small_different_dry_2_even_x4.wav"
+        ],
+        "wet": [
+          "samples/breathe_vox_wet_small_different_2_even_x4.wav"
+        ]
+      },
+      "breathe_vox_small_different_even_x2": {
+        "dry": [
+          "samples/breathe_vox_small_different_dry_even_x2 (consolidated).wav"
+        ],
+        "wet": [
+          "samples/breathe_vox_wet_small_different_even_x2 (consolidated).wav"
+        ]
+      },
+      "breathe_vox_small_even_x2": {
+        "dry": [
+          "samples/breathe_vox_small_dry_even_x2.wav"
+        ],
+        "wet": [
+          "samples/breathe_vox_wet_small_even_x2.wav"
+        ]
+      },
+      "other_vox_even_x2": {
+        "dry": [
+          "samples/other_vox_dry_even_x2.wav"
+        ],
+        "wet": [
+          "samples/other_vox_wet_even_x2.wav"
+        ]
+      },
+      "random_vox_x4_even": {
+        "dry": [
+          "samples/random_vox_dry_x4_even_~.wav"
+        ],
+        "wet": [
+          "samples/random_vox_wet_x4_even_~.wav"
+        ]
+      },
+      "wierd_vox_odd_x2": {
+        "dry": [
+          "samples/wierd_vox_dry_odd_x2 (consolidated).wav"
+        ],
+        "wet": [
+          "samples/wierd_vox_wet_odd_x2.wav"
+        ]
       }
     },
     "numberedGroups": {
