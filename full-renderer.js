@@ -5774,6 +5774,10 @@ function getNormalMidiHatChoiceGroupId(pattern) {
   }
 
 
+  const PAD_1_ATMOSPHERE_KEY = "samples/pad_1_xtra (consolidated).wav";
+  const PAD_2_REPLACEMENT_KEY = "samples/pad_2_odd_xtra (consolidated).wav";
+  const PAD_2_REPLACEMENT_CHANCE = 0.2;
+
   const ATMOSPHERE_ROOT_SELECTION_KEYS = [
     "samples/accbreath_long_x4.wav",
     "samples/chimes_odd (consolidated).wav",
@@ -5783,6 +5787,60 @@ function getNormalMidiHatChoiceGroupId(pattern) {
     "samples/pad_1_xtra (consolidated).wav",
     "samples/crash_washes_metal_even (consolidated).wav"
   ];
+
+  function expandPadReplacementTargets({
+    random,
+    selectedAudio = null,
+    globalInclusionState = null,
+    requiredActivationState = null
+  } = {}) {
+    if (!selectedAudio || !selectedAudio.has(PAD_1_ATMOSPHERE_KEY)) return 0;
+
+    const pad2Entry = getCatalogEntry(PAD_2_REPLACEMENT_KEY);
+    if (!pad2Entry) return 0;
+
+    const hadTarget = selectedAudio.has(PAD_2_REPLACEMENT_KEY);
+
+    forceIncludeAudioSelection({
+      random,
+      globalInclusionState,
+      requiredActivationState,
+      selectedAudio,
+      key: PAD_2_REPLACEMENT_KEY,
+      reason: "pad_2_replacement_candidate_for_pad_1"
+    });
+
+    return !hadTarget && selectedAudio.has(PAD_2_REPLACEMENT_KEY) ? 1 : 0;
+  }
+
+  function getPad2ReplacementCandidateForPad1({
+    random,
+    buffers = null,
+    section = null,
+    localBarIndex = null
+  } = {}) {
+    if (!section) return null;
+    if (!chance(random, PAD_2_REPLACEMENT_CHANCE)) return null;
+
+    const pad2Entry = getCatalogEntry(PAD_2_REPLACEMENT_KEY);
+    if (!pad2Entry) return null;
+    if (!audioMatchesSection(pad2Entry, section)) return null;
+
+    const pad2Profile = getRuleProfileForEntry(pad2Entry);
+    const allowedPad2Bars = getAllowedLocalBarIndexesForKey(PAD_2_REPLACEMENT_KEY, section, pad2Profile);
+    if (!allowedPad2Bars.includes(localBarIndex)) return null;
+
+    const activeBuffers = buffers || currentRenderBuffers;
+    const pad2Buffer = activeBuffers?.get(PAD_2_REPLACEMENT_KEY);
+    if (!pad2Buffer) return null;
+
+    return {
+      key: PAD_2_REPLACEMENT_KEY,
+      entry: pad2Entry,
+      buffer: pad2Buffer,
+      profile: pad2Profile
+    };
+  }
 
   function includeAtmosphereRootSelections({
     random,
@@ -6950,6 +7008,13 @@ function getNormalMidiHatChoiceGroupId(pattern) {
     });
 
     expandDependentActivationTargets({
+      random,
+      selectedAudio,
+      globalInclusionState,
+      requiredActivationState
+    });
+
+    expandPadReplacementTargets({
       random,
       selectedAudio,
       globalInclusionState,
@@ -9398,21 +9463,48 @@ function scheduleMidiPattern({
       });
 
       if (audioDecisionResult.allowed) {
+        const pad2Replacement = key === PAD_1_ATMOSPHERE_KEY
+          ? getPad2ReplacementCandidateForPad1({
+              random,
+              buffers: buffers || currentRenderBuffers,
+              section,
+              localBarIndex: localBar
+            })
+          : null;
+
+        const scheduledBuffer = pad2Replacement?.buffer || buffer;
+        const scheduledKey = pad2Replacement?.key || key;
+        const scheduledEntry = pad2Replacement?.entry || entry;
+
         applyCutoffRulesForAllowedDecision(playbackState, audioDecisionResult.context, audioProfile);
         const scheduled = scheduleAudioBufferWithPlaybackState({
           offlineContext,
           destination,
-          buffer,
+          buffer: scheduledBuffer,
           startTime: startSeconds,
           gainValue: gain,
           playbackState,
-          key,
-          entry,
+          key: scheduledKey,
+          entry: scheduledEntry,
           section
         });
 
         if (scheduled) {
           scheduledCount += 1;
+
+          if (pad2Replacement && section) {
+            if (!Array.isArray(section.padReplacementDebug)) {
+              section.padReplacementDebug = [];
+            }
+
+            section.padReplacementDebug.push({
+              sourceKey: key,
+              replacementKey: scheduledKey,
+              startSeconds,
+              localBarIndex: localBar,
+              chance: PAD_2_REPLACEMENT_CHANCE
+            });
+          }
 
           if (isTypewriterKey(key)) {
             applyTypewriterReplacementCutoffs(playbackState, scheduled, key, section);

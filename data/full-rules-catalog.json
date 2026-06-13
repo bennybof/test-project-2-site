@@ -571,6 +571,13 @@
               ]
             }
           ]
+        },
+        "samples/pad_2_odd_xtra (consolidated).wav": {
+          "replacementOnly": true,
+          "dependentActivationOnly": true,
+          "activationMode": "replacement",
+          "replacementSourceKey": "samples/pad_1_xtra (consolidated).wav",
+          "replacementChance": 0.2
         }
       }
     },
