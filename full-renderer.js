@@ -1403,6 +1403,98 @@
       normalizeRuleDecisionToken(item?.family) === "lyrix";
   }
 
+
+  function isOutburstSection(section) {
+    const type = String(section?.type || "");
+    return type === "outburst_intro" || type === "outburst_main";
+  }
+
+  function isOutburstKey(key = "") {
+    return String(key || "").toLowerCase().includes("outburst");
+  }
+
+  function isOutburstPlaybackItem(item) {
+    return isOutburstKey(item?.key) ||
+      playbackItemHasTag(item, "outburst") ||
+      playbackItemHasTag(item, "outburst_section");
+  }
+
+  function isOutburstAudioEntry(entry) {
+    return isOutburstKey(entry?.key) ||
+      (Array.isArray(entry?.tags) && entry.tags.some(tag => normalizeRuleDecisionToken(tag) === "outburst"));
+  }
+
+  function isOutburstMidiPattern(pattern) {
+    return isOutburstKey(pattern?.file);
+  }
+
+  function getOutburstBlockEndSeconds(section, sections = []) {
+    if (!section || section.type !== "outburst_intro") return Number(section?.endSeconds || 0);
+
+    const nextOutburstMain = sections.find(candidate =>
+      candidate &&
+      candidate.type === "outburst_main" &&
+      Number(candidate.startSeconds) >= Number(section.endSeconds) - 0.001
+    );
+
+    return Math.max(
+      Number(section.endSeconds || 0),
+      Number(nextOutburstMain?.endSeconds || 0)
+    );
+  }
+
+  function applyOutburstSectionResetBlock(playbackState, section, sections = []) {
+    if (!playbackState || !section || section.type !== "outburst_intro") return null;
+
+    const cutTimeSeconds = Number(section.startSeconds || 0);
+    const blockEndSeconds = getOutburstBlockEndSeconds(section, sections);
+    const activeItems = getActivePlaybackItemsAtTime(playbackState, cutTimeSeconds, {});
+    const futureItems = getFuturePlaybackItemsAfterTime(playbackState, cutTimeSeconds, {})
+      .filter(item => Number(item.startSeconds || 0) < blockEndSeconds);
+
+    let activeCutCount = 0;
+    let futureCutCount = 0;
+
+    for (const item of activeItems) {
+      if (isOutburstPlaybackItem(item)) continue;
+
+      if (cutOffPlaybackItem(playbackState, item, cutTimeSeconds, {
+        fadeSeconds: 0.01,
+        reason: "outburst_intro_resets_previous_material"
+      })) {
+        activeCutCount += 1;
+      }
+    }
+
+    for (const item of futureItems) {
+      if (isOutburstPlaybackItem(item)) continue;
+
+      if (cutOffPlaybackItem(playbackState, item, cutTimeSeconds, {
+        fadeSeconds: 0.01,
+        reason: "outburst_intro_blocks_future_previous_material"
+      })) {
+        futureCutCount += 1;
+      }
+    }
+
+    addActivationBlockWindow(playbackState, {
+      startsAtSeconds: cutTimeSeconds,
+      endsAtSeconds: blockEndSeconds,
+      kind: "midi",
+      reason: "outburst_section_blocks_non_outburst_midi"
+    });
+
+    section.outburstResetBlockDebug = {
+      cutTimeSeconds,
+      blockEndSeconds,
+      activeCutCount,
+      futureCutCount,
+      blockedMidiWindow: true
+    };
+
+    return section.outburstResetBlockDebug;
+  }
+
   function shouldCutForLyrixSecondBarRule(item) {
     return item && !isAtmospherePlaybackItem(item) && !isLyrixPlaybackItem(item);
   }
@@ -6096,9 +6188,9 @@ function getNormalMidiHatChoiceGroupId(pattern) {
       const tagLyrixKeys = chooseTagLyrixKeysForFirstLyrix(random);
       if (!tagLyrixKeys.length) return null;
 
-      const tagSection = addSection("lyrix_tag", 1, {
+      const tagSection = addSection("tag_audio", 1, {
         reset: false,
-        tags: ["lyrix", "tag_lyrix", reason]
+        tags: ["tag_lyrix", reason]
       });
 
       tagSection.forcedTagLyrixKeys = tagLyrixKeys;
@@ -6600,7 +6692,7 @@ function getNormalMidiHatChoiceGroupId(pattern) {
 
     // Select section-relevant audio instead of selecting everything equally.
     for (const section of sectionTimeline) {
-      if (section.type === "lyrix_tag") continue;
+      if (section.type === "tag_audio") continue;
 
       const matchingEntries = audioEntries.filter(entry => {
         if (!normalSynthGroupIncluded && isNormalSynthGlobalGateEntry(entry)) return false;
@@ -7898,6 +7990,10 @@ function scheduleMidiPattern({
     const key = entry.key.toLowerCase();
     const type = section.type;
 
+    if (isOutburstSection(section)) {
+      return isOutburstAudioEntry(entry);
+    }
+
     if (isHookDrumsSkipIntroSection(section)) {
       return entry.key === "samples/hook_drums_skip_intro.wav";
     }
@@ -7913,7 +8009,7 @@ function scheduleMidiPattern({
     if (entry.folder === "alternate downloads") return false;
 
     if (isTagLyrixKey(entry.key)) {
-      return type === "lyrix_tag";
+      return type === "tag_audio";
     }
 
     if (isBombTickKey(entry.key)) {
@@ -9389,7 +9485,7 @@ function scheduleMidiPattern({
     const gain = sectionGainForAudio(entry, section);
     const audioProfile = getRuleProfileForEntry(entry);
 
-    if (section?.type === "lyrix_tag" && isTagLyrixKey(key)) {
+    if (section?.type === "tag_audio" && isTagLyrixKey(key)) {
       const scheduled = scheduleAudioBufferWithPlaybackState({
         offlineContext,
         destination,
@@ -9848,6 +9944,7 @@ function scheduleMidiPattern({
       const midiLifecycleId = getMidiLifecycleId(pattern.file);
 
       if (!isLifecycleIdEligible(lifecycleStates, midiLifecycleId)) return 0;
+      if (isOutburstSection(section) && !isOutburstMidiPattern(pattern)) return 0;
 
       const allowEveryBarMidiContinuation = shouldAllowEveryBarActiveContinuationForMidi(pattern);
       const repeatEveryBars = allowEveryBarMidiContinuation ? 1 : getMidiRepeatEveryBars(pattern);
@@ -10019,6 +10116,7 @@ function scheduleMidiPattern({
       return totalScheduledCount;
     }
     for (const section of sections) {
+      applyOutburstSectionResetBlock(playbackState, section, sections);
       expirePlaybackItemsAtTime(playbackState, section.startSeconds);
 
       if (
@@ -11020,5 +11118,6 @@ currentRenderBuffers = buffers;
 
   init();
 })();
+
 
 
