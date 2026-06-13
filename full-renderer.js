@@ -6619,22 +6619,11 @@ function getNormalMidiHatChoiceGroupId(pattern) {
         continue;
       }
 
-      if (roll < 0.23 && chance(random, catalog.rulePools.drop.globalInclusionChance ?? 0.1)) {
-        addSection("drop", 4, {
-          reset: true,
-          tags: ["drop", "major_reset"]
+      if (roll < 0.23) {
+        addSection("normal", 8, {
+          reset: false,
+          tags: ["normal", "drop_midtrack_disabled_ending_only"]
         });
-
-        for (const key of catalog.rulePools.drop.files) {
-          forceIncludeAudioSelection({
-            random,
-            globalInclusionState,
-            requiredActivationState,
-            selectedAudio,
-            key,
-            reason: "forced_drop_section"
-          });
-        }
         continue;
       }
 
@@ -7035,10 +7024,32 @@ function getNormalMidiHatChoiceGroupId(pattern) {
       });
     }
 
-    addSection("ending", 8, {
-      reset: true,
-      tags: ["ending"]
+    const useDropEnding = cursorSeconds >= 60 && chance(random, 0.03);
+    const endingSection = addSection(useDropEnding ? "drop_ending" : "ending", 8, {
+      reset: useDropEnding ? false : true,
+      tags: useDropEnding ? ["drop", "drop_ending", "ending"] : ["ending"]
     });
+
+    if (useDropEnding) {
+      const dropEndingKeys = (catalog.rulePools.drop.files || [])
+        .filter(key => String(key || "").includes("drop_"))
+        .filter(key => !String(key || "").includes("dropped_"))
+        .filter(key => getCatalogEntry(key));
+
+      endingSection.dropEndingAudioKeys = dropEndingKeys;
+      endingSection.forcedAudioStartKeys = dropEndingKeys;
+
+      for (const key of dropEndingKeys) {
+        forceIncludeAudioSelection({
+          random,
+          globalInclusionState,
+          requiredActivationState,
+          selectedAudio,
+          key,
+          reason: "forced_drop_ending"
+        });
+      }
+    }
 
     const audioEntries = getAllCatalogEntries().filter(entry => isAudio(entry) && !isMidiSample(entry));
     const midiPatternPool = midiPatterns.patterns.filter(isDrumMidiPattern);
@@ -10107,8 +10118,16 @@ function scheduleMidiPattern({
     }
 
     if (keyLower.includes("drop_") || keyLower.includes("dropped_")) {
-      const localBar = Math.floor(random() * Math.max(1, section.bars));
-      const startSeconds = section.startSeconds + localBar * section.barSeconds;
+      const sectionType = String(section?.type || "").toLowerCase();
+
+      if (sectionType.includes("drop_ending") && keyLower.includes("dropped_")) {
+        return 0;
+      }
+
+      const startSeconds = sectionType.includes("drop_ending")
+        ? section.startSeconds
+        : section.startSeconds + Math.floor(random() * Math.max(1, section.bars)) * section.barSeconds;
+
       const scheduled = scheduleAudioBufferWithPlaybackState({
         offlineContext,
         destination,
