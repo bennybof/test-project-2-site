@@ -6833,6 +6833,21 @@ function getNormalMidiHatChoiceGroupId(pattern) {
           tags: ["grimey", "tempo_70", "grimey_main"]
         });
         grimeyMainSection.grimeyAudioKeys = existingGrimeyKeys(grimeyMainKeys);
+        const grimeyMainLoopKeys = existingGrimeyKeys([
+          grimeyBassKey,
+          "samples/grm_kicks_x0.5 (consolidated).wav",
+          "samples/grm_hats_fuzz.wav",
+          "samples/grm_bagoo_1_odd.wav",
+          "samples/grm_bagoo_2_even.wav",
+          "samples/grm_synth_1_odd.wav"
+        ]);
+        grimeyMainSection.grimeyLoopAudioKeys = grimeyMainLoopKeys;
+        grimeyMainSection.grimeyLoopEveryBarsByKey = Object.fromEntries(
+          grimeyMainLoopKeys.map(key => [
+            key,
+            key.includes("grm_kicks_x0.5") ? 1 : 2
+          ])
+        );
         grimeyMainSection.grimeyRoute = {
           routeName: grimeyRouteName,
           bassKey: grimeyBassKey
@@ -6845,6 +6860,25 @@ function getNormalMidiHatChoiceGroupId(pattern) {
           });
 
           grimeyRouteSection.grimeyAudioKeys = existingGrimeyKeys(routePlan.keys);
+          const grimeyRouteLoopKeys = existingGrimeyKeys(
+            routePlan.keys.filter(key => {
+              const lowerKey = key.toLowerCase();
+              return (
+                !lowerKey.includes("lyrix") &&
+                !lowerKey.includes("breathe_vox") &&
+                !lowerKey.includes("airhorn")
+              );
+            })
+          );
+          grimeyRouteSection.grimeyLoopAudioKeys = grimeyRouteLoopKeys;
+          grimeyRouteSection.grimeyLoopEveryBarsByKey = Object.fromEntries(
+            grimeyRouteLoopKeys.map(key => [
+              key,
+              routePlan.routeName === "simple" || routePlan.routeName === "ah_grm"
+                ? Math.max(1, routePlan.bars)
+                : 2
+            ])
+          );
           grimeyRouteSection.forcedAudioStartKeys = existingGrimeyKeys([
             routePlan.keys[0]
           ]);
@@ -9849,7 +9883,12 @@ function scheduleMidiPattern({
       });
     }
 
-    if (isSectionForcedAudioStartKey(section, key)) {
+    const sectionGrimeyLoopAudioKeys = Array.isArray(section?.grimeyLoopAudioKeys)
+      ? section.grimeyLoopAudioKeys
+      : [];
+    const isGrimeyLoopAudioKey = sectionGrimeyLoopAudioKeys.includes(key);
+
+    if (isSectionForcedAudioStartKey(section, key) && !isGrimeyLoopAudioKey) {
       const scheduled = scheduleAudioBufferWithPlaybackState({
         offlineContext,
         destination,
@@ -9985,8 +10024,49 @@ function scheduleMidiPattern({
     }
 
     if (keyLower.includes("grm_") || keyLower.includes("rewind_sfx")) {
-      const localBar = Math.floor(random() * Math.max(1, section.bars));
-      const startSeconds = section.startSeconds + localBar * section.barSeconds;
+      const isGrimeySection = String(section?.type || "").includes("grimey");
+      const grimeyLoopAudioKeys = Array.isArray(section?.grimeyLoopAudioKeys)
+        ? section.grimeyLoopAudioKeys
+        : [];
+      const loopEveryBarsByKey = section?.grimeyLoopEveryBarsByKey || {};
+      const shouldLoopInGrimeySection = isGrimeySection && grimeyLoopAudioKeys.includes(key);
+
+      if (shouldLoopInGrimeySection) {
+        const repeatEveryBars = Math.max(
+          1,
+          Number(loopEveryBarsByKey[key] || (keyLower.includes("grm_kicks_x0.5") ? 1 : 2))
+        );
+
+        let scheduledCount = 0;
+
+        for (let localBar = 0; localBar < Math.max(1, section.bars); localBar += repeatEveryBars) {
+          const startSeconds = section.startSeconds + localBar * section.barSeconds;
+          if (startSeconds >= section.endSeconds) continue;
+
+          const scheduled = scheduleAudioBufferWithPlaybackState({
+            offlineContext,
+            destination,
+            buffer,
+            startTime: startSeconds,
+            gainValue: gain,
+            playbackState,
+            key,
+            entry,
+            section
+          });
+
+          if (scheduled) {
+            scheduledCount += 1 + scheduleDependents(startSeconds);
+          }
+        }
+
+        return scheduledCount;
+      }
+
+      const startSeconds = isGrimeySection
+        ? section.startSeconds
+        : section.startSeconds + Math.floor(random() * Math.max(1, section.bars)) * section.barSeconds;
+
       const scheduled = scheduleAudioBufferWithPlaybackState({
         offlineContext,
         destination,
