@@ -5350,7 +5350,10 @@ function getNormalMidiHatChoiceGroupId(pattern) {
   }
 
   function buildFullPlan(random) {
-    const duration = Math.max(180, rules.songLengthSeconds || 180);
+    const minTargetDurationSeconds = 150;
+    const maxTargetDurationSeconds = 300;
+    const targetDurationSeconds = minTargetDurationSeconds + (random() * (maxTargetDurationSeconds - minTargetDurationSeconds));
+    const duration = targetDurationSeconds;
 
     const mainBpm = catalog.rulePools.timing.mainBpm;
     const grimeyBpm = catalog.rulePools.timing.grimeyBpm;
@@ -6427,6 +6430,11 @@ function getNormalMidiHatChoiceGroupId(pattern) {
       hookStartDecision,
       forceGlobalFadeIn: Boolean(hookStartDecision?.forceGlobalFadeIn),
       disableGlobalFadeIn: Boolean(hookStartDecision?.disableGlobalFadeIn),
+      targetDurationSeconds,
+      targetDurationRangeSeconds: {
+        min: minTargetDurationSeconds,
+        max: maxTargetDurationSeconds
+      },
       plannedDurationSeconds: cursorSeconds
     };
   }
