@@ -6938,11 +6938,7 @@ function getNormalMidiHatChoiceGroupId(pattern) {
         grimeyMainSection.grimeyLoopEveryBarsByKey = Object.fromEntries(
           grimeyMainLoopKeys.map(key => [
             key,
-            key.includes("grm_kicks_x0.5")
-              ? 0.5
-              : (key.includes("grm_nuva_bass_odd") || key.includes("grm_main_bass_odd"))
-                ? 2
-                : 1
+            key.includes("grm_kicks_x0.5") ? 0.5 : 1
           ])
         );
         grimeyMainSection.grimeyRoute = {
