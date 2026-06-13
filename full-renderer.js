@@ -7025,6 +7025,10 @@ function getNormalMidiHatChoiceGroupId(pattern) {
       family
     });
 
+    if (scheduleHandle?.scheduled) {
+      maybeTriggerSongBlownUpSecretEvent(playbackState, key, scheduleHandle.startTime);
+    }
+
     return scheduleHandle;
   }
   function getMidiRepeatEveryBars(pattern) {
@@ -9345,6 +9349,8 @@ function scheduleMidiPattern({
     const sections = plan.sectionTimeline || [];
     const lifecycleStates = createLifecycleMapFromPlan(plan);
     const playbackState = createPlaybackRuleState();
+    playbackState.secretEvent = plan?.secretEvent || null;
+    playbackState.secretEventRandom = mulberry32((currentSeed ^ 0xB10B10) >>> 0);
 
     function scheduleMidiPatternInSectionWithRules(pattern, section) {
       const midiLifecycleId = getMidiLifecycleId(pattern.file);
@@ -9693,6 +9699,8 @@ function scheduleMidiPattern({
       }))
     };
 
+    plan.secretEvent = playbackState.secretEvent || plan.secretEvent || null;
+
     writeLifecycleMapToPlan(plan, lifecycleStates);
     plan.audioLifecycleDebugSummary = buildAudioLifecycleDebugSummary(plan);
   }
@@ -9813,6 +9821,7 @@ function scheduleMidiPattern({
 
 
   const ADVERT_SECRET_EVENT_FILE = "alternate downloads/advert.wav";
+  const SONG_BLOWN_UP_SECRET_EVENT_FILE = "alternate downloads/song_blown_up.wav";
   const SECRET_EVENT_SESSION_KEY = "tp2_last_secret_event_download";
 
   function getForcedSecretEventId() {
@@ -9868,6 +9877,57 @@ function scheduleMidiPattern({
         : minStartSeconds + (maxStartSeconds - minStartSeconds) * random(),
       forced: forcedAdvert
     };
+  }
+
+  function isBombTickKey(key) {
+    return String(key || "").toLowerCase().includes("bomb_tick");
+  }
+
+  function isSongBlownUpForced() {
+    const forcedSecretEventId = getForcedSecretEventId();
+
+    return (
+      forcedSecretEventId === "song_blown_up" ||
+      forcedSecretEventId === "song-blown-up" ||
+      forcedSecretEventId === "song" ||
+      forcedSecretEventId === "song_blown_up.wav"
+    );
+  }
+
+  function shouldLoadSongBlownUpSecretEvent(plan) {
+    if (isSongBlownUpForced()) return true;
+
+    return Array.isArray(plan?.selectedAudio) && plan.selectedAudio.some(isBombTickKey);
+  }
+
+  function maybeTriggerSongBlownUpSecretEvent(playbackState, key, startSeconds) {
+    if (!playbackState || playbackState.secretEvent) return null;
+    if (!isBombTickKey(key)) return null;
+
+    const forcedSongBlownUp = isSongBlownUpForced();
+
+    if (!forcedSongBlownUp && getLastSecretEventDownloadId() === "song_blown_up") {
+      return null;
+    }
+
+    const random = typeof playbackState.secretEventRandom === "function"
+      ? playbackState.secretEventRandom
+      : (() => 1);
+
+    if (!forcedSongBlownUp && !chance(random, 0.01)) {
+      return null;
+    }
+
+    playbackState.secretEvent = {
+      id: "song_blown_up",
+      type: "song_blown_up",
+      file: SONG_BLOWN_UP_SECRET_EVENT_FILE,
+      startSeconds: Math.max(0, Number(startSeconds) || 0),
+      triggerKey: key,
+      forced: forcedSongBlownUp
+    };
+
+    return playbackState.secretEvent;
   }
 
   function createEmptyAudioBufferLike(sourceBuffer, lengthSamples) {
@@ -9964,12 +10024,53 @@ function scheduleMidiPattern({
     return outputBuffer;
   }
 
+  function applySongBlownUpSecretEvent(renderedBuffer, songBlownUpBuffer, secretEvent) {
+    if (!renderedBuffer || !songBlownUpBuffer || !secretEvent) return renderedBuffer;
+
+    const sampleRate = renderedBuffer.sampleRate || 44100;
+    const startSample = Math.max(
+      0,
+      Math.min(renderedBuffer.length - 1, Math.floor(secretEvent.startSeconds * sampleRate))
+    );
+    const fadeSamples = Math.max(1, Math.floor(0.01 * sampleRate));
+    const silenceSamples = Math.floor(60 * sampleRate);
+    const outputLength = startSample + songBlownUpBuffer.length + silenceSamples;
+    const outputBuffer = createEmptyAudioBufferLike(renderedBuffer, outputLength);
+
+    copyAudioBufferSegment({
+      sourceBuffer: renderedBuffer,
+      targetBuffer: outputBuffer,
+      sourceStartSample: 0,
+      targetStartSample: 0,
+      lengthSamples: startSample,
+      fadeOutSamples: Math.min(fadeSamples, startSample)
+    });
+
+    copyAudioBufferSegment({
+      sourceBuffer: songBlownUpBuffer,
+      targetBuffer: outputBuffer,
+      sourceStartSample: 0,
+      targetStartSample: startSample,
+      lengthSamples: songBlownUpBuffer.length,
+      fadeInSamples: Math.min(fadeSamples, songBlownUpBuffer.length)
+    });
+
+    return outputBuffer;
+  }
+
   function applySecretEventToRenderedBuffer({ renderedBuffer, buffers, secretEvent }) {
     if (!secretEvent) return renderedBuffer;
 
     if (secretEvent.id === "advert") {
       const advertBuffer = buffers?.get(secretEvent.file);
       const outputBuffer = insertAdvertSecretEvent(renderedBuffer, advertBuffer, secretEvent);
+      rememberSecretEventDownload(secretEvent);
+      return outputBuffer;
+    }
+
+    if (secretEvent.id === "song_blown_up") {
+      const songBlownUpBuffer = buffers?.get(secretEvent.file);
+      const outputBuffer = applySongBlownUpSecretEvent(renderedBuffer, songBlownUpBuffer, secretEvent);
       rememberSecretEventDownload(secretEvent);
       return outputBuffer;
     }
@@ -10080,10 +10181,11 @@ function scheduleMidiPattern({
     const plan = buildFullPlan(random);
     const duration = getPlanRenderDuration(plan, fallbackDuration);
     const globalFadeOptions = chooseGlobalFadeOptions(mulberry32((currentSeed ^ 0xFADE30) >>> 0));
-    const secretEvent = chooseAdvertSecretEvent(
+    let secretEvent = chooseAdvertSecretEvent(
       mulberry32((currentSeed ^ 0xAD7E27) >>> 0),
       duration
     );
+    plan.secretEvent = secretEvent;
 
     if (plan.disableGlobalFadeIn) {
       globalFadeOptions.fadeIn = false;
@@ -10098,6 +10200,7 @@ function scheduleMidiPattern({
     const neededPaths = new Set();
 
     if (secretEvent?.file) neededPaths.add(secretEvent.file);
+    if (shouldLoadSongBlownUpSecretEvent(plan)) neededPaths.add(SONG_BLOWN_UP_SECRET_EVENT_FILE);
 
     for (const key of plan.selectedAudio) neededPaths.add(key);
 
@@ -10138,6 +10241,8 @@ currentRenderBuffers = buffers;
       random,
       duration
     });
+
+    secretEvent = plan.secretEvent || secretEvent || null;
 
     if (shouldDownloadDebugPlan()) {
       downloadJsonDebugFile(
