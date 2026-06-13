@@ -4198,6 +4198,214 @@
     return scheduledCount;
   }
 
+  const BASS_SUPPORT_GROUP_KEYS = [
+    "samples/cello_wiv-bass_even (consolidated).wav",
+    "samples/pad_wiv-bass (consolidated).wav",
+    "samples/hippy_synth_wiv-bass_odd (consolidated).wav"
+  ];
+
+  function isBassSupportGroupKey(keyOrEntry) {
+    const key = typeof keyOrEntry === "string"
+      ? keyOrEntry.toLowerCase()
+      : String(keyOrEntry?.key || "").toLowerCase();
+
+    return (
+      key.includes("cello_wiv-bass") ||
+      key.includes("cello_wiv_bass") ||
+      key.includes("pad_wiv-bass") ||
+      key.includes("pad_wiv_bass") ||
+      key.includes("hippy_synth_wiv-bass") ||
+      key.includes("hippy_synth_wiv_bass")
+    );
+  }
+
+  function getBassSupportGroupKeyType(keyOrEntry) {
+    const key = typeof keyOrEntry === "string"
+      ? keyOrEntry.toLowerCase()
+      : String(keyOrEntry?.key || "").toLowerCase();
+
+    if (key.includes("cello_wiv-bass") || key.includes("cello_wiv_bass")) return "cello";
+    if (key.includes("pad_wiv-bass") || key.includes("pad_wiv_bass")) return "pad";
+    if (key.includes("hippy_synth_wiv-bass") || key.includes("hippy_synth_wiv_bass")) return "hippy_synth";
+    return "";
+  }
+
+  function sectionHasScheduledBassSupportType(section, type) {
+    const scheduledKeys = Array.isArray(section?.scheduledAudioKeys) ? section.scheduledAudioKeys : [];
+    return scheduledKeys.some(key => getBassSupportGroupKeyType(key) === type);
+  }
+
+  function isBlockedByScheduledBassSupportCounterpart(key, section) {
+    const keyLower = String(key || "").toLowerCase();
+
+    if (
+      sectionHasScheduledBassSupportType(section, "hippy_synth") &&
+      keyLower.includes("hippy_synth") &&
+      !isBassSupportGroupKey(keyLower)
+    ) {
+      return true;
+    }
+
+    if (
+      sectionHasScheduledBassSupportType(section, "pad") &&
+      (keyLower.includes("pad_1") || keyLower.includes("pad_2")) &&
+      !isBassSupportGroupKey(keyLower)
+    ) {
+      return true;
+    }
+
+    if (
+      sectionHasScheduledBassSupportType(section, "cello") &&
+      keyLower.includes("cello_even") &&
+      !keyLower.includes("cello_high") &&
+      !isBassSupportGroupKey(keyLower)
+    ) {
+      return true;
+    }
+
+    return false;
+  }
+
+  function isBassSupportCandidateBlockedByScheduledCounterpart(key, section) {
+    const type = getBassSupportGroupKeyType(key);
+    const scheduledKeys = Array.isArray(section?.scheduledAudioKeys) ? section.scheduledAudioKeys : [];
+    const scheduledLower = scheduledKeys.map(item => String(item || "").toLowerCase());
+
+    if (type === "hippy_synth") {
+      return scheduledLower.some(item => item.includes("hippy_synth") && !isBassSupportGroupKey(item));
+    }
+
+    if (type === "pad") {
+      return scheduledLower.some(item => (item.includes("pad_1") || item.includes("pad_2")) && !isBassSupportGroupKey(item));
+    }
+
+    if (type === "cello") {
+      return scheduledLower.some(item =>
+        item.includes("cello_even") &&
+        !item.includes("cello_high") &&
+        !isBassSupportGroupKey(item)
+      );
+    }
+
+    return false;
+  }
+
+  function getBassSupportCandidatesForSection({ plan, buffers, section }) {
+    const selected = new Set(plan?.selectedAudio || []);
+
+    return BASS_SUPPORT_GROUP_KEYS
+      .filter(key => selected.has(key))
+      .map(key => ({
+        key,
+        entry: getCatalogEntry(key),
+        buffer: buffers?.get(key)
+      }))
+      .filter(candidate =>
+        candidate.entry &&
+        candidate.buffer &&
+        audioMatchesSection(candidate.entry, section) &&
+        !isBassSupportCandidateBlockedByScheduledCounterpart(candidate.key, section)
+      );
+  }
+
+  function getBassSupportTriggerEventsForSection(section) {
+    const events = Array.isArray(section?.trueBassSystemDebug) ? section.trueBassSystemDebug : [];
+
+    return events.filter(event =>
+      event &&
+      event.event === "true_bass_stem_scheduled" &&
+      (event.family === "synth_bass" || event.family === "real_bass") &&
+      Number.isFinite(Number(event.startSeconds))
+    );
+  }
+
+  function scheduleBassSupportGroupInSection({
+    offlineContext,
+    destination,
+    buffers,
+    plan,
+    random,
+    playbackState,
+    lifecycleStates,
+    section
+  }) {
+    if (!section || section.type !== "normal") return 0;
+
+    if (!Array.isArray(section.bassSupportSystemDebug)) {
+      section.bassSupportSystemDebug = [];
+    }
+
+    const candidates = getBassSupportCandidatesForSection({ plan, buffers, section });
+    if (!candidates.length) {
+      section.bassSupportSystemDebug.push({ event: "bass_support_no_candidates" });
+      return 0;
+    }
+
+    const triggerEvents = getBassSupportTriggerEventsForSection(section);
+    const hasBassTrigger = triggerEvents.length > 0;
+    const activationChance = hasBassTrigger ? 0.9 : 0.005;
+
+    if (random() >= activationChance) {
+      section.bassSupportSystemDebug.push({
+        event: "bass_support_not_activated",
+        activationChance,
+        hasBassTrigger
+      });
+      return 0;
+    }
+
+    const triggerEvent = hasBassTrigger ? chooseOne(random, triggerEvents) : null;
+    const triggerStartSeconds = triggerEvent ? Number(triggerEvent.startSeconds) : section.startSeconds;
+    const delayBars = hasBassTrigger ? Math.floor(random() * 5) : Math.floor(random() * Math.max(1, section.bars));
+    const latestStart = Math.max(section.startSeconds, section.endSeconds - section.barSeconds);
+    const startTime = Math.min(latestStart, triggerStartSeconds + delayBars * section.barSeconds);
+    const candidate = chooseOne(random, candidates);
+
+    if (!candidate) return 0;
+
+    const scheduled = scheduleAudioBufferWithPlaybackState({
+      offlineContext,
+      destination,
+      buffer: candidate.buffer,
+      startTime,
+      gainValue: sectionGainForAudio(candidate.entry, section),
+      playbackState,
+      key: candidate.key,
+      entry: candidate.entry,
+      section
+    });
+
+    if (!scheduled) {
+      section.bassSupportSystemDebug.push({
+        event: "bass_support_schedule_failed",
+        key: candidate.key,
+        startTime
+      });
+      return 0;
+    }
+
+    if (lifecycleStates) {
+      activateLifecycleItem(
+        lifecycleStates,
+        getAudioLifecycleId(candidate.key),
+        section.id + ":" + candidate.key + ":bass_support_group_system"
+      );
+    }
+
+    section.bassSupportSystemDebug.push({
+      event: "bass_support_scheduled",
+      key: candidate.key,
+      triggerFamily: triggerEvent?.family || "",
+      triggerStartSeconds,
+      delayBars,
+      startTime,
+      endTime: scheduled.endTime,
+      activationChance
+    });
+
+    return 1;
+  }
+
   function isDrumMidiPattern(pattern) {
     const key = pattern.file.toLowerCase();
     return (
@@ -5877,6 +6085,21 @@ function getNormalMidiHatChoiceGroupId(pattern) {
         entry,
         fallbackChance: 0.65,
         reason: "foundation_candidate"
+      });
+    }
+
+    // Bass support group is a dedicated support system, not generic synth/pad/cello selection.
+    // Definitions: 100% global inclusion as possible support options; activation is gated later.
+    for (const key of BASS_SUPPORT_GROUP_KEYS) {
+      if (!getCatalogEntry(key)) continue;
+
+      forceIncludeAudioSelection({
+        random,
+        globalInclusionState,
+        requiredActivationState,
+        selectedAudio,
+        key,
+        reason: "forced_bass_support_group_candidate"
       });
     }
 
@@ -8505,7 +8728,16 @@ function scheduleMidiPattern({
       return 0;
     }
 
+    if (isBassSupportGroupKey(key)) {
+      return 0;
+    }
+
     const keyLower = key.toLowerCase();
+
+    if (isBlockedByScheduledBassSupportCounterpart(keyLower, section)) {
+      return 0;
+    }
+
     const gain = sectionGainForAudio(entry, section);
     const audioProfile = getRuleProfileForEntry(entry);
 
@@ -9140,6 +9372,17 @@ function scheduleMidiPattern({
       const scheduledLyrixGroupIds = new Set();
 
       scheduleTrueBassSystemInSection({
+        offlineContext,
+        destination,
+        buffers,
+        plan,
+        random,
+        playbackState,
+        lifecycleStates,
+        section
+      });
+
+      scheduleBassSupportGroupInSection({
         offlineContext,
         destination,
         buffers,
