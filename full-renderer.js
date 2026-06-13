@@ -1495,6 +1495,92 @@
     return section.outburstResetBlockDebug;
   }
 
+  function isGrimeySection(section) {
+    return String(section?.type || "").toLowerCase().includes("grimey");
+  }
+
+  function isGrimeyPlaybackItem(item) {
+    const key = String(item?.key || "").toLowerCase();
+    return key.includes("grm_") || key.includes("rewind_sfx");
+  }
+
+  function getGrimeyBlockEndSeconds(section, sections = []) {
+    if (!section || section.type !== "grimey_entry") return Number(section?.endSeconds || 0);
+
+    return sections
+      .filter(candidate =>
+        candidate &&
+        isGrimeySection(candidate) &&
+        Number(candidate.startSeconds || 0) >= Number(section.startSeconds || 0) - 0.001
+      )
+      .reduce(
+        (latestEndSeconds, candidate) => Math.max(latestEndSeconds, Number(candidate.endSeconds || 0)),
+        Number(section.endSeconds || 0)
+      );
+  }
+
+  function applyGrimeySectionResetBlock(playbackState, section, sections = []) {
+    if (!playbackState || !section || section.type !== "grimey_entry") return null;
+
+    const cutTimeSeconds = Number(section.startSeconds || 0);
+    const blockEndSeconds = getGrimeyBlockEndSeconds(section, sections);
+    const activeItems = getActivePlaybackItemsAtTime(playbackState, cutTimeSeconds, {});
+    const futureItems = [...playbackState.activeItems.values()]
+      .filter(item =>
+        Number(item.startSeconds || 0) >= cutTimeSeconds &&
+        Number(item.startSeconds || 0) < blockEndSeconds
+      );
+
+    let activeCutCount = 0;
+    let futureCutCount = 0;
+
+    for (const item of activeItems) {
+      if (isGrimeyPlaybackItem(item)) continue;
+
+      if (cutOffPlaybackItem(playbackState, item, cutTimeSeconds, {
+        fadeSeconds: 0.01,
+        reason: "grimey_entry_resets_previous_material"
+      })) {
+        activeCutCount += 1;
+      }
+    }
+
+    for (const item of futureItems) {
+      if (isGrimeyPlaybackItem(item)) continue;
+
+      if (cutOffPlaybackItem(playbackState, item, cutTimeSeconds, {
+        fadeSeconds: 0.01,
+        reason: "grimey_entry_blocks_future_previous_material"
+      })) {
+        futureCutCount += 1;
+      }
+    }
+
+    addActivationBlockWindow(playbackState, {
+      startsAtSeconds: cutTimeSeconds,
+      endsAtSeconds: blockEndSeconds,
+      kind: "audio",
+      reason: "grimey_section_blocks_non_grimey_audio"
+    });
+
+    addActivationBlockWindow(playbackState, {
+      startsAtSeconds: cutTimeSeconds,
+      endsAtSeconds: blockEndSeconds,
+      kind: "midi",
+      reason: "grimey_section_blocks_non_grimey_midi"
+    });
+
+    section.grimeyResetBlockDebug = {
+      cutTimeSeconds,
+      blockEndSeconds,
+      activeCutCount,
+      futureCutCount,
+      blockedAudioWindow: true,
+      blockedMidiWindow: true
+    };
+
+    return section.grimeyResetBlockDebug;
+  }
   function shouldCutForLyrixSecondBarRule(item) {
     return item && !isAtmospherePlaybackItem(item) && !isLyrixPlaybackItem(item);
   }
@@ -6824,8 +6910,13 @@ function getNormalMidiHatChoiceGroupId(pattern) {
           tags: ["grimey", "major_reset", "grimey_entry", "tempo_70"]
         });
         grimeyEntrySection.grimeyAudioKeys = existingGrimeyKeys(grimeyEntryKeys);
-        grimeyEntrySection.grimeyLoopAudioKeys = [];
-        grimeyEntrySection.grimeyLoopEveryBarsByKey = {};
+        const grimeyEntryLoopKeys = existingGrimeyKeys([
+          "samples/grm_hats_fuzz_intro_odd.wav"
+        ]);
+        grimeyEntrySection.grimeyLoopAudioKeys = grimeyEntryLoopKeys;
+        grimeyEntrySection.grimeyLoopEveryBarsByKey = Object.fromEntries(
+          grimeyEntryLoopKeys.map(key => [key, 1])
+        );
         grimeyEntrySection.forcedAudioStartKeys = existingGrimeyKeys([
           "samples/grm_bass_lead_odd (consolidated).wav"
         ]);
@@ -6845,12 +6936,7 @@ function getNormalMidiHatChoiceGroupId(pattern) {
         ]);
         grimeyMainSection.grimeyLoopAudioKeys = grimeyMainLoopKeys;
         grimeyMainSection.grimeyLoopEveryBarsByKey = Object.fromEntries(
-          grimeyMainLoopKeys.map(key => [
-            key,
-            key.includes("grm_kicks_x0.5") || key.includes("grm_hats_fuzz.wav")
-              ? 1
-              : 0
-          ])
+          grimeyMainLoopKeys.map(key => [key, 1])
         );
         grimeyMainSection.grimeyRoute = {
           routeName: grimeyRouteName,
@@ -6881,7 +6967,7 @@ function getNormalMidiHatChoiceGroupId(pattern) {
               key,
               routePlan.routeName === "simple" || routePlan.routeName === "ah_grm"
                 ? Math.max(1, routePlan.bars)
-                : 0
+                : 1
             ])
           );
           grimeyRouteSection.forcedAudioStartKeys = existingGrimeyKeys([
@@ -7647,7 +7733,7 @@ function getNormalMidiHatChoiceGroupId(pattern) {
     return 0;
   }
 
-  function scheduleBuffer(offlineContext, destination, buffer, startTime, gainValue = 1, offset = 0, panValue = 0) {
+  function scheduleBuffer(offlineContext, destination, buffer, startTime, gainValue = 1, offset = 0, panValue = 0, durationOverrideSeconds = null) {
     if (!buffer) return null;
     if (startTime >= offlineContext.length / offlineContext.sampleRate) return null;
 
@@ -7657,6 +7743,11 @@ function getNormalMidiHatChoiceGroupId(pattern) {
     const safeStartTime = Math.max(0, startTime);
     const safeOffset = Math.max(0, offset);
     const playableDuration = Math.max(0, buffer.duration - safeOffset);
+    const overrideDuration = Number(durationOverrideSeconds);
+    const requestedDuration = Number.isFinite(overrideDuration) && overrideDuration > 0
+      ? Math.min(playableDuration, overrideDuration)
+      : playableDuration;
+    if (requestedDuration <= 0) return null;
 
     source.buffer = buffer;
     gain.gain.value = gainValue;
@@ -7675,7 +7766,7 @@ function getNormalMidiHatChoiceGroupId(pattern) {
       gain.connect(destination);
     }
 
-    source.start(safeStartTime, safeOffset);
+    source.start(safeStartTime, safeOffset, requestedDuration);
 
     return {
       scheduled: true,
@@ -7686,8 +7777,8 @@ function getNormalMidiHatChoiceGroupId(pattern) {
       buffer,
       startTime: safeStartTime,
       offset: safeOffset,
-      duration: playableDuration,
-      endTime: safeStartTime + playableDuration,
+      duration: requestedDuration,
+      endTime: safeStartTime + requestedDuration,
       gainValue
     };
   }
@@ -7734,7 +7825,7 @@ function getNormalMidiHatChoiceGroupId(pattern) {
     entry = null,
     section = null,
     family = ""
-  } = {}) {
+  , durationSeconds = null } = {}) {
     const panValue = getCentralInstrumentFamilyPanValue(family || getCentralInstrumentFamily(entry));
 
     const scheduleHandle = scheduleBuffer(
@@ -7744,7 +7835,8 @@ function getNormalMidiHatChoiceGroupId(pattern) {
       startTime,
       gainValue,
       offset,
-      panValue
+      panValue,
+      durationSeconds
     );
 
     recordSectionScheduledAudio(section, {
@@ -10042,7 +10134,7 @@ function scheduleMidiPattern({
           : (keyLower.includes("grm_kicks_x0.5") ? 1 : 2);
 
         const repeatEverySeconds = configuredRepeatEveryBars <= 0
-          ? Math.max(0.1, Number(buffer?.duration || 0) || section.barSeconds)
+          ? section.barSeconds
           : Math.max(1, configuredRepeatEveryBars) * section.barSeconds;
 
         let scheduledCount = 0;
@@ -10054,6 +10146,18 @@ function scheduleMidiPattern({
         ) {
           if (startSeconds >= section.endSeconds) continue;
 
+          const nextStartSeconds = startSeconds + repeatEverySeconds;
+          const durationSeconds = Math.max(
+            0,
+            Math.min(
+              Number(buffer?.duration || 0) || repeatEverySeconds,
+              nextStartSeconds - startSeconds,
+              section.endSeconds - startSeconds
+            )
+          );
+
+          if (durationSeconds <= 0) continue;
+
           const scheduled = scheduleAudioBufferWithPlaybackState({
             offlineContext,
             destination,
@@ -10063,7 +10167,8 @@ function scheduleMidiPattern({
             playbackState,
             key,
             entry,
-            section
+            section,
+            durationSeconds
           });
 
           if (scheduled) {
@@ -10508,6 +10613,7 @@ function scheduleMidiPattern({
     }
     for (const section of sections) {
       applyOutburstSectionResetBlock(playbackState, section, sections);
+      applyGrimeySectionResetBlock(playbackState, section, sections);
       expirePlaybackItemsAtTime(playbackState, section.startSeconds);
 
       if (
