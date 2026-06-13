@@ -6936,7 +6936,10 @@ function getNormalMidiHatChoiceGroupId(pattern) {
         ]);
         grimeyMainSection.grimeyLoopAudioKeys = grimeyMainLoopKeys;
         grimeyMainSection.grimeyLoopEveryBarsByKey = Object.fromEntries(
-          grimeyMainLoopKeys.map(key => [key, 1])
+          grimeyMainLoopKeys.map(key => [
+            key,
+            key.includes("grm_kicks_x0.5") ? 0.5 : 1
+          ])
         );
         grimeyMainSection.grimeyRoute = {
           routeName: grimeyRouteName,
@@ -10135,7 +10138,7 @@ function scheduleMidiPattern({
 
         const repeatEverySeconds = configuredRepeatEveryBars <= 0
           ? section.barSeconds
-          : Math.max(1, configuredRepeatEveryBars) * section.barSeconds;
+          : Math.max(0.25, configuredRepeatEveryBars) * section.barSeconds;
 
         let scheduledCount = 0;
 
