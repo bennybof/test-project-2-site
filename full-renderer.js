@@ -5488,6 +5488,20 @@ const HOOK_WINDOW_WIPE_KEYS = [
   "samples/window_wipe_2_xtra_even_hook_x4.wav"
 ];
 
+const HOOK_HIGH_BASSISH_GROUPS = [
+  {
+    lead: "samples/high_bassish_hook_odd_x2 (consolidated).wav",
+    part2: "samples/high_bassish_hook_odd_x2 (consolidated) #2.wav"
+  },
+  {
+    lead: "samples/high_bassish_2_hook_odd_x2 (consolidated).wav",
+    part2: "samples/high_bassish_2_hook #2 (consolidated).wav"
+  }
+];
+
+const HOOK_OH_REV_KEY = "samples/oh_rev_metal_hook_odd.wav";
+const HOOK_XTRA_DRUMS_KEY = "samples/hook_xtra_drums.wav";
+
 function isHookAccordianSystemKey(key) {
   return HOOK_ACCORDIAN_SEQUENCE_KEYS.includes(key) || key === HOOK_ACCORDIAN_2_KEY;
 }
@@ -5496,8 +5510,24 @@ function isHookWindowWipeSystemKey(key) {
   return HOOK_WINDOW_WIPE_KEYS.includes(key);
 }
 
+function isHookHighBassishSystemKey(key) {
+  return HOOK_HIGH_BASSISH_GROUPS.some(group => group.lead === key || group.part2 === key);
+}
+
+function isHookOhRevSystemKey(key) {
+  return key === HOOK_OH_REV_KEY;
+}
+
+function isHookXtraDrumsSystemKey(key) {
+  return key === HOOK_XTRA_DRUMS_KEY;
+}
+
 function isHookDefinitionTimedAudioKey(key) {
-  return isHookAccordianSystemKey(key) || isHookWindowWipeSystemKey(key);
+  return isHookAccordianSystemKey(key) ||
+    isHookWindowWipeSystemKey(key) ||
+    isHookHighBassishSystemKey(key) ||
+    isHookOhRevSystemKey(key) ||
+    isHookXtraDrumsSystemKey(key);
 }
 
 function setHookGroupGlobalDecision(globalInclusionState, { id, included, chanceValue, roll, tags = [] } = {}) {
@@ -5584,6 +5614,57 @@ function includeHookDefinitionTimedAudioSelections({
       reason: `${reason}:window_wipe_global_50`
     });
   }
+
+  const highBassishRoll = random();
+  const highBassishIncluded = highBassishRoll < 0.8;
+  setHookGroupGlobalDecision(globalInclusionState, {
+    id: "hook_high_bassish_group",
+    included: highBassishIncluded,
+    chanceValue: 0.8,
+    roll: highBassishRoll,
+    tags: ["hook", "high_bassish"]
+  });
+
+  if (highBassishIncluded) {
+    includeHookAudioKeysAfterGroupDecision({
+      random,
+      globalInclusionState,
+      requiredActivationState,
+      selectedAudio,
+      keys: HOOK_HIGH_BASSISH_GROUPS.flatMap(group => [group.lead, group.part2]),
+      reason: `${reason}:high_bassish_global_80`
+    });
+  }
+
+  const ohRevRoll = random();
+  const ohRevIncluded = ohRevRoll < 0.7;
+  setHookGroupGlobalDecision(globalInclusionState, {
+    id: "hook_oh_rev_group",
+    included: ohRevIncluded,
+    chanceValue: 0.7,
+    roll: ohRevRoll,
+    tags: ["hook", "oh_rev"]
+  });
+
+  if (ohRevIncluded) {
+    includeHookAudioKeysAfterGroupDecision({
+      random,
+      globalInclusionState,
+      requiredActivationState,
+      selectedAudio,
+      keys: [HOOK_OH_REV_KEY],
+      reason: `${reason}:oh_rev_global_70`
+    });
+  }
+
+  includeHookAudioKeysAfterGroupDecision({
+    random,
+    globalInclusionState,
+    requiredActivationState,
+    selectedAudio,
+    keys: [HOOK_XTRA_DRUMS_KEY],
+    reason: `${reason}:hook_xtra_drums_specific_odd_bar_1_percent`
+  });
 }
 
 function isCrashKey(key) {
@@ -10332,6 +10413,41 @@ function scheduleMidiPattern({
       return scheduledCount;
     }
 
+    if (isHookHighBassishSystemKey(key)) {
+      if (section.hookDefinitionTimedAudioScheduledGroups.highBassish) return 0;
+      section.hookDefinitionTimedAudioScheduledGroups.highBassish = true;
+
+      const availableGroups = HOOK_HIGH_BASSISH_GROUPS.filter(group => selectedAudio.has(group.lead));
+      if (!availableGroups.length) return 0;
+
+      // Definition: 50% activation chance at each eligible hook opportunity.
+      if (!chance(random, 0.5)) return 0;
+
+      // Definition: 10% dropout chance.
+      if (chance(random, 0.1)) return 0;
+
+      const chosenGroup = chooseOne(random, availableGroups);
+      const leadStartSeconds = section.startSeconds + section.barSeconds * 2;
+      const leadBuffer = currentRenderBuffers?.get(chosenGroup.lead);
+      const part2StartSeconds = leadStartSeconds + (leadBuffer?.duration || section.barSeconds * 2);
+
+      let scheduledCount = scheduleKeyAtTime(
+        chosenGroup.lead,
+        leadStartSeconds,
+        "hook_high_bassish_plus_2_bars_alternative"
+      );
+
+      if (selectedAudio.has(chosenGroup.part2)) {
+        scheduledCount += scheduleKeyAtTime(
+          chosenGroup.part2,
+          part2StartSeconds,
+          "hook_high_bassish_part_2_after_part_1"
+        );
+      }
+
+      return scheduledCount;
+    }
+
     if (isHookWindowWipeSystemKey(key)) {
       if (section.hookDefinitionTimedAudioScheduledGroups.windowWipe) return 0;
       section.hookDefinitionTimedAudioScheduledGroups.windowWipe = true;
@@ -10349,6 +10465,57 @@ function scheduleMidiPattern({
         section.startSeconds + section.barSeconds,
         "hook_window_wipe_plus_1_bar_alternative"
       );
+    }
+
+    if (isHookOhRevSystemKey(key)) {
+      if (section.hookDefinitionTimedAudioScheduledGroups.ohRev) return 0;
+      section.hookDefinitionTimedAudioScheduledGroups.ohRev = true;
+
+      if (!selectedAudio.has(HOOK_OH_REV_KEY)) return 0;
+
+      let scheduledCount = 0;
+      const bars = Math.max(0, Number(section.bars || section.lengthBars || 0));
+
+      for (let localBar = 0; localBar < bars; localBar += 2) {
+        // Definition: 5% activation chance at each eligible opportunity.
+        if (!chance(random, 0.05)) continue;
+
+        // Definition: 50% dropout chance.
+        if (chance(random, 0.5)) continue;
+
+        scheduledCount += scheduleKeyAtTime(
+          HOOK_OH_REV_KEY,
+          section.startSeconds + section.barSeconds * localBar,
+          "hook_oh_rev_odd_bar_5_percent"
+        );
+      }
+
+      return scheduledCount;
+    }
+
+    if (isHookXtraDrumsSystemKey(key)) {
+      if (section.hookDefinitionTimedAudioScheduledGroups.hookXtraDrums) return 0;
+      section.hookDefinitionTimedAudioScheduledGroups.hookXtraDrums = true;
+
+      if (!selectedAudio.has(HOOK_XTRA_DRUMS_KEY)) return 0;
+
+      let scheduledCount = 0;
+      const bars = Math.max(0, Number(section.bars || section.lengthBars || 0));
+
+      for (let localBar = 0; localBar < bars; localBar += 2) {
+        if (isHookStartedAfterDrumsSkipIntro(section) && localBar < 2) continue;
+
+        // Definition: 1% activation chance on every odd bar during hook.
+        if (!chance(random, 0.01)) continue;
+
+        scheduledCount += scheduleKeyAtTime(
+          HOOK_XTRA_DRUMS_KEY,
+          section.startSeconds + section.barSeconds * localBar,
+          "hook_xtra_drums_odd_bar_1_percent"
+        );
+      }
+
+      return scheduledCount;
     }
 
     return 0;
