@@ -5523,6 +5523,14 @@ const HOOK_BASSISH_GLITCHY_1_KEY = "samples/bassish_glitchy_hook_odd_x4 (consoli
 const HOOK_BASSISH_GLITCHY_2_KEY = "samples/bassish_glitchy_hook_odd_x4 #2 (consolidated).wav";
 const HOOK_FLOOT_KEY = "samples/floot_hook_even_x2 (consolidated).wav";
 
+const HOOK_TRUMPET_SEQUENCE_KEYS = [
+  "samples/trumpet_hook_odd_x4 (consolidated).wav",
+  "samples/trumpet_hook_odd_x4 (consolidated) #2.wav"
+];
+
+const HOOK_TRUMPET_1_KEY = "samples/trumpet_hook_odd_x4 (consolidated).wav";
+const HOOK_TRUMPET_2_KEY = "samples/trumpet_hook_odd_x4 (consolidated) #2.wav";
+
 function isHookAccordianSystemKey(key) {
   return HOOK_ACCORDIAN_SEQUENCE_KEYS.includes(key) || key === HOOK_ACCORDIAN_2_KEY;
 }
@@ -5559,6 +5567,10 @@ function isHookFlootSystemKey(key) {
   return key === HOOK_FLOOT_KEY;
 }
 
+function isHookTrumpetSystemKey(key) {
+  return HOOK_TRUMPET_SEQUENCE_KEYS.includes(key);
+}
+
 function isHookDefinitionTimedAudioKey(key) {
   return isHookAccordianSystemKey(key) ||
     isHookWindowWipeSystemKey(key) ||
@@ -5568,7 +5580,8 @@ function isHookDefinitionTimedAudioKey(key) {
     isHookRhodesLowSystemKey(key) ||
     isHookSaxSystemKey(key) ||
     isHookBassishGlitchySystemKey(key) ||
-    isHookFlootSystemKey(key);
+    isHookFlootSystemKey(key) ||
+    isHookTrumpetSystemKey(key);
 }
 
 function setHookGroupGlobalDecision(globalInclusionState, { id, included, chanceValue, roll, tags = [] } = {}) {
@@ -5776,6 +5789,27 @@ function includeHookDefinitionTimedAudioSelections({
       selectedAudio,
       keys: [HOOK_FLOOT_KEY],
       reason: `${reason}:floot_global_40`
+    });
+  }
+
+  const trumpetRoll = random();
+  const trumpetIncluded = trumpetRoll < 0.5;
+  setHookGroupGlobalDecision(globalInclusionState, {
+    id: "hook_trumpet_group",
+    included: trumpetIncluded,
+    chanceValue: 0.5,
+    roll: trumpetRoll,
+    tags: ["hook", "trumpet"]
+  });
+
+  if (trumpetIncluded) {
+    includeHookAudioKeysAfterGroupDecision({
+      random,
+      globalInclusionState,
+      requiredActivationState,
+      selectedAudio,
+      keys: HOOK_TRUMPET_SEQUENCE_KEYS,
+      reason: `${reason}:trumpet_global_50`
     });
   }
 }
@@ -10520,6 +10554,39 @@ function scheduleMidiPattern({
           HOOK_ACCORDIAN_2_KEY,
           section.startSeconds + section.barSeconds * 4,
           "hook_accordian_2_after_accordian_1_plus_4_bars"
+        );
+      }
+
+      return scheduledCount;
+    }
+
+    if (isHookTrumpetSystemKey(key)) {
+      if (section.hookDefinitionTimedAudioScheduledGroups.trumpet) return 0;
+      section.hookDefinitionTimedAudioScheduledGroups.trumpet = true;
+
+      if (!selectedAudio.has(HOOK_TRUMPET_1_KEY)) return 0;
+
+      // Definition: hook trumpet activation = 20%.
+      if (!chance(random, 0.2)) return 0;
+
+      // Definition: hook trumpet dropout = 50%.
+      if (chance(random, 0.5)) return 0;
+
+      let scheduledCount = 0;
+      const trumpet1Buffer = currentRenderBuffers?.get(HOOK_TRUMPET_1_KEY);
+      const trumpet1StartSeconds = section.startSeconds;
+
+      scheduledCount += scheduleKeyAtTime(
+        HOOK_TRUMPET_1_KEY,
+        trumpet1StartSeconds,
+        "hook_trumpet_same_time_as_synth_bass_1"
+      );
+
+      if (selectedAudio.has(HOOK_TRUMPET_2_KEY)) {
+        scheduledCount += scheduleKeyAtTime(
+          HOOK_TRUMPET_2_KEY,
+          trumpet1StartSeconds + (trumpet1Buffer?.duration || section.barSeconds * 4),
+          "hook_trumpet_part_2_after_part_1"
         );
       }
 
