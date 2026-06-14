@@ -5502,6 +5502,18 @@ const HOOK_HIGH_BASSISH_GROUPS = [
 const HOOK_OH_REV_KEY = "samples/oh_rev_metal_hook_odd.wav";
 const HOOK_XTRA_DRUMS_KEY = "samples/hook_xtra_drums.wav";
 
+const HOOK_RHODES_LOW_KEY = "samples/rhodes_low_hook_odd_x4 (consolidated).wav";
+
+const HOOK_SAX_KEYS = [
+  "samples/sax_1_hook_odd_x2 (consolidated).wav",
+  "samples/sax_2_hook_even_x4 (consolidated).wav",
+  "samples/sax_2_other_hook_even_x4_~ (consolidated).wav"
+];
+
+const HOOK_SAX_1_KEY = "samples/sax_1_hook_odd_x2 (consolidated).wav";
+const HOOK_SAX_2_KEY = "samples/sax_2_hook_even_x4 (consolidated).wav";
+const HOOK_SAX_2_OTHER_KEY = "samples/sax_2_other_hook_even_x4_~ (consolidated).wav";
+
 function isHookAccordianSystemKey(key) {
   return HOOK_ACCORDIAN_SEQUENCE_KEYS.includes(key) || key === HOOK_ACCORDIAN_2_KEY;
 }
@@ -5522,12 +5534,22 @@ function isHookXtraDrumsSystemKey(key) {
   return key === HOOK_XTRA_DRUMS_KEY;
 }
 
+function isHookRhodesLowSystemKey(key) {
+  return key === HOOK_RHODES_LOW_KEY;
+}
+
+function isHookSaxSystemKey(key) {
+  return HOOK_SAX_KEYS.includes(key);
+}
+
 function isHookDefinitionTimedAudioKey(key) {
   return isHookAccordianSystemKey(key) ||
     isHookWindowWipeSystemKey(key) ||
     isHookHighBassishSystemKey(key) ||
     isHookOhRevSystemKey(key) ||
-    isHookXtraDrumsSystemKey(key);
+    isHookXtraDrumsSystemKey(key) ||
+    isHookRhodesLowSystemKey(key) ||
+    isHookSaxSystemKey(key);
 }
 
 function setHookGroupGlobalDecision(globalInclusionState, { id, included, chanceValue, roll, tags = [] } = {}) {
@@ -5664,6 +5686,36 @@ function includeHookDefinitionTimedAudioSelections({
     selectedAudio,
     keys: [HOOK_XTRA_DRUMS_KEY],
     reason: `${reason}:hook_xtra_drums_specific_odd_bar_1_percent`
+  });
+
+  const rhodesLowRoll = random();
+  const rhodesLowIncluded = rhodesLowRoll < 0.7;
+  setHookGroupGlobalDecision(globalInclusionState, {
+    id: "hook_rhodes_low_group",
+    included: rhodesLowIncluded,
+    chanceValue: 0.7,
+    roll: rhodesLowRoll,
+    tags: ["hook", "rhodes_low"]
+  });
+
+  if (rhodesLowIncluded) {
+    includeHookAudioKeysAfterGroupDecision({
+      random,
+      globalInclusionState,
+      requiredActivationState,
+      selectedAudio,
+      keys: [HOOK_RHODES_LOW_KEY],
+      reason: `${reason}:rhodes_low_global_70`
+    });
+  }
+
+  includeHookAudioKeysAfterGroupDecision({
+    random,
+    globalInclusionState,
+    requiredActivationState,
+    selectedAudio,
+    keys: HOOK_SAX_KEYS,
+    reason: `${reason}:hook_sax_explicit_activation_rules`
   });
 }
 
@@ -10407,6 +10459,64 @@ function scheduleMidiPattern({
           HOOK_ACCORDIAN_2_KEY,
           section.startSeconds + section.barSeconds * 4,
           "hook_accordian_2_after_accordian_1_plus_4_bars"
+        );
+      }
+
+      return scheduledCount;
+    }
+
+    if (isHookRhodesLowSystemKey(key)) {
+      if (section.hookDefinitionTimedAudioScheduledGroups.rhodesLow) return 0;
+      section.hookDefinitionTimedAudioScheduledGroups.rhodesLow = true;
+
+      if (!selectedAudio.has(HOOK_RHODES_LOW_KEY)) return 0;
+
+      // Definition: rhodes_low_hook has a 30% activation chance.
+      if (!chance(random, 0.3)) return 0;
+
+      // Definition: rhodes_low_hook has a 30% dropout chance.
+      if (chance(random, 0.3)) return 0;
+
+      return scheduleKeyAtTime(
+        HOOK_RHODES_LOW_KEY,
+        section.startSeconds + section.barSeconds * 2,
+        "hook_rhodes_low_plus_2_bars"
+      );
+    }
+
+    if (isHookSaxSystemKey(key)) {
+      if (section.hookDefinitionTimedAudioScheduledGroups.sax) return 0;
+      section.hookDefinitionTimedAudioScheduledGroups.sax = true;
+
+      if (!selectedAudio.has(HOOK_SAX_1_KEY)) return 0;
+
+      // Definition: hook sax has a 50% activation chance at each eligible hook opportunity.
+      if (!chance(random, 0.5)) return 0;
+
+      // Definition: hook sax has a 15% dropout chance.
+      if (chance(random, 0.15)) return 0;
+
+      const sax1StartSeconds = section.startSeconds + section.barSeconds * 2;
+      let scheduledCount = scheduleKeyAtTime(
+        HOOK_SAX_1_KEY,
+        sax1StartSeconds,
+        "hook_sax_1_plus_2_bars"
+      );
+
+      const sax2Roll = random();
+
+      // Definitions: sax_2_other has 40% chance on same bar; sax_2 has 40% chance on following bar; cannot both activate.
+      if (sax2Roll < 0.4 && selectedAudio.has(HOOK_SAX_2_OTHER_KEY)) {
+        scheduledCount += scheduleKeyAtTime(
+          HOOK_SAX_2_OTHER_KEY,
+          sax1StartSeconds,
+          "hook_sax_2_other_same_bar_40"
+        );
+      } else if (sax2Roll < 0.8 && selectedAudio.has(HOOK_SAX_2_KEY)) {
+        scheduledCount += scheduleKeyAtTime(
+          HOOK_SAX_2_KEY,
+          sax1StartSeconds + section.barSeconds,
+          "hook_sax_2_after_sax_1_40"
         );
       }
 
