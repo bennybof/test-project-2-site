@@ -1,4 +1,4 @@
-(() => {
+﻿(() => {
   const rulesPath = "data/rules.json";
   const catalogPath = "data/full-rules-catalog.json";
   const midiPatternsPath = "data/midi-patterns.json";
@@ -225,6 +225,17 @@
     const hookLyrixSection = section?.hookLyrixSection || null;
     if (!hookLyrixSection) return false;
 
+    if (isHookNextmoveLyrixSection(hookLyrixSection) || isHookNextmoveLyrixSection(section)) {
+      return scheduleHookNextmoveLyrixSection({
+        offlineContext,
+        destination,
+        section,
+        random,
+        playbackState,
+        buffers
+      });
+    }
+
     const leadInBars = getHookLyrixLeadInBars(hookLyrixSection);
     const shiftedStartSeconds = section.startSeconds + leadInBars * section.barSeconds;
     const shiftedDurationSeconds = Math.max(0, section.endSeconds - shiftedStartSeconds);
@@ -250,7 +261,17 @@
   const HOOK_NEXTMOVE_SECTION_ID = "hook_nextmove";
 
   function isHookNextmoveLyrixSection(section) {
-    return Boolean(section && section.id === HOOK_NEXTMOVE_SECTION_ID);
+    if (!section) return false;
+
+    if (typeof section === "string") {
+      return section === HOOK_NEXTMOVE_SECTION_ID;
+    }
+
+    return Boolean(
+      section.id === HOOK_NEXTMOVE_SECTION_ID ||
+      section.lyrixSectionId === HOOK_NEXTMOVE_SECTION_ID ||
+      section.hookFamily === HOOK_NEXTMOVE_SECTION_ID
+    );
   }
 
   function getHookNextmoveLyrixSection() {
@@ -262,6 +283,10 @@
     const defaultLengthBars = Math.max(
       1,
       Number(endingRule?.ifNeitherEndingTriggersLengthBars || lyrixSection?.defaultLengthBars || 6) || 6
+    );
+    const maxPartNumber = Math.max(
+      1,
+      ...(lyrixSection?.parts || []).map(part => Number(part.part) || 1)
     );
 
     for (const option of endingRule?.possibleEarlyEndingParts || []) {
@@ -276,7 +301,7 @@
 
     return {
       endingPart: null,
-      lastPart: Infinity,
+      lastPart: maxPartNumber,
       lengthBars: defaultLengthBars
     };
   }
@@ -455,7 +480,7 @@
     const singlePath = replacement.file || null;
 
     if (dryPath) {
-      scheduleLyrixPathWithPlaybackState({
+      const scheduled = scheduleLyrixPathWithPlaybackState({
         offlineContext,
         destination,
         path: dryPath,
@@ -465,11 +490,12 @@
         playbackState,
         section
       });
-      scheduledCount += 1;
+
+      if (scheduled) scheduledCount += 1;
     }
 
     if (wetPath) {
-      scheduleLyrixPathWithPlaybackState({
+      const scheduled = scheduleLyrixPathWithPlaybackState({
         offlineContext,
         destination,
         path: wetPath,
@@ -479,11 +505,12 @@
         playbackState,
         section
       });
-      scheduledCount += 1;
+
+      if (scheduled) scheduledCount += 1;
     }
 
     if (singlePath) {
-      scheduleLyrixPathWithPlaybackState({
+      const scheduled = scheduleLyrixPathWithPlaybackState({
         offlineContext,
         destination,
         path: singlePath,
@@ -493,7 +520,8 @@
         playbackState,
         section
       });
-      scheduledCount += 1;
+
+      if (scheduled) scheduledCount += 1;
     }
 
     return scheduledCount;
@@ -507,24 +535,35 @@
     playbackState = null,
     buffers
   } = {}) {
-    const lyrixSection = section?.hookLyrixSection || null;
-    if (!isHookNextmoveLyrixSection(lyrixSection)) return false;
+    const lyrixSection = section?.hookLyrixSection || section?.lyrixSection || null;
+    if (!isHookNextmoveLyrixSection(lyrixSection) && !isHookNextmoveLyrixSection(section)) return false;
 
-    const hookNextmovePlan = section.hookNextmovePlan || createHookNextmoveLyrixPlan(random, lyrixSection);
+    const resolvedLyrixSection = isHookNextmoveLyrixSection(lyrixSection)
+      ? lyrixSection
+      : getHookNextmoveLyrixSection();
+
+    if (!resolvedLyrixSection) return false;
+
+    const hookNextmovePlan = section.hookNextmovePlan || createHookNextmoveLyrixPlan(random, resolvedLyrixSection);
+    if (!section.hookNextmovePlan) section.hookNextmovePlan = hookNextmovePlan;
+
     const mutedParts = new Set(
       Array.isArray(hookNextmovePlan.mutedParts)
         ? hookNextmovePlan.mutedParts.map(part => Number(part))
         : []
     );
     const replacementsByPart = hookNextmovePlan.replacementsByPart || {};
+    const lastPart = Number.isFinite(Number(hookNextmovePlan.lastPart))
+      ? Number(hookNextmovePlan.lastPart)
+      : Infinity;
 
     let start = section.startSeconds;
     let scheduledCount = 0;
 
-    for (const part of lyrixSection.parts || []) {
+    for (const part of resolvedLyrixSection.parts || []) {
       const partNumber = Number(part.part) || 1;
 
-      if (partNumber > hookNextmovePlan.lastPart) {
+      if (partNumber > lastPart) {
         continue;
       }
 
@@ -555,7 +594,7 @@
       const singlePath = part.file || null;
 
       if (dryPath) {
-        scheduleLyrixPathWithPlaybackState({
+        const scheduled = scheduleLyrixPathWithPlaybackState({
           offlineContext,
           destination,
           path: dryPath,
@@ -565,11 +604,12 @@
           playbackState,
           section
         });
-        scheduledCount += 1;
+
+        if (scheduled) scheduledCount += 1;
       }
 
       if (wetPath) {
-        scheduleLyrixPathWithPlaybackState({
+        const scheduled = scheduleLyrixPathWithPlaybackState({
           offlineContext,
           destination,
           path: wetPath,
@@ -579,11 +619,12 @@
           playbackState,
           section
         });
-        scheduledCount += 1;
+
+        if (scheduled) scheduledCount += 1;
       }
 
       if (singlePath) {
-        scheduleLyrixPathWithPlaybackState({
+        const scheduled = scheduleLyrixPathWithPlaybackState({
           offlineContext,
           destination,
           path: singlePath,
@@ -593,7 +634,8 @@
           playbackState,
           section
         });
-        scheduledCount += 1;
+
+        if (scheduled) scheduledCount += 1;
       }
 
       start += getHookNextmovePartAdvanceSeconds(buffers, part);
@@ -11883,7 +11925,7 @@ function scheduleMidiPattern({
 
         if (!hookLyrixSection || !hookLyrixFiles.length || key !== hookLyrixFiles[0]) return 0;
 
-        if (isHookNextmoveLyrixSection(hookLyrixSection)) {
+        if (isHookNextmoveLyrixSection(hookLyrixSection) || isHookNextmoveLyrixSection(section)) {
           return scheduleHookNextmoveLyrixSection({
             offlineContext,
             destination,
