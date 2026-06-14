@@ -6041,6 +6041,35 @@ function getNormalMidiHatChoiceGroupId(pattern) {
   }
 
 
+  function getHookLengthCapBars({ cursorSeconds, duration, mainBarSeconds }) {
+    const endingBufferBars = 8;
+    const remainingSecondsBeforeEndingBuffer = duration - cursorSeconds - mainBarSeconds * endingBufferBars;
+    const rawBars = Math.floor(remainingSecondsBeforeEndingBuffer / mainBarSeconds);
+
+    if (rawBars < 16) return Math.max(0, Math.floor(rawBars / 8) * 8);
+
+    return Math.max(16, Math.floor(rawBars / 8) * 8);
+  }
+
+  function chooseHookLengthBars(random, maxBars = 16) {
+    const safeMaxBars = Math.max(0, Math.floor(Number(maxBars || 0) / 8) * 8);
+
+    if (safeMaxBars < 16) return safeMaxBars;
+
+    let bars = 16;
+    let exitChance = 0.05;
+
+    while (bars + 8 <= safeMaxBars) {
+      if (chance(random, exitChance)) break;
+
+      bars += 8;
+      exitChance = Math.min(0.55, exitChance + 0.1);
+    }
+
+    return bars;
+  }
+
+
   const PAD_1_ATMOSPHERE_KEY = "samples/pad_1_xtra (consolidated).wav";
   const PAD_2_REPLACEMENT_KEY = "samples/pad_2_odd_xtra (consolidated).wav";
   const PAD_2_REPLACEMENT_CHANCE = 0.2;
@@ -6365,7 +6394,12 @@ function getNormalMidiHatChoiceGroupId(pattern) {
         });
       }
 
-      const songStartHookSection = addSection("hook", 8, {
+      const songStartHookBars = chooseHookLengthBars(
+        random,
+        getHookLengthCapBars({ cursorSeconds, duration, mainBarSeconds })
+      );
+
+      const songStartHookSection = addSection("hook", songStartHookBars, {
         reset: true,
         tags: ["hook", "song_start_hook", hookStartDecision.method]
       });
@@ -6454,11 +6488,17 @@ function getNormalMidiHatChoiceGroupId(pattern) {
       }
 
       if (roll < 0.08) {
-        addSection("hook", 8, {
-          reset: true,
-          tags: ["hook"]
-        });
-        continue;
+        const hookLengthCapBars = getHookLengthCapBars({ cursorSeconds, duration, mainBarSeconds });
+
+        if (hookLengthCapBars >= 16) {
+          const hookBars = chooseHookLengthBars(random, hookLengthCapBars);
+
+          addSection("hook", hookBars, {
+            reset: true,
+            tags: ["hook"]
+          });
+          continue;
+        }
       }
 
       if (roll < 0.18) {
