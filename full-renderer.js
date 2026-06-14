@@ -5531,6 +5531,11 @@ const HOOK_TRUMPET_SEQUENCE_KEYS = [
 const HOOK_TRUMPET_1_KEY = "samples/trumpet_hook_odd_x4 (consolidated).wav";
 const HOOK_TRUMPET_2_KEY = "samples/trumpet_hook_odd_x4 (consolidated) #2.wav";
 
+const HOOK_CLARINET_KEY = "samples/clarinet_hook_x4_even (consolidated).wav";
+
+const HOOK_BREATHE_VOX_BIG_KEY = "samples/breathe_vox_big_hook_even_x2.wav";
+const HOOK_REV_CRASH_KEY = "samples/rev_crash_metal_even_hook.wav";
+
 function isHookAccordianSystemKey(key) {
   return HOOK_ACCORDIAN_SEQUENCE_KEYS.includes(key) || key === HOOK_ACCORDIAN_2_KEY;
 }
@@ -5571,6 +5576,18 @@ function isHookTrumpetSystemKey(key) {
   return HOOK_TRUMPET_SEQUENCE_KEYS.includes(key);
 }
 
+function isHookClarinetSystemKey(key) {
+  return key === HOOK_CLARINET_KEY;
+}
+
+function isHookBreatheVoxBigSystemKey(key) {
+  return key === HOOK_BREATHE_VOX_BIG_KEY;
+}
+
+function isHookRevCrashSystemKey(key) {
+  return key === HOOK_REV_CRASH_KEY;
+}
+
 function isHookDefinitionTimedAudioKey(key) {
   return isHookAccordianSystemKey(key) ||
     isHookWindowWipeSystemKey(key) ||
@@ -5581,7 +5598,10 @@ function isHookDefinitionTimedAudioKey(key) {
     isHookSaxSystemKey(key) ||
     isHookBassishGlitchySystemKey(key) ||
     isHookFlootSystemKey(key) ||
-    isHookTrumpetSystemKey(key);
+    isHookTrumpetSystemKey(key) ||
+    isHookClarinetSystemKey(key) ||
+    isHookBreatheVoxBigSystemKey(key) ||
+    isHookRevCrashSystemKey(key);
 }
 
 function setHookGroupGlobalDecision(globalInclusionState, { id, included, chanceValue, roll, tags = [] } = {}) {
@@ -5812,6 +5832,45 @@ function includeHookDefinitionTimedAudioSelections({
       reason: `${reason}:trumpet_global_50`
     });
   }
+
+  const clarinetRoll = random();
+  const clarinetIncluded = clarinetRoll < 0.5;
+  setHookGroupGlobalDecision(globalInclusionState, {
+    id: "hook_clarinet_group",
+    included: clarinetIncluded,
+    chanceValue: 0.5,
+    roll: clarinetRoll,
+    tags: ["hook", "clarinet"]
+  });
+
+  if (clarinetIncluded) {
+    includeHookAudioKeysAfterGroupDecision({
+      random,
+      globalInclusionState,
+      requiredActivationState,
+      selectedAudio,
+      keys: [HOOK_CLARINET_KEY],
+      reason: `${reason}:clarinet_global_50`
+    });
+  }
+
+  includeHookAudioKeysAfterGroupDecision({
+    random,
+    globalInclusionState,
+    requiredActivationState,
+    selectedAudio,
+    keys: [HOOK_BREATHE_VOX_BIG_KEY],
+    reason: `${reason}:breathe_vox_big_hook_activation_25_dropout_35`
+  });
+
+  includeHookAudioKeysAfterGroupDecision({
+    random,
+    globalInclusionState,
+    requiredActivationState,
+    selectedAudio,
+    keys: [HOOK_REV_CRASH_KEY],
+    reason: `${reason}:rev_crash_hook_activation_10_dropout_50`
+  });
 }
 
 function isCrashKey(key) {
@@ -10558,6 +10617,78 @@ function scheduleMidiPattern({
       }
 
       return scheduledCount;
+    }
+
+    if (isHookBreatheVoxBigSystemKey(key)) {
+      if (section.hookDefinitionTimedAudioScheduledGroups.breatheVoxBig) return 0;
+      section.hookDefinitionTimedAudioScheduledGroups.breatheVoxBig = true;
+
+      if (!selectedAudio.has(HOOK_BREATHE_VOX_BIG_KEY)) return 0;
+
+      // User-approved rule: hook breathe vox activation = 25%.
+      if (!chance(random, 0.25)) return 0;
+
+      // User-approved rule: hook breathe vox dropout = 35%.
+      if (chance(random, 0.35)) return 0;
+
+      const allowedLocalBars = getAllowedLocalBarIndexesForKey(HOOK_BREATHE_VOX_BIG_KEY, section);
+      const fallbackBars = Array.from({ length: Math.max(1, Number(section.bars || section.lengthBars || 1)) }, (_, index) => index);
+      const localBars = allowedLocalBars.length ? allowedLocalBars : fallbackBars;
+      const localBar = chooseOne(random, localBars);
+
+      return scheduleKeyAtTime(
+        HOOK_BREATHE_VOX_BIG_KEY,
+        section.startSeconds + section.barSeconds * localBar,
+        "hook_breathe_vox_big_activation_25_dropout_35"
+      );
+    }
+
+    if (isHookRevCrashSystemKey(key)) {
+      if (section.hookDefinitionTimedAudioScheduledGroups.revCrash) return 0;
+      section.hookDefinitionTimedAudioScheduledGroups.revCrash = true;
+
+      if (!selectedAudio.has(HOOK_REV_CRASH_KEY)) return 0;
+
+      // User-approved rule: hook rev crash activation = 10%.
+      if (!chance(random, 0.1)) return 0;
+
+      // User-approved rule: hook rev crash dropout = 50%.
+      if (chance(random, 0.5)) return 0;
+
+      const allowedLocalBars = getAllowedLocalBarIndexesForKey(HOOK_REV_CRASH_KEY, section);
+      const fallbackBars = Array.from({ length: Math.max(1, Number(section.bars || section.lengthBars || 1)) }, (_, index) => index);
+      const localBars = allowedLocalBars.length ? allowedLocalBars : fallbackBars;
+      const localBar = chooseOne(random, localBars);
+
+      return scheduleKeyAtTime(
+        HOOK_REV_CRASH_KEY,
+        section.startSeconds + section.barSeconds * localBar,
+        "hook_rev_crash_activation_10_dropout_50"
+      );
+    }
+
+    if (isHookClarinetSystemKey(key)) {
+      if (section.hookDefinitionTimedAudioScheduledGroups.clarinet) return 0;
+      section.hookDefinitionTimedAudioScheduledGroups.clarinet = true;
+
+      if (!selectedAudio.has(HOOK_CLARINET_KEY)) return 0;
+
+      // Definition: hook clarinet activation = 20%.
+      if (!chance(random, 0.2)) return 0;
+
+      // Definition: hook clarinet dropout = 50%.
+      if (chance(random, 0.5)) return 0;
+
+      const allowedLocalBars = getAllowedLocalBarIndexesForKey(HOOK_CLARINET_KEY, section);
+      const fallbackBars = Array.from({ length: Math.max(1, Number(section.bars || section.lengthBars || 1)) }, (_, index) => index);
+      const localBars = allowedLocalBars.length ? allowedLocalBars : fallbackBars;
+      const localBar = chooseOne(random, localBars);
+
+      return scheduleKeyAtTime(
+        HOOK_CLARINET_KEY,
+        section.startSeconds + section.barSeconds * localBar,
+        "hook_clarinet_global_50_activation_20_dropout_50"
+      );
     }
 
     if (isHookTrumpetSystemKey(key)) {
