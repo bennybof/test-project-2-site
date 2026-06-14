@@ -5457,6 +5457,24 @@ function isHookSynthBassSequenceTriggerKey(section, key) {
   return getHookSynthBassSequenceKeys(section)[0] === key;
 }
 
+function getHookCrashWashKeys() {
+  return [
+    "samples/crash_wash_hook_xtra_metal.wav",
+    "samples/crash_wash_hook_xtra_metal_2.wav"
+  ];
+}
+
+function isSecondHookCrashWashKey(key) {
+  return key === "samples/crash_wash_hook_xtra_metal_2.wav";
+}
+
+function shouldBlockSecondHookCrashWash(section, key) {
+  if (!isSecondHookCrashWashKey(key)) return false;
+
+  return Array.isArray(section?.selectedMidi) &&
+    section.selectedMidi.includes("midi files/crash_hook_metal_odd_crash.mid");
+}
+
 function isCrashKey(key) {
   return String(key || "").toLowerCase().includes("crash");
 }
@@ -6467,9 +6485,12 @@ function getNormalMidiHatChoiceGroupId(pattern) {
         "samples/synth_bass_2_hook_x4_even (consolidated).wav"
       ];
 
+      const hookCrashWashKeys = getHookCrashWashKeys();
+
       songStartHookSection.forcedHookSynthBassSequenceKeys = hookSynthBassSequenceKeys;
       songStartHookSection.forcedAudioStartKeys = [
-        hookSynthBassSequenceKeys[0]
+        hookSynthBassSequenceKeys[0],
+        ...hookCrashWashKeys
       ];
 
       for (const key of hookSynthBassSequenceKeys) {
@@ -6480,6 +6501,17 @@ function getNormalMidiHatChoiceGroupId(pattern) {
           selectedAudio,
           key,
           reason: "forced_song_start_hook_synth_bass_sequence"
+        });
+      }
+
+      for (const key of hookCrashWashKeys) {
+        forceIncludeAudioSelection({
+          random,
+          globalInclusionState,
+          requiredActivationState,
+          selectedAudio,
+          key,
+          reason: "forced_song_start_hook_crash_wash"
         });
       }
     } else {
@@ -6555,9 +6587,12 @@ function getNormalMidiHatChoiceGroupId(pattern) {
           });
 
           const hookSynthBassSequenceKeys = getHookSynthBassSequenceKeys(hookSection);
+          const hookCrashWashKeys = getHookCrashWashKeys();
+
           hookSection.forcedHookSynthBassSequenceKeys = hookSynthBassSequenceKeys;
           hookSection.forcedAudioStartKeys = [
-            hookSynthBassSequenceKeys[0]
+            hookSynthBassSequenceKeys[0],
+            ...hookCrashWashKeys
           ];
 
           for (const key of hookSynthBassSequenceKeys) {
@@ -6568,6 +6603,17 @@ function getNormalMidiHatChoiceGroupId(pattern) {
               selectedAudio,
               key,
               reason: "forced_normal_hook_synth_bass_sequence"
+            });
+          }
+
+          for (const key of hookCrashWashKeys) {
+            forceIncludeAudioSelection({
+              random,
+              globalInclusionState,
+              requiredActivationState,
+              selectedAudio,
+              key,
+              reason: "forced_normal_hook_crash_wash"
             });
           }
 
@@ -10082,6 +10128,10 @@ function scheduleMidiPattern({
     }
 
     const keyLower = key.toLowerCase();
+
+    if (shouldBlockSecondHookCrashWash(section, key)) {
+      return 0;
+    }
 
     if (isBlockedByScheduledBassSupportCounterpart(keyLower, section)) {
       return 0;
