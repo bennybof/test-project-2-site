@@ -6549,10 +6549,28 @@ function getNormalMidiHatChoiceGroupId(pattern) {
         if (hookLengthCapBars >= 16) {
           const hookBars = chooseHookLengthBars(random, hookLengthCapBars);
 
-          addSection("hook", hookBars, {
+          const hookSection = addSection("hook", hookBars, {
             reset: true,
             tags: ["hook"]
           });
+
+          const hookSynthBassSequenceKeys = getHookSynthBassSequenceKeys(hookSection);
+          hookSection.forcedHookSynthBassSequenceKeys = hookSynthBassSequenceKeys;
+          hookSection.forcedAudioStartKeys = [
+            hookSynthBassSequenceKeys[0]
+          ];
+
+          for (const key of hookSynthBassSequenceKeys) {
+            forceIncludeAudioSelection({
+              random,
+              globalInclusionState,
+              requiredActivationState,
+              selectedAudio,
+              key,
+              reason: "forced_normal_hook_synth_bass_sequence"
+            });
+          }
+
           continue;
         }
       }
