@@ -68,6 +68,182 @@
     return lyrixRules.sections.filter(section => firstPassLyrixSectionIds.has(section.id));
   }
 
+  const simpleHookLyrixExcludedSectionIds = new Set([
+    "hook_nextmove",
+    "fast_hook_hums"
+  ]);
+
+  function isHookLyrixSection(section) {
+    return Boolean(
+      section &&
+      section.kind === "hookLyrix" &&
+      !simpleHookLyrixExcludedSectionIds.has(section.id)
+    );
+  }
+
+  function isHookLyrixEntry(entry) {
+    if (!entry || !isLyrix(entry)) return false;
+
+    const key = String(entry.key || "").toLowerCase();
+    const tags = Array.isArray(entry.tags) ? entry.tags.map(tag => String(tag).toLowerCase()) : [];
+
+    return (
+      tags.includes("hook") ||
+      key.startsWith("lyrix/slow_hook_") ||
+      key.startsWith("lyrix/fast_hook_") ||
+      key.startsWith("lyrix/hook_nextmove_")
+    );
+  }
+
+  function getSimpleHookLyrixSections() {
+    if (!lyrixRules?.sections) return [];
+
+    return lyrixRules.sections.filter(section =>
+      isHookLyrixSection(section) &&
+      Number(section.globalInclusionChance || 0) > 0 &&
+      Array.isArray(section.parts) &&
+      section.parts.length > 0
+    );
+  }
+
+  function getHookLyrixLeadInBars(lyrixSection) {
+    const leadIn = lyrixSection?.leadIn || null;
+    if (!leadIn) return 0;
+
+    return Math.max(
+      0,
+      Number(leadIn.startsBeforeBars || leadIn.lengthBars || 0) || 0
+    );
+  }
+
+  function getHookLyrixTotalBarsInsideHook(lyrixSection) {
+    return getHookLyrixLeadInBars(lyrixSection) + Math.max(0, getLyrixSectionLengthBars(lyrixSection));
+  }
+
+  function getSimpleHookLyrixUsageCount(lyrixSectionUsage) {
+    if (!lyrixSectionUsage || typeof lyrixSectionUsage.values !== "function") return 0;
+
+    let total = 0;
+
+    for (const section of getSimpleHookLyrixSections()) {
+      total += Number(lyrixSectionUsage.get(section.id) || 0);
+    }
+
+    return total;
+  }
+
+  function chooseSimpleHookLyrixSectionForHook(random, hookSection, lyrixSectionUsage, lastHookLyrixFamily = null) {
+    if (!hookSection || !isHookSection(hookSection)) return null;
+
+    const hasPreviousHookLyrix = getSimpleHookLyrixUsageCount(lyrixSectionUsage) > 0;
+    const candidates = shuffle(random, getSimpleHookLyrixSections())
+      .filter(section => {
+        if (lyrixSectionUsage?.get(section.id)) return false;
+        if (!hasPreviousHookLyrix && section.canBeFirstHookLyric === false) return false;
+
+        return getHookLyrixTotalBarsInsideHook(section) <= hookSection.bars;
+      });
+
+    for (const section of candidates) {
+      let inclusionChance = Number(section.globalInclusionChance || 0);
+
+      if (lastHookLyrixFamily === "slow_hook") {
+        if (section.hookFamily === "slow_hook") {
+          inclusionChance *= 2;
+        } else if (section.hookFamily === "fast_hook") {
+          inclusionChance *= 0.5;
+        }
+      }
+
+      if (chance(random, Math.min(1, Math.max(0, inclusionChance)))) {
+        return section;
+      }
+    }
+
+    return null;
+  }
+
+  function maybeAttachSimpleHookLyrixToHookSection({
+    random,
+    hookSection,
+    lyrixSectionUsage,
+    lastHookLyrixFamily = null,
+    globalInclusionState,
+    requiredActivationState,
+    selectedAudio,
+    reason = "simple_hook_lyrix_section"
+  } = {}) {
+    const lyrixSection = chooseSimpleHookLyrixSectionForHook(
+      random,
+      hookSection,
+      lyrixSectionUsage,
+      lastHookLyrixFamily
+    );
+
+    if (!lyrixSection) return null;
+
+    const activationNumber = (lyrixSectionUsage.get(lyrixSection.id) || 0) + 1;
+    lyrixSectionUsage.set(lyrixSection.id, activationNumber);
+
+    hookSection.lyrixSectionId = lyrixSection.id;
+    hookSection.lyrixSection = lyrixSection;
+    hookSection.hookLyrixSection = lyrixSection;
+    hookSection.lyrixActivationNumber = activationNumber;
+    hookSection.tags = [
+      ...new Set([
+        ...(Array.isArray(hookSection.tags) ? hookSection.tags : []),
+        "hook_lyrix",
+        lyrixSection.hookFamily,
+        lyrixSection.id
+      ].filter(Boolean))
+    ];
+
+    for (const key of getLyrixSectionAudioFiles(lyrixSection)) {
+      forceIncludeAudioSelection({
+        random,
+        globalInclusionState,
+        requiredActivationState,
+        selectedAudio,
+        key,
+        reason
+      });
+    }
+
+    return lyrixSection;
+  }
+
+  function scheduleExplicitHookLyrixSection({
+    offlineContext,
+    destination,
+    section,
+    random,
+    playbackState = null,
+    buffers
+  } = {}) {
+    const hookLyrixSection = section?.hookLyrixSection || null;
+    if (!hookLyrixSection) return false;
+
+    const leadInBars = getHookLyrixLeadInBars(hookLyrixSection);
+    const shiftedStartSeconds = section.startSeconds + leadInBars * section.barSeconds;
+    const shiftedDurationSeconds = Math.max(0, section.endSeconds - shiftedStartSeconds);
+    const shiftedBars = Math.max(0, section.bars - leadInBars);
+
+    return scheduleExplicitLyrixSection({
+      offlineContext,
+      destination,
+      section: {
+        ...section,
+        startSeconds: shiftedStartSeconds,
+        durationSeconds: shiftedDurationSeconds,
+        duration: shiftedDurationSeconds,
+        bars: shiftedBars
+      },
+      random,
+      playbackState,
+      buffers
+    });
+  }
+
   
   function getConditionalLyrixContinuationsForParent(parentSectionId) {
     if (!lyrixRules?.sections || !parentSectionId) return [];
@@ -6746,6 +6922,7 @@ function getNormalMidiHatChoiceGroupId(pattern) {
     const grimeyGloballySelected = getUrlBooleanFlag("forceGrimey", "forceGrm") || chance(random, 0.1);
     let grimeyHasActivated = false;
     let tagLyrixPreFirstAttempted = false;
+    let lastSimpleHookLyrixFamily = null;
 
     let cursorSeconds = 0;
     let cursorBars = 0;
@@ -6988,6 +7165,21 @@ function getNormalMidiHatChoiceGroupId(pattern) {
         selectedAudio,
         reason: "song_start_hook_definition_timed_audio"
       });
+
+      const songStartHookLyrixSection = maybeAttachSimpleHookLyrixToHookSection({
+        random,
+        hookSection: songStartHookSection,
+        lyrixSectionUsage,
+        lastHookLyrixFamily: lastSimpleHookLyrixFamily,
+        globalInclusionState,
+        requiredActivationState,
+        selectedAudio,
+        reason: "song_start_simple_hook_lyrix_section"
+      });
+
+      if (songStartHookLyrixSection) {
+        lastSimpleHookLyrixFamily = songStartHookLyrixSection.hookFamily || lastSimpleHookLyrixFamily;
+      }
     } else {
       addSection("normal", 8, { reset: true, tags: ["normal"] });
 
@@ -7098,6 +7290,21 @@ function getNormalMidiHatChoiceGroupId(pattern) {
             selectedAudio,
             reason: "normal_hook_definition_timed_audio"
           });
+
+          const normalHookLyrixSection = maybeAttachSimpleHookLyrixToHookSection({
+            random,
+            hookSection,
+            lyrixSectionUsage,
+            lastHookLyrixFamily: lastSimpleHookLyrixFamily,
+            globalInclusionState,
+            requiredActivationState,
+            selectedAudio,
+            reason: "normal_simple_hook_lyrix_section"
+          });
+
+          if (normalHookLyrixSection) {
+            lastSimpleHookLyrixFamily = normalHookLyrixSection.hookFamily || lastSimpleHookLyrixFamily;
+          }
 
           continue;
         }
@@ -7792,6 +7999,7 @@ function getNormalMidiHatChoiceGroupId(pattern) {
 
       const matchingEntries = audioEntries.filter(entry => {
         if (!normalSynthGroupIncluded && isNormalSynthGlobalGateEntry(entry)) return false;
+        if (isHookLyrixEntry(entry)) return false;
         if ((section.type === "normal" || (section.type.includes("lyrix") && section.lyrixSectionId)) && isCentralInstrumentFamilyEntry(entry)) return false;
         return audioMatchesSection(entry, section);
       });
@@ -11270,6 +11478,24 @@ function scheduleMidiPattern({
     }
 
     if (isLyrix(entry)) {
+      if (isHookLyrixEntry(entry)) {
+        const hookLyrixSection = section?.hookLyrixSection || null;
+        const hookLyrixFiles = hookLyrixSection
+          ? getLyrixSectionAudioFiles(hookLyrixSection)
+          : [];
+
+        if (!hookLyrixSection || !hookLyrixFiles.length || key !== hookLyrixFiles[0]) return 0;
+
+        return scheduleExplicitHookLyrixSection({
+          offlineContext,
+          destination,
+          section,
+          random,
+          playbackState,
+          buffers: buffers || currentRenderBuffers
+        }) ? 1 : 0;
+      }
+
       return scheduleLyrixGroupInSection({
         offlineContext,
         destination,
