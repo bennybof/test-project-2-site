@@ -5475,6 +5475,117 @@ function shouldBlockSecondHookCrashWash(section, key) {
     section.selectedMidi.includes("midi files/crash_hook_metal_odd_crash.mid");
 }
 
+const HOOK_ACCORDIAN_SEQUENCE_KEYS = [
+  "samples/accordian_1_odd_hook_x4 (consolidated).wav",
+  "samples/accordian_1_hook #2 (consolidated).wav",
+  "samples/accordian_1_hook #3 (consolidated).wav"
+];
+
+const HOOK_ACCORDIAN_2_KEY = "samples/accordian_2_hook_odd_x4 (consolidated).wav";
+
+const HOOK_WINDOW_WIPE_KEYS = [
+  "samples/window_wipe_xtra_even_hook_x4.wav",
+  "samples/window_wipe_2_xtra_even_hook_x4.wav"
+];
+
+function isHookAccordianSystemKey(key) {
+  return HOOK_ACCORDIAN_SEQUENCE_KEYS.includes(key) || key === HOOK_ACCORDIAN_2_KEY;
+}
+
+function isHookWindowWipeSystemKey(key) {
+  return HOOK_WINDOW_WIPE_KEYS.includes(key);
+}
+
+function isHookDefinitionTimedAudioKey(key) {
+  return isHookAccordianSystemKey(key) || isHookWindowWipeSystemKey(key);
+}
+
+function setHookGroupGlobalDecision(globalInclusionState, { id, included, chanceValue, roll, tags = [] } = {}) {
+  setGlobalInclusionDecision(globalInclusionState, {
+    kind: "hook_audio_group",
+    key: id,
+    included,
+    globalChance: chanceValue,
+    roll,
+    profileSummary: {
+      family: "hook_audio_group",
+      tags
+    }
+  });
+}
+
+function includeHookAudioKeysAfterGroupDecision({
+  random,
+  globalInclusionState,
+  requiredActivationState,
+  selectedAudio,
+  keys,
+  reason
+} = {}) {
+  for (const key of keys) {
+    forceIncludeAudioSelection({
+      random,
+      globalInclusionState,
+      requiredActivationState,
+      selectedAudio,
+      key,
+      reason
+    });
+  }
+}
+
+function includeHookDefinitionTimedAudioSelections({
+  random,
+  globalInclusionState,
+  requiredActivationState,
+  selectedAudio,
+  reason = "hook_definition_timed_audio"
+} = {}) {
+  if (!selectedAudio) return;
+
+  const accordianRoll = random();
+  const accordianIncluded = accordianRoll < 0.5;
+  setHookGroupGlobalDecision(globalInclusionState, {
+    id: "hook_accordian_group",
+    included: accordianIncluded,
+    chanceValue: 0.5,
+    roll: accordianRoll,
+    tags: ["hook", "accordian"]
+  });
+
+  if (accordianIncluded) {
+    includeHookAudioKeysAfterGroupDecision({
+      random,
+      globalInclusionState,
+      requiredActivationState,
+      selectedAudio,
+      keys: [...HOOK_ACCORDIAN_SEQUENCE_KEYS, HOOK_ACCORDIAN_2_KEY],
+      reason: `${reason}:accordian_global_50`
+    });
+  }
+
+  const windowWipeRoll = random();
+  const windowWipeIncluded = windowWipeRoll < 0.5;
+  setHookGroupGlobalDecision(globalInclusionState, {
+    id: "hook_window_wipe_group",
+    included: windowWipeIncluded,
+    chanceValue: 0.5,
+    roll: windowWipeRoll,
+    tags: ["hook", "window_wipe"]
+  });
+
+  if (windowWipeIncluded) {
+    includeHookAudioKeysAfterGroupDecision({
+      random,
+      globalInclusionState,
+      requiredActivationState,
+      selectedAudio,
+      keys: HOOK_WINDOW_WIPE_KEYS,
+      reason: `${reason}:window_wipe_global_50`
+    });
+  }
+}
+
 function isCrashKey(key) {
   return String(key || "").toLowerCase().includes("crash");
 }
@@ -6514,6 +6625,14 @@ function getNormalMidiHatChoiceGroupId(pattern) {
           reason: "forced_song_start_hook_crash_wash"
         });
       }
+
+      includeHookDefinitionTimedAudioSelections({
+        random,
+        globalInclusionState,
+        requiredActivationState,
+        selectedAudio,
+        reason: "song_start_hook_definition_timed_audio"
+      });
     } else {
       addSection("normal", 8, { reset: true, tags: ["normal"] });
 
@@ -6616,6 +6735,14 @@ function getNormalMidiHatChoiceGroupId(pattern) {
               reason: "forced_normal_hook_crash_wash"
             });
           }
+
+          includeHookDefinitionTimedAudioSelections({
+            random,
+            globalInclusionState,
+            requiredActivationState,
+            selectedAudio,
+            reason: "normal_hook_definition_timed_audio"
+          });
 
           continue;
         }
@@ -10114,6 +10241,119 @@ function scheduleMidiPattern({
     return scheduledCount;
   }
 
+  function scheduleHookDefinitionTimedAudio({
+    offlineContext,
+    destination,
+    key,
+    random,
+    plan = null,
+    lifecycleStates = null,
+    playbackState = null,
+    section
+  } = {}) {
+    if (!isMainHookSection(section)) return 0;
+    if (!isHookDefinitionTimedAudioKey(key)) return 0;
+
+    if (!section.hookDefinitionTimedAudioScheduledGroups) {
+      section.hookDefinitionTimedAudioScheduledGroups = {};
+    }
+
+    const selectedAudio = Array.isArray(plan?.selectedAudio) ? new Set(plan.selectedAudio) : new Set();
+
+    function scheduleKeyAtTime(activeKey, startTime, reason) {
+      if (startTime >= section.endSeconds - 0.001) return 0;
+
+      const activeEntry = getCatalogEntry(activeKey);
+      const activeBuffer = currentRenderBuffers?.get(activeKey);
+
+      if (!activeEntry || !activeBuffer) return 0;
+
+      const scheduled = scheduleAudioBufferWithPlaybackState({
+        offlineContext,
+        destination,
+        buffer: activeBuffer,
+        startTime,
+        gainValue: sectionGainForAudio(activeEntry, section),
+        playbackState,
+        key: activeKey,
+        entry: activeEntry,
+        section,
+        metadata: { reason }
+      });
+
+      if (scheduled && lifecycleStates) {
+        activateLifecycleItem(
+          lifecycleStates,
+          getAudioLifecycleId(activeKey),
+          `${section.id}:${activeKey}:${reason}`
+        );
+      }
+
+      return scheduled ? 1 : 0;
+    }
+
+    if (isHookAccordianSystemKey(key)) {
+      if (section.hookDefinitionTimedAudioScheduledGroups.accordian) return 0;
+      section.hookDefinitionTimedAudioScheduledGroups.accordian = true;
+
+      if (!selectedAudio.has(HOOK_ACCORDIAN_SEQUENCE_KEYS[0])) return 0;
+
+      // Definition: 50% activation chance at the eligible hook opportunity.
+      if (!chance(random, 0.5)) return 0;
+
+      let scheduledCount = 0;
+      let partStartSeconds = section.startSeconds;
+
+      for (const sequenceKey of HOOK_ACCORDIAN_SEQUENCE_KEYS) {
+        const sequenceBuffer = currentRenderBuffers?.get(sequenceKey);
+        const sequenceStartSeconds = partStartSeconds;
+
+        if (sequenceBuffer) {
+          partStartSeconds += sequenceBuffer.duration;
+        }
+
+        if (!selectedAudio.has(sequenceKey)) continue;
+
+        scheduledCount += scheduleKeyAtTime(
+          sequenceKey,
+          sequenceStartSeconds,
+          "hook_accordian_sequence"
+        );
+      }
+
+      if (selectedAudio.has(HOOK_ACCORDIAN_2_KEY)) {
+        scheduledCount += scheduleKeyAtTime(
+          HOOK_ACCORDIAN_2_KEY,
+          section.startSeconds + section.barSeconds * 4,
+          "hook_accordian_2_after_accordian_1_plus_4_bars"
+        );
+      }
+
+      return scheduledCount;
+    }
+
+    if (isHookWindowWipeSystemKey(key)) {
+      if (section.hookDefinitionTimedAudioScheduledGroups.windowWipe) return 0;
+      section.hookDefinitionTimedAudioScheduledGroups.windowWipe = true;
+
+      const availableWindowWipes = HOOK_WINDOW_WIPE_KEYS.filter(candidateKey => selectedAudio.has(candidateKey));
+      if (!availableWindowWipes.length) return 0;
+
+      // Definition: 20% activation chance at the eligible hook opportunity.
+      if (!chance(random, 0.2)) return 0;
+
+      const chosenWindowWipe = chooseOne(random, availableWindowWipes);
+
+      return scheduleKeyAtTime(
+        chosenWindowWipe,
+        section.startSeconds + section.barSeconds,
+        "hook_window_wipe_plus_1_bar_alternative"
+      );
+    }
+
+    return 0;
+  }
+
   function scheduleAudioStemInSection({ offlineContext, destination, key, buffer, random, plan = null, lifecycleStates = null, playbackState = null, section, buffers = null }) {
     const entry = getCatalogEntry(key);
     if (!entry || !buffer) return 0;
@@ -10187,6 +10427,19 @@ function scheduleMidiPattern({
         random,
         playbackState,
         lifecycleStates
+      });
+    }
+
+    if (isHookDefinitionTimedAudioKey(key) && isMainHookSection(section)) {
+      return scheduleHookDefinitionTimedAudio({
+        offlineContext,
+        destination,
+        key,
+        random,
+        plan,
+        lifecycleStates,
+        playbackState,
+        section
       });
     }
 
