@@ -5535,6 +5535,7 @@ const HOOK_CLARINET_KEY = "samples/clarinet_hook_x4_even (consolidated).wav";
 
 const HOOK_BREATHE_VOX_BIG_KEY = "samples/breathe_vox_big_hook_even_x2.wav";
 const HOOK_REV_CRASH_KEY = "samples/rev_crash_metal_even_hook.wav";
+const HOOK_JAZZ_CRASH_KEY = "samples/jazz_crash_metal_hook_odd.wav";
 
 function isHookAccordianSystemKey(key) {
   return HOOK_ACCORDIAN_SEQUENCE_KEYS.includes(key) || key === HOOK_ACCORDIAN_2_KEY;
@@ -5588,6 +5589,63 @@ function isHookRevCrashSystemKey(key) {
   return key === HOOK_REV_CRASH_KEY;
 }
 
+function isHookJazzCrashSystemKey(key) {
+  return key === HOOK_JAZZ_CRASH_KEY;
+}
+
+function collectSectionMidiFileNames(section) {
+  const files = [];
+
+  function pushValue(value) {
+    if (!value) return;
+
+    if (typeof value === "string") {
+      files.push(value);
+      return;
+    }
+
+    if (value instanceof Set) {
+      for (const item of value) pushValue(item);
+      return;
+    }
+
+    if (Array.isArray(value)) {
+      for (const item of value) pushValue(item);
+      return;
+    }
+
+    if (typeof value === "object") {
+      pushValue(value.file || value.key || value.id || value.pattern?.file);
+    }
+  }
+
+  pushValue(section?.selectedMidi);
+  pushValue(section?.scheduledMidi);
+  pushValue(section?.scheduledMidiKeys);
+  pushValue(section?.midi);
+  pushValue(section?.midiEvents);
+
+  return files.map(file => String(file).toLowerCase());
+}
+
+function sectionHasActiveHookJazzHatsOrJazzMetal(section) {
+  const midiFiles = collectSectionMidiFileNames(section);
+
+  return midiFiles.some(file =>
+    file.includes("jazz_hats_metal_hook") ||
+    file.includes("jazz_hats_metal") ||
+    file.includes("jazz_rides_wiv-jazz-hats") ||
+    file.includes("jazz_ride_wiv-jazz_hats")
+  );
+}
+
+function sectionHasJazzCrashEmphasis(section) {
+  const tags = Array.isArray(section?.tags) ? section.tags.map(tag => String(tag).toLowerCase()) : [];
+
+  return Boolean(section?.emphasis || section?.isEmphasis || tags.includes("emphasis")) ||
+    Number(section?.emphasisValue || section?.emphasis_value || 0) > 0;
+}
+
 function isHookDefinitionTimedAudioKey(key) {
   return isHookAccordianSystemKey(key) ||
     isHookWindowWipeSystemKey(key) ||
@@ -5601,7 +5659,8 @@ function isHookDefinitionTimedAudioKey(key) {
     isHookTrumpetSystemKey(key) ||
     isHookClarinetSystemKey(key) ||
     isHookBreatheVoxBigSystemKey(key) ||
-    isHookRevCrashSystemKey(key);
+    isHookRevCrashSystemKey(key) ||
+    isHookJazzCrashSystemKey(key);
 }
 
 function setHookGroupGlobalDecision(globalInclusionState, { id, included, chanceValue, roll, tags = [] } = {}) {
@@ -5870,6 +5929,15 @@ function includeHookDefinitionTimedAudioSelections({
     selectedAudio,
     keys: [HOOK_REV_CRASH_KEY],
     reason: `${reason}:rev_crash_hook_activation_10_dropout_50`
+  });
+
+  includeHookAudioKeysAfterGroupDecision({
+    random,
+    globalInclusionState,
+    requiredActivationState,
+    selectedAudio,
+    keys: [HOOK_JAZZ_CRASH_KEY],
+    reason: `${reason}:jazz_crash_available_if_jazz_hats_active`
   });
 }
 
@@ -10617,6 +10685,36 @@ function scheduleMidiPattern({
       }
 
       return scheduledCount;
+    }
+
+    if (isHookJazzCrashSystemKey(key)) {
+      if (section.hookDefinitionTimedAudioScheduledGroups.jazzCrash) return 0;
+      section.hookDefinitionTimedAudioScheduledGroups.jazzCrash = true;
+
+      if (!selectedAudio.has(HOOK_JAZZ_CRASH_KEY)) return 0;
+      if (!sectionHasActiveHookJazzHatsOrJazzMetal(section)) return 0;
+
+      const allowedLocalBars = getAllowedLocalBarIndexesForKey(HOOK_JAZZ_CRASH_KEY, section);
+      const totalBars = Math.max(1, Number(section.bars || section.lengthBars || 1));
+      const fallbackBars = Array.from({ length: totalBars }, (_, index) => index);
+      const localBars = (allowedLocalBars.length ? allowedLocalBars : fallbackBars)
+        .filter(localBar => Number(localBar) > 0);
+
+      // First active hook bar uses crash_small_hook_intro, so jazz crash is blocked on local bar 0.
+      if (!localBars.length) return 0;
+
+      const activationChance = sectionHasJazzCrashEmphasis(section) ? 0.8 : 0.4;
+      if (!chance(random, activationChance)) return 0;
+
+      const localBar = chooseOne(random, localBars);
+
+      return scheduleKeyAtTime(
+        HOOK_JAZZ_CRASH_KEY,
+        section.startSeconds + section.barSeconds * localBar,
+        activationChance === 0.8
+          ? "hook_jazz_crash_activation_80_emphasis"
+          : "hook_jazz_crash_activation_40_jazz_hats_active"
+      );
     }
 
     if (isHookBreatheVoxBigSystemKey(key)) {
