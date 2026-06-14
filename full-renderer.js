@@ -5491,6 +5491,62 @@ function isHookHatsMidiPattern(pattern) {
   return file.startsWith("midi files/hats_hook_metal_");
 }
 
+function getHookHatsPartLocalBars(section, partNumber) {
+  const bars = Math.max(0, Number(section?.bars || section?.lengthBars || 0));
+  const parityStart = partNumber === 2 ? 1 : 0;
+  const out = [];
+
+  for (let localBar = parityStart; localBar < bars; localBar += 2) {
+    out.push(localBar);
+  }
+
+  return out;
+}
+
+function addHookHatsPartSequenceToSection(section, sectionSelectedMidi, selectedMidi, midiPatternPool) {
+  if (!isMainHookSection(section)) return 0;
+
+  const hookHatParts = [
+    {
+      partNumber: 1,
+      files: [
+        "midi files/hats_hook_metal_odd_ch.mid",
+        "midi files/hats_hook_metal_odd_oh.mid"
+      ]
+    },
+    {
+      partNumber: 2,
+      files: [
+        "midi files/hats_hook_metal_#2_ch.mid",
+        "midi files/hats_hook_metal_#2_oh.mid"
+      ]
+    }
+  ];
+
+  let addedCount = 0;
+
+  for (const part of hookHatParts) {
+    const localBars = getHookHatsPartLocalBars(section, part.partNumber);
+
+    if (!localBars.length) continue;
+
+    for (const file of part.files) {
+      if (addForcedMidiToSection(
+        section,
+        sectionSelectedMidi,
+        selectedMidi,
+        midiPatternPool,
+        file,
+        { localBars }
+      )) {
+        addedCount += 1;
+      }
+    }
+  }
+
+  return addedCount;
+}
+
 function shouldSkipMidiPatternAtSectionBar(pattern, section, localBarIndex = null) {
   if (!isFirstActiveHookBar(section, localBarIndex)) {
     return false;
@@ -7275,6 +7331,13 @@ function getNormalMidiHatChoiceGroupId(pattern) {
           }
         );
       }
+
+      addHookHatsPartSequenceToSection(
+        section,
+        sectionSelectedMidi,
+        selectedMidi,
+        midiPatternPool
+      );
 
       const sectionMidi = midiPatternPool.filter(pattern => {
         const key = pattern.file.toLowerCase();
