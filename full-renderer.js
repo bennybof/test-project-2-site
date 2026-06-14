@@ -135,32 +135,58 @@
   function chooseSimpleHookLyrixSectionForHook(random, hookSection, lyrixSectionUsage, lastHookLyrixFamily = null) {
     if (!hookSection || !isHookSection(hookSection)) return null;
 
-    const hasPreviousHookLyrix = getSimpleHookLyrixUsageCount(lyrixSectionUsage) > 0;
-    const candidates = shuffle(random, getSimpleHookLyrixSections())
+    const candidates = getSimpleHookLyrixSections()
       .filter(section => {
+        if (!section?.id) return false;
         if (lyrixSectionUsage?.get(section.id)) return false;
-        if (!hasPreviousHookLyrix && section.canBeFirstHookLyric === false) return false;
 
-        return getHookLyrixTotalBarsInsideHook(section) <= hookSection.bars;
-      });
+        const family = section.hookFamily || "";
+        const canBeFirst = (
+          section.canFirst !== false &&
+          section.canFirstHookLyrix !== false &&
+          section.canActivateFirst !== false &&
+          section.canBeFirst !== false
+        );
 
-    for (const section of candidates) {
-      let inclusionChance = Number(section.globalInclusionChance || 0);
+        if (!lastHookLyrixFamily && family === "slow_hook" && !canBeFirst) return false;
 
-      if (lastHookLyrixFamily === "slow_hook") {
-        if (section.hookFamily === "slow_hook") {
-          inclusionChance *= 2;
-        } else if (section.hookFamily === "fast_hook") {
-          inclusionChance *= 0.5;
-        }
-      }
+        return true;
+      })
+      .map(section => {
+        const family = section.hookFamily || "";
+        const baseChance = Math.min(1, Math.max(0, Number(section.globalInclusionChance || 0)));
+        let adjustedChance = baseChance;
 
-      if (chance(random, Math.min(1, Math.max(0, inclusionChance)))) {
-        return section;
-      }
+        // Final tuning request: slow hook lyrix should appear more often.
+        if (family === "slow_hook") adjustedChance *= 1.75;
+        if (family === "fast_hook") adjustedChance *= 0.65;
+
+        // Preserve the intended slow-after-slow / fast-after-slow tendency.
+        if (lastHookLyrixFamily === "slow_hook" && family === "slow_hook") adjustedChance *= 2;
+        if (lastHookLyrixFamily === "slow_hook" && family === "fast_hook") adjustedChance *= 0.5;
+
+        adjustedChance = Math.min(0.95, Math.max(0, adjustedChance));
+
+        return {
+          section,
+          family,
+          adjustedChance,
+          weight: family === "slow_hook" ? 4 : 1
+        };
+      })
+      .filter(candidate => chance(random, candidate.adjustedChance));
+
+    if (!candidates.length) return null;
+
+    const totalWeight = candidates.reduce((sum, candidate) => sum + candidate.weight, 0);
+    let roll = random() * totalWeight;
+
+    for (const candidate of candidates) {
+      roll -= candidate.weight;
+      if (roll <= 0) return candidate.section;
     }
 
-    return null;
+    return candidates[candidates.length - 1].section;
   }
 
   function maybeAttachSimpleHookLyrixToHookSection({
@@ -365,23 +391,34 @@
     const muteChance = Number(partMutingRule?.muteChance || 0);
     const mutedParts = [];
     const replacementsByPart = {};
-    const includedFiles = new Set(getLyrixSectionAudioFiles(lyrixSection));
+    const includedFiles = new Set();
+    const playableOriginalParts = [];
 
     for (const part of lyrixSection?.parts || []) {
       const partNumber = Number(part.part) || 1;
       if (partNumber > endingDecision.lastPart) continue;
-      if (!mutableParts.has(partNumber)) continue;
-      if (!chance(random, muteChance)) continue;
 
-      mutedParts.push(partNumber);
+      const shouldMute = mutableParts.has(partNumber) && chance(random, muteChance);
 
-      const replacement = chooseHookNextmoveReplacementForPart(random, lyrixSection, partNumber);
-      if (replacement) {
-        replacementsByPart[String(partNumber)] = replacement;
+      if (shouldMute) {
+        mutedParts.push(partNumber);
 
-        for (const path of getHookNextmoveReplacementPaths(replacement)) {
-          includedFiles.add(path);
+        const replacement = chooseHookNextmoveReplacementForPart(random, lyrixSection, partNumber);
+        if (replacement) {
+          replacementsByPart[String(partNumber)] = replacement;
+
+          for (const path of getHookNextmoveReplacementPaths(replacement)) {
+            includedFiles.add(path);
+          }
         }
+
+        continue;
+      }
+
+      playableOriginalParts.push(partNumber);
+
+      for (const path of [part.file, part.dry, part.wet].filter(Boolean)) {
+        includedFiles.add(path);
       }
     }
 
@@ -390,6 +427,7 @@
       lastPart: endingDecision.lastPart,
       lengthBars: endingDecision.lengthBars,
       mutedParts,
+      playableOriginalParts,
       replacementsByPart,
       includedFiles: [...includedFiles]
     };
