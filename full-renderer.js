@@ -173,6 +173,8 @@
     selectedAudio,
     reason = "simple_hook_lyrix_section"
   } = {}) {
+    if (hookSection?.hookLyrixSection) return null;
+
     const lyrixSection = chooseSimpleHookLyrixSectionForHook(
       random,
       hookSection,
@@ -244,7 +246,363 @@
     });
   }
 
-  
+
+  const HOOK_NEXTMOVE_SECTION_ID = "hook_nextmove";
+
+  function isHookNextmoveLyrixSection(section) {
+    return Boolean(section && section.id === HOOK_NEXTMOVE_SECTION_ID);
+  }
+
+  function getHookNextmoveLyrixSection() {
+    return getLyrixSectionById(HOOK_NEXTMOVE_SECTION_ID);
+  }
+
+  function getHookNextmoveEndingDecision(random, lyrixSection) {
+    const endingRule = lyrixSection?.endingRule || null;
+    const defaultLengthBars = Math.max(
+      1,
+      Number(endingRule?.ifNeitherEndingTriggersLengthBars || lyrixSection?.defaultLengthBars || 6) || 6
+    );
+
+    for (const option of endingRule?.possibleEarlyEndingParts || []) {
+      if (chance(random, Number(option.chanceToEndHere) || 0)) {
+        return {
+          endingPart: Number(option.part) || 0,
+          lastPart: Number(option.part) || 0,
+          lengthBars: Math.max(1, Number(option.resultingLengthBars) || defaultLengthBars)
+        };
+      }
+    }
+
+    return {
+      endingPart: null,
+      lastPart: Infinity,
+      lengthBars: defaultLengthBars
+    };
+  }
+
+  function getHookNextmoveReplacementPaths(replacement) {
+    if (!replacement) return [];
+
+    return [
+      replacement.file,
+      replacement.dry,
+      replacement.wet
+    ].filter(Boolean);
+  }
+
+  function chooseHookNextmoveReplacementForPart(random, lyrixSection, mutedPartNumber) {
+    const partMutingRule = lyrixSection?.partMutingRule || null;
+    if (!partMutingRule?.mutedPartCanBeReplaced) return null;
+
+    const version = Number(partMutingRule.versionByMutedPart?.[String(mutedPartNumber)] || 0);
+    if (!version) return null;
+
+    const replacementFamilies = lyrixSection?.replacementFamilies || {};
+    const familyIds = Array.isArray(partMutingRule.replacementFamilies)
+      ? partMutingRule.replacementFamilies
+      : Object.keys(replacementFamilies);
+
+    const validFamilies = familyIds
+      .map(familyId => {
+        const family = replacementFamilies[familyId] || null;
+        const entry = Array.isArray(family?.entries)
+          ? family.entries.find(candidate => Number(candidate.version) === version)
+          : null;
+
+        return entry ? { familyId, entry } : null;
+      })
+      .filter(Boolean);
+
+    if (!validFamilies.length) return null;
+
+    const selected = chooseOne(random, validFamilies);
+    const replacementStartBar = Number(partMutingRule.replacementStartBarByMutedPart?.[String(mutedPartNumber)] || 0);
+
+    return {
+      familyId: selected.familyId,
+      version,
+      startBar: Math.max(0, replacementStartBar),
+      file: selected.entry.file || null,
+      dry: selected.entry.dry || null,
+      wet: selected.entry.wet || null
+    };
+  }
+
+  function createHookNextmoveLyrixPlan(random, lyrixSection) {
+    const endingDecision = getHookNextmoveEndingDecision(random, lyrixSection);
+    const partMutingRule = lyrixSection?.partMutingRule || null;
+    const mutableParts = new Set(
+      Array.isArray(partMutingRule?.mutableParts)
+        ? partMutingRule.mutableParts.map(part => Number(part)).filter(Number.isFinite)
+        : []
+    );
+    const muteChance = Number(partMutingRule?.muteChance || 0);
+    const mutedParts = [];
+    const replacementsByPart = {};
+    const includedFiles = new Set(getLyrixSectionAudioFiles(lyrixSection));
+
+    for (const part of lyrixSection?.parts || []) {
+      const partNumber = Number(part.part) || 1;
+      if (partNumber > endingDecision.lastPart) continue;
+      if (!mutableParts.has(partNumber)) continue;
+      if (!chance(random, muteChance)) continue;
+
+      mutedParts.push(partNumber);
+
+      const replacement = chooseHookNextmoveReplacementForPart(random, lyrixSection, partNumber);
+      if (replacement) {
+        replacementsByPart[String(partNumber)] = replacement;
+
+        for (const path of getHookNextmoveReplacementPaths(replacement)) {
+          includedFiles.add(path);
+        }
+      }
+    }
+
+    return {
+      endingPart: endingDecision.endingPart,
+      lastPart: endingDecision.lastPart,
+      lengthBars: endingDecision.lengthBars,
+      mutedParts,
+      replacementsByPart,
+      includedFiles: [...includedFiles]
+    };
+  }
+
+  function maybeAttachHookNextmoveLyrixToHookSection({
+    random,
+    hookSection,
+    lyrixSectionUsage,
+    globalInclusionState,
+    requiredActivationState,
+    selectedAudio,
+    reason = "hook_nextmove_lyrix_section"
+  } = {}) {
+    if (!hookSection || !isHookSection(hookSection)) return null;
+    if (hookSection.hookLyrixSection) return null;
+
+    const lyrixSection = getHookNextmoveLyrixSection();
+    if (!lyrixSection) return null;
+
+    if (lyrixSectionUsage?.get(lyrixSection.id)) return null;
+
+    const inclusionChance = Number(lyrixSection.globalInclusionChance || 0);
+    if (!chance(random, Math.min(1, Math.max(0, inclusionChance)))) return null;
+
+    const hookNextmovePlan = createHookNextmoveLyrixPlan(random, lyrixSection);
+    if (Number(hookNextmovePlan.lengthBars || 0) > Number(hookSection.bars || 0)) return null;
+
+    const activationNumber = (lyrixSectionUsage.get(lyrixSection.id) || 0) + 1;
+    lyrixSectionUsage.set(lyrixSection.id, activationNumber);
+
+    hookSection.lyrixSectionId = lyrixSection.id;
+    hookSection.lyrixSection = lyrixSection;
+    hookSection.hookLyrixSection = lyrixSection;
+    hookSection.hookNextmovePlan = hookNextmovePlan;
+    hookSection.lyrixActivationNumber = activationNumber;
+    hookSection.tags = [
+      ...new Set([
+        ...(Array.isArray(hookSection.tags) ? hookSection.tags : []),
+        "hook_lyrix",
+        "hook_nextmove",
+        lyrixSection.id
+      ].filter(Boolean))
+    ];
+
+    for (const key of hookNextmovePlan.includedFiles) {
+      forceIncludeAudioSelection({
+        random,
+        globalInclusionState,
+        requiredActivationState,
+        selectedAudio,
+        key,
+        reason
+      });
+    }
+
+    return lyrixSection;
+  }
+
+  function getHookNextmovePartAdvanceSeconds(buffers, part) {
+    const dryBuffer = part?.dry ? buffers.get(part.dry) : null;
+    const singleBuffer = part?.file ? buffers.get(part.file) : null;
+    const wetBuffer = part?.wet && !part?.dryOnly ? buffers.get(part.wet) : null;
+
+    if (dryBuffer) return dryBuffer.duration;
+    if (singleBuffer) return singleBuffer.duration;
+    if (wetBuffer) return wetBuffer.duration;
+
+    return 0;
+  }
+
+  function scheduleHookNextmoveReplacement({
+    offlineContext,
+    destination,
+    replacement,
+    startTime,
+    playbackState,
+    section,
+    buffers
+  } = {}) {
+    if (!replacement) return 0;
+
+    let scheduledCount = 0;
+    const gain = 0.72;
+
+    const dryPath = replacement.dry || null;
+    const wetPath = replacement.wet || null;
+    const singlePath = replacement.file || null;
+
+    if (dryPath) {
+      scheduleLyrixPathWithPlaybackState({
+        offlineContext,
+        destination,
+        path: dryPath,
+        buffer: buffers.get(dryPath),
+        startTime,
+        gainValue: gain,
+        playbackState,
+        section
+      });
+      scheduledCount += 1;
+    }
+
+    if (wetPath) {
+      scheduleLyrixPathWithPlaybackState({
+        offlineContext,
+        destination,
+        path: wetPath,
+        buffer: buffers.get(wetPath),
+        startTime,
+        gainValue: gain,
+        playbackState,
+        section
+      });
+      scheduledCount += 1;
+    }
+
+    if (singlePath) {
+      scheduleLyrixPathWithPlaybackState({
+        offlineContext,
+        destination,
+        path: singlePath,
+        buffer: buffers.get(singlePath),
+        startTime,
+        gainValue: gain,
+        playbackState,
+        section
+      });
+      scheduledCount += 1;
+    }
+
+    return scheduledCount;
+  }
+
+  function scheduleHookNextmoveLyrixSection({
+    offlineContext,
+    destination,
+    section,
+    random,
+    playbackState = null,
+    buffers
+  } = {}) {
+    const lyrixSection = section?.hookLyrixSection || null;
+    if (!isHookNextmoveLyrixSection(lyrixSection)) return false;
+
+    const hookNextmovePlan = section.hookNextmovePlan || createHookNextmoveLyrixPlan(random, lyrixSection);
+    const mutedParts = new Set(
+      Array.isArray(hookNextmovePlan.mutedParts)
+        ? hookNextmovePlan.mutedParts.map(part => Number(part))
+        : []
+    );
+    const replacementsByPart = hookNextmovePlan.replacementsByPart || {};
+
+    let start = section.startSeconds;
+    let scheduledCount = 0;
+
+    for (const part of lyrixSection.parts || []) {
+      const partNumber = Number(part.part) || 1;
+
+      if (partNumber > hookNextmovePlan.lastPart) {
+        continue;
+      }
+
+      const partScheduleStart = start;
+      const gain = Number(part.gain) || 0.72;
+
+      if (mutedParts.has(partNumber)) {
+        const replacement = replacementsByPart[String(partNumber)] || null;
+
+        if (replacement) {
+          scheduledCount += scheduleHookNextmoveReplacement({
+            offlineContext,
+            destination,
+            replacement,
+            startTime: section.startSeconds + Number(replacement.startBar || 0) * section.barSeconds,
+            playbackState,
+            section,
+            buffers
+          });
+        }
+
+        start += getHookNextmovePartAdvanceSeconds(buffers, part);
+        continue;
+      }
+
+      const dryPath = part.dry || null;
+      const wetPath = part.wet && !part.dryOnly ? part.wet : null;
+      const singlePath = part.file || null;
+
+      if (dryPath) {
+        scheduleLyrixPathWithPlaybackState({
+          offlineContext,
+          destination,
+          path: dryPath,
+          buffer: buffers.get(dryPath),
+          startTime: partScheduleStart,
+          gainValue: gain,
+          playbackState,
+          section
+        });
+        scheduledCount += 1;
+      }
+
+      if (wetPath) {
+        scheduleLyrixPathWithPlaybackState({
+          offlineContext,
+          destination,
+          path: wetPath,
+          buffer: buffers.get(wetPath),
+          startTime: partScheduleStart,
+          gainValue: gain,
+          playbackState,
+          section
+        });
+        scheduledCount += 1;
+      }
+
+      if (singlePath) {
+        scheduleLyrixPathWithPlaybackState({
+          offlineContext,
+          destination,
+          path: singlePath,
+          buffer: buffers.get(singlePath),
+          startTime: partScheduleStart,
+          gainValue: gain,
+          playbackState,
+          section
+        });
+        scheduledCount += 1;
+      }
+
+      start += getHookNextmovePartAdvanceSeconds(buffers, part);
+    }
+
+    return scheduledCount > 0;
+  }
+
+
   function getConditionalLyrixContinuationsForParent(parentSectionId) {
     if (!lyrixRules?.sections || !parentSectionId) return [];
 
@@ -7166,6 +7524,20 @@ function getNormalMidiHatChoiceGroupId(pattern) {
         reason: "song_start_hook_definition_timed_audio"
       });
 
+      const songStartNextmoveLyrixSection = maybeAttachHookNextmoveLyrixToHookSection({
+        random,
+        hookSection: songStartHookSection,
+        lyrixSectionUsage,
+        globalInclusionState,
+        requiredActivationState,
+        selectedAudio,
+        reason: "song_start_hook_nextmove_lyrix_section"
+      });
+
+      if (songStartNextmoveLyrixSection) {
+        lastSimpleHookLyrixFamily = songStartNextmoveLyrixSection.hookFamily || lastSimpleHookLyrixFamily;
+      }
+
       const songStartHookLyrixSection = maybeAttachSimpleHookLyrixToHookSection({
         random,
         hookSection: songStartHookSection,
@@ -7290,6 +7662,20 @@ function getNormalMidiHatChoiceGroupId(pattern) {
             selectedAudio,
             reason: "normal_hook_definition_timed_audio"
           });
+
+          const normalHookNextmoveLyrixSection = maybeAttachHookNextmoveLyrixToHookSection({
+            random,
+            hookSection,
+            lyrixSectionUsage,
+            globalInclusionState,
+            requiredActivationState,
+            selectedAudio,
+            reason: "normal_hook_nextmove_lyrix_section"
+          });
+
+          if (normalHookNextmoveLyrixSection) {
+            lastSimpleHookLyrixFamily = normalHookNextmoveLyrixSection.hookFamily || lastSimpleHookLyrixFamily;
+          }
 
           const normalHookLyrixSection = maybeAttachSimpleHookLyrixToHookSection({
             random,
@@ -7999,7 +8385,18 @@ function getNormalMidiHatChoiceGroupId(pattern) {
 
       const matchingEntries = audioEntries.filter(entry => {
         if (!normalSynthGroupIncluded && isNormalSynthGlobalGateEntry(entry)) return false;
-        if (isHookLyrixEntry(entry)) return false;
+        if (isHookLyrixEntry(entry)) {
+          const hookLyrixSection = section?.hookLyrixSection || null;
+          const hookLyrixFiles = hookLyrixSection
+            ? getLyrixSectionAudioFiles(hookLyrixSection)
+            : [];
+
+          return Boolean(
+            hookLyrixSection &&
+            hookLyrixFiles.length &&
+            entry.key === hookLyrixFiles[0]
+          );
+        }
         if ((section.type === "normal" || (section.type.includes("lyrix") && section.lyrixSectionId)) && isCentralInstrumentFamilyEntry(entry)) return false;
         return audioMatchesSection(entry, section);
       });
@@ -11485,6 +11882,17 @@ function scheduleMidiPattern({
           : [];
 
         if (!hookLyrixSection || !hookLyrixFiles.length || key !== hookLyrixFiles[0]) return 0;
+
+        if (isHookNextmoveLyrixSection(hookLyrixSection)) {
+          return scheduleHookNextmoveLyrixSection({
+            offlineContext,
+            destination,
+            section,
+            random,
+            playbackState,
+            buffers: buffers || currentRenderBuffers
+          }) ? 1 : 0;
+        }
 
         return scheduleExplicitHookLyrixSection({
           offlineContext,
