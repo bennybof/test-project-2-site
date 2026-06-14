@@ -5514,6 +5514,15 @@ const HOOK_SAX_1_KEY = "samples/sax_1_hook_odd_x2 (consolidated).wav";
 const HOOK_SAX_2_KEY = "samples/sax_2_hook_even_x4 (consolidated).wav";
 const HOOK_SAX_2_OTHER_KEY = "samples/sax_2_other_hook_even_x4_~ (consolidated).wav";
 
+const HOOK_BASSISH_GLITCHY_SEQUENCE_KEYS = [
+  "samples/bassish_glitchy_hook_odd_x4 (consolidated).wav",
+  "samples/bassish_glitchy_hook_odd_x4 #2 (consolidated).wav"
+];
+
+const HOOK_BASSISH_GLITCHY_1_KEY = "samples/bassish_glitchy_hook_odd_x4 (consolidated).wav";
+const HOOK_BASSISH_GLITCHY_2_KEY = "samples/bassish_glitchy_hook_odd_x4 #2 (consolidated).wav";
+const HOOK_FLOOT_KEY = "samples/floot_hook_even_x2 (consolidated).wav";
+
 function isHookAccordianSystemKey(key) {
   return HOOK_ACCORDIAN_SEQUENCE_KEYS.includes(key) || key === HOOK_ACCORDIAN_2_KEY;
 }
@@ -5542,6 +5551,14 @@ function isHookSaxSystemKey(key) {
   return HOOK_SAX_KEYS.includes(key);
 }
 
+function isHookBassishGlitchySystemKey(key) {
+  return HOOK_BASSISH_GLITCHY_SEQUENCE_KEYS.includes(key);
+}
+
+function isHookFlootSystemKey(key) {
+  return key === HOOK_FLOOT_KEY;
+}
+
 function isHookDefinitionTimedAudioKey(key) {
   return isHookAccordianSystemKey(key) ||
     isHookWindowWipeSystemKey(key) ||
@@ -5549,7 +5566,9 @@ function isHookDefinitionTimedAudioKey(key) {
     isHookOhRevSystemKey(key) ||
     isHookXtraDrumsSystemKey(key) ||
     isHookRhodesLowSystemKey(key) ||
-    isHookSaxSystemKey(key);
+    isHookSaxSystemKey(key) ||
+    isHookBassishGlitchySystemKey(key) ||
+    isHookFlootSystemKey(key);
 }
 
 function setHookGroupGlobalDecision(globalInclusionState, { id, included, chanceValue, roll, tags = [] } = {}) {
@@ -5717,6 +5736,48 @@ function includeHookDefinitionTimedAudioSelections({
     keys: HOOK_SAX_KEYS,
     reason: `${reason}:hook_sax_explicit_activation_rules`
   });
+
+  const bassishGlitchyRoll = random();
+  const bassishGlitchyIncluded = bassishGlitchyRoll < 0.5;
+  setHookGroupGlobalDecision(globalInclusionState, {
+    id: "hook_bassish_glitchy_group",
+    included: bassishGlitchyIncluded,
+    chanceValue: 0.5,
+    roll: bassishGlitchyRoll,
+    tags: ["hook", "bassish_glitchy"]
+  });
+
+  if (bassishGlitchyIncluded) {
+    includeHookAudioKeysAfterGroupDecision({
+      random,
+      globalInclusionState,
+      requiredActivationState,
+      selectedAudio,
+      keys: HOOK_BASSISH_GLITCHY_SEQUENCE_KEYS,
+      reason: `${reason}:bassish_glitchy_global_50`
+    });
+  }
+
+  const flootRoll = random();
+  const flootIncluded = flootRoll < 0.4;
+  setHookGroupGlobalDecision(globalInclusionState, {
+    id: "hook_floot_group",
+    included: flootIncluded,
+    chanceValue: 0.4,
+    roll: flootRoll,
+    tags: ["hook", "floot"]
+  });
+
+  if (flootIncluded) {
+    includeHookAudioKeysAfterGroupDecision({
+      random,
+      globalInclusionState,
+      requiredActivationState,
+      selectedAudio,
+      keys: [HOOK_FLOOT_KEY],
+      reason: `${reason}:floot_global_40`
+    });
+  }
 }
 
 function isCrashKey(key) {
@@ -10463,6 +10524,74 @@ function scheduleMidiPattern({
       }
 
       return scheduledCount;
+    }
+
+    if (isHookBassishGlitchySystemKey(key)) {
+      if (section.hookDefinitionTimedAudioScheduledGroups.bassishGlitchy) return 0;
+      section.hookDefinitionTimedAudioScheduledGroups.bassishGlitchy = true;
+
+      if (!selectedAudio.has(HOOK_BASSISH_GLITCHY_1_KEY)) return 0;
+
+      let scheduledCount = 0;
+      let sequenceStartSeconds = section.startSeconds + section.barSeconds * 2;
+      let firstOpportunity = true;
+
+      while (sequenceStartSeconds < section.endSeconds - 0.001) {
+        const activationChance = firstOpportunity ? 0.5 : 0.7;
+        const reason = firstOpportunity
+          ? "hook_bassish_glitchy_plus_2_bars_activation_50"
+          : "hook_bassish_glitchy_repeat_continue_70";
+
+        if (!chance(random, activationChance)) break;
+
+        let partStartSeconds = sequenceStartSeconds;
+        const part1Buffer = currentRenderBuffers?.get(HOOK_BASSISH_GLITCHY_1_KEY);
+
+        scheduledCount += scheduleKeyAtTime(
+          HOOK_BASSISH_GLITCHY_1_KEY,
+          partStartSeconds,
+          reason
+        );
+
+        partStartSeconds += part1Buffer?.duration || section.barSeconds * 4;
+
+        if (selectedAudio.has(HOOK_BASSISH_GLITCHY_2_KEY)) {
+          const part2Buffer = currentRenderBuffers?.get(HOOK_BASSISH_GLITCHY_2_KEY);
+
+          scheduledCount += scheduleKeyAtTime(
+            HOOK_BASSISH_GLITCHY_2_KEY,
+            partStartSeconds,
+            "hook_bassish_glitchy_part_2_after_part_1"
+          );
+
+          sequenceStartSeconds = partStartSeconds + (part2Buffer?.duration || section.barSeconds * 4);
+        } else {
+          sequenceStartSeconds = partStartSeconds;
+        }
+
+        firstOpportunity = false;
+      }
+
+      return scheduledCount;
+    }
+
+    if (isHookFlootSystemKey(key)) {
+      if (section.hookDefinitionTimedAudioScheduledGroups.floot) return 0;
+      section.hookDefinitionTimedAudioScheduledGroups.floot = true;
+
+      if (!selectedAudio.has(HOOK_FLOOT_KEY)) return 0;
+
+      // Definition: hook floot activation = 20%.
+      if (!chance(random, 0.2)) return 0;
+
+      // Definition: hook floot dropout = 20%.
+      if (chance(random, 0.2)) return 0;
+
+      return scheduleKeyAtTime(
+        HOOK_FLOOT_KEY,
+        section.startSeconds + section.barSeconds,
+        "hook_floot_plus_1_bar"
+      );
     }
 
     if (isHookRhodesLowSystemKey(key)) {
